@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8 - Gestion des Exceptions - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .exception-hierarchy {
+            background: #f8fafc;
+            border: 2px solid var(--warning-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 66.67%; /* 8/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Module 8 - Gestion des Exceptions
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 8 sur 12</small>
+                    
+                    <a href="#introduction-exceptions" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction Exceptions</a>
+                    <a href="#hierarchie-exceptions" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Hiérarchie Exceptions</a>
+                    <a href="#try-catch-finally" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Try-Catch-Finally</a>
+                    <a href="#exceptions-personnalisees" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exceptions Personnalisées</a>
+                    <a href="#propagation-exceptions" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Propagation (throws)</a>
+                    <a href="#try-with-resources" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Try-with-Resources</a>
+                    <a href="#bonnes-pratiques" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Bonnes Pratiques</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (12)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 8 - Gestion des Exceptions</h1>
+                        <p class="lead mb-0">Créez des applications robustes et fiables</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction -->
+                        <section id="introduction-exceptions" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Introduction aux Exceptions
+                            </h2>
+                            
+                            <p>Une exception est un événement qui interrompt le flux normal d'exécution d'un programme. Java fournit un mécanisme robuste pour gérer ces situations exceptionnelles.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Pourquoi Gérer les Exceptions ?</h5>
+                                <ul>
+                                    <li><strong>Robustesse :</strong> Éviter les plantages inattendus</li>
+                                    <li><strong>Maintenance :</strong> Faciliter le débogage</li>
+                                    <li><strong>Expérience utilisateur :</strong> Messages d'erreur clairs</li>
+                                    <li><strong>Récupération :</strong> Permettre au programme de continuer</li>
+                                    <li><strong>Logging :</strong> Tracer les erreurs pour l'analyse</li>
+                                </ul>
+                            </div>
+
+                            <div class="exception-hierarchy">
+                                <h6>Hiérarchie des Exceptions Java :</h6>
+                                <pre>
+                            Throwable
+                               │
+                    ┌──────────┴──────────┐
+                    │                     │
+                  Error               Exception
+                    │                     │
+            ┌───────┴───────┐      ┌─────┴─────────────────┐
+            │               │      │                       │
+     OutOfMemoryError  StackOver  RuntimeException    IOException
+     NoClassDefFound   FlowError      │                    │
+                                      │              ┌─────┴─────┐
+                              ┌───────┴─────────┐    │           │
+                              │                 │  FileNot   ClassNot
+                    NullPointerException  ArrayIndex   Found     Found
+                    IllegalArgument       OutOfBounds
+                    NumberFormat
+                    
+    UNCHECKED (Runtime)              CHECKED (Compile-time)
+    ─────────────────────            ──────────────────────
+    - Erreurs de programmation       - Erreurs prévisibles
+    - Pas obligé de les gérer        - Gestion obligatoire
+    - RuntimeException et Error      - Exception (sauf Runtime)
+                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Try-Catch-Finally -->
+                        <section id="try-catch-finally" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-life-ring"></i>
+                                Try-Catch-Finally
+                            </h2>
+                            
+                            <h4>Syntaxe Complète</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class GestionExceptionsComplete {
+    public static void main(String[] args) {
+        demonstrerTryCatchBasique();
+        demonstrerMultiplesCatch();
+        demonstrerTryWithFinally();
+        demonstrerTryWithResources();
+    }
+    
+    // 1. Try-catch basique
+    public static void demonstrerTryCatchBasique() {
+        System.out.println("=== TRY-CATCH BASIQUE ===");
+        Scanner scanner = new Scanner(System.in);
+        
+        try {
+            System.out.print("Entrez un nombre entier: ");
+            String input = scanner.nextLine();
+            int nombre = Integer.parseInt(input); // Peut lever NumberFormatException
+            
+            System.out.print("Entrez un diviseur: ");
+            int diviseur = scanner.nextInt();
+            int resultat = nombre / diviseur; // Peut lever ArithmeticException
+            
+            System.out.println("Résultat: " + nombre + " / " + diviseur + " = " + resultat);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Erreur: '" + e.getMessage() + "' n'est pas un nombre valide");
+            System.out.println("Cause: Mauvais format de nombre");
+        } catch (ArithmeticException e) {
+            System.out.println("❌ Erreur mathématique: " + e.getMessage());
+            System.out.println("Cause: Division par zéro interdite");
+        }
+        
+        System.out.println("Programme continue après l'exception\n");
+    }
+    
+    // 2. Multiples catch avec hiérarchie
+    public static void demonstrerMultiplesCatch() {
+        System.out.println("=== MULTIPLES CATCH ===");
+        int[] tableau = {1, 2, 3, 4, 5};
+        
+        try {
+            System.out.println("Accès à l'index 10 du tableau...");
+            int valeur = tableau[10]; // ArrayIndexOutOfBoundsException
+            
+            String texte = null;
+            int longueur = texte.length(); // NullPointerException
+            
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("❌ Index hors limites: " + e.getMessage());
+            System.out.println("Tableau de taille " + tableau.length + ", index max: " + (tableau.length - 1));
+            
+        } catch (NullPointerException e) {
+            System.out.println("❌ Référence null: " + e.getMessage());
+            System.out.println("Tentative d'utilisation d'un objet null");
+            
+        } catch (RuntimeException e) {
+            // Catch générique pour toutes les RuntimeException non gérées
+            System.out.println("❌ Erreur runtime non spécifiée: " + e.getClass().getSimpleName());
+            System.out.println("Message: " + e.getMessage());
+            
+        } catch (Exception e) {
+            // Catch le plus générique (toutes les exceptions)
+            System.out.println("❌ Erreur générale: " + e.getClass().getSimpleName());
+            e.printStackTrace(); // Affiche la stack trace complète
+        }
+        
+        System.out.println("Fin de la démonstration multiples catch\n");
+    }
+    
+    // 3. Try-catch-finally
+    public static void demonstrerTryWithFinally() {
+        System.out.println("=== TRY-CATCH-FINALLY ===");
+        FileReader reader = null;
+        
+        try {
+            System.out.println("Tentative d'ouverture du fichier...");
+            reader = new FileReader("fichier_inexistant.txt");
+            
+            // Code qui ne sera jamais exécuté
+            System.out.println("Lecture du fichier...");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur I/O: " + e.getMessage());
+            System.out.println("Type d'erreur: " + e.getClass().getSimpleName());
+            
+        } finally {
+            // Bloc TOUJOURS exécuté (exception ou pas)
+            System.out.println("🧹 Bloc finally: Nettoyage des ressources");
+            
+            if (reader != null) {
+                try {
+                    reader.close();
+                    System.out.println("Fichier fermé proprement");
+                } catch (IOException e) {
+                    System.out.println("Erreur lors de la fermeture: " + e.getMessage());
+                }
+            }
+        }
+        
+        System.out.println("Programme continue après finally\n");
+    }
+    
+    // 4. Try-with-resources (Java 7+)
+    public static void demonstrerTryWithResources() {
+        System.out.println("=== TRY-WITH-RESOURCES ===");
+        
+        // Fermeture automatique des ressources
+        try (Scanner scanner = new Scanner("10 20 30 40 50")) {
+            System.out.println("Lecture avec fermeture automatique:");
+            
+            while (scanner.hasNextInt()) {
+                int nombre = scanner.nextInt();
+                System.out.print(nombre + " ");
+            }
+            System.out.println();
+            
+            // Scanner sera automatiquement fermé, même si exception
+            
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la lecture: " + e.getMessage());
+        }
+        
+        System.out.println("Scanner fermé automatiquement\n");
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exceptions Personnalisées -->
+                        <section id="exceptions-personnalisees" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-wrench"></i>
+                                Création d'Exceptions Personnalisées
+                            </h2>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">// Exception personnalisée pour un compte bancaire
+public class CompteBancaireException extends Exception {
+    private String typeErreur;
+    private double montantTentative;
+    private double soldeActuel;
+    
+    public CompteBancaireException(String message, String typeErreur, 
+                                  double montantTentative, double soldeActuel) {
+        super(message);
+        this.typeErreur = typeErreur;
+        this.montantTentative = montantTentative;
+        this.soldeActuel = soldeActuel;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("CompteBancaireException: %s\n" +
+                           "Type d'erreur: %s\n" +
+                           "Montant tenté: %.2f€\n" +
+                           "Solde actuel: %.2f€", 
+                           getMessage(), typeErreur, montantTentative, soldeActuel);
+    }
+    
+    public String getTypeErreur() { return typeErreur; }
+    public double getMontantTentative() { return montantTentative; }
+    public double getSoldeActuel() { return soldeActuel; }
+}
+
+// Classe utilisant l'exception personnalisée
+public class CompteBancaireAvance {
+    private String numeroCompte;
+    private String titulaire;
+    private double solde;
+    private double decouvertAutorise;
+    private static final double MONTANT_MIN_OPERATION = 0.01;
+    private static final double MONTANT_MAX_OPERATION = 10000.0;
+    
+    public CompteBancaireAvance(String titulaire, double soldeInitial) {
+        this.numeroCompte = "FR" + System.currentTimeMillis();
+        this.titulaire = titulaire;
+        this.solde = soldeInitial;
+        this.decouvertAutorise = 500.0;
+        
+        System.out.println("Compte créé: " + numeroCompte + " pour " + titulaire);
+    }
+    
+    public void deposer(double montant) throws CompteBancaireException {
+        // Validation du montant
+        if (montant < MONTANT_MIN_OPERATION) {
+            throw new CompteBancaireException(
+                "Montant de dépôt trop faible",
+                "MONTANT_INSUFFISANT",
+                montant,
+                solde
+            );
+        }
+        
+        if (montant > MONTANT_MAX_OPERATION) {
+            throw new CompteBancaireException(
+                "Montant de dépôt trop élevé (limite: " + MONTANT_MAX_OPERATION + "€)",
+                "MONTANT_TROP_ELEVE",
+                montant,
+                solde
+            );
+        }
+        
+        solde += montant;
+        System.out.printf("✅ Dépôt de %.2f€ effectué. Nouveau solde: %.2f€%n", montant, solde);
+    }
+    
+    public void retirer(double montant) throws CompteBancaireException {
+        // Validation du montant
+        if (montant < MONTANT_MIN_OPERATION) {
+            throw new CompteBancaireException(
+                "Montant de retrait trop faible",
+                "MONTANT_INSUFFISANT", 
+                montant,
+                solde
+            );
+        }
+        
+        // Vérification du solde avec découvert
+        double soldeAvecDecouvert = solde + decouvertAutorise;
+        if (montant > soldeAvecDecouvert) {
+            throw new CompteBancaireException(
+                "Solde insuffisant même avec découvert autorisé",
+                "SOLDE_INSUFFISANT",
+                montant,
+                solde
+            );
+        }
+        
+        solde -= montant;
+        System.out.printf("✅ Retrait de %.2f€ effectué. Nouveau solde: %.2f€%n", montant, solde);
+        
+        // Avertissement si découvert
+        if (solde < 0) {
+            System.out.printf("⚠️  Compte à découvert: %.2f€ (Limite: %.2f€)%n", 
+                            Math.abs(solde), decouvertAutorise);
+        }
+    }
+    
+    public void virement(CompteBancaireAvance compteDestinataire, double montant) 
+            throws CompteBancaireException {
+        if (compteDestinataire == null) {
+            throw new CompteBancaireException(
+                "Compte destinataire invalide",
+                "COMPTE_INVALIDE",
+                montant,
+                solde
+            );
+        }
+        
+        if (compteDestinataire == this) {
+            throw new CompteBancaireException(
+                "Impossible de faire un virement vers le même compte",
+                "VIREMENT_MEME_COMPTE",
+                montant,
+                solde
+            );
+        }
+        
+        // Retrait du compte source
+        this.retirer(montant);
+        
+        // Dépôt sur le compte destination
+        compteDestinataire.deposer(montant);
+        
+        System.out.printf("💸 Virement de %.2f€ vers %s effectué%n", 
+                         montant, compteDestinataire.getTitulaire());
+    }
+    
+    public void afficherSolde() {
+        System.out.printf("Solde de %s (%s): %.2f€%n", titulaire, numeroCompte, solde);
+    }
+    
+    // Getters
+    public String getTitulaire() { return titulaire; }
+    public double getSolde() { return solde; }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Pratiques sur les Exceptions (12 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-calculator"></i> Exercice 1 : Calculatrice Robuste
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer une calculatrice qui gère toutes les erreurs possibles.</p>
+                                <p><strong>Gestion d'erreurs :</strong></p>
+                                <ul>
+                                    <li>Division par zéro</li>
+                                    <li>Formats de nombres invalides</li>
+                                    <li>Opérateurs inconnus</li>
+                                    <li>Débordements de calcul</li>
+                                    <li>Entrées utilisateur invalides</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+// Exception personnalisée pour la calculatrice
+class CalculatriceException extends Exception {
+    private String typeErreur;
+    private String operationTentee;
+    
+    public CalculatriceException(String message, String typeErreur, String operationTentee) {
+        super(message);
+        this.typeErreur = typeErreur;
+        this.operationTentee = operationTentee;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("CalculatriceException: %s\nType: %s\nOpération: %s", 
+                           getMessage(), typeErreur, operationTentee);
+    }
+}
+
+public class CalculatriceRobuste {
+    private static final Scanner scanner = new Scanner(System.in);
+    
+    public static void main(String[] args) {
+        System.out.println("=== CALCULATRICE ROBUSTE ===");
+        System.out.println("Tapez 'quit' pour quitter");
+        
+        boolean continuer = true;
+        
+        while (continuer) {
+            try {
+                System.out.println("\n--- Nouvelle Opération ---");
+                
+                // Saisie sécurisée du premier nombre
+                double nombre1 = saisirNombre("Premier nombre: ");
+                
+                // Saisie de l'opérateur
+                String operateur = saisirOperateur();
+                if (operateur.equals("quit")) {
+                    continuer = false;
+                    continue;
+                }
+                
+                // Saisie sécurisée du deuxième nombre
+                double nombre2 = saisirNombre("Deuxième nombre: ");
+                
+                // Calcul avec gestion d'erreurs
+                double resultat = effectuerCalcul(nombre1, operateur, nombre2);
+                
+                // Affichage du résultat
+                System.out.printf("✅ Résultat: %.2f %s %.2f = %.2f%n", 
+                                nombre1, operateur, nombre2, resultat);
+                
+                // Vérification de débordement
+                if (Double.isInfinite(resultat)) {
+                    System.out.println("⚠️  Attention: Résultat infini (débordement)");
+                } else if (Double.isNaN(resultat)) {
+                    System.out.println("⚠️  Attention: Résultat indéterminé (NaN)");
+                }
+                
+            } catch (CalculatriceException e) {
+                System.out.println("❌ " + e.getMessage());
+                System.out.println("Détails: " + e.toString());
+                
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Format de nombre invalide: " + e.getMessage());
+                
+            } catch (Exception e) {
+                System.out.println("❌ Erreur inattendue: " + e.getMessage());
+                e.printStackTrace();
+                
+            } finally {
+                // Nettoyage si nécessaire
+                System.out.println("🧹 Nettoyage effectué");
+            }
+        }
+        
+        System.out.println("👋 Au revoir !");
+        scanner.close();
+    }
+    
+    private static double saisirNombre(String invite) throws NumberFormatException {
+        System.out.print(invite);
+        String input = scanner.nextLine().trim();
+        
+        if (input.equalsIgnoreCase("quit")) {
+            throw new NumberFormatException("Arrêt demandé par l'utilisateur");
+        }
+        
+        try {
+            return Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("'" + input + "' n'est pas un nombre valide");
+        }
+    }
+    
+    private static String saisirOperateur() {
+        System.out.print("Opérateur (+, -, *, /, %, ^, sqrt): ");
+        return scanner.nextLine().trim();
+    }
+    
+    private static double effectuerCalcul(double a, String op, double b) throws CalculatriceException {
+        String operation = a + " " + op + " " + b;
+        
+        switch (op) {
+            case "+":
+                double somme = a + b;
+                if (Double.isInfinite(somme)) {
+                    throw new CalculatriceException("Débordement lors de l'addition", 
+                                                   "OVERFLOW", operation);
+                }
+                return somme;
+                
+            case "-":
+                return a - b;
+                
+            case "*":
+                double produit = a * b;
+                if (Double.isInfinite(produit)) {
+                    throw new CalculatriceException("Débordement lors de la multiplication", 
+                                                   "OVERFLOW", operation);
+                }
+                return produit;
+                
+            case "/":
+                if (b == 0) {
+                    throw new CalculatriceException("Division par zéro interdite", 
+                                                   "DIVISION_PAR_ZERO", operation);
+                }
+                return a / b;
+                
+            case "%":
+                if (b == 0) {
+                    throw new CalculatriceException("Modulo par zéro interdit", 
+                                                   "MODULO_PAR_ZERO", operation);
+                }
+                return a % b;
+                
+            case "^":
+                if (a == 0 && b < 0) {
+                    throw new CalculatriceException("0 puissance négative indéfinie", 
+                                                   "PUISSANCE_INDEFINIE", operation);
+                }
+                return Math.pow(a, b);
+                
+            case "sqrt":
+                if (a < 0) {
+                    throw new CalculatriceException("Racine carrée d'un nombre négatif", 
+                                                   "RACINE_NEGATIVE", a + " sqrt");
+                }
+                return Math.sqrt(a);
+                
+            default:
+                throw new CalculatriceException("Opérateur inconnu: " + op, 
+                                               "OPERATEUR_INCONNU", operation);
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-7-interfaces-abstractions.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 7 : Interfaces
+                            </a>
+                            <a href="module-9-collections-generiques.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 9 : Collections
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

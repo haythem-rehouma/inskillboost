@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 - Structures de Contrôle - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--java-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--java-orange);
+            border-left-color: var(--java-orange);
+            background-color: rgba(248, 152, 32, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #374151;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .exercise-title {
+            color: var(--java-orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .info-card {
+            background: var(--explanation-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .flowchart {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .algorithm-box {
+            background: white;
+            border: 2px solid var(--java-orange);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .complexity-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+        }
+
+        .complexity-table th {
+            background: var(--java-blue);
+            color: white;
+            font-weight: 600;
+        }
+
+        .progress-indicator {
+            background: var(--border-color);
+            height: 4px;
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 25%; /* 3/12 modules */
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(248, 152, 32, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">
+                    <i class="fas fa-arrow-left me-1"></i>Retour Hub
+                </a>
+                <a class="nav-link" href="./">
+                    <i class="fas fa-list me-1"></i>Modules Java
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="toc-title">
+                        <i class="fas fa-route me-2"></i>
+                        Module 3 - Structures de Contrôle
+                    </div>
+                    
+                    <div class="progress-indicator">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 3 sur 12</small>
+                    
+                    <a href="#introduction-controle" class="toc-link active">Introduction</a>
+                    <a href="#conditions-if" class="toc-link">Conditions if/else</a>
+                    <a href="#switch-case" class="toc-link">Switch/Case</a>
+                    <a href="#operateur-ternaire" class="toc-link">Opérateur Ternaire</a>
+                    <a href="#boucle-for" class="toc-link">Boucle for</a>
+                    <a href="#boucle-while" class="toc-link">Boucle while</a>
+                    <a href="#boucle-do-while" class="toc-link">Boucle do-while</a>
+                    <a href="#for-each" class="toc-link">For-each</a>
+                    <a href="#break-continue" class="toc-link">Break/Continue</a>
+                    <a href="#algorithmes" class="toc-link">Algorithmes de Base</a>
+                    <a href="#exercices" class="toc-link">Exercices (25)</a>
+                    
+                    <hr class="my-3">
+                    <div class="text-center">
+                        <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=java-sidebar&utm_campaign=course-premium" 
+                           class="btn btn-warning btn-sm" target="_blank">
+                            <i class="fas fa-crown me-1"></i>Version Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-route me-3"></i>
+                            Module 3 - Structures de Contrôle
+                        </h1>
+                        <p class="lead mb-0">Maîtrisez le flux d'exécution de vos programmes Java</p>
+                    </div>
+
+                    <div class="content-body">
+                        <!-- Introduction -->
+                        <section id="introduction-controle" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle"></i>
+                                Introduction aux Structures de Contrôle
+                            </h2>
+                            
+                            <p>Les structures de contrôle permettent de modifier l'ordre d'exécution des instructions dans un programme. Par défaut, les instructions s'exécutent séquentiellement, mais nous pouvons :</p>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="concept-highlight text-center">
+                                        <h5>Structures Conditionnelles</h5>
+                                        <p>Exécuter du code selon des conditions</p>
+                                        <ul class="text-start">
+                                            <li>if / else</li>
+                                            <li>switch / case</li>
+                                            <li>Opérateur ternaire</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight text-center">
+                                        <h5>Structures Répétitives</h5>
+                                        <p>Répéter du code plusieurs fois</p>
+                                        <ul class="text-start">
+                                            <li>for</li>
+                                            <li>while</li>
+                                            <li>do-while</li>
+                                            <li>for-each</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight text-center">
+                                        <h5>Instructions de Saut</h5>
+                                        <p>Modifier le flux d'exécution</p>
+                                        <ul class="text-start">
+                                            <li>break</li>
+                                            <li>continue</li>
+                                            <li>return</li>
+                                            <li>Labels</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Conditions if/else -->
+                        <section id="conditions-if" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-code-branch"></i>
+                                Conditions if/else
+                            </h2>
+                            
+                            <p>La structure <code>if</code> permet d'exécuter du code seulement si une condition est vraie.</p>
+
+                            <h4>Syntaxes Possibles</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// 1. if simple
+if (condition) {
+    // Code exécuté si condition vraie
+}
+
+// 2. if/else
+if (condition) {
+    // Code si condition vraie
+} else {
+    // Code si condition fausse
+}
+
+// 3. if/else if/else
+if (condition1) {
+    // Code si condition1 vraie
+} else if (condition2) {
+    // Code si condition2 vraie
+} else if (condition3) {
+    // Code si condition3 vraie
+} else {
+    // Code si aucune condition vraie
+}
+
+// 4. if imbriqués
+if (condition1) {
+    if (condition2) {
+        // Code si condition1 ET condition2 vraies
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Exemple Pratique - Système de Notes</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class SystemeNotes {
+    public static void main(String[] args) {
+        double note = 14.5;
+        
+        System.out.println("Note obtenue: " + note + "/20");
+        
+        // Structure if/else if/else complète
+        if (note >= 16) {
+            System.out.println("Mention: Très Bien");
+            System.out.println("Félicitations ! Excellent travail !");
+        } else if (note >= 14) {
+            System.out.println("Mention: Bien");
+            System.out.println("Bon travail, continuez ainsi !");
+        } else if (note >= 12) {
+            System.out.println("Mention: Assez Bien");
+            System.out.println("C'est correct, vous pouvez mieux faire !");
+        } else if (note >= 10) {
+            System.out.println("Mention: Passable");
+            System.out.println("C'est juste, il faut travailler davantage");
+        } else {
+            System.out.println("Mention: Insuffisant");
+            System.out.println("Il faut reprendre les bases");
+        }
+        
+        // Conditions composées
+        boolean noteValide = (note >= 0) && (note <= 20);
+        boolean admis = (note >= 10) && noteValide;
+        
+        if (noteValide && admis) {
+            System.out.println("Statut: ADMIS");
+            
+            // Conditions imbriquées pour les félicitations
+            if (note >= 18) {
+                System.out.println("Prix d'excellence !");
+            } else if (note >= 16) {
+                System.out.println("Mention au tableau d'honneur");
+            }
+        } else if (noteValide && !admis) {
+            System.out.println("Statut: REFUSÉ");
+            System.out.println("Possibilité de rattrapage");
+        } else {
+            System.out.println("Erreur: Note invalide");
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="flowchart">
+                                <h6>Diagramme de Flux if/else</h6>
+                                <pre>
+    [Début]
+       ↓
+  {Condition ?}
+    ↙     ↘
+[Vrai]   [Faux]
+   ↓       ↓
+[Code A] [Code B]
+   ↓       ↓
+    ↘     ↙
+    [Fin]
+                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Switch/Case -->
+                        <section id="switch-case" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-list-ul"></i>
+                                Switch/Case
+                            </h2>
+                            
+                            <p>La structure <code>switch</code> permet de comparer une variable avec plusieurs valeurs possibles. Plus lisible que de multiples if/else pour les comparaisons d'égalité.</p>
+
+                            <h4>Syntaxe Classique</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class ExempleSwitch {
+    public static void main(String[] args) {
+        int jourSemaine = 3;
+        String nomJour;
+        
+        switch (jourSemaine) {
+            case 1:
+                nomJour = "Lundi";
+                break;
+            case 2:
+                nomJour = "Mardi";
+                break;
+            case 3:
+                nomJour = "Mercredi";
+                break;
+            case 4:
+                nomJour = "Jeudi";
+                break;
+            case 5:
+                nomJour = "Vendredi";
+                break;
+            case 6:
+                nomJour = "Samedi";
+                break;
+            case 7:
+                nomJour = "Dimanche";
+                break;
+            default:
+                nomJour = "Jour invalide";
+                break;
+        }
+        
+        System.out.println("Jour " + jourSemaine + ": " + nomJour);
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Switch Expression (Java 14+)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class SwitchModerne {
+    public static void main(String[] args) {
+        int jourSemaine = 3;
+        
+        // Switch expression (plus concis)
+        String nomJour = switch (jourSemaine) {
+            case 1 -> "Lundi";
+            case 2 -> "Mardi";
+            case 3 -> "Mercredi";
+            case 4 -> "Jeudi";
+            case 5 -> "Vendredi";
+            case 6 -> "Samedi";
+            case 7 -> "Dimanche";
+            default -> "Jour invalide";
+        };
+        
+        System.out.println("Jour: " + nomJour);
+        
+        // Switch avec yield pour logique complexe
+        String typeJour = switch (jourSemaine) {
+            case 1, 2, 3, 4, 5 -> {
+                System.out.println("C'est un jour de semaine");
+                yield "Jour ouvrable";
+            }
+            case 6, 7 -> {
+                System.out.println("C'est le week-end");
+                yield "Week-end";
+            }
+            default -> {
+                System.out.println("Jour invalide");
+                yield "Erreur";
+            }
+        };
+        
+        System.out.println("Type: " + typeJour);
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="info-card">
+                                <h5>Bonnes Pratiques Switch :</h5>
+                                <ul>
+                                    <li>Toujours inclure un <code>default</code></li>
+                                    <li>Utiliser <code>break</code> pour éviter le fall-through</li>
+                                    <li>Préférer switch expression quand possible (Java 14+)</li>
+                                    <li>Grouper les cas similaires avec des virgules</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Boucle for -->
+                        <section id="boucle-for" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-sync"></i>
+                                Boucle for
+                            </h2>
+                            
+                            <p>La boucle <code>for</code> est idéale quand on connaît à l'avance le nombre d'itérations.</p>
+
+                            <h4>Syntaxe et Variantes</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Syntaxe standard
+for (initialisation; condition; incrémentation) {
+    // Code à répéter
+}
+
+// Exemples concrets
+public class BouclesFor {
+    public static void main(String[] args) {
+        // 1. Boucle for classique
+        System.out.println("=== COMPTAGE DE 1 À 10 ===");
+        for (int i = 1; i <= 10; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        
+        // 2. Boucle for décroissante
+        System.out.println("\n=== COMPTE À REBOURS ===");
+        for (int i = 10; i >= 1; i--) {
+            System.out.print(i + " ");
+        }
+        System.out.println("Décollage !");
+        
+        // 3. Boucle for avec pas personnalisé
+        System.out.println("\n=== NOMBRES PAIRS DE 0 À 20 ===");
+        for (int i = 0; i <= 20; i += 2) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        
+        // 4. Boucles for imbriquées
+        System.out.println("\n=== TABLE DE MULTIPLICATION ===");
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 1; j <= 5; j++) {
+                System.out.printf("%2d ", i * j);
+            }
+            System.out.println(); // Nouvelle ligne
+        }
+        
+        // 5. For avec plusieurs variables
+        System.out.println("\n=== DOUBLE COMPTEUR ===");
+        for (int i = 0, j = 10; i <= j; i++, j--) {
+            System.out.println("i=" + i + ", j=" + j);
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="algorithm-box">
+                                <h5>Algorithme de la Boucle for :</h5>
+                                <ol>
+                                    <li><strong>Initialisation :</strong> Exécutée une seule fois au début</li>
+                                    <li><strong>Test de condition :</strong> Évaluée avant chaque itération</li>
+                                    <li><strong>Exécution du corps :</strong> Si condition vraie</li>
+                                    <li><strong>Incrémentation :</strong> Exécutée après chaque itération</li>
+                                    <li><strong>Retour à l'étape 2</strong></li>
+                                </ol>
+                            </div>
+                        </section>
+
+                        <!-- Boucle while -->
+                        <section id="boucle-while" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-redo"></i>
+                                Boucles while et do-while
+                            </h2>
+                            
+                            <p>Les boucles <code>while</code> et <code>do-while</code> répètent du code tant qu'une condition est vraie.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Boucle while</h4>
+                                    <p>Test de condition <strong>avant</strong> l'exécution</p>
+                                    <div class="code-block">
+<pre><code class="language-java">int compteur = 1;
+while (compteur <= 5) {
+    System.out.println("Compteur: " + compteur);
+    compteur++;
+}
+// Peut ne jamais s'exécuter si condition fausse</code></pre>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Boucle do-while</h4>
+                                    <p>Test de condition <strong>après</strong> l'exécution</p>
+                                    <div class="code-block">
+<pre><code class="language-java">int compteur = 1;
+do {
+    System.out.println("Compteur: " + compteur);
+    compteur++;
+} while (compteur <= 5);
+// S'exécute au moins une fois</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Exemple Pratique - Menu Interactif</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class MenuInteractif {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choix = 0;
+        
+        // Boucle do-while pour répéter le menu
+        do {
+            System.out.println("\n=== MENU PRINCIPAL ===");
+            System.out.println("1. Afficher la date");
+            System.out.println("2. Calculer une factorielle");
+            System.out.println("3. Générer des nombres aléatoires");
+            System.out.println("4. Quitter");
+            System.out.print("Votre choix (1-4) : ");
+            
+            try {
+                choix = scanner.nextInt();
+                
+                switch (choix) {
+                    case 1:
+                        System.out.println("Date actuelle: " + java.time.LocalDate.now());
+                        break;
+                    case 2:
+                        System.out.print("Entrez un nombre pour la factorielle : ");
+                        int n = scanner.nextInt();
+                        System.out.println("Factorielle de " + n + " = " + calculerFactorielle(n));
+                        break;
+                    case 3:
+                        genererNombresAleatoires();
+                        break;
+                    case 4:
+                        System.out.println("Au revoir !");
+                        break;
+                    default:
+                        System.out.println("Choix invalide, veuillez réessayer");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Erreur de saisie, veuillez entrer un nombre");
+                scanner.nextLine(); // Vider le buffer
+                choix = 0; // Continuer la boucle
+            }
+            
+        } while (choix != 4);
+        
+        scanner.close();
+    }
+    
+    // Méthode utilisant une boucle while
+    public static long calculerFactorielle(int n) {
+        if (n < 0) return -1; // Erreur
+        
+        long resultat = 1;
+        int i = 1;
+        
+        while (i <= n) {
+            resultat *= i;
+            i++;
+        }
+        
+        return resultat;
+    }
+    
+    // Méthode utilisant une boucle for
+    public static void genererNombresAleatoires() {
+        System.out.println("10 nombres aléatoires entre 1 et 100:");
+        
+        for (int i = 0; i < 10; i++) {
+            int nombreAleatoire = (int)(Math.random() * 100) + 1;
+            System.out.print(nombreAleatoire + " ");
+        }
+        System.out.println();
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Break et Continue -->
+                        <section id="break-continue" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-stop-circle"></i>
+                                Instructions break et continue
+                            </h2>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="concept-highlight">
+                                        <h5>break</h5>
+                                        <p>Sort complètement de la boucle ou du switch</p>
+                                        <div class="code-block">
+<pre><code class="language-java">for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+        break; // Sort de la boucle
+    }
+    System.out.print(i + " ");
+}
+// Affiche: 1 2 3 4</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="concept-highlight">
+                                        <h5>continue</h5>
+                                        <p>Passe directement à l'itération suivante</p>
+                                        <div class="code-block">
+<pre><code class="language-java">for (int i = 1; i <= 10; i++) {
+    if (i % 2 == 0) {
+        continue; // Passe à i+1
+    }
+    System.out.print(i + " ");
+}
+// Affiche: 1 3 5 7 9</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Exemple Avancé avec Labels</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class BreakContinueAvance {
+    public static void main(String[] args) {
+        // Utilisation de labels pour les boucles imbriquées
+        
+        System.out.println("=== RECHERCHE DANS UNE MATRICE ===");
+        int[][] matrice = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12}
+        };
+        
+        int recherche = 7;
+        boolean trouve = false;
+        
+        // Label pour la boucle externe
+        rechercheBoucle:
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[i].length; j++) {
+                System.out.print("Vérification [" + i + "][" + j + "] = " + matrice[i][j]);
+                
+                if (matrice[i][j] == recherche) {
+                    System.out.println(" → TROUVÉ !");
+                    System.out.println("Élément " + recherche + " trouvé à la position [" + i + "][" + j + "]");
+                    trouve = true;
+                    break rechercheBoucle; // Sort des deux boucles
+                } else {
+                    System.out.println();
+                }
+            }
+        }
+        
+        if (!trouve) {
+            System.out.println("Élément " + recherche + " non trouvé");
+        }
+        
+        // Exemple avec continue et label
+        System.out.println("\n=== AFFICHAGE NOMBRES PREMIERS ===");
+        
+        nombresPremiers:
+        for (int n = 2; n <= 20; n++) {
+            // Vérifier si n est premier
+            for (int diviseur = 2; diviseur < n; diviseur++) {
+                if (n % diviseur == 0) {
+                    continue nombresPremiers; // Passer au nombre suivant
+                }
+            }
+            System.out.print(n + " "); // n est premier
+        }
+        System.out.println();
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Pratiques (25 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-thermometer-half"></i>
+                                    Exercice 1 : Convertisseur de Température
+                                </div>
+                                <p><strong>Objectif :</strong> Créer un convertisseur utilisant des conditions multiples.</p>
+                                <p><strong>Fonctionnalités :</strong></p>
+                                <ul>
+                                    <li>Menu de choix : Celsius → Fahrenheit, Fahrenheit → Celsius, Kelvin</li>
+                                    <li>Validation des températures extrêmes</li>
+                                    <li>Affichage formaté des résultats</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <h6>Solution :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class ConvertisseurTemperature {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== CONVERTISSEUR DE TEMPÉRATURE ===");
+        System.out.println("1. Celsius → Fahrenheit");
+        System.out.println("2. Fahrenheit → Celsius");
+        System.out.println("3. Celsius → Kelvin");
+        System.out.println("4. Kelvin → Celsius");
+        System.out.print("Votre choix (1-4) : ");
+        
+        int choix = scanner.nextInt();
+        System.out.print("Entrez la température : ");
+        double temperature = scanner.nextDouble();
+        
+        double resultat = 0;
+        String uniteSource = "";
+        String uniteCible = "";
+        boolean conversionValide = true;
+        
+        switch (choix) {
+            case 1:
+                resultat = (temperature * 9.0/5.0) + 32;
+                uniteSource = "°C";
+                uniteCible = "°F";
+                break;
+            case 2:
+                resultat = (temperature - 32) * 5.0/9.0;
+                uniteSource = "°F";
+                uniteCible = "°C";
+                break;
+            case 3:
+                if (temperature < -273.15) {
+                    System.out.println("Erreur: Température impossible (en dessous du zéro absolu)");
+                    conversionValide = false;
+                } else {
+                    resultat = temperature + 273.15;
+                    uniteSource = "°C";
+                    uniteCible = "K";
+                }
+                break;
+            case 4:
+                if (temperature < 0) {
+                    System.out.println("Erreur: Température Kelvin ne peut pas être négative");
+                    conversionValide = false;
+                } else {
+                    resultat = temperature - 273.15;
+                    uniteSource = "K";
+                    uniteCible = "°C";
+                }
+                break;
+            default:
+                System.out.println("Choix invalide");
+                conversionValide = false;
+        }
+        
+        if (conversionValide) {
+            System.out.printf("%.2f %s = %.2f %s%n", temperature, uniteSource, resultat, uniteCible);
+            
+            // Commentaires sur la température
+            if (uniteCible.equals("°C")) {
+                if (resultat <= 0) {
+                    System.out.println("Point de congélation de l'eau atteint ou dépassé");
+                } else if (resultat >= 100) {
+                    System.out.println("Point d'ébullition de l'eau atteint ou dépassé");
+                } else if (resultat >= 35 && resultat <= 42) {
+                    System.out.println("Température corporelle normale");
+                }
+            }
+        }
+        
+        scanner.close();
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 2 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-star"></i>
+                                    Exercice 2 : Générateur de Motifs
+                                </div>
+                                <p><strong>Objectif :</strong> Utiliser des boucles imbriquées pour créer des motifs graphiques.</p>
+                                <p><strong>Motifs à créer :</strong></p>
+                                <ul>
+                                    <li>Triangle rectangle d'étoiles</li>
+                                    <li>Pyramide centrée</li>
+                                    <li>Losange</li>
+                                    <li>Sapin de Noël</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution2">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution2">
+                                    <div class="solution-card">
+                                        <h6>Solution :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class GenerateurMotifs {
+    public static void main(String[] args) {
+        int taille = 5;
+        
+        System.out.println("=== GÉNÉRATEUR DE MOTIFS ===");
+        
+        // 1. Triangle rectangle
+        System.out.println("\n1. TRIANGLE RECTANGLE:");
+        for (int i = 1; i <= taille; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+        
+        // 2. Pyramide centrée
+        System.out.println("\n2. PYRAMIDE CENTRÉE:");
+        for (int i = 1; i <= taille; i++) {
+            // Espaces pour centrer
+            for (int j = 1; j <= taille - i; j++) {
+                System.out.print(" ");
+            }
+            // Étoiles
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+        
+        // 3. Losange
+        System.out.println("\n3. LOSANGE:");
+        // Partie haute (pyramide)
+        for (int i = 1; i <= taille; i++) {
+            for (int j = 1; j <= taille - i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+        // Partie basse (pyramide inversée)
+        for (int i = taille - 1; i >= 1; i--) {
+            for (int j = 1; j <= taille - i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+        
+        // 4. Sapin de Noël
+        System.out.println("\n4. SAPIN DE NOËL:");
+        genererSapin(7);
+    }
+    
+    public static void genererSapin(int hauteur) {
+        // Feuillage du sapin (3 sections)
+        for (int section = 0; section < 3; section++) {
+            int tailleSection = hauteur / 3 + section;
+            
+            for (int i = 1; i <= tailleSection; i++) {
+                // Espaces pour centrer
+                for (int j = 1; j <= hauteur - i; j++) {
+                    System.out.print(" ");
+                }
+                // Étoiles
+                for (int j = 1; j <= 2 * i - 1; j++) {
+                    System.out.print("*");
+                }
+                System.out.println();
+            }
+        }
+        
+        // Tronc du sapin
+        int largeurTronc = hauteur / 5 + 1;
+        int hauteurTronc = hauteur / 4 + 1;
+        
+        for (int i = 0; i < hauteurTronc; i++) {
+            for (int j = 1; j <= hauteur - largeurTronc; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 1; j <= largeurTronc * 2 - 1; j++) {
+                System.out.print("|");
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 3 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-search"></i>
+                                    Exercice 3 : Algorithmes de Recherche et Tri
+                                </div>
+                                <p><strong>Objectif :</strong> Implémenter des algorithmes fondamentaux avec les boucles.</p>
+                                <p><strong>Algorithmes à implémenter :</strong></p>
+                                <ul>
+                                    <li>Recherche linéaire dans un tableau</li>
+                                    <li>Recherche du minimum et maximum</li>
+                                    <li>Tri à bulles (Bubble Sort)</li>
+                                    <li>Calcul de statistiques (moyenne, médiane)</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution3">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution3">
+                                    <div class="solution-card">
+                                        <h6>Solution Complète :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class AlgorithmesFondamentaux {
+    public static void main(String[] args) {
+        int[] tableau = {64, 34, 25, 12, 22, 11, 90, 88, 76, 50, 42};
+        
+        System.out.println("=== ALGORITHMES FONDAMENTAUX ===");
+        System.out.print("Tableau initial: ");
+        afficherTableau(tableau);
+        System.out.println();
+        
+        // 1. Recherche linéaire
+        int elementRecherche = 22;
+        int position = rechercheLineaire(tableau, elementRecherche);
+        if (position != -1) {
+            System.out.println("Élément " + elementRecherche + " trouvé à l'index " + position);
+        } else {
+            System.out.println("Élément " + elementRecherche + " non trouvé");
+        }
+        
+        // 2. Recherche min/max
+        int[] minMax = trouverMinMax(tableau);
+        System.out.println("Minimum: " + minMax[0] + ", Maximum: " + minMax[1]);
+        
+        // 3. Calcul statistiques
+        double[] stats = calculerStatistiques(tableau);
+        System.out.printf("Moyenne: %.2f, Médiane: %.2f%n", stats[0], stats[1]);
+        
+        // 4. Tri à bulles
+        int[] tableauTrie = tableau.clone(); // Copie pour ne pas modifier l'original
+        triBulles(tableauTrie);
+        System.out.print("Tableau trié: ");
+        afficherTableau(tableauTrie);
+        System.out.println();
+    }
+    
+    public static int rechercheLineaire(int[] tableau, int element) {
+        for (int i = 0; i < tableau.length; i++) {
+            if (tableau[i] == element) {
+                return i; // Retourne l'index de l'élément trouvé
+            }
+        }
+        return -1; // Élément non trouvé
+    }
+    
+    public static int[] trouverMinMax(int[] tableau) {
+        if (tableau.length == 0) {
+            return new int[]{0, 0};
+        }
+        
+        int min = tableau[0];
+        int max = tableau[0];
+        
+        for (int i = 1; i < tableau.length; i++) {
+            if (tableau[i] < min) {
+                min = tableau[i];
+            }
+            if (tableau[i] > max) {
+                max = tableau[i];
+            }
+        }
+        
+        return new int[]{min, max};
+    }
+    
+    public static double[] calculerStatistiques(int[] tableau) {
+        if (tableau.length == 0) {
+            return new double[]{0.0, 0.0};
+        }
+        
+        // Calcul de la moyenne
+        double somme = 0;
+        for (int valeur : tableau) {
+            somme += valeur;
+        }
+        double moyenne = somme / tableau.length;
+        
+        // Calcul de la médiane (nécessite un tri)
+        int[] tableauTrie = tableau.clone();
+        triBulles(tableauTrie);
+        
+        double mediane;
+        int milieu = tableauTrie.length / 2;
+        if (tableauTrie.length % 2 == 0) {
+            mediane = (tableauTrie[milieu - 1] + tableauTrie[milieu]) / 2.0;
+        } else {
+            mediane = tableauTrie[milieu];
+        }
+        
+        return new double[]{moyenne, mediane};
+    }
+    
+    public static void triBulles(int[] tableau) {
+        int n = tableau.length;
+        boolean echange;
+        
+        for (int i = 0; i < n - 1; i++) {
+            echange = false;
+            
+            for (int j = 0; j < n - i - 1; j++) {
+                if (tableau[j] > tableau[j + 1]) {
+                    // Échange des éléments
+                    int temp = tableau[j];
+                    tableau[j] = tableau[j + 1];
+                    tableau[j + 1] = temp;
+                    echange = true;
+                }
+            }
+            
+            // Si aucun échange, le tableau est trié
+            if (!echange) {
+                break;
+            }
+        }
+    }
+    
+    public static void afficherTableau(int[] tableau) {
+        System.out.print("[");
+        for (int i = 0; i < tableau.length; i++) {
+            System.out.print(tableau[i]);
+            if (i < tableau.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print("]");
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 4 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-dice"></i>
+                                    Exercice 4 : Simulateur de Casino
+                                </div>
+                                <p><strong>Objectif :</strong> Créer un jeu de casino avec boucles et conditions complexes.</p>
+                                <p><strong>Jeux disponibles :</strong></p>
+                                <ul>
+                                    <li>Machine à sous (3 rouleaux)</li>
+                                    <li>Jeu de dés (craps simplifié)</li>
+                                    <li>Roulette européenne</li>
+                                    <li>Gestion du budget du joueur</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution4">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution4">
+                                    <div class="solution-card">
+                                        <h6>Solution Avancée :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.Random;
+
+public class SimulateurCasino {
+    private static final Random random = new Random();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static double budgetJoueur = 100.0; // Budget initial
+    
+    public static void main(String[] args) {
+        System.out.println("=== BIENVENUE AU CASINO VIRTUEL ===");
+        System.out.println("Budget initial: " + budgetJoueur + "€");
+        
+        boolean continuerJeu = true;
+        
+        while (continuerJeu && budgetJoueur > 0) {
+            afficherMenu();
+            int choix = scanner.nextInt();
+            
+            switch (choix) {
+                case 1:
+                    jouerMachineASous();
+                    break;
+                case 2:
+                    jouerDes();
+                    break;
+                case 3:
+                    jouerRoulette();
+                    break;
+                case 4:
+                    afficherStatistiques();
+                    break;
+                case 5:
+                    System.out.println("Merci d'avoir joué ! Budget final: " + budgetJoueur + "€");
+                    continuerJeu = false;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+            
+            if (budgetJoueur <= 0) {
+                System.out.println("Vous n'avez plus d'argent ! Jeu terminé.");
+                continuerJeu = false;
+            }
+        }
+        
+        scanner.close();
+    }
+    
+    public static void afficherMenu() {
+        System.out.println("\n=== MENU CASINO ===");
+        System.out.println("Budget actuel: " + budgetJoueur + "€");
+        System.out.println("1. Machine à sous (mise: 1€)");
+        System.out.println("2. Jeu de dés (mise: 2€)");
+        System.out.println("3. Roulette (mise: 5€)");
+        System.out.println("4. Statistiques");
+        System.out.println("5. Quitter");
+        System.out.print("Votre choix: ");
+    }
+    
+    public static void jouerMachineASous() {
+        double mise = 1.0;
+        if (budgetJoueur < mise) {
+            System.out.println("Budget insuffisant pour jouer à la machine à sous");
+            return;
+        }
+        
+        budgetJoueur -= mise;
+        
+        // Génération de 3 symboles aléatoires
+        String[] symboles = {"🍒", "🍋", "🍊", "🔔", "⭐", "💎"};
+        String symbole1 = symboles[random.nextInt(symboles.length)];
+        String symbole2 = symboles[random.nextInt(symboles.length)];
+        String symbole3 = symboles[random.nextInt(symboles.length)];
+        
+        System.out.println("\n=== MACHINE À SOUS ===");
+        System.out.println("[ " + symbole1 + " | " + symbole2 + " | " + symbole3 + " ]");
+        
+        // Calcul des gains
+        double gain = 0;
+        if (symbole1.equals(symbole2) && symbole2.equals(symbole3)) {
+            // Trois symboles identiques
+            if (symbole1.equals("💎")) {
+                gain = 50; // Jackpot
+                System.out.println("JACKPOT ! Trois diamants !");
+            } else if (symbole1.equals("⭐")) {
+                gain = 20;
+                System.out.println("Super ! Trois étoiles !");
+            } else {
+                gain = 10;
+                System.out.println("Bravo ! Trois symboles identiques !");
+            }
+        } else if (symbole1.equals(symbole2) || symbole2.equals(symbole3) || symbole1.equals(symbole3)) {
+            gain = 2;
+            System.out.println("Pas mal ! Deux symboles identiques");
+        } else {
+            System.out.println("Perdu ! Aucune combinaison gagnante");
+        }
+        
+        budgetJoueur += gain;
+        if (gain > 0) {
+            System.out.println("Vous gagnez " + gain + "€ !");
+        }
+    }
+    
+    public static void jouerDes() {
+        double mise = 2.0;
+        if (budgetJoueur < mise) {
+            System.out.println("Budget insuffisant pour jouer aux dés");
+            return;
+        }
+        
+        budgetJoueur -= mise;
+        
+        System.out.println("\n=== JEU DE DÉS ===");
+        System.out.println("Lancé de deux dés...");
+        
+        int de1 = random.nextInt(6) + 1;
+        int de2 = random.nextInt(6) + 1;
+        int somme = de1 + de2;
+        
+        System.out.println("Dé 1: " + de1 + ", Dé 2: " + de2);
+        System.out.println("Somme: " + somme);
+        
+        double gain = 0;
+        
+        if (somme == 7 || somme == 11) {
+            gain = 6; // Triple mise
+            System.out.println("Natural ! Vous gagnez !");
+        } else if (somme == 2 || somme == 3 || somme == 12) {
+            gain = 0;
+            System.out.println("Craps ! Vous perdez !");
+        } else if (de1 == de2) {
+            gain = 4; // Double mise pour une paire
+            System.out.println("Paire ! Bonus !");
+        } else {
+            gain = 0;
+            System.out.println("Pas de chance cette fois");
+        }
+        
+        budgetJoueur += gain;
+        if (gain > 0) {
+            System.out.println("Vous gagnez " + gain + "€ !");
+        }
+    }
+    
+    public static void jouerRoulette() {
+        double mise = 5.0;
+        if (budgetJoueur < mise) {
+            System.out.println("Budget insuffisant pour jouer à la roulette");
+            return;
+        }
+        
+        System.out.println("\n=== ROULETTE EUROPÉENNE ===");
+        System.out.println("Choisissez votre pari:");
+        System.out.println("1. Rouge/Noir");
+        System.out.println("2. Pair/Impair");
+        System.out.println("3. Numéro spécifique (0-36)");
+        System.out.print("Votre choix: ");
+        
+        int typePari = scanner.nextInt();
+        budgetJoueur -= mise;
+        
+        int numeroSortant = random.nextInt(37); // 0 à 36
+        System.out.println("Numéro sortant: " + numeroSortant);
+        
+        double gain = 0;
+        
+        switch (typePari) {
+            case 1: // Rouge/Noir
+                System.out.print("Pariez sur (1=Rouge, 2=Noir): ");
+                int couleurPari = scanner.nextInt();
+                boolean estRouge = estNumeroRouge(numeroSortant);
+                
+                if (numeroSortant == 0) {
+                    System.out.println("Zéro ! La banque gagne");
+                } else if ((couleurPari == 1 && estRouge) || (couleurPari == 2 && !estRouge)) {
+                    gain = mise * 2;
+                    System.out.println("Gagné ! " + (estRouge ? "Rouge" : "Noir"));
+                } else {
+                    System.out.println("Perdu ! " + (estRouge ? "Rouge" : "Noir"));
+                }
+                break;
+                
+            case 2: // Pair/Impair
+                System.out.print("Pariez sur (1=Pair, 2=Impair): ");
+                int paritePari = scanner.nextInt();
+                
+                if (numeroSortant == 0) {
+                    System.out.println("Zéro ! La banque gagne");
+                } else if ((paritePari == 1 && numeroSortant % 2 == 0) || 
+                          (paritePari == 2 && numeroSortant % 2 == 1)) {
+                    gain = mise * 2;
+                    System.out.println("Gagné ! " + (numeroSortant % 2 == 0 ? "Pair" : "Impair"));
+                } else {
+                    System.out.println("Perdu ! " + (numeroSortant % 2 == 0 ? "Pair" : "Impair"));
+                }
+                break;
+                
+            case 3: // Numéro spécifique
+                System.out.print("Choisissez un numéro (0-36): ");
+                int numeroPari = scanner.nextInt();
+                
+                if (numeroPari == numeroSortant) {
+                    gain = mise * 36; // Gain énorme pour numéro plein
+                    System.out.println("INCROYABLE ! Numéro plein gagnant !");
+                } else {
+                    System.out.println("Perdu ! Vous aviez parié sur " + numeroPari);
+                }
+                break;
+                
+            default:
+                System.out.println("Type de pari invalide");
+                budgetJoueur += mise; // Rembourser la mise
+        }
+        
+        budgetJoueur += gain;
+        if (gain > 0) {
+            System.out.println("Vous gagnez " + gain + "€ !");
+        }
+    }
+    
+    public static boolean estNumeroRouge(int numero) {
+        // Numéros rouges à la roulette européenne
+        int[] numerosRouges = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
+        
+        for (int numeroRouge : numerosRouges) {
+            if (numero == numeroRouge) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static void afficherStatistiques() {
+        System.out.println("\n=== STATISTIQUES ===");
+        System.out.println("Budget actuel: " + budgetJoueur + "€");
+        System.out.println("Budget initial: 100€");
+        
+        double variation = budgetJoueur - 100;
+        if (variation > 0) {
+            System.out.println("Gain total: +" + variation + "€");
+            System.out.println("Vous êtes en bénéfice !");
+        } else if (variation < 0) {
+            System.out.println("Perte totale: " + variation + "€");
+            System.out.println("Attention à votre budget !");
+        } else {
+            System.out.println("Vous êtes à l'équilibre");
+        }
+        
+        double pourcentageVariation = (variation / 100) * 100;
+        System.out.printf("Variation: %.1f%%%n", pourcentageVariation);
+    }
+    
+    public static void afficherTableau(int[] tableau) {
+        System.out.print("[");
+        for (int i = 0; i < tableau.length; i++) {
+            System.out.print(tableau[i]);
+            if (i < tableau.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print("]");
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 5 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-calculator"></i>
+                                    Exercice 5 : Calculatrice Scientifique
+                                </div>
+                                <p><strong>Objectif :</strong> Créer une calculatrice avancée avec menu en boucle.</p>
+                                <p><strong>Fonctions :</strong></p>
+                                <ul>
+                                    <li>Opérations de base (+, -, *, /)</li>
+                                    <li>Fonctions mathématiques (puissance, racine, factorielle)</li>
+                                    <li>Historique des calculs</li>
+                                    <li>Gestion des erreurs mathématiques</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution5">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution5">
+                                    <div class="solution-card">
+                                        <h6>Solution Complète :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.ArrayList;
+
+public class CalculatriceScientifique {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final ArrayList<String> historique = new ArrayList<>();
+    
+    public static void main(String[] args) {
+        System.out.println("=== CALCULATRICE SCIENTIFIQUE ===");
+        
+        boolean continuer = true;
+        
+        while (continuer) {
+            afficherMenu();
+            int choix = scanner.nextInt();
+            
+            switch (choix) {
+                case 1:
+                    operationsBase();
+                    break;
+                case 2:
+                    calculerPuissance();
+                    break;
+                case 3:
+                    calculerRacine();
+                    break;
+                case 4:
+                    calculerFactorielle();
+                    break;
+                case 5:
+                    afficherHistorique();
+                    break;
+                case 6:
+                    viderHistorique();
+                    break;
+                case 7:
+                    continuer = false;
+                    System.out.println("Au revoir !");
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+        
+        scanner.close();
+    }
+    
+    public static void afficherMenu() {
+        System.out.println("\n=== MENU ===");
+        System.out.println("1. Opérations de base (+, -, *, /)");
+        System.out.println("2. Puissance (x^y)");
+        System.out.println("3. Racine carrée");
+        System.out.println("4. Factorielle");
+        System.out.println("5. Afficher historique");
+        System.out.println("6. Vider historique");
+        System.out.println("7. Quitter");
+        System.out.print("Choix: ");
+    }
+    
+    public static void operationsBase() {
+        System.out.print("Premier nombre: ");
+        double a = scanner.nextDouble();
+        System.out.print("Opérateur (+, -, *, /): ");
+        String op = scanner.next();
+        System.out.print("Deuxième nombre: ");
+        double b = scanner.nextDouble();
+        
+        double resultat = 0;
+        boolean operationValide = true;
+        String calcul = a + " " + op + " " + b;
+        
+        switch (op) {
+            case "+":
+                resultat = a + b;
+                break;
+            case "-":
+                resultat = a - b;
+                break;
+            case "*":
+                resultat = a * b;
+                break;
+            case "/":
+                if (b != 0) {
+                    resultat = a / b;
+                } else {
+                    System.out.println("Erreur: Division par zéro impossible");
+                    operationValide = false;
+                }
+                break;
+            default:
+                System.out.println("Opérateur invalide");
+                operationValide = false;
+        }
+        
+        if (operationValide) {
+            System.out.printf("Résultat: %.4f%n", resultat);
+            historique.add(calcul + " = " + resultat);
+        }
+    }
+    
+    public static void calculerPuissance() {
+        System.out.print("Base: ");
+        double base = scanner.nextDouble();
+        System.out.print("Exposant: ");
+        int exposant = scanner.nextInt();
+        
+        double resultat = 1;
+        
+        // Calcul de la puissance avec une boucle
+        if (exposant >= 0) {
+            for (int i = 0; i < exposant; i++) {
+                resultat *= base;
+            }
+        } else {
+            for (int i = 0; i > exposant; i--) {
+                resultat /= base;
+            }
+        }
+        
+        System.out.printf("%.2f^%d = %.6f%n", base, exposant, resultat);
+        historique.add(base + "^" + exposant + " = " + resultat);
+    }
+    
+    public static void calculerRacine() {
+        System.out.print("Nombre: ");
+        double nombre = scanner.nextDouble();
+        
+        if (nombre < 0) {
+            System.out.println("Erreur: Racine carrée d'un nombre négatif");
+            return;
+        }
+        
+        // Méthode de Newton pour calculer la racine carrée
+        double resultat = nombre;
+        double precision = 0.000001;
+        
+        while (Math.abs(resultat * resultat - nombre) > precision) {
+            resultat = (resultat + nombre / resultat) / 2;
+        }
+        
+        System.out.printf("√%.2f = %.6f%n", nombre, resultat);
+        historique.add("√" + nombre + " = " + resultat);
+    }
+    
+    public static void calculerFactorielle() {
+        System.out.print("Nombre entier positif: ");
+        int n = scanner.nextInt();
+        
+        if (n < 0) {
+            System.out.println("Erreur: Factorielle d'un nombre négatif impossible");
+            return;
+        }
+        
+        if (n > 20) {
+            System.out.println("Attention: Résultat très grand pour n > 20");
+        }
+        
+        long resultat = 1;
+        
+        for (int i = 1; i <= n; i++) {
+            resultat *= i;
+        }
+        
+        System.out.println(n + "! = " + resultat);
+        historique.add(n + "! = " + resultat);
+        
+        // Affichage du calcul détaillé pour les petits nombres
+        if (n <= 10) {
+            System.out.print("Calcul: ");
+            for (int i = 1; i <= n; i++) {
+                System.out.print(i);
+                if (i < n) System.out.print(" × ");
+            }
+            System.out.println(" = " + resultat);
+        }
+    }
+    
+    public static void afficherHistorique() {
+        System.out.println("\n=== HISTORIQUE DES CALCULS ===");
+        if (historique.isEmpty()) {
+            System.out.println("Aucun calcul dans l'historique");
+        } else {
+            for (int i = 0; i < historique.size(); i++) {
+                System.out.println((i + 1) + ". " + historique.get(i));
+            }
+        }
+    }
+    
+    public static void viderHistorique() {
+        historique.clear();
+        System.out.println("Historique vidé");
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div class="navigation-buttons">
+                            <a href="module-2-variables-types-operateurs.html" class="btn-nav">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Module 2 : Variables et Types
+                            </a>
+                            <a href="module-4-tableaux-chaines.html" class="btn-nav">
+                                Module 4 : Tableaux et Chaînes
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+        
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Update active TOC link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

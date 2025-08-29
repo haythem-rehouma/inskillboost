@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10 - Programmation Fonctionnelle - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 83.33%; /* 10/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-function me-2"></i>
+                        Module 10 - Programmation Fonctionnelle
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 10 sur 12</small>
+                    
+                    <a href="#introduction-fonctionnel" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction</a>
+                    <a href="#lambda-expressions" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Lambda Expressions</a>
+                    <a href="#interfaces-fonctionnelles" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Interfaces Fonctionnelles</a>
+                    <a href="#methodes-reference" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Méthodes de Référence</a>
+                    <a href="#stream-api" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Stream API</a>
+                    <a href="#operations-intermediaires" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Opérations Intermédiaires</a>
+                    <a href="#operations-terminales" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Opérations Terminales</a>
+                    <a href="#collectors" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Collectors</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (18)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 10 - Programmation Fonctionnelle</h1>
+                        <p class="lead mb-0">Lambda, Streams et paradigme fonctionnel moderne</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Lambda Expressions -->
+                        <section id="lambda-expressions" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-bolt"></i>
+                                Lambda Expressions (Java 8+)
+                            </h2>
+                            
+                            <p>Les expressions lambda permettent d'écrire du code plus concis en traitant les fonctions comme des valeurs de première classe.</p>
+
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+import java.util.function.*;
+
+public class LambdaExpressions {
+    public static void main(String[] args) {
+        demonstrerLambdaBasique();
+        demonstrerInterfacesFonctionnelles();
+        demonstrerLambdaAvancees();
+    }
+    
+    public static void demonstrerLambdaBasique() {
+        System.out.println("=== LAMBDA EXPRESSIONS BASIQUES ===");
+        
+        // 1. Comparaison approche traditionnelle vs lambda
+        List&lt;String&gt; noms = Arrays.asList("Alice", "Bob", "Charlie", "Diana");
+        
+        // Approche traditionnelle avec classe anonyme
+        Collections.sort(noms, new Comparator&lt;String&gt;() {
+            @Override
+            public int compare(String a, String b) {
+                return a.length() - b.length(); // Tri par longueur
+            }
+        });
+        System.out.println("Tri traditionnel par longueur: " + noms);
+        
+        // Approche lambda (beaucoup plus concise)
+        noms = Arrays.asList("Alice", "Bob", "Charlie", "Diana");
+        Collections.sort(noms, (a, b) -&gt; a.length() - b.length());
+        System.out.println("Tri lambda par longueur: " + noms);
+        
+        // Encore plus concis avec méthode de référence
+        noms = Arrays.asList("Alice", "Bob", "Charlie", "Diana");
+        Collections.sort(noms, Comparator.comparing(String::length));
+        System.out.println("Tri avec méthode référence: " + noms);
+        
+        // 2. Différentes syntaxes lambda
+        
+        // Lambda sans paramètre
+        Runnable tache1 = () -&gt; System.out.println("Tâche exécutée");
+        tache1.run();
+        
+        // Lambda avec un paramètre (parenthèses optionnelles)
+        Consumer&lt;String&gt; afficheur = message -&gt; System.out.println("Message: " + message);
+        afficheur.accept("Hello Lambda!");
+        
+        // Lambda avec plusieurs paramètres
+        BinaryOperator&lt;Integer&gt; addition = (a, b) -&gt; a + b;
+        System.out.println("Addition lambda: " + addition.apply(5, 3));
+        
+        // Lambda avec corps de méthode
+        Function&lt;String, String&gt; formateur = (nom) -&gt; {
+            String resultat = nom.toUpperCase();
+            resultat = "M./Mme " + resultat;
+            return resultat;
+        };
+        System.out.println("Formatage: " + formateur.apply("dupont"));
+    }
+    
+    public static void demonstrerInterfacesFonctionnelles() {
+        System.out.println("\n=== INTERFACES FONCTIONNELLES ===");
+        
+        // Predicate&lt;T&gt; : T -&gt; boolean
+        Predicate&lt;Integer&gt; estPair = n -&gt; n % 2 == 0;
+        Predicate&lt;Integer&gt; estPositif = n -&gt; n &gt; 0;
+        Predicate&lt;Integer&gt; estPairEtPositif = estPair.and(estPositif);
+        
+        List&lt;Integer&gt; nombres = Arrays.asList(-2, -1, 0, 1, 2, 3, 4, 5);
+        System.out.println("Nombres: " + nombres);
+        
+        System.out.print("Nombres pairs: ");
+        nombres.stream().filter(estPair).forEach(n -&gt; System.out.print(n + " "));
+        System.out.println();
+        
+        System.out.print("Nombres pairs ET positifs: ");
+        nombres.stream().filter(estPairEtPositif).forEach(n -&gt; System.out.print(n + " "));
+        System.out.println();
+        
+        // Function&lt;T, R&gt; : T -&gt; R
+        Function&lt;String, Integer&gt; longueur = String::length;
+        Function&lt;Integer, String&gt; formatage = n -&gt; "Nombre: " + n;
+        Function&lt;String, String&gt; chainee = longueur.andThen(formatage);
+        
+        System.out.println("Fonction chaînée: " + chainee.apply("Java"));
+        
+        // Consumer&lt;T&gt; : T -&gt; void
+        Consumer&lt;String&gt; logger = message -&gt; System.out.println("[LOG] " + message);
+        Consumer&lt;String&gt; sauvegarde = message -&gt; System.out.println("[SAVE] " + message);
+        Consumer&lt;String&gt; loggerEtSauvegarde = logger.andThen(sauvegarde);
+        
+        loggerEtSauvegarde.accept("Opération réussie");
+        
+        // Supplier&lt;T&gt; : () -&gt; T
+        Supplier&lt;Double&gt; nombreAleatoire = () -&gt; Math.random() * 100;
+        Supplier&lt;String&gt; horodatage = () -&gt; new Date().toString();
+        
+        System.out.println("Nombre aléatoire: " + nombreAleatoire.get());
+        System.out.println("Horodatage: " + horodatage.get());
+        
+        // UnaryOperator&lt;T&gt; : T -&gt; T
+        UnaryOperator&lt;String&gt; majuscules = String::toUpperCase;
+        UnaryOperator&lt;Integer&gt; carre = n -&gt; n * n;
+        
+        System.out.println("Majuscules: " + majuscules.apply("java"));
+        System.out.println("Carré de 5: " + carre.apply(5));
+        
+        // BinaryOperator&lt;T&gt; : (T, T) -&gt; T
+        BinaryOperator&lt;Integer&gt; max = Integer::max;
+        BinaryOperator&lt;String&gt; concatenation = (a, b) -&gt; a + " " + b;
+        
+        System.out.println("Max(10, 20): " + max.apply(10, 20));
+        System.out.println("Concaténation: " + concatenation.apply("Hello", "World"));
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Stream API -->
+                        <section id="stream-api" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-water"></i>
+                                Stream API - Traitement de Données
+                            </h2>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+import java.util.stream.*;
+
+public class StreamAPIMasterClass {
+    public static void main(String[] args) {
+        demonstrerStreamBasique();
+        demonstrerOperationsIntermediaires();
+        demonstrerOperationsTerminales();
+        demonstrerStreamAvance();
+    }
+    
+    public static void demonstrerStreamBasique() {
+        System.out.println("=== STREAM API BASIQUE ===");
+        
+        List&lt;Integer&gt; nombres = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        System.out.println("Liste originale: " + nombres);
+        
+        // Pipeline de traitement
+        List&lt;Integer&gt; resultat = nombres.stream()
+            .filter(n -&gt; n % 2 == 0)           // Garder les pairs
+            .map(n -&gt; n * n)                   // Élever au carré
+            .sorted(Collections.reverseOrder()) // Trier en ordre décroissant
+            .collect(Collectors.toList());     // Collecter en liste
+        
+        System.out.println("Carrés des pairs (décroissant): " + resultat);
+        
+        // Opération terminale directe
+        int somme = nombres.stream()
+            .filter(n -&gt; n % 2 == 1)  // Nombres impairs
+            .mapToInt(Integer::intValue)
+            .sum();
+        
+        System.out.println("Somme des impairs: " + somme);
+        
+        // Recherche
+        Optional&lt;Integer&gt; premierGrand = nombres.stream()
+            .filter(n -&gt; n &gt; 5)
+            .findFirst();
+        
+        if (premierGrand.isPresent()) {
+            System.out.println("Premier nombre &gt; 5: " + premierGrand.get());
+        }
+        
+        // Vérifications
+        boolean tousPositifs = nombres.stream().allMatch(n -&gt; n &gt; 0);
+        boolean aucunNegatif = nombres.stream().noneMatch(n -&gt; n &lt; 0);
+        boolean auMoinsUnPair = nombres.stream().anyMatch(n -&gt; n % 2 == 0);
+        
+        System.out.println("Tous positifs: " + tousPositifs);
+        System.out.println("Aucun négatif: " + aucunNegatif);
+        System.out.println("Au moins un pair: " + auMoinsUnPair);
+    }
+    
+    public static void demonstrerOperationsIntermediaires() {
+        System.out.println("\n=== OPÉRATIONS INTERMÉDIAIRES ===");
+        
+        List&lt;String&gt; mots = Arrays.asList("java", "python", "javascript", "go", "rust", "kotlin");
+        
+        // filter() - Filtrage
+        System.out.println("Mots de plus de 4 lettres:");
+        mots.stream()
+            .filter(mot -&gt; mot.length() &gt; 4)
+            .forEach(System.out::println);
+        
+        // map() - Transformation
+        System.out.println("\nMots en majuscules:");
+        mots.stream()
+            .map(String::toUpperCase)
+            .forEach(System.out::println);
+        
+        // flatMap() - Aplatissement
+        List&lt;List&lt;Integer&gt;&gt; listes = Arrays.asList(
+            Arrays.asList(1, 2, 3),
+            Arrays.asList(4, 5, 6),
+            Arrays.asList(7, 8, 9)
+        );
+        
+        System.out.println("\nAplatissement de listes:");
+        List&lt;Integer&gt; aplatie = listes.stream()
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
+        System.out.println("Résultat: " + aplatie);
+        
+        // distinct() - Suppression des doublons
+        List&lt;Integer&gt; avecDoublons = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 5);
+        List&lt;Integer&gt; sansDoublons = avecDoublons.stream()
+            .distinct()
+            .collect(Collectors.toList());
+        System.out.println("Avec doublons: " + avecDoublons);
+        System.out.println("Sans doublons: " + sansDoublons);
+        
+        // sorted() - Tri
+        System.out.println("\nTri des mots par longueur puis alphabétique:");
+        mots.stream()
+            .sorted(Comparator.comparing(String::length)
+                             .thenComparing(String::compareTo))
+            .forEach(System.out::println);
+        
+        // limit() et skip()
+        System.out.println("\nPremiers 3 mots après avoir sauté les 2 premiers:");
+        mots.stream()
+            .skip(2)
+            .limit(3)
+            .forEach(System.out::println);
+    }
+    
+    public static void demonstrerStreamAvance() {
+        System.out.println("\n=== STREAM AVANCÉ ===");
+        
+        // Création de différents types de streams
+        
+        // Stream de nombres
+        IntStream.range(1, 6)
+            .forEach(n -&gt; System.out.print(n + " "));
+        System.out.println();
+        
+        // Stream infini avec limit
+        Stream.iterate(1, n -&gt; n * 2)
+            .limit(10)
+            .forEach(n -&gt; System.out.print(n + " "));
+        System.out.println();
+        
+        // Stream généré
+        Stream.generate(Math::random)
+            .limit(5)
+            .map(d -&gt; String.format("%.2f", d))
+            .forEach(s -&gt; System.out.print(s + " "));
+        System.out.println();
+        
+        // Parallel streams pour performance
+        List&lt;Integer&gt; grandeListe = IntStream.range(1, 1000000)
+            .boxed()
+            .collect(Collectors.toList());
+        
+        long debut = System.nanoTime();
+        long sommeSequentielle = grandeListe.stream()
+            .mapToLong(Integer::longValue)
+            .sum();
+        long dureeSequentielle = System.nanoTime() - debut;
+        
+        debut = System.nanoTime();
+        long sommeParallele = grandesList.parallelStream()
+            .mapToLong(Integer::longValue)
+            .sum();
+        long dureeParallele = System.nanoTime() - debut;
+        
+        System.out.printf("Somme séquentielle: %d (%.2f ms)%n", 
+                         sommeSequentielle, dureeSequentielle / 1_000_000.0);
+        System.out.printf("Somme parallèle: %d (%.2f ms)%n", 
+                         sommeParallele, dureeParallele / 1_000_000.0);
+        System.out.printf("Accélération: %.2fx%n", 
+                         (double)dureeSequentielle / dureeParallele);
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Programmation Fonctionnelle (18 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-chart-line"></i> Exercice 1 : Analyseur de Ventes avec Streams
+                                </h4>
+                                <p><strong>Objectif :</strong> Analyser des données de ventes avec l'API Stream.</p>
+                                <p><strong>Données :</strong> Liste de ventes avec produit, quantité, prix, date, vendeur</p>
+                                <p><strong>Analyses :</strong></p>
+                                <ul>
+                                    <li>Chiffre d'affaires total et par vendeur</li>
+                                    <li>Top 5 des produits les plus vendus</li>
+                                    <li>Moyenne des ventes par mois</li>
+                                    <li>Vendeur le plus performant</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.*;
+
+class Vente {
+    private String produit;
+    private int quantite;
+    private double prixUnitaire;
+    private LocalDate date;
+    private String vendeur;
+    
+    public Vente(String produit, int quantite, double prixUnitaire, LocalDate date, String vendeur) {
+        this.produit = produit;
+        this.quantite = quantite;
+        this.prixUnitaire = prixUnitaire;
+        this.date = date;
+        this.vendeur = vendeur;
+    }
+    
+    public double getMontantTotal() {
+        return quantite * prixUnitaire;
+    }
+    
+    // Getters
+    public String getProduit() { return produit; }
+    public int getQuantite() { return quantite; }
+    public double getPrixUnitaire() { return prixUnitaire; }
+    public LocalDate getDate() { return date; }
+    public String getVendeur() { return vendeur; }
+    
+    @Override
+    public String toString() {
+        return String.format("%s x%d (%.2f€) par %s le %s", 
+                           produit, quantite, prixUnitaire, vendeur, date);
+    }
+}
+
+public class AnalyseurVentes {
+    public static void main(String[] args) {
+        // Données de test
+        List&lt;Vente&gt; ventes = Arrays.asList(
+            new Vente("Laptop", 2, 999.99, LocalDate.of(2024, 1, 15), "Alice"),
+            new Vente("Souris", 10, 29.99, LocalDate.of(2024, 1, 16), "Bob"),
+            new Vente("Clavier", 5, 79.99, LocalDate.of(2024, 1, 20), "Alice"),
+            new Vente("Écran", 3, 299.99, LocalDate.of(2024, 2, 5), "Charlie"),
+            new Vente("Laptop", 1, 999.99, LocalDate.of(2024, 2, 10), "Bob"),
+            new Vente("Souris", 15, 29.99, LocalDate.of(2024, 2, 15), "Alice"),
+            new Vente("Casque", 8, 149.99, LocalDate.of(2024, 3, 1), "Charlie"),
+            new Vente("Webcam", 4, 89.99, LocalDate.of(2024, 3, 10), "Bob")
+        );
+        
+        analyserVentes(ventes);
+    }
+    
+    public static void analyserVentes(List&lt;Vente&gt; ventes) {
+        System.out.println("=== ANALYSE DES VENTES ===");
+        System.out.println("Total ventes: " + ventes.size());
+        
+        // 1. Chiffre d'affaires total
+        double chiffreAffairesTotal = ventes.stream()
+            .mapToDouble(Vente::getMontantTotal)
+            .sum();
+        System.out.printf("Chiffre d'affaires total: %.2f€%n", chiffreAffairesTotal);
+        
+        // 2. Chiffre d'affaires par vendeur
+        System.out.println("\n=== CA PAR VENDEUR ===");
+        Map&lt;String, Double&gt; caParVendeur = ventes.stream()
+            .collect(Collectors.groupingBy(
+                Vente::getVendeur,
+                Collectors.summingDouble(Vente::getMontantTotal)
+            ));
+        
+        caParVendeur.entrySet().stream()
+            .sorted(Map.Entry.&lt;String, Double&gt;comparingByValue().reversed())
+            .forEach(entry -&gt; 
+                System.out.printf("- %s: %.2f€%n", entry.getKey(), entry.getValue()));
+        
+        // 3. Top 5 produits par quantité
+        System.out.println("\n=== TOP PRODUITS (quantité) ===");
+        Map&lt;String, Integer&gt; quantiteParProduit = ventes.stream()
+            .collect(Collectors.groupingBy(
+                Vente::getProduit,
+                Collectors.summingInt(Vente::getQuantite)
+            ));
+        
+        quantiteParProduit.entrySet().stream()
+            .sorted(Map.Entry.&lt;String, Integer&gt;comparingByValue().reversed())
+            .limit(5)
+            .forEach(entry -&gt; 
+                System.out.printf("- %s: %d unités%n", entry.getKey(), entry.getValue()));
+        
+        // 4. Ventes par mois
+        System.out.println("\n=== VENTES PAR MOIS ===");
+        Map&lt;Integer, List&lt;Vente&gt;&gt; ventesParMois = ventes.stream()
+            .collect(Collectors.groupingBy(vente -&gt; vente.getDate().getMonthValue()));
+        
+        ventesParMois.entrySet().stream()
+            .sorted(Map.Entry.comparingByKey())
+            .forEach(entry -&gt; {
+                int mois = entry.getKey();
+                List&lt;Vente&gt; ventesduMois = entry.getValue();
+                double caMois = ventesduMois.stream().mapToDouble(Vente::getMontantTotal).sum();
+                System.out.printf("- Mois %d: %d ventes, %.2f€%n", 
+                                mois, ventesduMois.size(), caMois);
+            });
+        
+        // 5. Statistiques avancées
+        System.out.println("\n=== STATISTIQUES AVANCÉES ===");
+        DoubleSummaryStatistics stats = ventes.stream()
+            .mapToDouble(Vente::getMontantTotal)
+            .summaryStatistics();
+        
+        System.out.printf("Nombre de ventes: %d%n", stats.getCount());
+        System.out.printf("Vente min: %.2f€%n", stats.getMin());
+        System.out.printf("Vente max: %.2f€%n", stats.getMax());
+        System.out.printf("Vente moyenne: %.2f€%n", stats.getAverage());
+        System.out.printf("Total: %.2f€%n", stats.getSum());
+        
+        // 6. Vente la plus récente par vendeur
+        System.out.println("\n=== VENTE LA PLUS RÉCENTE PAR VENDEUR ===");
+        Map&lt;String, Optional&lt;Vente&gt;&gt; venteLaPlusRecente = ventes.stream()
+            .collect(Collectors.groupingBy(
+                Vente::getVendeur,
+                Collectors.maxBy(Comparator.comparing(Vente::getDate))
+            ));
+        
+        venteLaPlusRecente.forEach((vendeur, venteOpt) -&gt; {
+            if (venteOpt.isPresent()) {
+                Vente vente = venteOpt.get();
+                System.out.printf("- %s: %s (%.2f€)%n", 
+                                vendeur, vente.getProduit(), vente.getMontantTotal());
+            }
+        });
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-9-collections-generiques.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 9 : Collections
+                            </a>
+                            <a href="module-11-entrees-sorties-fichiers.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 11 : I/O Fichiers
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

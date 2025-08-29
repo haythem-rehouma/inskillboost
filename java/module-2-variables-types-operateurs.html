@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2 - Variables, Types et Opérateurs - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--java-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--java-orange);
+            border-left-color: var(--java-orange);
+            background-color: rgba(248, 152, 32, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #374151;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .exercise-title {
+            color: var(--java-orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .info-card {
+            background: var(--explanation-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .type-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+        }
+
+        .type-table th {
+            background: var(--java-orange);
+            color: white;
+            font-weight: 600;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(248, 152, 32, 0.3);
+        }
+
+        .progress-indicator {
+            background: var(--border-color);
+            height: 4px;
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 16.67%; /* 2/12 modules */
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .memory-diagram {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">
+                    <i class="fas fa-arrow-left me-1"></i>Retour Hub
+                </a>
+                <a class="nav-link" href="./">
+                    <i class="fas fa-list me-1"></i>Modules Java
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="toc-title">
+                        <i class="fab fa-java me-2"></i>
+                        Module 2 - Variables et Types
+                    </div>
+                    
+                    <div class="progress-indicator">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 2 sur 12</small>
+                    
+                    <a href="#types-primitifs" class="toc-link active">Types Primitifs</a>
+                    <a href="#types-references" class="toc-link">Types Références</a>
+                    <a href="#declaration-variables" class="toc-link">Déclaration Variables</a>
+                    <a href="#operateurs-arithmetiques" class="toc-link">Opérateurs Arithmétiques</a>
+                    <a href="#operateurs-comparaison" class="toc-link">Opérateurs Comparaison</a>
+                    <a href="#operateurs-logiques" class="toc-link">Opérateurs Logiques</a>
+                    <a href="#conversion-types" class="toc-link">Conversion de Types</a>
+                    <a href="#constantes" class="toc-link">Constantes</a>
+                    <a href="#bonnes-pratiques" class="toc-link">Bonnes Pratiques</a>
+                    <a href="#exercices" class="toc-link">Exercices (20)</a>
+                    
+                    <hr class="my-3">
+                    <div class="text-center">
+                        <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=java-sidebar&utm_campaign=course-premium" 
+                           class="btn btn-warning btn-sm" target="_blank">
+                            <i class="fas fa-crown me-1"></i>Version Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-database me-3"></i>
+                            Module 2 - Variables, Types et Opérateurs
+                        </h1>
+                        <p class="lead mb-0">Fondamentaux du stockage et manipulation des données en Java</p>
+                    </div>
+
+                    <div class="content-body">
+                        <!-- Types Primitifs -->
+                        <section id="types-primitifs" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-cube"></i>
+                                Types Primitifs Java
+                            </h2>
+                            
+                            <p>Java possède 8 types primitifs qui stockent directement les valeurs en mémoire (pas d'objets). Ces types sont optimisés pour les performances.</p>
+
+                            <div class="type-table">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Taille</th>
+                                            <th>Plage de Valeurs</th>
+                                            <th>Valeur par Défaut</th>
+                                            <th>Exemple</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>byte</code></td>
+                                            <td>8 bits</td>
+                                            <td>-128 à 127</td>
+                                            <td>0</td>
+                                            <td><code>byte age = 25;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>short</code></td>
+                                            <td>16 bits</td>
+                                            <td>-32,768 à 32,767</td>
+                                            <td>0</td>
+                                            <td><code>short annee = 2024;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>int</code></td>
+                                            <td>32 bits</td>
+                                            <td>-2^31 à 2^31-1</td>
+                                            <td>0</td>
+                                            <td><code>int population = 67000000;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>long</code></td>
+                                            <td>64 bits</td>
+                                            <td>-2^63 à 2^63-1</td>
+                                            <td>0L</td>
+                                            <td><code>long distance = 384400000L;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>float</code></td>
+                                            <td>32 bits</td>
+                                            <td>±3.4e38 (7 décimales)</td>
+                                            <td>0.0f</td>
+                                            <td><code>float prix = 19.99f;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>double</code></td>
+                                            <td>64 bits</td>
+                                            <td>±1.7e308 (15 décimales)</td>
+                                            <td>0.0d</td>
+                                            <td><code>double pi = 3.141592653589793;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>char</code></td>
+                                            <td>16 bits</td>
+                                            <td>0 à 65,535 (Unicode)</td>
+                                            <td>'\u0000'</td>
+                                            <td><code>char lettre = 'A';</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>boolean</code></td>
+                                            <td>1 bit</td>
+                                            <td>true ou false</td>
+                                            <td>false</td>
+                                            <td><code>boolean actif = true;</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="concept-highlight">
+                                <h5>Points Importants :</h5>
+                                <ul>
+                                    <li><strong>int</strong> est le type par défaut pour les entiers</li>
+                                    <li><strong>double</strong> est le type par défaut pour les décimaux</li>
+                                    <li><strong>long</strong> nécessite le suffixe 'L' : <code>long x = 123L;</code></li>
+                                    <li><strong>float</strong> nécessite le suffixe 'f' : <code>float x = 12.3f;</code></li>
+                                    <li><strong>char</strong> utilise des guillemets simples : <code>'A'</code></li>
+                                </ul>
+                            </div>
+
+                            <h4>Exemple Pratique avec Tous les Types</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TypesPrimitifs {
+    public static void main(String[] args) {
+        // Types entiers
+        byte nombrePetit = 100;
+        short nombreMoyen = 30000;
+        int nombreStandard = 2147483647;
+        long nombreGrand = 9223372036854775807L;
+        
+        // Types décimaux
+        float prixFloat = 29.99f;
+        double prixDouble = 299.99;
+        
+        // Caractère et booléen
+        char initiale = 'J';
+        boolean estValide = true;
+        
+        // Affichage des valeurs
+        System.out.println("=== DÉMONSTRATION DES TYPES PRIMITIFS ===");
+        System.out.println("Byte: " + nombrePetit);
+        System.out.println("Short: " + nombreMoyen);
+        System.out.println("Int: " + nombreStandard);
+        System.out.println("Long: " + nombreGrand);
+        System.out.println("Float: " + prixFloat);
+        System.out.println("Double: " + prixDouble);
+        System.out.println("Char: " + initiale);
+        System.out.println("Boolean: " + estValide);
+        
+        // Affichage des tailles en mémoire
+        System.out.println("\n=== TAILLES EN MÉMOIRE ===");
+        System.out.println("Byte: " + Byte.BYTES + " octets");
+        System.out.println("Short: " + Short.BYTES + " octets");
+        System.out.println("Int: " + Integer.BYTES + " octets");
+        System.out.println("Long: " + Long.BYTES + " octets");
+        System.out.println("Float: " + Float.BYTES + " octets");
+        System.out.println("Double: " + Double.BYTES + " octets");
+        System.out.println("Char: " + Character.BYTES + " octets");
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Types Références -->
+                        <section id="types-references" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-link"></i>
+                                Types Références
+                            </h2>
+                            
+                            <p>Les types références stockent l'adresse mémoire d'un objet, pas la valeur directement. Ils incluent les classes, interfaces, tableaux et énumérations.</p>
+
+                            <h4>Différences Types Primitifs vs Références</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="concept-highlight">
+                                        <h5>Types Primitifs</h5>
+                                        <ul>
+                                            <li>Stockent la valeur directement</li>
+                                            <li>Stockés dans la pile (stack)</li>
+                                            <li>Comparaison avec ==</li>
+                                            <li>Pas de méthodes</li>
+                                            <li>Performance optimale</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="concept-highlight">
+                                        <h5>Types Références</h5>
+                                        <ul>
+                                            <li>Stockent l'adresse de l'objet</li>
+                                            <li>Objets dans le tas (heap)</li>
+                                            <li>Comparaison avec .equals()</li>
+                                            <li>Possèdent des méthodes</li>
+                                            <li>Valeur par défaut : null</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Exemple avec String (Type Référence)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TypesReferences {
+    public static void main(String[] args) {
+        // Déclaration de chaînes de caractères
+        String nom = "Java";
+        String langage = new String("Java");
+        String autreNom = "Java";
+        
+        // Comparaison d'adresses (==)
+        System.out.println("nom == langage: " + (nom == langage)); // false
+        System.out.println("nom == autreNom: " + (nom == autreNom)); // true (String pool)
+        
+        // Comparaison de contenu (.equals())
+        System.out.println("nom.equals(langage): " + nom.equals(langage)); // true
+        System.out.println("nom.equals(autreNom): " + nom.equals(autreNom)); // true
+        
+        // Méthodes disponibles sur String
+        System.out.println("Longueur: " + nom.length());
+        System.out.println("Majuscules: " + nom.toUpperCase());
+        System.out.println("Contient 'av': " + nom.contains("av"));
+        
+        // Valeur null
+        String vide = null;
+        System.out.println("Chaîne vide: " + vide);
+        // System.out.println(vide.length()); // NullPointerException !
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="memory-diagram">
+                                <h6>Représentation Mémoire :</h6>
+                                <pre>
+STACK (Pile)           HEAP (Tas)
+┌─────────────┐       ┌─────────────┐
+│ nom    ──────────────▶│ "Java"      │
+│ langage ─────────────▶│ "Java"      │ (nouvel objet)
+│ autreNom ────────────▶│ "Java"      │ (même objet que nom)
+│ vide = null │       └─────────────┘
+└─────────────┘
+                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Déclaration Variables -->
+                        <section id="declaration-variables" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-edit"></i>
+                                Déclaration et Initialisation des Variables
+                            </h2>
+                            
+                            <h4>Syntaxe de Déclaration</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Syntaxe générale : type nomVariable [= valeur];
+
+// Déclaration simple
+int age;
+String nom;
+
+// Déclaration avec initialisation
+int age = 25;
+String nom = "Alice";
+
+// Déclarations multiples du même type
+int x = 10, y = 20, z = 30;
+String prenom = "Jean", ville = "Paris";
+
+// Déclaration de constantes
+final double PI = 3.14159;
+final int NOMBRE_JOURS_SEMAINE = 7;</code></pre>
+                            </div>
+
+                            <div class="info-card">
+                                <h5>Règles de Nommage des Variables :</h5>
+                                <ul>
+                                    <li><strong>Commence par :</strong> lettre, $ ou _ (pas de chiffre)</li>
+                                    <li><strong>Contient :</strong> lettres, chiffres, $ et _</li>
+                                    <li><strong>Sensible à la casse :</strong> age ≠ Age ≠ AGE</li>
+                                    <li><strong>Pas de mots-clés :</strong> int, class, public, etc.</li>
+                                    <li><strong>Convention :</strong> camelCase pour variables et méthodes</li>
+                                </ul>
+                            </div>
+
+                            <h4>Exemples de Nommage</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// ✅ Bons noms de variables
+int ageUtilisateur = 30;
+String nomComplet = "Jean Dupont";
+double salaireAnnuel = 45000.0;
+boolean estConnecte = false;
+char premiereLettre = 'J';
+
+// ❌ Mauvais noms de variables
+int a = 30;                    // Pas descriptif
+String n = "Jean";             // Trop court
+double sal$ = 45000.0;         // Symboles non standards
+boolean b1 = false;            // Pas clair
+int 2age = 30;                 // Commence par un chiffre (erreur)
+String class = "MaClasse";     // Mot-clé réservé (erreur)</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Opérateurs Arithmétiques -->
+                        <section id="operateurs-arithmetiques" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-calculator"></i>
+                                Opérateurs Arithmétiques
+                            </h2>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Opérateurs de Base</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Opérateur</th>
+                                                <th>Description</th>
+                                                <th>Exemple</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td><code>+</code></td><td>Addition</td><td><code>5 + 3 = 8</code></td></tr>
+                                            <tr><td><code>-</code></td><td>Soustraction</td><td><code>5 - 3 = 2</code></td></tr>
+                                            <tr><td><code>*</code></td><td>Multiplication</td><td><code>5 * 3 = 15</code></td></tr>
+                                            <tr><td><code>/</code></td><td>Division</td><td><code>15 / 3 = 5</code></td></tr>
+                                            <tr><td><code>%</code></td><td>Modulo (reste)</td><td><code>15 % 4 = 3</code></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Opérateurs d'Assignation</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Opérateur</th>
+                                                <th>Équivalent</th>
+                                                <th>Exemple</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td><code>+=</code></td><td><code>x = x + y</code></td><td><code>x += 5</code></td></tr>
+                                            <tr><td><code>-=</code></td><td><code>x = x - y</code></td><td><code>x -= 3</code></td></tr>
+                                            <tr><td><code>*=</code></td><td><code>x = x * y</code></td><td><code>x *= 2</code></td></tr>
+                                            <tr><td><code>/=</code></td><td><code>x = x / y</code></td><td><code>x /= 4</code></td></tr>
+                                            <tr><td><code>%=</code></td><td><code>x = x % y</code></td><td><code>x %= 3</code></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4>Opérateurs d'Incrémentation et Décrémentation</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class OperateursIncrements {
+    public static void main(String[] args) {
+        int compteur = 10;
+        
+        // Pré-incrémentation (incrémente puis utilise)
+        System.out.println("Compteur initial: " + compteur);        // 10
+        System.out.println("Pré-incrémentation: " + (++compteur));  // 11
+        System.out.println("Après pré-incrémentation: " + compteur); // 11
+        
+        // Post-incrémentation (utilise puis incrémente)
+        compteur = 10; // Reset
+        System.out.println("Post-incrémentation: " + (compteur++)); // 10
+        System.out.println("Après post-incrémentation: " + compteur); // 11
+        
+        // Même principe pour la décrémentation
+        System.out.println("Pré-décrémentation: " + (--compteur));  // 10
+        System.out.println("Post-décrémentation: " + (compteur--)); // 10
+        System.out.println("Valeur finale: " + compteur);           // 9
+        
+        // Utilisation pratique dans une boucle
+        System.out.println("\nComptage de 1 à 5:");
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(i + " ");
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Opérateurs de Comparaison -->
+                        <section id="operateurs-comparaison" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-balance-scale"></i>
+                                Opérateurs de Comparaison
+                            </h2>
+                            
+                            <p>Les opérateurs de comparaison retournent toujours une valeur booléenne (true ou false).</p>
+
+                            <div class="type-table">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Opérateur</th>
+                                            <th>Description</th>
+                                            <th>Exemple</th>
+                                            <th>Résultat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><code>==</code></td><td>Égal à</td><td><code>5 == 5</code></td><td>true</td></tr>
+                                        <tr><td><code>!=</code></td><td>Différent de</td><td><code>5 != 3</code></td><td>true</td></tr>
+                                        <tr><td><code>&gt;</code></td><td>Supérieur à</td><td><code>5 &gt; 3</code></td><td>true</td></tr>
+                                        <tr><td><code>&lt;</code></td><td>Inférieur à</td><td><code>5 &lt; 3</code></td><td>false</td></tr>
+                                        <tr><td><code>&gt;=</code></td><td>Supérieur ou égal</td><td><code>5 &gt;= 5</code></td><td>true</td></tr>
+                                        <tr><td><code>&lt;=</code></td><td>Inférieur ou égal</td><td><code>3 &lt;= 5</code></td><td>true</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="info-card">
+                                <h5>Attention avec les Types Références !</h5>
+                                <p>Pour les objets (String, etc.), utilisez <code>.equals()</code> pour comparer le contenu :</p>
+                                <div class="code-block">
+<pre><code class="language-java">String a = new String("Java");
+String b = new String("Java");
+
+System.out.println(a == b);        // false (adresses différentes)
+System.out.println(a.equals(b));   // true (contenu identique)</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Opérateurs Logiques -->
+                        <section id="operateurs-logiques" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-sitemap"></i>
+                                Opérateurs Logiques
+                            </h2>
+                            
+                            <p>Les opérateurs logiques permettent de combiner des expressions booléennes.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Opérateurs Principaux</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Opérateur</th>
+                                                <th>Description</th>
+                                                <th>Exemple</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td><code>&&</code></td><td>ET logique</td><td><code>true && false = false</code></td></tr>
+                                            <tr><td><code>||</code></td><td>OU logique</td><td><code>true || false = true</code></td></tr>
+                                            <tr><td><code>!</code></td><td>NON logique</td><td><code>!true = false</code></td></tr>
+                                            <tr><td><code>&</code></td><td>ET (sans court-circuit)</td><td><code>true & false = false</code></td></tr>
+                                            <tr><td><code>|</code></td><td>OU (sans court-circuit)</td><td><code>true | false = true</code></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Table de Vérité</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>A</th>
+                                                <th>B</th>
+                                                <th>A && B</th>
+                                                <th>A || B</th>
+                                                <th>!A</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>true</td><td>true</td><td>true</td><td>true</td><td>false</td></tr>
+                                            <tr><td>true</td><td>false</td><td>false</td><td>true</td><td>false</td></tr>
+                                            <tr><td>false</td><td>true</td><td>false</td><td>true</td><td>true</td></tr>
+                                            <tr><td>false</td><td>false</td><td>false</td><td>false</td><td>true</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4>Exemple Pratique - Validation d'Âge</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class OperateursLogiques {
+    public static void main(String[] args) {
+        int age = 20;
+        boolean aPermisConduire = true;
+        boolean aVoiture = false;
+        
+        // Conditions composées
+        boolean peutConduire = (age >= 18) && aPermisConduire;
+        boolean peutConduireSeul = peutConduire && aVoiture;
+        boolean besoinFormation = (age < 25) || !aPermisConduire;
+        
+        System.out.println("Age: " + age);
+        System.out.println("A un permis: " + aPermisConduire);
+        System.out.println("A une voiture: " + aVoiture);
+        System.out.println();
+        
+        System.out.println("Peut conduire: " + peutConduire);
+        System.out.println("Peut conduire seul: " + peutConduireSeul);
+        System.out.println("Besoin de formation: " + besoinFormation);
+        
+        // Court-circuit avec &&
+        if (aVoiture && verifierAssurance()) {
+            System.out.println("Voiture assurée et disponible");
+        }
+        
+        // Court-circuit avec ||
+        if (age >= 65 || aHandicap()) {
+            System.out.println("Tarif réduit applicable");
+        }
+    }
+    
+    public static boolean verifierAssurance() {
+        System.out.println("Vérification assurance...");
+        return true;
+    }
+    
+    public static boolean aHandicap() {
+        System.out.println("Vérification handicap...");
+        return false;
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Conversion de Types -->
+                        <section id="conversion-types" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-exchange-alt"></i>
+                                Conversion de Types (Casting)
+                            </h2>
+                            
+                            <h4>Conversion Implicite (Widening)</h4>
+                            <p>Java effectue automatiquement les conversions qui ne risquent pas de perte de données :</p>
+                            
+                            <div class="concept-highlight">
+                                <h5>Ordre de Conversion Automatique :</h5>
+                                <p><code>byte → short → int → long → float → double</code></p>
+                                <p><code>char → int → long → float → double</code></p>
+                            </div>
+
+                            <div class="code-block">
+<pre><code class="language-java">public class ConversionImplicite {
+    public static void main(String[] args) {
+        // Conversions automatiques (élargissement)
+        byte petitNombre = 100;
+        short moyenNombre = petitNombre;    // byte → short
+        int grandNombre = moyenNombre;      // short → int
+        long tresGrandNombre = grandNombre; // int → long
+        float nombreDecimal = tresGrandNombre; // long → float
+        double precisionDouble = nombreDecimal; // float → double
+        
+        System.out.println("Byte: " + petitNombre);
+        System.out.println("Short: " + moyenNombre);
+        System.out.println("Int: " + grandNombre);
+        System.out.println("Long: " + tresGrandNombre);
+        System.out.println("Float: " + nombreDecimal);
+        System.out.println("Double: " + precisionDouble);
+        
+        // Conversion char → int
+        char lettre = 'A';
+        int codeAscii = lettre;
+        System.out.println("Lettre '" + lettre + "' = " + codeAscii);
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Conversion Explicite (Narrowing)</h4>
+                            <p>Pour les conversions risquant une perte de données, le casting explicite est obligatoire :</p>
+
+                            <div class="code-block">
+<pre><code class="language-java">public class ConversionExplicite {
+    public static void main(String[] args) {
+        // Conversions explicites (rétrécissement)
+        double prixDouble = 19.99;
+        float prixFloat = (float) prixDouble;    // double → float
+        long prixLong = (long) prixFloat;        // float → long
+        int prixInt = (int) prixLong;            // long → int
+        short prixShort = (short) prixInt;       // int → short
+        byte prixByte = (byte) prixShort;        // short → byte
+        
+        System.out.println("Double: " + prixDouble);
+        System.out.println("Float: " + prixFloat);
+        System.out.println("Long: " + prixLong);
+        System.out.println("Int: " + prixInt);
+        System.out.println("Short: " + prixShort);
+        System.out.println("Byte: " + prixByte);
+        
+        // Attention aux débordements !
+        int grandNombre = 300;
+        byte petitNombre = (byte) grandNombre;
+        System.out.println("300 en byte: " + petitNombre); // 44 (débordement !)
+        
+        // Conversion String ↔ nombres
+        String texteNombre = "123";
+        int nombre = Integer.parseInt(texteNombre);
+        String retourTexte = String.valueOf(nombre);
+        
+        System.out.println("String vers int: " + nombre);
+        System.out.println("Int vers String: " + retourTexte);
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Pratiques (20 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-code"></i>
+                                    Exercice 1 : Déclaration et Initialisation
+                                </div>
+                                <p><strong>Objectif :</strong> Maîtriser la déclaration de variables de tous types.</p>
+                                <p><strong>Instructions :</strong></p>
+                                <ol>
+                                    <li>Déclarez une variable de chaque type primitif</li>
+                                    <li>Initialisez-les avec des valeurs appropriées</li>
+                                    <li>Affichez les valeurs et leurs types</li>
+                                    <li>Testez les valeurs limites (MIN_VALUE, MAX_VALUE)</li>
+                                </ol>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <h6>Solution :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class ExerciceVariables {
+    public static void main(String[] args) {
+        // Déclaration et initialisation de tous les types primitifs
+        byte monByte = 127;                    // Valeur maximale
+        short monShort = 32767;                // Valeur maximale
+        int monInt = 2147483647;               // Valeur maximale
+        long monLong = 9223372036854775807L;   // Valeur maximale
+        float monFloat = 3.14159f;
+        double monDouble = 3.141592653589793;
+        char monChar = 'J';
+        boolean monBoolean = true;
+        
+        // Affichage des valeurs
+        System.out.println("=== VALEURS DES VARIABLES ===");
+        System.out.println("byte: " + monByte);
+        System.out.println("short: " + monShort);
+        System.out.println("int: " + monInt);
+        System.out.println("long: " + monLong);
+        System.out.println("float: " + monFloat);
+        System.out.println("double: " + monDouble);
+        System.out.println("char: " + monChar);
+        System.out.println("boolean: " + monBoolean);
+        
+        // Valeurs limites
+        System.out.println("\n=== VALEURS LIMITES ===");
+        System.out.println("Byte MIN: " + Byte.MIN_VALUE + ", MAX: " + Byte.MAX_VALUE);
+        System.out.println("Short MIN: " + Short.MIN_VALUE + ", MAX: " + Short.MAX_VALUE);
+        System.out.println("Int MIN: " + Integer.MIN_VALUE + ", MAX: " + Integer.MAX_VALUE);
+        System.out.println("Long MIN: " + Long.MIN_VALUE + ", MAX: " + Long.MAX_VALUE);
+        System.out.println("Float MIN: " + Float.MIN_VALUE + ", MAX: " + Float.MAX_VALUE);
+        System.out.println("Double MIN: " + Double.MIN_VALUE + ", MAX: " + Double.MAX_VALUE);
+        System.out.println("Char MIN: " + (int)Character.MIN_VALUE + ", MAX: " + (int)Character.MAX_VALUE);
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 2 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-calculator"></i>
+                                    Exercice 2 : Calculatrice Avancée
+                                </div>
+                                <p><strong>Objectif :</strong> Créer une calculatrice qui utilise tous les opérateurs arithmétiques.</p>
+                                <p><strong>Fonctionnalités :</strong></p>
+                                <ul>
+                                    <li>Opérations de base (+, -, *, /, %)</li>
+                                    <li>Opérations d'assignation (+=, -=, etc.)</li>
+                                    <li>Gestion des types float et double</li>
+                                    <li>Affichage formaté des résultats</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution2">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution2">
+                                    <div class="solution-card">
+                                        <h6>Solution :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class CalculatriceAvancee {
+    public static void main(String[] args) {
+        double a = 15.5;
+        double b = 4.2;
+        
+        System.out.println("=== CALCULATRICE AVANCÉE ===");
+        System.out.println("Nombre A: " + a);
+        System.out.println("Nombre B: " + b);
+        System.out.println();
+        
+        // Opérations de base
+        System.out.println("=== OPÉRATIONS DE BASE ===");
+        System.out.printf("Addition: %.2f + %.2f = %.2f%n", a, b, (a + b));
+        System.out.printf("Soustraction: %.2f - %.2f = %.2f%n", a, b, (a - b));
+        System.out.printf("Multiplication: %.2f * %.2f = %.2f%n", a, b, (a * b));
+        System.out.printf("Division: %.2f / %.2f = %.2f%n", a, b, (a / b));
+        System.out.printf("Modulo: %.2f %% %.2f = %.2f%n", a, b, (a % b));
+        
+        // Opérations d'assignation
+        System.out.println("\n=== OPÉRATIONS D'ASSIGNATION ===");
+        double resultat = a;
+        System.out.println("Valeur initiale: " + resultat);
+        
+        resultat += b;
+        System.out.println("Après += " + b + ": " + resultat);
+        
+        resultat -= b;
+        System.out.println("Après -= " + b + ": " + resultat);
+        
+        resultat *= 2;
+        System.out.println("Après *= 2: " + resultat);
+        
+        resultat /= 3;
+        System.out.println("Après /= 3: " + resultat);
+        
+        // Opérations avec entiers
+        System.out.println("\n=== OPÉRATIONS AVEC ENTIERS ===");
+        int x = 17;
+        int y = 5;
+        
+        System.out.println("Division entière: " + x + " / " + y + " = " + (x / y));
+        System.out.println("Reste division: " + x + " % " + y + " = " + (x % y));
+        System.out.println("Division décimale: " + x + " / " + y + " = " + ((double)x / y));
+        
+        // Incrémentation/Décrémentation
+        System.out.println("\n=== INCRÉMENTATION ===");
+        int compteur = 10;
+        System.out.println("Valeur initiale: " + compteur);
+        System.out.println("Pré-incrémentation: " + (++compteur));
+        System.out.println("Post-incrémentation: " + (compteur++));
+        System.out.println("Valeur finale: " + compteur);
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 3 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    Exercice 3 : Convertisseur de Types
+                                </div>
+                                <p><strong>Objectif :</strong> Maîtriser les conversions entre différents types de données.</p>
+                                <p><strong>Tâches :</strong></p>
+                                <ul>
+                                    <li>Convertir des chaînes en nombres</li>
+                                    <li>Convertir des nombres en chaînes</li>
+                                    <li>Gérer les erreurs de conversion</li>
+                                    <li>Démontrer les conversions implicites et explicites</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution3">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution3">
+                                    <div class="solution-card">
+                                        <h6>Solution :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class ConvertisseurTypes {
+    public static void main(String[] args) {
+        System.out.println("=== CONVERTISSEUR DE TYPES ===");
+        
+        // 1. Conversions String vers nombres
+        System.out.println("1. STRING VERS NOMBRES");
+        String texteInt = "123";
+        String texteDouble = "45.67";
+        String texteBoolean = "true";
+        
+        try {
+            int nombreInt = Integer.parseInt(texteInt);
+            double nombreDouble = Double.parseDouble(texteDouble);
+            boolean valeurBoolean = Boolean.parseBoolean(texteBoolean);
+            
+            System.out.println("String '" + texteInt + "' → int: " + nombreInt);
+            System.out.println("String '" + texteDouble + "' → double: " + nombreDouble);
+            System.out.println("String '" + texteBoolean + "' → boolean: " + valeurBoolean);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Erreur de conversion: " + e.getMessage());
+        }
+        
+        // 2. Conversions nombres vers String
+        System.out.println("\n2. NOMBRES VERS STRING");
+        int age = 25;
+        double salaire = 3500.75;
+        boolean actif = true;
+        
+        String ageTexte = String.valueOf(age);
+        String salaireTexte = String.valueOf(salaire);
+        String actifTexte = String.valueOf(actif);
+        
+        System.out.println("int " + age + " → String: '" + ageTexte + "'");
+        System.out.println("double " + salaire + " → String: '" + salaireTexte + "'");
+        System.out.println("boolean " + actif + " → String: '" + actifTexte + "'");
+        
+        // 3. Conversions numériques avec casting
+        System.out.println("\n3. CONVERSIONS NUMÉRIQUES");
+        double prixPrecis = 19.99;
+        int prixEntier = (int) prixPrecis;           // Troncature
+        long prixLong = (long) prixPrecis;
+        
+        System.out.println("double " + prixPrecis + " → int: " + prixEntier + " (troncature)");
+        System.out.println("double " + prixPrecis + " → long: " + prixLong);
+        
+        // 4. Conversions char ↔ int
+        System.out.println("\n4. CONVERSIONS CHAR ↔ INT");
+        char lettre = 'Z';
+        int codeUnicode = (int) lettre;
+        char lettreRetour = (char) codeUnicode;
+        
+        System.out.println("char '" + lettre + "' → int: " + codeUnicode);
+        System.out.println("int " + codeUnicode + " → char: '" + lettreRetour + "'");
+        
+        // 5. Démonstration des débordements
+        System.out.println("\n5. GESTION DES DÉBORDEMENTS");
+        demonstrerDebordements();
+    }
+    
+    public static void demonstrerDebordements() {
+        // Débordement avec byte
+        int valeurGrande = 300;
+        byte valeurByte = (byte) valeurGrande;
+        System.out.println("300 → byte: " + valeurByte + " (débordement)");
+        
+        // Débordement avec int
+        long valeurTresGrande = 3000000000L;
+        int valeurInt = (int) valeurTresGrande;
+        System.out.println("3000000000L → int: " + valeurInt + " (débordement)");
+        
+        // Perte de précision avec float
+        double valeurPrecise = 1.23456789012345;
+        float valeurFloat = (float) valeurPrecise;
+        System.out.println("double " + valeurPrecise + " → float: " + valeurFloat + " (perte précision)");
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 4 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-chart-line"></i>
+                                    Exercice 4 : Calculateur d'IMC (Indice de Masse Corporelle)
+                                </div>
+                                <p><strong>Objectif :</strong> Créer un calculateur d'IMC utilisant différents types et opérateurs.</p>
+                                <p><strong>Formule :</strong> IMC = poids (kg) / (taille (m))²</p>
+                                <p><strong>Fonctionnalités :</strong></p>
+                                <ul>
+                                    <li>Saisie du poids et de la taille</li>
+                                    <li>Calcul de l'IMC avec précision</li>
+                                    <li>Interprétation du résultat</li>
+                                    <li>Gestion des erreurs de saisie</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution4">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution4">
+                                    <div class="solution-card">
+                                        <h6>Solution Complète :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class CalculateurIMC {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== CALCULATEUR D'IMC ===");
+        System.out.println("Indice de Masse Corporelle");
+        System.out.println();
+        
+        try {
+            // Saisie des données
+            System.out.print("Entrez votre poids (kg) : ");
+            double poids = scanner.nextDouble();
+            
+            System.out.print("Entrez votre taille (m) : ");
+            double taille = scanner.nextDouble();
+            
+            // Validation des entrées
+            if (poids <= 0 || taille <= 0) {
+                System.out.println("Erreur: Le poids et la taille doivent être positifs");
+                return;
+            }
+            
+            if (poids > 500 || taille > 3.0) {
+                System.out.println("Erreur: Valeurs non réalistes");
+                return;
+            }
+            
+            // Calcul de l'IMC
+            double imc = poids / (taille * taille);
+            
+            // Affichage des résultats
+            System.out.println();
+            System.out.println("=== RÉSULTATS ===");
+            System.out.printf("Poids: %.1f kg%n", poids);
+            System.out.printf("Taille: %.2f m%n", taille);
+            System.out.printf("IMC: %.2f%n", imc);
+            System.out.println();
+            
+            // Interprétation
+            String interpretation = interpreterIMC(imc);
+            System.out.println("Interprétation: " + interpretation);
+            
+            // Conseils
+            donnerConseils(imc);
+            
+        } catch (Exception e) {
+            System.out.println("Erreur de saisie: Veuillez entrer des nombres valides");
+        } finally {
+            scanner.close();
+        }
+    }
+    
+    public static String interpreterIMC(double imc) {
+        if (imc < 18.5) {
+            return "Insuffisance pondérale";
+        } else if (imc < 25) {
+            return "Poids normal";
+        } else if (imc < 30) {
+            return "Surpoids";
+        } else if (imc < 35) {
+            return "Obésité modérée";
+        } else if (imc < 40) {
+            return "Obésité sévère";
+        } else {
+            return "Obésité morbide";
+        }
+    }
+    
+    public static void donnerConseils(double imc) {
+        System.out.println("=== CONSEILS ===");
+        
+        if (imc < 18.5) {
+            System.out.println("Consultez un professionnel de santé pour prendre du poids sainement.");
+        } else if (imc < 25) {
+            System.out.println("Félicitations ! Votre poids est dans la norme.");
+            System.out.println("Maintenez une alimentation équilibrée et une activité physique régulière.");
+        } else if (imc < 30) {
+            System.out.println("Attention au surpoids. Considérez :");
+            System.out.println("- Une alimentation plus équilibrée");
+            System.out.println("- Une activité physique régulière");
+        } else {
+            System.out.println("Il est recommandé de consulter un professionnel de santé.");
+            System.out.println("Un suivi médical peut être nécessaire.");
+        }
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 5 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-coins"></i>
+                                    Exercice 5 : Système de Monnaie
+                                </div>
+                                <p><strong>Objectif :</strong> Créer un système qui calcule le rendu de monnaie optimal.</p>
+                                <p><strong>Spécifications :</strong></p>
+                                <ul>
+                                    <li>Prix d'un article et montant payé</li>
+                                    <li>Calcul du rendu en billets et pièces</li>
+                                    <li>Optimisation du nombre de pièces/billets</li>
+                                    <li>Gestion des centimes avec double</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution5">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution5">
+                                    <div class="solution-card">
+                                        <h6>Solution Avancée :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class SystemeMonnaie {
+    // Constantes pour les valeurs de monnaie (en centimes)
+    private static final int[] VALEURS = {
+        50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1
+    };
+    
+    private static final String[] NOMS = {
+        "500€", "200€", "100€", "50€", "20€", "10€", "5€", "2€", "1€", 
+        "50c", "20c", "10c", "5c", "2c", "1c"
+    };
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== SYSTÈME DE RENDU DE MONNAIE ===");
+        System.out.println();
+        
+        try {
+            System.out.print("Prix de l'article (€) : ");
+            double prix = scanner.nextDouble();
+            
+            System.out.print("Montant payé (€) : ");
+            double montantPaye = scanner.nextDouble();
+            
+            if (montantPaye < prix) {
+                System.out.println("Erreur: Le montant payé est insuffisant");
+                return;
+            }
+            
+            double rendu = montantPaye - prix;
+            
+            if (rendu == 0) {
+                System.out.println("Montant exact, pas de rendu à effectuer");
+                return;
+            }
+            
+            System.out.println();
+            System.out.printf("Prix: %.2f €%n", prix);
+            System.out.printf("Payé: %.2f €%n", montantPaye);
+            System.out.printf("Rendu: %.2f €%n", rendu);
+            System.out.println();
+            
+            // Conversion en centimes pour éviter les erreurs de précision
+            int renduCentimes = (int) Math.round(rendu * 100);
+            
+            System.out.println("=== DÉTAIL DU RENDU ===");
+            calculerRendu(renduCentimes);
+            
+        } catch (Exception e) {
+            System.out.println("Erreur de saisie: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+    
+    public static void calculerRendu(int renduCentimes) {
+        int totalBilletsPieces = 0;
+        
+        for (int i = 0; i < VALEURS.length; i++) {
+            int quantite = renduCentimes / VALEURS[i];
+            
+            if (quantite > 0) {
+                System.out.println(quantite + " x " + NOMS[i] + 
+                                 " = " + String.format("%.2f €", (quantite * VALEURS[i]) / 100.0));
+                renduCentimes -= quantite * VALEURS[i];
+                totalBilletsPieces += quantite;
+            }
+        }
+        
+        System.out.println();
+        System.out.println("Total: " + totalBilletsPieces + " billets/pièces");
+        
+        if (renduCentimes > 0) {
+            System.out.println("Reste non rendu: " + renduCentimes + " centimes");
+        }
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 6 -->
+                            <div class="exercise-card">
+                                <div class="exercise-title">
+                                    <i class="fas fa-gamepad"></i>
+                                    Exercice 6 : Jeu de Devinette Numérique
+                                </div>
+                                <p><strong>Objectif :</strong> Créer un jeu qui utilise opérateurs de comparaison et logiques.</p>
+                                <p><strong>Règles :</strong></p>
+                                <ul>
+                                    <li>L'ordinateur génère un nombre aléatoire entre 1 et 100</li>
+                                    <li>L'utilisateur doit deviner en maximum 7 tentatives</li>
+                                    <li>Indices : "trop grand", "trop petit"</li>
+                                    <li>Score basé sur le nombre de tentatives</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution6">
+                                    <i class="fas fa-eye me-1"></i>Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution6">
+                                    <div class="solution-card">
+                                        <h6>Solution Complète :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.Random;
+
+public class JeuDevinette {
+    private static final int NOMBRE_MIN = 1;
+    private static final int NOMBRE_MAX = 100;
+    private static final int MAX_TENTATIVES = 7;
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        
+        System.out.println("=== JEU DE DEVINETTE NUMÉRIQUE ===");
+        System.out.println("Devinez le nombre entre " + NOMBRE_MIN + " et " + NOMBRE_MAX);
+        System.out.println("Vous avez " + MAX_TENTATIVES + " tentatives maximum");
+        System.out.println();
+        
+        int nombreSecret = random.nextInt(NOMBRE_MAX - NOMBRE_MIN + 1) + NOMBRE_MIN;
+        int tentatives = 0;
+        boolean trouve = false;
+        
+        while (tentatives < MAX_TENTATIVES && !trouve) {
+            tentatives++;
+            System.out.print("Tentative " + tentatives + "/" + MAX_TENTATIVES + " : ");
+            
+            try {
+                int proposition = scanner.nextInt();
+                
+                // Validation de la proposition
+                if (proposition < NOMBRE_MIN || proposition > NOMBRE_MAX) {
+                    System.out.println("Le nombre doit être entre " + NOMBRE_MIN + " et " + NOMBRE_MAX);
+                    tentatives--; // Ne pas compter cette tentative
+                    continue;
+                }
+                
+                // Comparaison avec le nombre secret
+                if (proposition == nombreSecret) {
+                    trouve = true;
+                    System.out.println("🎉 BRAVO ! Vous avez trouvé le nombre " + nombreSecret + " !");
+                    calculerScore(tentatives);
+                } else if (proposition < nombreSecret) {
+                    System.out.println("Trop petit !");
+                    donnerIndice(proposition, nombreSecret, tentatives);
+                } else {
+                    System.out.println("Trop grand !");
+                    donnerIndice(proposition, nombreSecret, tentatives);
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Veuillez entrer un nombre valide");
+                tentatives--; // Ne pas compter cette tentative
+                scanner.nextLine(); // Vider le buffer
+            }
+        }
+        
+        if (!trouve) {
+            System.out.println("😞 Perdu ! Le nombre était " + nombreSecret);
+            System.out.println("Réessayez pour améliorer votre score !");
+        }
+        
+        scanner.close();
+    }
+    
+    public static void donnerIndice(int proposition, int nombreSecret, int tentatives) {
+        int difference = Math.abs(proposition - nombreSecret);
+        
+        if (difference <= 3) {
+            System.out.println("Vous êtes très proche !");
+        } else if (difference <= 10) {
+            System.out.println("Vous vous rapprochez...");
+        } else if (difference <= 20) {
+            System.out.println("Encore loin...");
+        }
+        
+        // Indice supplémentaire après 3 tentatives
+        if (tentatives >= 3) {
+            if (nombreSecret % 2 == 0) {
+                System.out.println("Indice: Le nombre est pair");
+            } else {
+                System.out.println("Indice: Le nombre est impair");
+            }
+        }
+    }
+    
+    public static void calculerScore(int tentatives) {
+        int score = 0;
+        String mention = "";
+        
+        switch (tentatives) {
+            case 1:
+                score = 1000;
+                mention = "EXCEPTIONNEL !";
+                break;
+            case 2:
+                score = 800;
+                mention = "EXCELLENT !";
+                break;
+            case 3:
+                score = 600;
+                mention = "Très bien !";
+                break;
+            case 4:
+                score = 400;
+                mention = "Bien !";
+                break;
+            case 5:
+                score = 200;
+                mention = "Pas mal !";
+                break;
+            case 6:
+                score = 100;
+                mention = "Juste à temps !";
+                break;
+            case 7:
+                score = 50;
+                mention = "De justesse !";
+                break;
+            default:
+                score = 0;
+                mention = "Aucun score";
+        }
+        
+        System.out.println("Score: " + score + " points - " + mention);
+        System.out.println("Trouvé en " + tentatives + " tentative" + (tentatives > 1 ? "s" : ""));
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div class="navigation-buttons">
+                            <a href="module-1-introduction-java-environnement.html" class="btn-nav">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Module 1 : Introduction
+                            </a>
+                            <a href="module-3-structures-controle.html" class="btn-nav">
+                                Module 3 : Structures de Contrôle
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+        
+        // Smooth scroll for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Update active TOC link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

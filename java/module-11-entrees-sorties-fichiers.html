@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 11 - Entrées/Sorties et Fichiers - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 91.67%; /* 11/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-file-alt me-2"></i>
+                        Module 11 - Entrées/Sorties et Fichiers
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 11 sur 12</small>
+                    
+                    <a href="#introduction-io" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction I/O</a>
+                    <a href="#fichiers-texte" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Fichiers Texte</a>
+                    <a href="#fichiers-binaires" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Fichiers Binaires</a>
+                    <a href="#nio2" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">NIO.2 (Java 7+)</a>
+                    <a href="#serialisation" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Sérialisation</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (15)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 11 - Entrées/Sorties et Fichiers</h1>
+                        <p class="lead mb-0">Maîtrisez la persistance et manipulation de données</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction I/O -->
+                        <section id="introduction-io" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-exchange-alt"></i>
+                                Introduction aux Entrées/Sorties
+                            </h2>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+
+public class GestionFichiersComplete {
+    public static void main(String[] args) {
+        demonstrerLectureEcriture();
+        demonstrerGestionCSV();
+        demonstrerAnalyseurLogs();
+    }
+    
+    public static void demonstrerLectureEcriture() {
+        System.out.println("=== LECTURE/ÉCRITURE FICHIERS ===");
+        
+        String nomFichier = "exemple.txt";
+        
+        // Écriture avec try-with-resources
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(nomFichier))) {
+            writer.write("Formation Java Complète\n");
+            writer.write("Module 11 - Gestion des fichiers\n");
+            writer.write("Ligne 3 avec caractères spéciaux: éàç\n");
+            writer.write("Nombres: 123, 456.78, -999\n");
+            
+            System.out.println("✅ Fichier écrit avec succès");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur d'écriture: " + e.getMessage());
+        }
+        
+        // Lecture ligne par ligne
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomFichier))) {
+            System.out.println("\nContenu du fichier:");
+            String ligne;
+            int numeroLigne = 1;
+            
+            while ((ligne = reader.readLine()) != null) {
+                System.out.printf("%2d: %s%n", numeroLigne++, ligne);
+            }
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur de lecture: " + e.getMessage());
+        }
+        
+        // Lecture complète en une fois (Java 8+)
+        try {
+            List&lt;String&gt; toutesLignes = Files.readAllLines(Paths.get(nomFichier));
+            System.out.println("\nLecture complète:");
+            toutesLignes.forEach(ligne -&gt; System.out.println("→ " + ligne));
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur de lecture complète: " + e.getMessage());
+        }
+    }
+    
+    public static void demonstrerGestionCSV() {
+        System.out.println("\n=== GESTION FICHIERS CSV ===");
+        
+        String fichierCSV = "employes.csv";
+        
+        // Création d'un fichier CSV
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get(fichierCSV)))) {
+            writer.println("nom,prenom,age,salaire,departement");
+            writer.println("Dupont,Jean,30,45000,IT");
+            writer.println("Martin,Marie,25,38000,RH");
+            writer.println("Durand,Pierre,35,52000,Finance");
+            writer.println("Moreau,Sophie,28,41000,Marketing");
+            writer.println("Bernard,Luc,42,58000,IT");
+            
+            System.out.println("✅ Fichier CSV créé");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur création CSV: " + e.getMessage());
+            return;
+        }
+        
+        // Lecture et parsing du CSV
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(fichierCSV))) {
+            String ligne = reader.readLine(); // En-têtes
+            System.out.println("En-têtes: " + ligne);
+            System.out.println("\nEmployés:");
+            
+            double totalSalaires = 0;
+            int compteur = 0;
+            Map&lt;String, Integer&gt; employesParDept = new HashMap&lt;&gt;();
+            
+            while ((ligne = reader.readLine()) != null) {
+                String[] champs = ligne.split(",");
+                
+                if (champs.length == 5) {
+                    String nom = champs[0];
+                    String prenom = champs[1];
+                    int age = Integer.parseInt(champs[2]);
+                    double salaire = Double.parseDouble(champs[3]);
+                    String dept = champs[4];
+                    
+                    System.out.printf("- %s %s (%d ans) - %s: %.0f€%n", 
+                                    prenom, nom, age, dept, salaire);
+                    
+                    totalSalaires += salaire;
+                    compteur++;
+                    employesParDept.put(dept, employesParDept.getOrDefault(dept, 0) + 1);
+                }
+            }
+            
+            System.out.printf("\nStatistiques:%n");
+            System.out.printf("- Total employés: %d%n", compteur);
+            System.out.printf("- Salaire moyen: %.2f€%n", totalSalaires / compteur);
+            System.out.println("- Répartition par département:");
+            employesParDept.forEach((dept, nombre) -&gt; 
+                System.out.printf("  %s: %d employé(s)%n", dept, nombre));
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture CSV: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Erreur format nombre dans CSV: " + e.getMessage());
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-10-programmation-fonctionnelle.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 10 : Fonctionnel
+                            </a>
+                            <a href="module-12-spring-boot-projets.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 12 : Spring Boot
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

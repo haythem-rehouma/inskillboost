@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6 - Héritage et Polymorphisme - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .inheritance-diagram {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .polymorphism-demo {
+            background: white;
+            border: 2px solid var(--info-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 50%; /* 6/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-sitemap me-2"></i>
+                        Module 6 - Héritage et Polymorphisme
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 6 sur 12</small>
+                    
+                    <a href="#introduction-heritage" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction Héritage</a>
+                    <a href="#syntaxe-heritage" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Syntaxe extends</a>
+                    <a href="#mot-cle-super" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Mot-clé super</a>
+                    <a href="#redefinition-methodes" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Redéfinition @Override</a>
+                    <a href="#polymorphisme" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Polymorphisme</a>
+                    <a href="#liaison-dynamique" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Liaison Dynamique</a>
+                    <a href="#classes-abstraites" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Classes Abstraites</a>
+                    <a href="#final-heritage" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Mot-clé final</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (16)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 6 - Héritage et Polymorphisme</h1>
+                        <p class="lead mb-0">Maîtrisez les relations entre classes et la réutilisabilité</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction Héritage -->
+                        <section id="introduction-heritage" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-sitemap"></i>
+                                Introduction à l'Héritage
+                            </h2>
+                            
+                            <p>L'héritage est un mécanisme fondamental de la POO qui permet à une classe (classe fille) d'hériter des propriétés et méthodes d'une autre classe (classe mère). Cela favorise la réutilisabilité du code et établit des relations "est-un".</p>
+
+                            <div class="concept-highlight">
+                                <h5>Avantages de l'Héritage :</h5>
+                                <ul>
+                                    <li><strong>Réutilisabilité :</strong> Évite la duplication de code</li>
+                                    <li><strong>Extensibilité :</strong> Facilite l'ajout de nouvelles fonctionnalités</li>
+                                    <li><strong>Polymorphisme :</strong> Permet le traitement uniforme d'objets différents</li>
+                                    <li><strong>Maintenance :</strong> Modifications centralisées dans la classe mère</li>
+                                    <li><strong>Organisation :</strong> Structure hiérarchique claire du code</li>
+                                </ul>
+                            </div>
+
+                            <div class="inheritance-diagram">
+                                <h6>Hiérarchie d'Héritage - Exemple Véhicules :</h6>
+                                <pre>
+                    Vehicle (classe mère)
+                    ├── attributs: marque, modele, annee
+                    ├── méthodes: demarrer(), arreter(), afficherInfos()
+                    │
+                    ├─── Voiture (classe fille)
+                    │    ├── attributs: nombrePortes, typeCarburant
+                    │    ├── méthodes: ouvrirCoffre(), activerClimatisation()
+                    │    │
+                    │    ├─── VoitureElectrique (petite-fille)
+                    │    │    ├── attributs: autonomieBatterie, tempsCharge
+                    │    │    └── méthodes: chargerBatterie(), modEco()
+                    │    │
+                    │    └─── VoitureSport (petite-fille)
+                    │         ├── attributs: vitesseMax, acceleration
+                    │         └── méthodes: activerModeRace(), deployerAileron()
+                    │
+                    └─── Moto (classe fille)
+                         ├── attributs: cylindree, typeGuidon
+                         └── méthodes: faireWheeling(), activerABS()
+                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Syntaxe Héritage -->
+                        <section id="syntaxe-heritage" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-code"></i>
+                                Syntaxe et Implémentation de l'Héritage
+                            </h2>
+                            
+                            <h4>Classe Mère (Superclasse)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Classe mère - Vehicle
+public class Vehicle {
+    // Attributs protégés (accessibles aux classes filles)
+    protected String marque;
+    protected String modele;
+    protected int annee;
+    protected boolean estDemarre;
+    protected double kilometrage;
+    
+    // Constructeur de la classe mère
+    public Vehicle(String marque, String modele, int annee) {
+        this.marque = marque;
+        this.modele = modele;
+        this.annee = annee;
+        this.estDemarre = false;
+        this.kilometrage = 0.0;
+        
+        System.out.println("Création d'un véhicule: " + marque + " " + modele);
+    }
+    
+    // Méthodes communes à tous les véhicules
+    public void demarrer() {
+        if (!estDemarre) {
+            estDemarre = true;
+            System.out.println(marque + " " + modele + " démarre");
+        } else {
+            System.out.println("Le véhicule est déjà démarré");
+        }
+    }
+    
+    public void arreter() {
+        if (estDemarre) {
+            estDemarre = false;
+            System.out.println(marque + " " + modele + " s'arrête");
+        } else {
+            System.out.println("Le véhicule est déjà arrêté");
+        }
+    }
+    
+    public void rouler(double distance) {
+        if (estDemarre && distance > 0) {
+            kilometrage += distance;
+            System.out.printf("%s %s a roulé %.1f km (Total: %.1f km)%n", 
+                            marque, modele, distance, kilometrage);
+        } else {
+            System.out.println("Impossible de rouler : véhicule arrêté ou distance invalide");
+        }
+    }
+    
+    // Méthode virtuelle (peut être redéfinie)
+    public void afficherInfos() {
+        System.out.println("=== INFORMATIONS VÉHICULE ===");
+        System.out.println("Marque: " + marque);
+        System.out.println("Modèle: " + modele);
+        System.out.println("Année: " + annee);
+        System.out.println("Kilométrage: " + kilometrage + " km");
+        System.out.println("État: " + (estDemarre ? "Démarré" : "Arrêté"));
+    }
+    
+    // Méthode pour calculer l'âge
+    public int calculerAge() {
+        return java.time.Year.now().getValue() - annee;
+    }
+    
+    // Getters et setters
+    public String getMarque() { return marque; }
+    public String getModele() { return modele; }
+    public int getAnnee() { return annee; }
+    public double getKilometrage() { return kilometrage; }
+    public boolean estDemarre() { return estDemarre; }
+}</code></pre>
+                            </div>
+
+                            <h4>Classes Filles (Sous-classes)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Classe fille - Voiture hérite de Vehicle
+public class Voiture extends Vehicle {
+    // Attributs spécifiques à Voiture
+    private int nombrePortes;
+    private String typeCarburant;
+    private double capaciteReservoir;
+    private double niveauCarburant;
+    
+    // Constructeur de la classe fille
+    public Voiture(String marque, String modele, int annee, int nombrePortes, String typeCarburant) {
+        super(marque, modele, annee); // Appel du constructeur parent
+        this.nombrePortes = nombrePortes;
+        this.typeCarburant = typeCarburant;
+        this.capaciteReservoir = 50.0; // Valeur par défaut
+        this.niveauCarburant = capaciteReservoir; // Plein au départ
+        
+        System.out.println("Spécialisation en Voiture: " + nombrePortes + " portes, " + typeCarburant);
+    }
+    
+    // Méthodes spécifiques à Voiture
+    public void ouvrirCoffre() {
+        System.out.println("Coffre de la " + marque + " " + modele + " ouvert");
+    }
+    
+    public void activerClimatisation() {
+        if (estDemarre) {
+            System.out.println("Climatisation activée");
+        } else {
+            System.out.println("Démarrez d'abord le véhicule pour la climatisation");
+        }
+    }
+    
+    public void faireLePlein() {
+        double quantiteAjoutee = capaciteReservoir - niveauCarburant;
+        niveauCarburant = capaciteReservoir;
+        System.out.printf("Plein effectué: %.1f litres ajoutés%n", quantiteAjoutee);
+    }
+    
+    // Redéfinition (Override) de la méthode rouler
+    @Override
+    public void rouler(double distance) {
+        if (!estDemarre) {
+            System.out.println("Démarrez d'abord la voiture");
+            return;
+        }
+        
+        double consommation = distance * 0.08; // 8L/100km
+        
+        if (niveauCarburant >= consommation) {
+            super.rouler(distance); // Appel de la méthode parent
+            niveauCarburant -= consommation;
+            System.out.printf("Consommation: %.2f L (Reste: %.1f L)%n", consommation, niveauCarburant);
+            
+            if (niveauCarburant < 5) {
+                System.out.println("⚠️  Niveau de carburant faible !");
+            }
+        } else {
+            System.out.println("Pas assez de carburant pour parcourir " + distance + " km");
+        }
+    }
+    
+    // Redéfinition complète de afficherInfos
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos(); // Afficher les infos de base
+        System.out.println("Nombre de portes: " + nombrePortes);
+        System.out.println("Type de carburant: " + typeCarburant);
+        System.out.printf("Carburant: %.1f/%.1f L%n", niveauCarburant, capaciteReservoir);
+    }
+    
+    // Getters spécifiques
+    public int getNombrePortes() { return nombrePortes; }
+    public String getTypeCarburant() { return typeCarburant; }
+    public double getNiveauCarburant() { return niveauCarburant; }
+}
+
+// Autre classe fille - Moto
+public class Moto extends Vehicle {
+    private int cylindree;
+    private String typeGuidon;
+    private boolean aABS;
+    
+    public Moto(String marque, String modele, int annee, int cylindree) {
+        super(marque, modele, annee);
+        this.cylindree = cylindree;
+        this.typeGuidon = "Standard";
+        this.aABS = false;
+        
+        System.out.println("Spécialisation en Moto: " + cylindree + "cc");
+    }
+    
+    public void faireWheeling() {
+        if (estDemarre && cylindree > 600) {
+            System.out.println("Wheeling effectué ! 🏍️");
+        } else if (!estDemarre) {
+            System.out.println("Démarrez d'abord la moto");
+        } else {
+            System.out.println("Cylindrée insuffisante pour un wheeling");
+        }
+    }
+    
+    public void activerABS() {
+        aABS = true;
+        System.out.println("ABS activé pour un freinage sécurisé");
+    }
+    
+    @Override
+    public void rouler(double distance) {
+        if (estDemarre) {
+            super.rouler(distance);
+            System.out.println("Sensation de liberté sur deux roues !");
+        }
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.println("Cylindrée: " + cylindree + " cc");
+        System.out.println("Type de guidon: " + typeGuidon);
+        System.out.println("ABS: " + (aABS ? "Activé" : "Désactivé"));
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Polymorphisme -->
+                        <section id="polymorphisme" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-shapes"></i>
+                                Polymorphisme et Liaison Dynamique
+                            </h2>
+                            
+                            <p>Le polymorphisme permet à un objet de prendre plusieurs formes. En Java, cela se manifeste par la capacité d'une référence de type parent à pointer vers des objets de types enfants.</p>
+
+                            <div class="polymorphism-demo">
+                                <h5>Démonstration du Polymorphisme :</h5>
+                                <div class="code-block">
+<pre><code class="language-java">public class DemonstrationPolymorphisme {
+    public static void main(String[] args) {
+        System.out.println("=== DÉMONSTRATION POLYMORPHISME ===");
+        
+        // Polymorphisme : référence parent → objets enfants
+        Vehicle[] flotte = {
+            new Vehicle("Generic", "Model", 2020),
+            new Voiture("Toyota", "Camry", 2022, 4, "Essence"),
+            new Moto("Yamaha", "R1", 2023, 1000),
+            new VoitureElectrique("Tesla", "Model 3", 2024, 4, "Électrique", 500),
+            new VoitureSport("Ferrari", "F8", 2023, 2, "Essence", 340)
+        };
+        
+        // Traitement polymorphe : même méthode, comportements différents
+        System.out.println("\n=== DÉMARRAGE DE LA FLOTTE ===");
+        for (Vehicle vehicule : flotte) {
+            vehicule.demarrer(); // Liaison dynamique
+            vehicule.afficherInfos(); // Méthode redéfinie dans chaque classe
+            System.out.println();
+        }
+        
+        // Test de roulage avec polymorphisme
+        System.out.println("=== TEST DE ROULAGE ===");
+        for (Vehicle vehicule : flotte) {
+            vehicule.rouler(50); // Comportement spécifique à chaque type
+            System.out.println();
+        }
+        
+        // Démonstration du casting et instanceof
+        System.out.println("=== CASTING ET INSTANCEOF ===");
+        for (Vehicle vehicule : flotte) {
+            System.out.println("Type réel: " + vehicule.getClass().getSimpleName());
+            
+            // Test du type avec instanceof
+            if (vehicule instanceof VoitureElectrique) {
+                VoitureElectrique ve = (VoitureElectrique) vehicule; // Downcasting
+                ve.chargerBatterie(30);
+            } else if (vehicule instanceof VoitureSport) {
+                VoitureSport vs = (VoitureSport) vehicule;
+                vs.activerModeRace();
+            } else if (vehicule instanceof Voiture) {
+                Voiture v = (Voiture) vehicule;
+                v.activerClimatisation();
+            } else if (vehicule instanceof Moto) {
+                Moto m = (Moto) vehicule;
+                m.faireWheeling();
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Classes Spécialisées</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Spécialisation de Voiture - VoitureElectrique
+public class VoitureElectrique extends Voiture {
+    private double autonomieBatterie; // en km
+    private double niveauBatterie;   // en %
+    private int tempsChargeComplet;  // en minutes
+    
+    public VoitureElectrique(String marque, String modele, int annee, int nombrePortes, 
+                           String typeCarburant, double autonomie) {
+        super(marque, modele, annee, nombrePortes, typeCarburant);
+        this.autonomieBatterie = autonomie;
+        this.niveauBatterie = 100.0;
+        this.tempsChargeComplet = 60;
+        
+        System.out.println("Spécialisation électrique - Autonomie: " + autonomie + " km");
+    }
+    
+    public void chargerBatterie(int minutes) {
+        double chargeAjoutee = (double) minutes / tempsChargeComplet * 100;
+        niveauBatterie = Math.min(100, niveauBatterie + chargeAjoutee);
+        
+        System.out.printf("Charge %d min → Batterie: %.1f%%%n", minutes, niveauBatterie);
+    }
+    
+    public void activerModeEco() {
+        System.out.println("Mode éco activé - Autonomie augmentée de 20%");
+    }
+    
+    @Override
+    public void rouler(double distance) {
+        if (!estDemarre) {
+            System.out.println("Démarrez d'abord la voiture électrique");
+            return;
+        }
+        
+        double consommationBatterie = (distance / autonomieBatterie) * 100;
+        
+        if (niveauBatterie >= consommationBatterie) {
+            super.rouler(distance); // Appel méthode Voiture (qui appelle Vehicle)
+            niveauBatterie -= consommationBatterie;
+            System.out.printf("Consommation batterie: %.1f%% (Reste: %.1f%%)%n", 
+                            consommationBatterie, niveauBatterie);
+            
+            if (niveauBatterie < 20) {
+                System.out.println("🔋 Batterie faible ! Recherchez une borne de recharge");
+            }
+        } else {
+            System.out.println("Batterie insuffisante pour parcourir " + distance + " km");
+            double autonomieRestante = (niveauBatterie / 100) * autonomieBatterie;
+            System.out.printf("Autonomie restante: %.1f km%n", autonomieRestante);
+        }
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos(); // Infos de Voiture (qui inclut Vehicle)
+        System.out.printf("Autonomie: %.0f km%n", autonomieBatterie);
+        System.out.printf("Niveau batterie: %.1f%%%n", niveauBatterie);
+        System.out.println("Temps charge complète: " + tempsChargeComplet + " min");
+    }
+}
+
+// Autre spécialisation - VoitureSport
+public class VoitureSport extends Voiture {
+    private double vitesseMax;
+    private double acceleration0a100; // en secondes
+    private boolean modeRaceActif;
+    private boolean aileronDeploy;
+    
+    public VoitureSport(String marque, String modele, int annee, int nombrePortes, 
+                       String typeCarburant, double vitesseMax) {
+        super(marque, modele, annee, nombrePortes, typeCarburant);
+        this.vitesseMax = vitesseMax;
+        this.acceleration0a100 = 4.0; // Par défaut
+        this.modeRaceActif = false;
+        this.aileronDeploy = false;
+        
+        System.out.println("Spécialisation sport - Vitesse max: " + vitesseMax + " km/h");
+    }
+    
+    public void activerModeRace() {
+        modeRaceActif = true;
+        System.out.println("🏎️  Mode RACE activé ! Performance maximale");
+        System.out.println("Suspension durcie, échappement sport, mapping moteur agressif");
+    }
+    
+    public void deployerAileron() {
+        if (estDemarre) {
+            aileronDeploy = true;
+            System.out.println("Aileron déployé pour une meilleure stabilité");
+        }
+    }
+    
+    public void effectuerAcceleration() {
+        if (estDemarre && modeRaceActif) {
+            System.out.printf("🚀 Accélération 0-100 km/h en %.1f secondes !%n", acceleration0a100);
+        } else if (!estDemarre) {
+            System.out.println("Démarrez d'abord la voiture");
+        } else {
+            System.out.println("Activez le mode race pour une accélération optimale");
+        }
+    }
+    
+    @Override
+    public void rouler(double distance) {
+        if (modeRaceActif) {
+            System.out.println("Mode race : consommation augmentée !");
+            // Simulation consommation plus élevée
+            super.rouler(distance);
+            // Consommation supplémentaire simulée
+            System.out.println("Consommation sport : +30% par rapport au mode normal");
+        } else {
+            super.rouler(distance);
+        }
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.printf("Vitesse max: %.0f km/h%n", vitesseMax);
+        System.out.printf("Accélération 0-100: %.1f s%n", acceleration0a100);
+        System.out.println("Mode race: " + (modeRaceActif ? "Activé" : "Désactivé"));
+        System.out.println("Aileron: " + (aileronDeploy ? "Déployé" : "Rétracté"));
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Classes Abstraites -->
+                        <section id="classes-abstraites" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-project-diagram"></i>
+                                Classes Abstraites et Méthodes Abstraites
+                            </h2>
+                            
+                            <p>Une classe abstraite ne peut pas être instanciée directement. Elle sert de modèle pour d'autres classes et peut contenir des méthodes abstraites que les classes filles doivent obligatoirement implémenter.</p>
+
+                            <div class="code-block">
+<pre><code class="language-java">// Classe abstraite pour les formes géométriques
+public abstract class Forme {
+    protected String couleur;
+    protected double x, y; // Position
+    
+    // Constructeur (peut exister dans une classe abstraite)
+    public Forme(String couleur, double x, double y) {
+        this.couleur = couleur;
+        this.x = x;
+        this.y = y;
+        System.out.println("Création d'une forme " + couleur + " en (" + x + ", " + y + ")");
+    }
+    
+    // Méthode concrète (implémentée)
+    public void deplacer(double nouveauX, double nouveauY) {
+        System.out.printf("Déplacement de (%.1f, %.1f) vers (%.1f, %.1f)%n", 
+                         x, y, nouveauX, nouveauY);
+        this.x = nouveauX;
+        this.y = nouveauY;
+    }
+    
+    public void changerCouleur(String nouvelleCouleur) {
+        System.out.println("Changement de couleur: " + couleur + " → " + nouvelleCouleur);
+        this.couleur = nouvelleCouleur;
+    }
+    
+    // Méthodes abstraites (doivent être implémentées par les classes filles)
+    public abstract double calculerAire();
+    public abstract double calculerPerimetre();
+    public abstract void dessiner();
+    
+    // Méthode concrète utilisant les méthodes abstraites
+    public void afficherInfosComplete() {
+        System.out.println("=== INFORMATIONS FORME ===");
+        System.out.println("Type: " + this.getClass().getSimpleName());
+        System.out.println("Couleur: " + couleur);
+        System.out.printf("Position: (%.1f, %.1f)%n", x, y);
+        System.out.printf("Aire: %.2f%n", calculerAire());
+        System.out.printf("Périmètre: %.2f%n", calculerPerimetre());
+        dessiner();
+    }
+}
+
+// Implémentation concrète - Rectangle
+public class Rectangle extends Forme {
+    private double largeur;
+    private double hauteur;
+    
+    public Rectangle(String couleur, double x, double y, double largeur, double hauteur) {
+        super(couleur, x, y);
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        System.out.println("Rectangle créé: " + largeur + "x" + hauteur);
+    }
+    
+    @Override
+    public double calculerAire() {
+        return largeur * hauteur;
+    }
+    
+    @Override
+    public double calculerPerimetre() {
+        return 2 * (largeur + hauteur);
+    }
+    
+    @Override
+    public void dessiner() {
+        System.out.println("Dessin d'un rectangle " + couleur + ":");
+        for (int i = 0; i < (int)hauteur; i++) {
+            for (int j = 0; j < (int)largeur; j++) {
+                if (i == 0 || i == (int)hauteur - 1 || j == 0 || j == (int)largeur - 1) {
+                    System.out.print("█");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    
+    // Méthodes spécifiques au rectangle
+    public boolean estCarre() {
+        return Math.abs(largeur - hauteur) < 0.001;
+    }
+    
+    public double calculerDiagonale() {
+        return Math.sqrt(largeur * largeur + hauteur * hauteur);
+    }
+}
+
+// Implémentation concrète - Cercle
+public class Cercle extends Forme {
+    private double rayon;
+    
+    public Cercle(String couleur, double x, double y, double rayon) {
+        super(couleur, x, y);
+        this.rayon = rayon;
+        System.out.println("Cercle créé: rayon " + rayon);
+    }
+    
+    @Override
+    public double calculerAire() {
+        return Math.PI * rayon * rayon;
+    }
+    
+    @Override
+    public double calculerPerimetre() {
+        return 2 * Math.PI * rayon;
+    }
+    
+    @Override
+    public void dessiner() {
+        System.out.println("Dessin d'un cercle " + couleur + ":");
+        int taille = (int)(rayon * 2);
+        double centreX = rayon;
+        double centreY = rayon;
+        
+        for (int i = 0; i <= taille; i++) {
+            for (int j = 0; j <= taille; j++) {
+                double distance = Math.sqrt((i - centreY) * (i - centreY) + 
+                                          (j - centreX) * (j - centreX));
+                if (Math.abs(distance - rayon) < 0.5) {
+                    System.out.print("●");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    
+    public double calculerDiametre() {
+        return 2 * rayon;
+    }
+    
+    public double calculerCirconference() {
+        return calculerPerimetre(); // Alias pour la circonférence
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Exhaustifs sur l'Héritage (16 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-users"></i> Exercice 1 : Système de Gestion d'Employés
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer une hiérarchie complète pour gérer différents types d'employés.</p>
+                                <p><strong>Classes à créer :</strong></p>
+                                <ul>
+                                    <li><strong>Employe</strong> (classe mère) : nom, prénom, salaire de base, ancienneté</li>
+                                    <li><strong>Manager</strong> : équipe gérée, bonus de management</li>
+                                    <li><strong>Developpeur</strong> : langages maîtrisés, projets en cours</li>
+                                    <li><strong>Commercial</strong> : chiffre d'affaires, commission</li>
+                                    <li><strong>Stagiaire</strong> : durée stage, tuteur</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <h6>Solution Complète :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">// Classe mère abstraite
+public abstract class Employe {
+    protected String nom;
+    protected String prenom;
+    protected double salaireBase;
+    protected int anciennete; // en années
+    protected String departement;
+    protected static int compteurEmployes = 0;
+    protected int numeroEmploye;
+    
+    public Employe(String nom, String prenom, double salaireBase, String departement) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.salaireBase = salaireBase;
+        this.departement = departement;
+        this.anciennete = 0;
+        this.numeroEmploye = ++compteurEmployes;
+        
+        System.out.println("Nouvel employé: " + prenom + " " + nom + " (#" + numeroEmploye + ")");
+    }
+    
+    // Méthode abstraite - chaque type d'employé calcule différemment
+    public abstract double calculerSalaireTotal();
+    
+    // Méthode concrète commune
+    public void augmenterAnciennete() {
+        anciennete++;
+        System.out.println(prenom + " " + nom + " a maintenant " + anciennete + " an(s) d'ancienneté");
+        
+        // Prime d'ancienneté
+        if (anciennete % 5 == 0) {
+            salaireBase *= 1.05; // Augmentation de 5% tous les 5 ans
+            System.out.println("Prime d'ancienneté ! Nouveau salaire de base: " + salaireBase + "€");
+        }
+    }
+    
+    public void afficherInfos() {
+        System.out.println("=== FICHE EMPLOYÉ ===");
+        System.out.println("Nom: " + prenom + " " + nom);
+        System.out.println("N° Employé: " + numeroEmploye);
+        System.out.println("Département: " + departement);
+        System.out.println("Ancienneté: " + anciennete + " an(s)");
+        System.out.println("Salaire de base: " + salaireBase + "€");
+        System.out.println("Salaire total: " + calculerSalaireTotal() + "€");
+    }
+    
+    // Getters
+    public String getNomComplet() { return prenom + " " + nom; }
+    public double getSalaireBase() { return salaireBase; }
+    public int getAnciennete() { return anciennete; }
+}
+
+// Classe Manager
+public class Manager extends Employe {
+    private String[] equipe;
+    private int tailleEquipe;
+    private double bonusManagement;
+    
+    public Manager(String nom, String prenom, double salaireBase, String departement, int tailleEquipeMax) {
+        super(nom, prenom, salaireBase, departement);
+        this.equipe = new String[tailleEquipeMax];
+        this.tailleEquipe = 0;
+        this.bonusManagement = 500.0;
+        System.out.println("Manager créé - Peut gérer jusqu'à " + tailleEquipeMax + " personnes");
+    }
+    
+    public void ajouterMembre(String nomMembre) {
+        if (tailleEquipe < equipe.length) {
+            equipe[tailleEquipe] = nomMembre;
+            tailleEquipe++;
+            System.out.println(nomMembre + " ajouté à l'équipe de " + prenom + " " + nom);
+        } else {
+            System.out.println("Équipe complète ! Impossible d'ajouter " + nomMembre);
+        }
+    }
+    
+    @Override
+    public double calculerSalaireTotal() {
+        double bonusEquipe = tailleEquipe * bonusManagement;
+        double primeAnciennete = anciennete * 100;
+        return salaireBase + bonusEquipe + primeAnciennete;
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.println("Rôle: Manager");
+        System.out.println("Taille équipe: " + tailleEquipe + "/" + equipe.length);
+        System.out.println("Bonus management: " + (tailleEquipe * bonusManagement) + "€");
+        
+        if (tailleEquipe > 0) {
+            System.out.println("Équipe:");
+            for (int i = 0; i < tailleEquipe; i++) {
+                System.out.println("  - " + equipe[i]);
+            }
+        }
+    }
+}
+
+// Classe Developpeur
+public class Developpeur extends Employe {
+    private String[] langages;
+    private int nbLangages;
+    private String[] projets;
+    private int nbProjets;
+    private String specialite;
+    
+    public Developpeur(String nom, String prenom, double salaireBase, String specialite) {
+        super(nom, prenom, salaireBase, "IT");
+        this.langages = new String[10];
+        this.projets = new String[5];
+        this.nbLangages = 0;
+        this.nbProjets = 0;
+        this.specialite = specialite;
+        System.out.println("Développeur " + specialite + " créé");
+    }
+    
+    public void apprendreLangage(String langage) {
+        if (nbLangages < langages.length) {
+            langages[nbLangages] = langage;
+            nbLangages++;
+            System.out.println(prenom + " maîtrise maintenant " + langage);
+            
+            // Bonus pour apprentissage
+            salaireBase += 200;
+            System.out.println("Bonus apprentissage: +200€ au salaire de base");
+        }
+    }
+    
+    public void assignerProjet(String nomProjet) {
+        if (nbProjets < projets.length) {
+            projets[nbProjets] = nomProjet;
+            nbProjets++;
+            System.out.println("Projet '" + nomProjet + "' assigné à " + prenom);
+        } else {
+            System.out.println("Trop de projets en cours ! Impossible d'assigner " + nomProjet);
+        }
+    }
+    
+    @Override
+    public double calculerSalaireTotal() {
+        double bonusLangages = nbLangages * 300; // 300€ par langage maîtrisé
+        double bonusProjets = nbProjets * 500;   // 500€ par projet actif
+        double primeSpecialite = 0;
+        
+        // Prime selon la spécialité
+        switch (specialite.toLowerCase()) {
+            case "fullstack":
+                primeSpecialite = 1000;
+                break;
+            case "backend":
+                primeSpecialite = 800;
+                break;
+            case "frontend":
+                primeSpecialite = 700;
+                break;
+            case "mobile":
+                primeSpecialite = 900;
+                break;
+            default:
+                primeSpecialite = 500;
+        }
+        
+        return salaireBase + bonusLangages + bonusProjets + primeSpecialite;
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.println("Rôle: Développeur " + specialite);
+        System.out.println("Langages maîtrisés (" + nbLangages + "):");
+        for (int i = 0; i < nbLangages; i++) {
+            System.out.println("  - " + langages[i]);
+        }
+        System.out.println("Projets actifs (" + nbProjets + "):");
+        for (int i = 0; i < nbProjets; i++) {
+            System.out.println("  - " + projets[i]);
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-5-classes-objets-poo.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 5 : Classes POO
+                            </a>
+                            <a href="module-7-interfaces-abstractions.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 7 : Interfaces
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4 - Tableaux et Chaînes de Caractères - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--java-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--java-orange);
+            border-left-color: var(--java-orange);
+            background-color: rgba(248, 152, 32, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid #374151;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .memory-visual {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .algorithm-complexity {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--info-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 33.33%; /* 4/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="toc-title">
+                        <i class="fas fa-th me-2"></i>
+                        Module 4 - Tableaux et Chaînes
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 4 sur 12</small>
+                    
+                    <a href="#introduction-tableaux" class="toc-link active">Introduction Tableaux</a>
+                    <a href="#tableaux-unidimensionnels" class="toc-link">Tableaux 1D</a>
+                    <a href="#tableaux-multidimensionnels" class="toc-link">Tableaux 2D/3D</a>
+                    <a href="#algorithmes-tri" class="toc-link">Algorithmes de Tri</a>
+                    <a href="#algorithmes-recherche" class="toc-link">Algorithmes Recherche</a>
+                    <a href="#chaines-caracteres" class="toc-link">Chaînes de Caractères</a>
+                    <a href="#string-vs-stringbuilder" class="toc-link">String vs StringBuilder</a>
+                    <a href="#manipulation-texte" class="toc-link">Manipulation de Texte</a>
+                    <a href="#expressions-regulieres" class="toc-link">Expressions Régulières</a>
+                    <a href="#exercices" class="toc-link">Exercices (20)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 4 - Tableaux et Chaînes de Caractères</h1>
+                        <p class="lead mb-0">Maîtrisez les structures de données fondamentales</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction Tableaux -->
+                        <section id="introduction-tableaux" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-th-large"></i>
+                                Introduction aux Tableaux
+                            </h2>
+                            
+                            <p>Un tableau est une structure de données qui stocke plusieurs éléments du même type dans des emplacements mémoire contigus. En Java, les tableaux sont des objets.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Caractéristiques des Tableaux Java :</h5>
+                                <ul>
+                                    <li><strong>Taille fixe :</strong> Définie à la création, ne peut pas changer</li>
+                                    <li><strong>Type homogène :</strong> Tous les éléments sont du même type</li>
+                                    <li><strong>Indexation :</strong> Commence à 0, va jusqu'à length-1</li>
+                                    <li><strong>Référence :</strong> Le nom du tableau est une référence vers l'objet</li>
+                                    <li><strong>Initialisation :</strong> Valeurs par défaut automatiques</li>
+                                </ul>
+                            </div>
+
+                            <div class="memory-visual">
+                                <h6>Représentation Mémoire d'un Tableau :</h6>
+                                <pre>
+int[] nombres = {10, 20, 30, 40, 50};
+
+STACK (Pile)           HEAP (Tas)
+┌─────────────┐       ┌─────┬─────┬─────┬─────┬─────┐
+│ nombres ────────────▶│ 10  │ 20  │ 30  │ 40  │ 50  │
+└─────────────┘       └─────┴─────┴─────┴─────┴─────┘
+                       Index: 0     1     2     3     4
+                       Length: 5
+                                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Tableaux Unidimensionnels -->
+                        <section id="tableaux-unidimensionnels" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-list"></i>
+                                Tableaux Unidimensionnels
+                            </h2>
+                            
+                            <h4>Déclaration et Initialisation</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TableauxUnidimensionnels {
+    public static void main(String[] args) {
+        // 1. Déclaration puis création
+        int[] nombres;                    // Déclaration
+        nombres = new int[5];            // Création avec taille 5
+        
+        // 2. Déclaration et création en une ligne
+        int[] scores = new int[10];      // Tableau de 10 entiers (initialisés à 0)
+        double[] prix = new double[3];   // Tableau de 3 doubles (initialisés à 0.0)
+        boolean[] flags = new boolean[4]; // Tableau de 4 booléens (initialisés à false)
+        
+        // 3. Initialisation avec valeurs
+        int[] ages = {25, 30, 22, 35, 28};                    // Initialisation directe
+        String[] noms = {"Alice", "Bob", "Charlie", "Diana"};  // Tableau de String
+        
+        // 4. Création avec new et initialisation
+        int[] notes = new int[]{15, 18, 12, 16, 14};
+        
+        // 5. Accès aux éléments
+        System.out.println("=== ACCÈS AUX ÉLÉMENTS ===");
+        System.out.println("Premier âge: " + ages[0]);        // Index 0
+        System.out.println("Dernier âge: " + ages[ages.length - 1]); // Dernier index
+        System.out.println("Taille du tableau: " + ages.length);
+        
+        // 6. Modification des éléments
+        ages[0] = 26; // Modifier le premier élément
+        System.out.println("Âge modifié: " + ages[0]);
+        
+        // 7. Parcours avec boucle for classique
+        System.out.println("\n=== PARCOURS AVEC FOR ===");
+        for (int i = 0; i < noms.length; i++) {
+            System.out.println("Index " + i + ": " + noms[i]);
+        }
+        
+        // 8. Parcours avec for-each (enhanced for)
+        System.out.println("\n=== PARCOURS AVEC FOR-EACH ===");
+        for (String nom : noms) {
+            System.out.println("Nom: " + nom);
+        }
+        
+        // 9. Calculs sur tableaux
+        System.out.println("\n=== CALCULS SUR TABLEAUX ===");
+        int somme = 0;
+        int max = notes[0];
+        int min = notes[0];
+        
+        for (int note : notes) {
+            somme += note;
+            if (note > max) max = note;
+            if (note < min) min = note;
+        }
+        
+        double moyenne = (double) somme / notes.length;
+        System.out.println("Somme: " + somme);
+        System.out.println("Moyenne: " + moyenne);
+        System.out.println("Note max: " + max);
+        System.out.println("Note min: " + min);
+        
+        // 10. Copie de tableaux
+        System.out.println("\n=== COPIE DE TABLEAUX ===");
+        int[] copieNotes = new int[notes.length];
+        
+        // Copie manuelle
+        for (int i = 0; i < notes.length; i++) {
+            copieNotes[i] = notes[i];
+        }
+        
+        // Copie avec System.arraycopy (plus efficace)
+        int[] autrecopie = new int[notes.length];
+        System.arraycopy(notes, 0, autrecopie, 0, notes.length);
+        
+        // Copie avec clone()
+        int[] cloneNotes = notes.clone();
+        
+        System.out.println("Tableau original: " + java.util.Arrays.toString(notes));
+        System.out.println("Copie manuelle: " + java.util.Arrays.toString(copieNotes));
+        System.out.println("Clone: " + java.util.Arrays.toString(cloneNotes));
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="algorithm-complexity">
+                                <h5>Complexité des Opérations sur Tableaux :</h5>
+                                <ul>
+                                    <li><strong>Accès par index :</strong> O(1) - Temps constant</li>
+                                    <li><strong>Recherche linéaire :</strong> O(n) - Temps linéaire</li>
+                                    <li><strong>Insertion/Suppression :</strong> O(n) - Décalage nécessaire</li>
+                                    <li><strong>Tri :</strong> O(n²) à O(n log n) selon l'algorithme</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Tableaux Multidimensionnels -->
+                        <section id="tableaux-multidimensionnels" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-th"></i>
+                                Tableaux Multidimensionnels
+                            </h2>
+                            
+                            <p>Les tableaux multidimensionnels sont des tableaux de tableaux. Le plus courant est le tableau bidimensionnel (matrice).</p>
+
+                            <h4>Tableaux Bidimensionnels (Matrices)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TableauxBidimensionnels {
+    public static void main(String[] args) {
+        // 1. Déclaration et création
+        int[][] matrice = new int[3][4]; // 3 lignes, 4 colonnes
+        
+        // 2. Initialisation directe
+        int[][] notes = {
+            {15, 18, 12, 16},  // Ligne 0 (étudiant 1)
+            {14, 17, 19, 15},  // Ligne 1 (étudiant 2)
+            {16, 13, 18, 17}   // Ligne 2 (étudiant 3)
+        };
+        
+        // 3. Tableaux irréguliers (jagged arrays)
+        int[][] triangulaire = new int[3][];
+        triangulaire[0] = new int[1]; // {0}
+        triangulaire[1] = new int[2]; // {0, 0}
+        triangulaire[2] = new int[3]; // {0, 0, 0}
+        
+        // 4. Remplissage d'une matrice
+        System.out.println("=== REMPLISSAGE D'UNE MATRICE ===");
+        for (int i = 0; i < matrice.length; i++) {           // Parcours lignes
+            for (int j = 0; j < matrice[i].length; j++) {    // Parcours colonnes
+                matrice[i][j] = (i + 1) * (j + 1);          // Valeur = ligne * colonne
+            }
+        }
+        
+        // 5. Affichage d'une matrice
+        System.out.println("Matrice multiplication:");
+        afficherMatrice(matrice);
+        
+        // 6. Opérations sur matrices
+        System.out.println("\n=== CALCULS SUR MATRICE DE NOTES ===");
+        afficherMatrice(notes);
+        
+        // Calcul moyennes par étudiant
+        for (int i = 0; i < notes.length; i++) {
+            double somme = 0;
+            for (int j = 0; j < notes[i].length; j++) {
+                somme += notes[i][j];
+            }
+            double moyenne = somme / notes[i].length;
+            System.out.printf("Étudiant %d - Moyenne: %.2f%n", (i + 1), moyenne);
+        }
+        
+        // Calcul moyennes par matière
+        String[] matieres = {"Math", "Français", "Anglais", "Sciences"};
+        for (int j = 0; j < notes[0].length; j++) {
+            double somme = 0;
+            for (int i = 0; i < notes.length; i++) {
+                somme += notes[i][j];
+            }
+            double moyenne = somme / notes.length;
+            System.out.printf("%s - Moyenne: %.2f%n", matieres[j], moyenne);
+        }
+        
+        // 7. Recherche dans une matrice
+        int noteRecherchee = 18;
+        boolean trouvee = false;
+        
+        rechercheBoucle:
+        for (int i = 0; i < notes.length; i++) {
+            for (int j = 0; j < notes[i].length; j++) {
+                if (notes[i][j] == noteRecherchee) {
+                    System.out.println("Note " + noteRecherchee + " trouvée: Étudiant " + 
+                                     (i + 1) + ", Matière " + matieres[j]);
+                    trouvee = true;
+                    break rechercheBoucle;
+                }
+            }
+        }
+        
+        if (!trouvee) {
+            System.out.println("Note " + noteRecherchee + " non trouvée");
+        }
+    }
+    
+    public static void afficherMatrice(int[][] matrice) {
+        for (int i = 0; i < matrice.length; i++) {
+            System.out.print("[ ");
+            for (int j = 0; j < matrice[i].length; j++) {
+                System.out.printf("%3d ", matrice[i][j]);
+            }
+            System.out.println("]");
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Tableaux Tridimensionnels et Plus</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TableauxTridimensionnels {
+    public static void main(String[] args) {
+        // Tableau 3D : [étage][ligne][colonne]
+        // Exemple : immeuble de 3 étages, 4 lignes, 5 colonnes
+        int[][][] immeuble = new int[3][4][5];
+        
+        // Remplissage : numéro d'appartement unique
+        int numeroAppartement = 100;
+        
+        for (int etage = 0; etage < immeuble.length; etage++) {
+            for (int ligne = 0; ligne < immeuble[etage].length; ligne++) {
+                for (int colonne = 0; colonne < immeuble[etage][ligne].length; colonne++) {
+                    immeuble[etage][ligne][colonne] = numeroAppartement++;
+                }
+            }
+        }
+        
+        // Affichage par étage
+        for (int etage = 0; etage < immeuble.length; etage++) {
+            System.out.println("=== ÉTAGE " + (etage + 1) + " ===");
+            for (int ligne = 0; ligne < immeuble[etage].length; ligne++) {
+                for (int colonne = 0; colonne < immeuble[etage][ligne].length; colonne++) {
+                    System.out.printf("%3d ", immeuble[etage][ligne][colonne]);
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+        
+        // Statistiques
+        int totalAppartements = 0;
+        for (int[][] etage : immeuble) {
+            for (int[] ligne : etage) {
+                totalAppartements += ligne.length;
+            }
+        }
+        
+        System.out.println("Total appartements: " + totalAppartements);
+        System.out.println("Dimensions: " + immeuble.length + "x" + 
+                          immeuble[0].length + "x" + immeuble[0][0].length);
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Algorithmes de Tri -->
+                        <section id="algorithmes-tri" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-sort-amount-up"></i>
+                                Algorithmes de Tri Détaillés
+                            </h2>
+                            
+                            <p>Le tri est une opération fondamentale en informatique. Voici les principaux algorithmes avec analyse de complexité.</p>
+
+                            <h4>1. Tri à Bulles (Bubble Sort)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TriBulles {
+    public static void triBulles(int[] tableau) {
+        int n = tableau.length;
+        int comparaisons = 0;
+        int echanges = 0;
+        
+        System.out.println("=== TRI À BULLES ===");
+        System.out.println("Tableau initial: " + java.util.Arrays.toString(tableau));
+        
+        for (int i = 0; i < n - 1; i++) {
+            boolean echange = false;
+            System.out.println("\nPasse " + (i + 1) + ":");
+            
+            for (int j = 0; j < n - i - 1; j++) {
+                comparaisons++;
+                
+                if (tableau[j] > tableau[j + 1]) {
+                    // Échange des éléments
+                    int temp = tableau[j];
+                    tableau[j] = tableau[j + 1];
+                    tableau[j + 1] = temp;
+                    echange = true;
+                    echanges++;
+                    
+                    System.out.println("  Échange: " + tableau[j + 1] + " ↔ " + tableau[j]);
+                }
+            }
+            
+            System.out.println("  État: " + java.util.Arrays.toString(tableau));
+            
+            // Optimisation: si aucun échange, le tableau est trié
+            if (!echange) {
+                System.out.println("  Tableau trié ! Arrêt anticipé.");
+                break;
+            }
+        }
+        
+        System.out.println("\nRésultat final: " + java.util.Arrays.toString(tableau));
+        System.out.println("Comparaisons: " + comparaisons);
+        System.out.println("Échanges: " + echanges);
+    }
+    
+    public static void main(String[] args) {
+        int[] tableau = {64, 34, 25, 12, 22, 11, 90};
+        triBulles(tableau.clone());
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>2. Tri par Sélection (Selection Sort)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TriSelection {
+    public static void triSelection(int[] tableau) {
+        int n = tableau.length;
+        
+        System.out.println("=== TRI PAR SÉLECTION ===");
+        System.out.println("Tableau initial: " + java.util.Arrays.toString(tableau));
+        
+        for (int i = 0; i < n - 1; i++) {
+            // Trouver l'index du minimum dans la partie non triée
+            int indexMin = i;
+            
+            for (int j = i + 1; j < n; j++) {
+                if (tableau[j] < tableau[indexMin]) {
+                    indexMin = j;
+                }
+            }
+            
+            // Échange si nécessaire
+            if (indexMin != i) {
+                int temp = tableau[i];
+                tableau[i] = tableau[indexMin];
+                tableau[indexMin] = temp;
+                
+                System.out.println("Passe " + (i + 1) + ": Minimum " + tableau[i] + 
+                                 " placé en position " + i);
+                System.out.println("  État: " + java.util.Arrays.toString(tableau));
+            }
+        }
+        
+        System.out.println("Résultat final: " + java.util.Arrays.toString(tableau));
+    }
+    
+    public static void main(String[] args) {
+        int[] tableau = {64, 25, 12, 22, 11};
+        triSelection(tableau);
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>3. Tri par Insertion (Insertion Sort)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class TriInsertion {
+    public static void triInsertion(int[] tableau) {
+        int n = tableau.length;
+        
+        System.out.println("=== TRI PAR INSERTION ===");
+        System.out.println("Tableau initial: " + java.util.Arrays.toString(tableau));
+        
+        for (int i = 1; i < n; i++) {
+            int elementCourant = tableau[i];
+            int j = i - 1;
+            
+            System.out.println("\nInsertion de " + elementCourant + ":");
+            
+            // Décaler les éléments plus grands vers la droite
+            while (j >= 0 && tableau[j] > elementCourant) {
+                tableau[j + 1] = tableau[j];
+                j--;
+                System.out.println("  Décalage: " + java.util.Arrays.toString(tableau));
+            }
+            
+            // Insérer l'élément à sa position finale
+            tableau[j + 1] = elementCourant;
+            System.out.println("  Insertion: " + java.util.Arrays.toString(tableau));
+        }
+        
+        System.out.println("\nRésultat final: " + java.util.Arrays.toString(tableau));
+    }
+    
+    public static void main(String[] args) {
+        int[] tableau = {12, 11, 13, 5, 6};
+        triInsertion(tableau);
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Chaînes de Caractères -->
+                        <section id="chaines-caracteres" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-font"></i>
+                                Chaînes de Caractères (String)
+                            </h2>
+                            
+                            <p>En Java, les chaînes de caractères sont des objets immuables de la classe String. Une fois créée, une String ne peut pas être modifiée.</p>
+
+                            <h4>Création et Propriétés des String</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class StringFondamentaux {
+    public static void main(String[] args) {
+        // 1. Différentes façons de créer des String
+        String str1 = "Hello";                    // Littéral (String pool)
+        String str2 = new String("Hello");       // Nouvel objet
+        String str3 = "Hello";                   // Référence vers le même objet que str1
+        char[] chars = {'H', 'e', 'l', 'l', 'o'};
+        String str4 = new String(chars);         // À partir d'un tableau de char
+        
+        // 2. Comparaisons
+        System.out.println("=== COMPARAISONS STRING ===");
+        System.out.println("str1 == str2: " + (str1 == str2));         // false (objets différents)
+        System.out.println("str1 == str3: " + (str1 == str3));         // true (même objet, String pool)
+        System.out.println("str1.equals(str2): " + str1.equals(str2)); // true (même contenu)
+        
+        // 3. Propriétés de base
+        String texte = "Formation Java Complète";
+        System.out.println("\n=== PROPRIÉTÉS ===");
+        System.out.println("Texte: '" + texte + "'");
+        System.out.println("Longueur: " + texte.length());
+        System.out.println("Est vide: " + texte.isEmpty());
+        System.out.println("Est blanc: " + texte.isBlank());
+        
+        // 4. Accès aux caractères
+        System.out.println("\n=== ACCÈS AUX CARACTÈRES ===");
+        System.out.println("Premier caractère: '" + texte.charAt(0) + "'");
+        System.out.println("Dernier caractère: '" + texte.charAt(texte.length() - 1) + "'");
+        
+        // Parcours caractère par caractère
+        System.out.print("Caractères: ");
+        for (int i = 0; i < texte.length(); i++) {
+            System.out.print("'" + texte.charAt(i) + "' ");
+        }
+        System.out.println();
+        
+        // 5. Recherche dans les chaînes
+        System.out.println("\n=== RECHERCHE ===");
+        System.out.println("Contient 'Java': " + texte.contains("Java"));
+        System.out.println("Commence par 'Formation': " + texte.startsWith("Formation"));
+        System.out.println("Finit par 'Complète': " + texte.endsWith("Complète"));
+        System.out.println("Index de 'Java': " + texte.indexOf("Java"));
+        System.out.println("Dernier index de 'a': " + texte.lastIndexOf("a"));
+        
+        // 6. Transformation
+        System.out.println("\n=== TRANSFORMATIONS ===");
+        System.out.println("Majuscules: " + texte.toUpperCase());
+        System.out.println("Minuscules: " + texte.toLowerCase());
+        System.out.println("Première lettre maj: " + capitaliserPremiere(texte));
+        
+        // 7. Extraction de sous-chaînes
+        System.out.println("\n=== SOUS-CHAÎNES ===");
+        System.out.println("Substring(0,9): '" + texte.substring(0, 9) + "'");
+        System.out.println("Substring(10): '" + texte.substring(10) + "'");
+        
+        // 8. Division et jointure
+        System.out.println("\n=== DIVISION ET JOINTURE ===");
+        String phrase = "Java,Python,JavaScript,C++";
+        String[] langages = phrase.split(",");
+        
+        System.out.println("Phrase originale: " + phrase);
+        System.out.println("Après split:");
+        for (int i = 0; i < langages.length; i++) {
+            System.out.println("  " + i + ": '" + langages[i] + "'");
+        }
+        
+        // Jointure avec String.join (Java 8+)
+        String rejointe = String.join(" | ", langages);
+        System.out.println("Après join: " + rejointe);
+    }
+    
+    public static String capitaliserPremiere(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- String vs StringBuilder -->
+                        <section id="string-vs-stringbuilder" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-tools"></i>
+                                String vs StringBuilder vs StringBuffer
+                            </h2>
+                            
+                            <p>Comprendre les différences de performance entre String, StringBuilder et StringBuffer est crucial pour écrire du code efficace.</p>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h5>String</h5>
+                                        <ul>
+                                            <li><strong>Immuable</strong></li>
+                                            <li>Thread-safe</li>
+                                            <li>Lent pour concatenations</li>
+                                            <li>String pool</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h5>StringBuilder</h5>
+                                        <ul>
+                                            <li><strong>Mutable</strong></li>
+                                            <li>Non thread-safe</li>
+                                            <li>Rapide</li>
+                                            <li>Usage mono-thread</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h5>StringBuffer</h5>
+                                        <ul>
+                                            <li><strong>Mutable</strong></li>
+                                            <li>Thread-safe</li>
+                                            <li>Plus lent que StringBuilder</li>
+                                            <li>Usage multi-thread</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Démonstration des Performances</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class PerformanceStrings {
+    public static void main(String[] args) {
+        int iterations = 10000;
+        
+        // Test avec String (LENT)
+        long debut = System.currentTimeMillis();
+        String resultatString = "";
+        for (int i = 0; i < iterations; i++) {
+            resultatString += "a"; // Crée un nouvel objet à chaque fois !
+        }
+        long tempsString = System.currentTimeMillis() - debut;
+        
+        // Test avec StringBuilder (RAPIDE)
+        debut = System.currentTimeMillis();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < iterations; i++) {
+            sb.append("a"); // Modifie le buffer interne
+        }
+        String resultatSB = sb.toString();
+        long tempsStringBuilder = System.currentTimeMillis() - debut;
+        
+        // Test avec StringBuffer (MOYEN)
+        debut = System.currentTimeMillis();
+        StringBuffer sbf = new StringBuffer();
+        for (int i = 0; i < iterations; i++) {
+            sbf.append("a");
+        }
+        String resultatSBF = sbf.toString();
+        long tempsStringBuffer = System.currentTimeMillis() - debut;
+        
+        // Résultats
+        System.out.println("=== COMPARAISON PERFORMANCES ===");
+        System.out.println("Itérations: " + iterations);
+        System.out.println("String: " + tempsString + " ms");
+        System.out.println("StringBuilder: " + tempsStringBuilder + " ms");
+        System.out.println("StringBuffer: " + tempsStringBuffer + " ms");
+        System.out.println();
+        System.out.println("StringBuilder est " + (tempsString / (tempsStringBuilder + 1)) + 
+                          "x plus rapide que String");
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>StringBuilder - Méthodes Avancées</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class StringBuilderAvance {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Formation Java");
+        
+        System.out.println("=== STRINGBUILDER AVANCÉ ===");
+        System.out.println("Initial: '" + sb.toString() + "'");
+        System.out.println("Capacité: " + sb.capacity());
+        System.out.println("Longueur: " + sb.length());
+        
+        // Ajout de texte
+        sb.append(" - Module 4");
+        System.out.println("Après append: '" + sb.toString() + "'");
+        
+        // Insertion
+        sb.insert(9, "Complète ");
+        System.out.println("Après insert: '" + sb.toString() + "'");
+        
+        // Remplacement
+        sb.replace(9, 17, "Exhaustive");
+        System.out.println("Après replace: '" + sb.toString() + "'");
+        
+        // Suppression
+        sb.delete(9, 19);
+        System.out.println("Après delete: '" + sb.toString() + "'");
+        
+        // Inversion
+        sb.reverse();
+        System.out.println("Après reverse: '" + sb.toString() + "'");
+        sb.reverse(); // Remettre dans l'ordre
+        
+        // Modification de caractères individuels
+        sb.setCharAt(0, 'f'); // Minuscule
+        System.out.println("Après setCharAt: '" + sb.toString() + "'");
+        
+        // Optimisation de la capacité
+        sb.trimToSize();
+        System.out.println("Capacité après trim: " + sb.capacity());
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Exhaustifs (20 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-chart-bar"></i> Exercice 1 : Analyseur de Données Statistiques
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un analyseur complet de données numériques.</p>
+                                <p><strong>Fonctionnalités :</strong></p>
+                                <ul>
+                                    <li>Saisie d'un tableau de notes (taille variable)</li>
+                                    <li>Calculs : moyenne, médiane, mode, écart-type</li>
+                                    <li>Histogramme ASCII des notes</li>
+                                    <li>Détection des valeurs aberrantes (outliers)</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.Arrays;
+
+public class AnalyseurStatistiques {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== ANALYSEUR DE DONNÉES STATISTIQUES ===");
+        System.out.print("Combien de notes voulez-vous saisir ? ");
+        int taille = scanner.nextInt();
+        
+        double[] notes = new double[taille];
+        
+        // Saisie des notes
+        for (int i = 0; i < taille; i++) {
+            System.out.print("Note " + (i + 1) + " (0-20) : ");
+            notes[i] = scanner.nextDouble();
+            
+            // Validation
+            while (notes[i] < 0 || notes[i] > 20) {
+                System.out.print("Note invalide ! Ressaisissez (0-20) : ");
+                notes[i] = scanner.nextDouble();
+            }
+        }
+        
+        // Analyse complète
+        analyserDonnees(notes);
+        
+        scanner.close();
+    }
+    
+    public static void analyserDonnees(double[] notes) {
+        System.out.println("\n=== ANALYSE COMPLÈTE ===");
+        System.out.println("Données: " + Arrays.toString(notes));
+        System.out.println("Nombre d'observations: " + notes.length);
+        
+        // 1. Moyenne
+        double moyenne = calculerMoyenne(notes);
+        System.out.printf("Moyenne: %.2f%n", moyenne);
+        
+        // 2. Médiane
+        double mediane = calculerMediane(notes);
+        System.out.printf("Médiane: %.2f%n", mediane);
+        
+        // 3. Mode (valeur la plus fréquente)
+        double mode = calculerMode(notes);
+        if (mode != -1) {
+            System.out.printf("Mode: %.2f%n", mode);
+        } else {
+            System.out.println("Mode: Aucune valeur répétée");
+        }
+        
+        // 4. Écart-type
+        double ecartType = calculerEcartType(notes, moyenne);
+        System.out.printf("Écart-type: %.2f%n", ecartType);
+        
+        // 5. Min/Max
+        double[] minMax = trouverMinMax(notes);
+        System.out.printf("Minimum: %.2f%n", minMax[0]);
+        System.out.printf("Maximum: %.2f%n", minMax[1]);
+        System.out.printf("Étendue: %.2f%n", minMax[1] - minMax[0]);
+        
+        // 6. Quartiles
+        double[] quartiles = calculerQuartiles(notes);
+        System.out.printf("Q1 (25%%): %.2f%n", quartiles[0]);
+        System.out.printf("Q2 (50%% - médiane): %.2f%n", quartiles[1]);
+        System.out.printf("Q3 (75%%): %.2f%n", quartiles[2]);
+        
+        // 7. Histogramme
+        afficherHistogramme(notes);
+        
+        // 8. Valeurs aberrantes
+        detecterValabersAberrantes(notes, quartiles);
+    }
+    
+    public static double calculerMoyenne(double[] tableau) {
+        double somme = 0;
+        for (double valeur : tableau) {
+            somme += valeur;
+        }
+        return somme / tableau.length;
+    }
+    
+    public static double calculerMediane(double[] tableau) {
+        double[] copie = tableau.clone();
+        Arrays.sort(copie);
+        
+        int milieu = copie.length / 2;
+        if (copie.length % 2 == 0) {
+            return (copie[milieu - 1] + copie[milieu]) / 2.0;
+        } else {
+            return copie[milieu];
+        }
+    }
+    
+    public static double calculerMode(double[] tableau) {
+        double mode = -1;
+        int maxFrequence = 0;
+        
+        for (int i = 0; i < tableau.length; i++) {
+            int frequence = 0;
+            for (int j = 0; j < tableau.length; j++) {
+                if (Math.abs(tableau[j] - tableau[i]) < 0.01) { // Tolérance pour les doubles
+                    frequence++;
+                }
+            }
+            
+            if (frequence > maxFrequence && frequence > 1) {
+                maxFrequence = frequence;
+                mode = tableau[i];
+            }
+        }
+        
+        return mode;
+    }
+    
+    public static double calculerEcartType(double[] tableau, double moyenne) {
+        double sommeDifferencesCarrees = 0;
+        
+        for (double valeur : tableau) {
+            double difference = valeur - moyenne;
+            sommeDifferencesCarrees += difference * difference;
+        }
+        
+        return Math.sqrt(sommeDifferencesCarrees / tableau.length);
+    }
+    
+    public static double[] trouverMinMax(double[] tableau) {
+        double min = tableau[0];
+        double max = tableau[0];
+        
+        for (double valeur : tableau) {
+            if (valeur < min) min = valeur;
+            if (valeur > max) max = valeur;
+        }
+        
+        return new double[]{min, max};
+    }
+    
+    public static double[] calculerQuartiles(double[] tableau) {
+        double[] copie = tableau.clone();
+        Arrays.sort(copie);
+        
+        int n = copie.length;
+        double q1, q2, q3;
+        
+        // Q2 (médiane)
+        if (n % 2 == 0) {
+            q2 = (copie[n/2 - 1] + copie[n/2]) / 2.0;
+        } else {
+            q2 = copie[n/2];
+        }
+        
+        // Q1 (médiane de la première moitié)
+        int milieu1 = n / 4;
+        if (n % 4 == 0) {
+            q1 = (copie[milieu1 - 1] + copie[milieu1]) / 2.0;
+        } else {
+            q1 = copie[milieu1];
+        }
+        
+        // Q3 (médiane de la seconde moitié)
+        int milieu3 = 3 * n / 4;
+        if (n % 4 == 0) {
+            q3 = (copie[milieu3 - 1] + copie[milieu3]) / 2.0;
+        } else {
+            q3 = copie[milieu3];
+        }
+        
+        return new double[]{q1, q2, q3};
+    }
+    
+    public static void afficherHistogramme(double[] notes) {
+        System.out.println("\n=== HISTOGRAMME ===");
+        
+        // Créer des intervalles (0-5, 5-10, 10-15, 15-20)
+        int[] frequences = new int[4];
+        String[] intervalles = {"0-5", "5-10", "10-15", "15-20"};
+        
+        for (double note : notes) {
+            if (note >= 0 && note < 5) frequences[0]++;
+            else if (note >= 5 && note < 10) frequences[1]++;
+            else if (note >= 10 && note < 15) frequences[2]++;
+            else if (note >= 15 && note <= 20) frequences[3]++;
+        }
+        
+        // Affichage de l'histogramme
+        for (int i = 0; i < intervalles.length; i++) {
+            System.out.printf("%-6s │", intervalles[i]);
+            for (int j = 0; j < frequences[i]; j++) {
+                System.out.print("█");
+            }
+            System.out.printf(" (%d)%n", frequences[i]);
+        }
+    }
+    
+    public static void detecterValabersAberrantes(double[] notes, double[] quartiles) {
+        double q1 = quartiles[0];
+        double q3 = quartiles[2];
+        double iqr = q3 - q1; // Écart interquartile
+        
+        double seuilBas = q1 - 1.5 * iqr;
+        double seuilHaut = q3 + 1.5 * iqr;
+        
+        System.out.println("\n=== DÉTECTION VALEURS ABERRANTES ===");
+        System.out.printf("Seuils: %.2f < valeurs normales < %.2f%n", seuilBas, seuilHaut);
+        
+        boolean aberranteTrouvee = false;
+        for (double note : notes) {
+            if (note < seuilBas || note > seuilHaut) {
+                System.out.printf("⚠️  Valeur aberrante détectée: %.2f%n", note);
+                aberranteTrouvee = true;
+            }
+        }
+        
+        if (!aberranteTrouvee) {
+            System.out.println("Aucune valeur aberrante détectée");
+        }
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 2 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-puzzle-piece"></i> Exercice 2 : Jeu du Sudoku - Validateur
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un validateur de grilles Sudoku 9x9.</p>
+                                <p><strong>Règles Sudoku :</strong></p>
+                                <ul>
+                                    <li>Chaque ligne contient les chiffres 1-9 sans répétition</li>
+                                    <li>Chaque colonne contient les chiffres 1-9 sans répétition</li>
+                                    <li>Chaque carré 3x3 contient les chiffres 1-9 sans répétition</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution2">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution2">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">public class ValidateurSudoku {
+    public static void main(String[] args) {
+        // Grille Sudoku valide pour test
+        int[][] grilleValide = {
+            {5,3,4,6,7,8,9,1,2},
+            {6,7,2,1,9,5,3,4,8},
+            {1,9,8,3,4,2,5,6,7},
+            {8,5,9,7,6,1,4,2,3},
+            {4,2,6,8,5,3,7,9,1},
+            {7,1,3,9,2,4,8,5,6},
+            {9,6,1,5,3,7,2,8,4},
+            {2,8,7,4,1,9,6,3,5},
+            {3,4,5,2,8,6,1,7,9}
+        };
+        
+        // Grille Sudoku invalide pour test
+        int[][] grilleInvalide = {
+            {5,3,4,6,7,8,9,1,2},
+            {6,7,2,1,9,5,3,4,8},
+            {1,9,8,3,4,2,5,6,7},
+            {8,5,9,7,6,1,4,2,3},
+            {4,2,6,8,5,3,7,9,1},
+            {7,1,3,9,2,4,8,5,6},
+            {9,6,1,5,3,7,2,8,4},
+            {2,8,7,4,1,9,6,3,5},
+            {3,4,5,2,8,6,1,7,5} // Erreur: 5 répété dans la dernière ligne
+        };
+        
+        System.out.println("=== VALIDATEUR SUDOKU ===");
+        
+        System.out.println("\nTest grille valide:");
+        afficherGrille(grilleValide);
+        if (validerSudoku(grilleValide)) {
+            System.out.println("✅ Grille Sudoku VALIDE !");
+        } else {
+            System.out.println("❌ Grille Sudoku INVALIDE !");
+        }
+        
+        System.out.println("\nTest grille invalide:");
+        afficherGrille(grilleInvalide);
+        if (validerSudoku(grilleInvalide)) {
+            System.out.println("✅ Grille Sudoku VALIDE !");
+        } else {
+            System.out.println("❌ Grille Sudoku INVALIDE !");
+        }
+    }
+    
+    public static boolean validerSudoku(int[][] grille) {
+        // Vérifier que la grille est 9x9
+        if (grille.length != 9) {
+            System.out.println("Erreur: La grille doit avoir 9 lignes");
+            return false;
+        }
+        
+        for (int i = 0; i < 9; i++) {
+            if (grille[i].length != 9) {
+                System.out.println("Erreur: La ligne " + i + " doit avoir 9 colonnes");
+                return false;
+            }
+        }
+        
+        // Vérifier les lignes
+        for (int i = 0; i < 9; i++) {
+            if (!validerLigne(grille, i)) {
+                System.out.println("Erreur dans la ligne " + (i + 1));
+                return false;
+            }
+        }
+        
+        // Vérifier les colonnes
+        for (int j = 0; j < 9; j++) {
+            if (!validerColonne(grille, j)) {
+                System.out.println("Erreur dans la colonne " + (j + 1));
+                return false;
+            }
+        }
+        
+        // Vérifier les carrés 3x3
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                if (!validerCarre3x3(grille, i, j)) {
+                    System.out.println("Erreur dans le carré 3x3 en position (" + i + "," + j + ")");
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    public static boolean validerLigne(int[][] grille, int ligne) {
+        boolean[] present = new boolean[10]; // Index 1-9 utilisés
+        
+        for (int j = 0; j < 9; j++) {
+            int valeur = grille[ligne][j];
+            
+            if (valeur < 1 || valeur > 9) {
+                return false; // Valeur hors limites
+            }
+            
+            if (present[valeur]) {
+                return false; // Valeur déjà présente
+            }
+            
+            present[valeur] = true;
+        }
+        
+        return true;
+    }
+    
+    public static boolean validerColonne(int[][] grille, int colonne) {
+        boolean[] present = new boolean[10];
+        
+        for (int i = 0; i < 9; i++) {
+            int valeur = grille[i][colonne];
+            
+            if (valeur < 1 || valeur > 9) {
+                return false;
+            }
+            
+            if (present[valeur]) {
+                return false;
+            }
+            
+            present[valeur] = true;
+        }
+        
+        return true;
+    }
+    
+    public static boolean validerCarre3x3(int[][] grille, int startLigne, int startColonne) {
+        boolean[] present = new boolean[10];
+        
+        for (int i = startLigne; i < startLigne + 3; i++) {
+            for (int j = startColonne; j < startColonne + 3; j++) {
+                int valeur = grille[i][j];
+                
+                if (valeur < 1 || valeur > 9) {
+                    return false;
+                }
+                
+                if (present[valeur]) {
+                    return false;
+                }
+                
+                present[valeur] = true;
+            }
+        }
+        
+        return true;
+    }
+    
+    public static void afficherGrille(int[][] grille) {
+        System.out.println("┌─────────┬─────────┬─────────┐");
+        
+        for (int i = 0; i < 9; i++) {
+            System.out.print("│ ");
+            
+            for (int j = 0; j < 9; j++) {
+                System.out.print(grille[i][j]);
+                
+                if (j % 3 == 2) {
+                    System.out.print(" │ ");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            
+            System.out.println();
+            
+            if (i % 3 == 2 && i < 8) {
+                System.out.println("├─────────┼─────────┼─────────┤");
+            }
+        }
+        
+        System.out.println("└─────────┴─────────┴─────────┘");
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 3 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-spell-check"></i> Exercice 3 : Analyseur de Texte Avancé
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un analyseur de texte complet avec statistiques détaillées.</p>
+                                <p><strong>Analyses :</strong></p>
+                                <ul>
+                                    <li>Comptage : caractères, mots, phrases, paragraphes</li>
+                                    <li>Fréquence des lettres et mots</li>
+                                    <li>Détection de la langue (français/anglais basique)</li>
+                                    <li>Indice de lisibilité</li>
+                                    <li>Correction orthographique basique</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution3">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution3">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class AnalyseurTexte {
+    public static void main(String[] args) {
+        String texte = "La programmation Java est un art qui demande de la pratique. " +
+                      "Chaque développeur doit maîtriser les concepts fondamentaux. " +
+                      "Les tableaux et les chaînes de caractères sont essentiels. " +
+                      "Un bon programmeur écrit du code lisible et efficace.";
+        
+        System.out.println("=== ANALYSEUR DE TEXTE AVANCÉ ===");
+        System.out.println("Texte à analyser:");
+        System.out.println("\"" + texte + "\"");
+        System.out.println();
+        
+        analyserTexteComplet(texte);
+    }
+    
+    public static void analyserTexteComplet(String texte) {
+        // 1. Statistiques de base
+        System.out.println("=== STATISTIQUES DE BASE ===");
+        System.out.println("Caractères total: " + texte.length());
+        System.out.println("Caractères sans espaces: " + texte.replace(" ", "").length());
+        
+        String[] mots = texte.toLowerCase().split("[\\s\\p{Punct}]+");
+        mots = Arrays.stream(mots).filter(mot -> !mot.isEmpty()).toArray(String[]::new);
+        System.out.println("Nombre de mots: " + mots.length);
+        
+        String[] phrases = texte.split("[.!?]+");
+        System.out.println("Nombre de phrases: " + phrases.length);
+        
+        // 2. Analyse des caractères
+        System.out.println("\n=== ANALYSE DES CARACTÈRES ===");
+        analyserCaracteres(texte);
+        
+        // 3. Fréquence des mots
+        System.out.println("\n=== FRÉQUENCE DES MOTS ===");
+        analyserFrequenceMots(mots);
+        
+        // 4. Longueur moyenne des mots
+        double longueurMoyenne = 0;
+        for (String mot : mots) {
+            longueurMoyenne += mot.length();
+        }
+        longueurMoyenne /= mots.length;
+        System.out.printf("Longueur moyenne des mots: %.2f caractères%n", longueurMoyenne);
+        
+        // 5. Indice de lisibilité (simplifié)
+        double indiceLisibilite = calculerIndiceLisibilite(mots.length, phrases.length, longueurMoyenne);
+        System.out.printf("Indice de lisibilité: %.2f%n", indiceLisibilite);
+        
+        // 6. Détection de langue basique
+        String langueProbable = detecterLangue(texte);
+        System.out.println("Langue probable: " + langueProbable);
+    }
+    
+    public static void analyserCaracteres(String texte) {
+        int[] frequences = new int[26]; // a-z
+        int voyelles = 0;
+        int consonnes = 0;
+        int chiffres = 0;
+        int espacesEtPonctuation = 0;
+        
+        for (char c : texte.toLowerCase().toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                frequences[c - 'a']++;
+                if ("aeiou".indexOf(c) != -1) {
+                    voyelles++;
+                } else {
+                    consonnes++;
+                }
+            } else if (c >= '0' && c <= '9') {
+                chiffres++;
+            } else {
+                espacesEtPonctuation++;
+            }
+        }
+        
+        System.out.println("Voyelles: " + voyelles);
+        System.out.println("Consonnes: " + consonnes);
+        System.out.println("Chiffres: " + chiffres);
+        System.out.println("Espaces et ponctuation: " + espacesEtPonctuation);
+        
+        // Affichage des lettres les plus fréquentes
+        System.out.println("\nLettres les plus fréquentes:");
+        for (int i = 0; i < 5; i++) { // Top 5
+            int maxIndex = 0;
+            for (int j = 1; j < 26; j++) {
+                if (frequences[j] > frequences[maxIndex]) {
+                    maxIndex = j;
+                }
+            }
+            
+            if (frequences[maxIndex] > 0) {
+                char lettre = (char) ('a' + maxIndex);
+                System.out.println("  " + lettre + ": " + frequences[maxIndex] + " fois");
+                frequences[maxIndex] = 0; // Retirer pour le prochain
+            }
+        }
+    }
+    
+    public static void analyserFrequenceMots(String[] mots) {
+        Map<String, Integer> frequenceMots = new HashMap<>();
+        
+        // Compter les occurrences
+        for (String mot : mots) {
+            frequenceMots.put(mot, frequenceMots.getOrDefault(mot, 0) + 1);
+        }
+        
+        // Trouver les mots les plus fréquents
+        System.out.println("Mots les plus fréquents:");
+        frequenceMots.entrySet().stream()
+            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+            .limit(10)
+            .forEach(entry -> 
+                System.out.println("  '" + entry.getKey() + "': " + entry.getValue() + " fois"));
+        
+        System.out.println("Vocabulaire unique: " + frequenceMots.size() + " mots différents");
+    }
+    
+    public static double calculerIndiceLisibilite(int nbMots, int nbPhrases, double longueurMoyenne) {
+        // Formule simplifiée inspirée de Flesch-Kincaid
+        double motsParPhrase = (double) nbMots / nbPhrases;
+        return 100 - (1.015 * motsParPhrase) - (84.6 * longueurMoyenne / nbMots * 100);
+    }
+    
+    public static String detecterLangue(String texte) {
+        String texteLower = texte.toLowerCase();
+        
+        // Mots indicateurs français
+        String[] motsFrancais = {"le", "la", "les", "de", "du", "des", "et", "est", "une", "que", "avec"};
+        int scoreFrancais = 0;
+        
+        // Mots indicateurs anglais
+        String[] motsAnglais = {"the", "and", "is", "are", "with", "that", "this", "for", "you", "have"};
+        int scoreAnglais = 0;
+        
+        for (String mot : motsFrancais) {
+            if (texteLower.contains(" " + mot + " ") || texteLower.startsWith(mot + " ")) {
+                scoreFrancais++;
+            }
+        }
+        
+        for (String mot : motsAnglais) {
+            if (texteLower.contains(" " + mot + " ") || texteLower.startsWith(mot + " ")) {
+                scoreAnglais++;
+            }
+        }
+        
+        if (scoreFrancais > scoreAnglais) {
+            return "Français (score: " + scoreFrancais + ")";
+        } else if (scoreAnglais > scoreFrancais) {
+            return "Anglais (score: " + scoreAnglais + ")";
+        } else {
+            return "Indéterminé";
+        }
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-3-structures-controle.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 3 : Structures
+                            </a>
+                            <a href="module-5-classes-objets-poo.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 5 : Classes POO
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

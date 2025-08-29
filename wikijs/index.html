@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation WikiJS & SSO - De A à Z</title>
+    <title>Formation WikiJS & SSO - Plateforme Wiki Moderne</title>
+    <meta name="description" content="Formation complète WikiJS & SSO : installation, configuration, authentification, personnalisation et déploiement professionnel.">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-color: #dc143c;
-            --secondary-color: #2563eb;
-            --success-color: #059669;
-            --warning-color: #d97706;
-            --info-color: #0284c7;
+            --wikijs-blue: #2563eb;
+            --wikijs-indigo: #4f46e5;
             --dark-color: #1f2937;
             --light-bg: #f8fafc;
             --border-color: #e2e8f0;
             --text-muted: #64748b;
-            --completion-green: #10b981;
-            --completion-gold: #f59e0b;
-            --inskillflow-blue: #0ea5e9;
+            --premium-gold: #f59e0b;
         }
 
         body {
@@ -36,194 +28,38 @@
             color: var(--dark-color);
             line-height: 1.6;
             min-height: 100vh;
+            padding-top: 80px;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 5rem 0;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/><circle cx="25" cy="75" r="1.5" fill="white" opacity="0.08"/><circle cx="75" cy="25" r="1" fill="white" opacity="0.06"/></svg>') repeat;
-            animation: float 20s infinite linear;
-        }
-
-        .hero-visual {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95) !important;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .hero-code-preview {
-            background: #1a1a1a;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: #e2e8f0;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
+        .navbar-brand { color: white !important; font-weight: 700; font-size: 1.4rem; }
+        .navbar-nav .nav-link { color: rgba(255, 255, 255, 0.9) !important; font-weight: 500; }
+        .btn-premium { background: linear-gradient(135deg, var(--premium-gold), #f97316); color: white !important; }
 
-        .hero-code-preview::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background: #2d2d2d;
-            border-bottom: 1px solid #404040;
-        }
-
-        .code-dots {
-            position: absolute;
-            top: 10px;
-            left: 12px;
-            display: flex;
-            gap: 6px;
-        }
-
-        .code-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .code-dot.red { background: #ff5f56; }
-        .code-dot.yellow { background: #ffbd2e; }
-        .code-dot.green { background: #27ca3f; }
-
-        .tech-illustration {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
+        .hero-course {
+            background: linear-gradient(135deg, var(--wikijs-blue), var(--wikijs-indigo));
             color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
         }
 
-        .tech-illustration::before {
+        .hero-course::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent, rgba(255,255,255,0.1));
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .phase-illustration {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .phase-illustration.phase1 {
-            background: linear-gradient(135deg, #dc322f, #cb4154);
-        }
-
-        .phase-illustration.phase2 {
-            background: linear-gradient(135deg, #e25a1c, #f97316);
-        }
-
-        .phase-illustration.phase3 {
-            background: linear-gradient(135deg, #059669, #10b981);
-        }
-
-        .module-preview-image {
-            width: 100%;
-            height: 120px;
-            background: linear-gradient(135deg, var(--light-bg), #e2e8f0);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .module-preview-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><rect x="10" y="20" width="180" height="8" fill="%23e2e8f0" rx="4"/><rect x="10" y="35" width="140" height="8" fill="%23cbd5e1" rx="4"/><rect x="10" y="50" width="160" height="8" fill="%23e2e8f0" rx="4"/><rect x="10" y="75" width="120" height="12" fill="%23dc143c" rx="6"/></svg>') no-repeat center;
-            opacity: 0.6;
-        }
-
-        .module-preview-image.wikijs {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.1));
-        }
-
-        .module-preview-image.sso {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
-        }
-
-        .module-preview-image.advanced {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.1));
-        }
-
-        .success-visual {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            border: 2px solid rgba(16, 185, 129, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .success-visual::before {
-            content: '\f19d';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            font-size: 8rem;
-            opacity: 0.05;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            color: var(--completion-green);
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
         }
 
         @keyframes float {
@@ -231,170 +67,19 @@
             100% { transform: translateX(-50px) translateY(-50px); }
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
+        .hero-content { position: relative; z-index: 2; }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            margin-bottom: 2rem;
-            font-weight: 400;
-        }
-
-        .completion-badge {
-            background: linear-gradient(135deg, var(--completion-green), var(--success-color));
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-            animation: pulse-glow 2s infinite alternate;
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
-            100% { box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6); }
-        }
-
-        .creator-info {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-        }
-
-        .creator-info h6 {
-            margin-bottom: 1rem;
-            font-weight: 600;
-            opacity: 0.9;
-        }
-
-        .creator-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .creator-link {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .creator-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .stats-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
+        .course-icon-large {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
             border-radius: 16px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .stats-card .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .stats-card .stat-label {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        .achievement-section {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            margin: 3rem 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .achievement-title {
-            color: var(--completion-green);
-            font-weight: 700;
-            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             margin-bottom: 1rem;
-            text-align: center;
         }
-
-        .tech-mastery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .tech-card {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .tech-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.15);
-        }
-
-        .tech-card.wikijs { border-left: 4px solid #3b82f6; }
-        .tech-card.sso { border-left: 4px solid #10b981; }
-        .tech-card.auth { border-left: 4px solid #f59e0b; }
-        .tech-card.security { border-left: 4px solid #dc2626; }
-        .tech-card.monetization { border-left: 4px solid #059669; }
 
         .module-card {
             background: white;
@@ -402,7 +87,6 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -415,2537 +99,270 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: linear-gradient(135deg, var(--completion-green), var(--success-color));
+            background: linear-gradient(135deg, var(--wikijs-blue), var(--wikijs-indigo));
         }
 
-        .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
+        .module-card:hover { transform: translateY(-5px); }
 
-        .module-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
+        .module-header { display: flex; align-items: center; margin-bottom: 1.5rem; }
         .module-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--wikijs-blue), var(--wikijs-indigo));
             color: white;
             border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
-            font-size: 1.25rem;
             margin-right: 1.5rem;
-            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-        }
-
-        .module-tech-badge {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
-            color: #1e293b !important;
-            border: 2px solid rgba(79, 70, 229, 0.2);
-            padding: 0.4rem 1rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            box-shadow: 0 2px 10px rgba(79, 70, 229, 0.15);
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            min-width: fit-content;
-        }
-
-        .module-tech-badge:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
-            border-color: rgba(79, 70, 229, 0.4);
-        }
-
-        .module-title {
-            color: var(--dark-color);
-            font-weight: 700;
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
-        }
-
-        .module-description {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .module-meta {
-            display: flex;
-            gap: 2rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .module-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .btn-module {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border: none;
+            background: linear-gradient(135deg, var(--wikijs-blue), var(--wikijs-indigo));
             color: white;
             padding: 0.75rem 2rem;
             border-radius: 10px;
-            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
         }
 
-        .btn-module:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
-            color: white;
-        }
+        .btn-module:hover { transform: translateY(-2px); color: white; }
 
-        .progress-section {
+        .achievement-section {
             background: white;
             border-radius: 20px;
             padding: 3rem 2rem;
             margin: 3rem 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-        }
-
-        .progress-ring {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 2rem;
-        }
-
-        .progress-ring svg {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            stroke: var(--border-color);
-            stroke-width: 8;
-            fill: transparent;
-            r: 90;
-            cx: 100;
-            cy: 100;
-        }
-
-        .progress-ring-progress {
-            stroke: var(--completion-green);
-            stroke-width: 8;
-            fill: transparent;
-            r: 90;
-            cx: 100;
-            cy: 100;
-            stroke-dasharray: 565.48;
-            stroke-dashoffset: 0;
-            transition: stroke-dashoffset 2s ease;
-            stroke-linecap: round;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--completion-green);
-        }
-
-        .tech-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin: 0.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .tech-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .wikijs-badge { 
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
-            color: white;
-        }
-        
-        .sso-badge { 
-            background: linear-gradient(135deg, #10b981, #059669); 
-            color: white;
-        }
-        
-        .auth-badge { 
-            background: linear-gradient(135deg, #f59e0b, #d97706); 
-            color: white;
-        }
-        
-        .security-badge { 
-            background: linear-gradient(135deg, #dc2626, #b91c1c); 
-            color: white;
-        }
-
-        .oauth-badge { 
-            background: linear-gradient(135deg, #7c3aed, #6d28d9); 
-            color: white;
-        }
-
-        .monetization-badge { 
-            background: linear-gradient(135deg, #059669, #047857); 
-            color: white;
-        }
-
-        .project-showcase {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            border-radius: 16px;
-            padding: 2rem;
-            margin: 2rem 0;
-            border-left: 4px solid var(--completion-gold);
-        }
-
-        .project-showcase h5 {
-            color: var(--completion-gold);
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .footer {
-            background: linear-gradient(135deg, var(--dark-color), #374151);
-            color: white;
-            padding: 3rem 0;
-            margin-top: 4rem;
-        }
-
-        .footer-section {
-            margin-bottom: 2rem;
-        }
-
-        .footer-title {
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--inskillflow-blue);
-        }
-
-        .footer-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-link:hover {
-            color: var(--inskillflow-blue);
-            transform: translateX(5px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--inskillflow-blue);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--inskillflow-blue);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .tech-mastery {
-                grid-template-columns: 1fr;
-            }
-            .module-meta {
-                gap: 1rem;
-            }
-            .creator-links {
-                flex-direction: column;
-            }
-        }
-
-        .celebration-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        /* Modules Overview Styles */
-        .modules-overview-section {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem 2rem 2rem;
-            margin: 3rem 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .modules-main-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark-color);
-            margin-bottom: 1rem;
-        }
-
-        .quick-nav-section {
-            background: var(--light-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .nav-category {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            margin-bottom: 1rem;
-        }
-
-        .nav-category:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.15);
-        }
-
-        .nav-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .nav-icon.wikijs {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        }
-
-        .nav-icon.sso {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .nav-icon.advanced {
-            background: linear-gradient(135deg, #059669, #10b981);
-        }
-
-        .nav-modules {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .nav-module-link {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .nav-module-link:hover {
-            background: var(--secondary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-        }
-
-        /* Phase Styles */
-        .modules-phase {
-            margin: 4rem 0;
-        }
-
-        .phase-header {
-            background: linear-gradient(135deg, var(--light-bg), #e2e8f0);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 5px solid var(--primary-color);
-        }
-
-        .phase-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark-color);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .phase-number {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .phase-description {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 0;
-        }
-
-        /* Smooth scrolling for navigation links */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Module cards enhanced for phases */
-        .modules-phase .module-card {
-            margin-bottom: 2rem;
-        }
-
-        .modules-phase .module-card:hover {
-            transform: translateY(-8px);
-        }
-
-        /* Professional Design Elements */
-        .hero-title {
-            background: linear-gradient(135deg, #ffffff, #f8fafc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .completion-badge {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .completion-badge::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .success-trophy {
-            display: inline-block;
-            font-size: 4rem;
-            background: linear-gradient(135deg, #ffd700, #ffed4a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
-            animation: trophy-shine 3s infinite;
-        }
-
-        @keyframes trophy-shine {
-            0%, 100% { filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)) brightness(1); }
-            50% { filter: drop-shadow(2px 2px 8px rgba(255,215,0,0.5)) brightness(1.2); }
-        }
-
-        .professional-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .professional-gradient::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: slide 3s infinite;
-        }
-
-        @keyframes slide {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .corporate-badge {
-            background: linear-gradient(135deg, #2d3748, #4a5568);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(45, 55, 72, 0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .achievement-title {
-            background: linear-gradient(135deg, var(--completion-green), #48bb78);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .phase-title {
-            position: relative;
-        }
-
-        .phase-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 2px;
-        }
-
-        /* Navigation Sticky Styles - FOND SOMBRE DÈS LE DÉBUT */
-        #mainNavbar {
-            background-color: rgba(15, 23, 42, 0.85) !important;
-            background: rgba(15, 23, 42, 0.85) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 1rem 0;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1050;
-        }
-
-        #mainNavbar.scrolled {
-            background-color: rgba(31, 41, 55, 0.95) !important;
-            background: rgba(31, 41, 55, 0.95) !important;
-            backdrop-filter: blur(30px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        #mainNavbar .navbar-brand {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        #mainNavbar .brand-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        #mainNavbar .brand-subtitle {
-            font-size: 0.75rem;
-            color: var(--completion-gold);
-            font-weight: 500;
-            margin-top: -2px;
-        }
-
-        #mainNavbar .nav-link {
-            color: rgba(255, 255, 255, 0.95) !important;
-            font-weight: 500;
-            padding: 0.5rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #mainNavbar .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        #mainNavbar .nav-link:hover::before {
-            left: 100%;
-        }
-
-        #mainNavbar .nav-link:hover {
-            color: white !important;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        #mainNavbar .nav-text {
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        #mainNavbar .nav-link:hover .nav-text {
-            transform: scale(1.05);
-        }
-
-        #mainNavbar .navbar-toggler {
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 6px;
-            padding: 0.25rem 0.5rem;
-        }
-
-        #mainNavbar .navbar-toggler:focus {
-            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
-        }
-
-        #mainNavbar .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-        }
-
-        /* Dropdown Menu Styles */
-        .dropdown-menu-modern {
-            background-color: rgba(31, 41, 55, 0.95) !important;
-            background: rgba(31, 41, 55, 0.95) !important;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 0.5rem 0;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            min-width: 280px;
-            margin-top: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .dropdown-menu-modern .dropdown-header {
-            color: #f97316 !important;
-            font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.75rem 1rem 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .dropdown-menu-modern .dropdown-item {
-            color: white !important;
-            padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            margin: 0 0.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dropdown-menu-modern .dropdown-item .module-title {
-            color: rgba(255, 255, 255, 0.95) !important;
-            font-weight: 500;
-        }
-
-        .dropdown-menu-modern .dropdown-item .module-number {
-            color: white !important;
-        }
-
-        .dropdown-menu-modern .dropdown-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .dropdown-menu-modern .dropdown-item:hover::before {
-            left: 100%;
-        }
-
-        .dropdown-menu-modern .dropdown-item:hover {
-            background-color: rgba(14, 165, 233, 0.3);
-            color: white !important;
-            transform: translateX(5px);
-        }
-
-        .dropdown-menu-modern .dropdown-item:hover .module-title {
-            color: white !important;
-        }
-
-        .dropdown-menu-modern .dropdown-item:hover .module-number {
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6) !important;
-            color: white !important;
-        }
-
-        .dropdown-item-content {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .module-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-
-        .module-title {
-            font-weight: 500;
-            line-height: 1.3;
-            color: rgba(255, 255, 255, 0.95) !important;
-        }
-
-        .dropdown-divider {
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            margin: 0.5rem 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Offset pour la navigation fixed */
-        body {
-            padding-top: 80px;
-        }
-        
-        section[id], div[id] {
-            scroll-margin-top: 80px;
-        }
-
-        /* Animation de slide-in pour les éléments de navigation */
-        @keyframes slideInFromTop {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        #mainNavbar {
-            animation: slideInFromTop 0.8s ease-out;
-        }
-
-        /* Media Queries pour mobile */
-        @media (max-width: 768px) {
-            #mainNavbar .navbar-collapse {
-                background-color: rgba(31, 41, 55, 0.95) !important;
-                background: rgba(31, 41, 55, 0.95) !important;
-                backdrop-filter: blur(20px);
-                border-radius: 12px;
-                margin-top: 1rem;
-                padding: 1rem;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            #mainNavbar .navbar-collapse .nav-link {
-                color: rgba(255, 255, 255, 0.95) !important;
-            }
-
-            #mainNavbar .brand-text {
-                font-size: 1rem;
-            }
-
-            #mainNavbar .brand-subtitle {
-                font-size: 0.7rem;
-            }
-
-            .dropdown-menu-modern {
-                position: static !important;
-                transform: none !important;
-                background-color: rgba(31, 41, 55, 0.9) !important;
-                background: rgba(31, 41, 55, 0.9) !important;
-                border: none;
-                box-shadow: none;
-                margin-top: 0.5rem;
-            }
-
-            .dropdown-menu-modern .dropdown-item,
-            .dropdown-menu-modern .dropdown-item .module-title,
-            .dropdown-menu-modern .dropdown-item .module-number {
-                color: white !important;
-            }
-
-            .dropdown-menu-modern .dropdown-header {
-                color: #f97316 !important;
-            }
-        }
-
-        /* Contact Section Styles */
-        .contact-section {
-            background: linear-gradient(135deg, 
-                rgba(15, 23, 42, 0.02) 0%, 
-                rgba(30, 64, 175, 0.05) 50%, 
-                rgba(219, 39, 119, 0.02) 100%);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            margin: 2rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid rgba(14, 165, 233, 0.1);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.05), transparent);
-            transition: left 0.5s;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
-            border-color: rgba(14, 165, 233, 0.3);
-        }
-
-        .contact-card:hover::before {
-            left: 100%;
-        }
-
-        .contact-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .contact-icon.email {
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            color: white;
-        }
-
-        .contact-icon.linkedin {
-            background: linear-gradient(135deg, #0077b5, #0a66c2);
-            color: white;
-        }
-
-        .contact-icon.website {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-        }
-
-        .contact-info h5 {
-            color: black !important;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-info p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .btn-contact-primary {
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-contact-primary:hover {
-            background: linear-gradient(135deg, #b91c1c, #dc2626);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .btn-contact-secondary {
-            background: linear-gradient(135deg, #0077b5, #0a66c2);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-contact-secondary:hover {
-            background: linear-gradient(135deg, #005885, #0077b5);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .btn-contact-accent {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-contact-accent:hover {
-            background: linear-gradient(135deg, #047857, #059669);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, 
-                rgba(79, 70, 229, 0.08),
-                rgba(147, 51, 234, 0.08));
-            border: 2px solid rgba(79, 70, 229, 0.15);
-            border-radius: 20px;
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.03), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .cta-title {
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-description {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .btn-cta-primary {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-cta-primary:hover {
-            background: linear-gradient(135deg, #3730a3, #6d28d9);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-cta-secondary {
-            background: linear-gradient(135deg, #0077b5, #0a66c2);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(0, 119, 181, 0.3);
-        }
-
-        .btn-cta-secondary:hover {
-            background: linear-gradient(135deg, #005885, #0077b5);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 119, 181, 0.4);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .contact-section {
-                padding: 2rem 1rem;
-            }
-            
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .contact-card {
-                padding: 1.5rem;
-            }
-            
-            .contact-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-            
-            .cta-section {
-                padding: 2rem 1rem;
-            }
-            
-            .cta-title {
-                font-size: 1.3rem;
-            }
-            
-            .cta-description {
-                font-size: 1rem;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn-cta-primary,
-            .btn-cta-secondary {
-                width: 100%;
-                max-width: 300px;
-                padding: 0.9rem 1.5rem;
-                font-size: 1rem;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Celebration Animation Container -->
-    <div class="celebration-animation" id="celebrationContainer"></div>
-
-    <!-- Navigation Sticky avec effet de scroll -->
-    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#home">
-                <i class="fas fa-graduation-cap me-2"></i>
-                <span class="brand-text">Formation WikiJS & SSO</span>
-                <span class="brand-subtitle">Authentification Complète</span>
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>InSkillBoost
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">
-                            <i class="fas fa-home me-1"></i>
-                            <span class="nav-text">Accueil</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-book me-1"></i>
-                            <span class="nav-text">Modules</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-modern">
-                            <li class="dropdown-header">
-                                <i class="fas fa-code me-2"></i>Phase 1 - Fondamentaux
-                            </li>
-                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">01</span>
-                                    <span class="module-title">Introduction à WikiJS</span>
-                                </div>
-                            </a></li>
-                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">02</span>
-                                    <span class="module-title">Installation WikiJS</span>
-                                </div>
-                            </a></li>
-                            <li><a class="dropdown-item" href="module-3-configuration-base-premieres-pages.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">03</span>
-                                    <span class="module-title">Configuration de Base</span>
-                                </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="dropdown-header">
-                                <i class="fas fa-shield-alt me-2"></i>Phase 2 - Authentification
-                            </li>
-                            <li><a class="dropdown-item" href="module-4-configuration-sso-single-sign-on.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">04</span>
-                                    <span class="module-title">Configuration SSO</span>
-                                </div>
-                            </a></li>
-                            <li><a class="dropdown-item" href="module-5-authentification-avancee-oauth-ldap.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">05</span>
-                                    <span class="module-title">Authentification Avancée</span>
-                                </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="dropdown-header">
-                                <i class="fas fa-rocket me-2"></i>Phase 3 - Avancé
-                            </li>
-                            <li><a class="dropdown-item" href="module-6-securite-gestion-utilisateurs.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">06</span>
-                                    <span class="module-title">Sécurité & Utilisateurs</span>
-                                </div>
-                            </a></li>
-                            <li><a class="dropdown-item" href="module-7-monetisation-strategies-business.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">07</span>
-                                    <span class="module-title">Monétisation WikiJS</span>
-                                </div>
-                            </a></li>
-                            <li><a class="dropdown-item" href="module-8-deploiement-avance-maintenance.html">
-                                <div class="dropdown-item-content">
-                                    <span class="module-number">08</span>
-                                    <span class="module-title">Déploiement Avancé</span>
-                                </div>
-                            </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects">
-                            <i class="fas fa-rocket me-1"></i>
-                            <span class="nav-text">Projets</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.inskillflow.com/" target="_blank">
-                            <i class="fas fa-external-link-alt me-1"></i>
-                            <span class="nav-text">inskillflow</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">
-                            <i class="fas fa-envelope me-1"></i>
-                            <span class="nav-text">Contact</span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+                <a class="nav-link" href="../">
+                    <i class="fas fa-arrow-left me-1"></i>Retour Hub
+                </a>
+                <a class="nav-link btn-premium" href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=wikijs&utm_campaign=course-premium" target="_blank">
+                    <i class="fas fa-crown me-1"></i>Version Premium
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section" id="home">
+    <!-- Hero Course -->
+    <section class="hero-course">
         <div class="container">
             <div class="hero-content">
-                <div class="text-center mb-5">
-                    <div class="completion-badge">
-                        <i class="fas fa-certificate me-2"></i>
-                        FORMATION SCALA & SPARK
-                        <div class="corporate-badge ms-3">
-                            <i class="fas fa-check-circle me-1"></i>
-                            FORMATION COMPLÈTE
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="row align-items-center">
                     <div class="col-lg-8">
-                        <h1 class="hero-title">
-                            Formation WikiJS & SSO
-                            <span class="d-block" style="font-size: 0.7em; margin-top: 0.5rem;">
-                                <span class="text-warning">Maîtrisez</span> l'Authentification Moderne
-                            </span>
-                        </h1>
-                        <p class="hero-subtitle">
-                            Créez et gérez des wikis professionnels avec authentification avancée :
-                            WikiJS, SSO, OAuth, LDAP, monétisation et déploiement sécurisé
-                        </p>
-                        <div class="d-flex gap-2 mb-4 flex-wrap justify-content-center justify-content-lg-start">
-                            <span class="tech-badge wikijs-badge">
-                                <i class="fas fa-book me-1"></i>WikiJS Expert
-                            </span>
-                            <span class="tech-badge sso-badge">
-                                <i class="fas fa-shield-alt me-1"></i>SSO & Auth
-                            </span>
-                            <span class="tech-badge monetization-badge">
-                                <i class="fas fa-dollar-sign me-1"></i>Monétisation
-                            </span>
-                            <span class="tech-badge security-badge">
-                                <i class="fas fa-shield-alt me-1"></i>Sécurité Avancée
-                            </span>
-                            <span class="tech-badge azure-badge">
-                                <i class="fab fa-microsoft me-1"></i>Azure
-                            </span>
-                            <span class="tech-badge aws-badge">
-                                <i class="fab fa-aws me-1"></i>AWS
-                            </span>
-                        </div>
-
-                        <!-- Creator Info -->
-                        <div class="creator-info">
-                            <h6>Créée par Haythem Rehouma</h6>
-                            <div class="creator-links">
-                                <a href="https://www.inskillflow.com/" target="_blank" class="creator-link">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    inskillflow.com
-                                </a>
-                                <a href="https://www.linkedin.com/in/haythemrehouma/" target="_blank" class="creator-link">
-                                    <i class="fab fa-linkedin"></i>
-                                    LinkedIn Profile
-                                </a>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="course-icon-large me-3">
+                                <i class="fab fa-wikipedia-w"></i>
                             </div>
+                            <div>
+                                <h1 class="mb-2">Formation WikiJS & SSO</h1>
+                                <p class="mb-0 opacity-90">Plateforme Wiki Moderne avec Authentification</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-signal me-1"></i>Débutant
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-clock me-1"></i>25h
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-list me-1"></i>8 modules
+                            </span>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <!-- Hero Visual -->
-                        <div class="hero-visual">
-                            <h6 class="mb-3">Configuration WikiJS</h6>
-                            <div class="hero-code-preview">
-                                <div class="code-dots">
-                                    <div class="code-dot red"></div>
-                                    <div class="code-dot yellow"></div>
-                                    <div class="code-dot green"></div>
-                                </div>
-                                <div style="margin-top: 35px;">
-<span style="color: #ff7b72;"># Configuration WikiJS</span><br/>
-<span style="color: #79c0ff;">title</span>: <span style="color: #a5d6ff;">"Mon Cours en Ligne"</span><br/>
-<span style="color: #79c0ff;">host</span>: <span style="color: #a5d6ff;">https://cours.mondomaine.com</span><br/><br/>
-<span style="color: #ff7b72;"># SSO Configuration</span><br/>
-<span style="color: #79c0ff;">auth</span>:<br/>
-&nbsp;&nbsp;<span style="color: #ffa657;">google</span>:<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #d2a8ff;">enabled</span>: <span style="color: #79c0ff;">true</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #d2a8ff;">clientId</span>: <span style="color: #a5d6ff;">"votre-client-id"</span><br/>
-&nbsp;&nbsp;<span style="color: #ffa657;">ldap</span>: <span style="color: #79c0ff;">enabled</span>
-                                </div>
-                            </div>
-                            <p class="small opacity-75 mb-2">Configuration WikiJS avec SSO</p>
-                        </div>
-                        
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <span class="stat-number">8</span>
-                                <span class="stat-label">Modules</span>
-                            </div>
-                            <div class="stats-card">
-                                <span class="stat-number">35</span>
-                                <span class="stat-label">Heures</span>
-                            </div>
-                            <div class="stats-card">
-                                <span class="stat-number">80+</span>
-                                <span class="stat-label">Exercices</span>
-                            </div>
-                            <div class="stats-card">
-                                <span class="stat-number">5</span>
-                                <span class="stat-label">Wikis</span>
-                            </div>
-                        </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=wikijs-hero&utm_campaign=course-premium" 
+                           class="btn btn-warning btn-lg" target="_blank">
+                            <i class="fas fa-crown me-2"></i>Version Premium
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
     <div class="container">
-        
         <!-- Achievement Section -->
         <div class="achievement-section">
-            <div class="professional-gradient">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <div class="d-inline-block position-relative">
-                            <i class="fas fa-award" style="font-size: 3.5rem; color: #ffd700; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));"></i>
-                            <div class="position-absolute top-0 end-0" style="transform: translate(50%, -50%);">
-                                <div style="width: 20px; height: 20px; background: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-check text-white" style="font-size: 0.7rem;"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-inline-block position-relative ms-4">
-                            <i class="fas fa-certificate" style="font-size: 3.5rem; color: #e2e8f0; filter: drop-shadow(0 0 8px rgba(226,232,240,0.3));"></i>
-                            <div class="position-absolute top-0 end-0" style="transform: translate(50%, -50%);">
-                                <div style="width: 20px; height: 20px; background: var(--info-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-star text-white" style="font-size: 0.7rem;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="text-white mb-0" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Stack Technique Complète</h2>
-                </div>
-            </div>
-            <div class="text-center mb-4 mt-4">
-                <p class="lead">
-                    <strong>8 modules intensifs</strong> couvrant l'ensemble de l'écosystème 
-                    WikiJS : installation, SSO, authentification, sécurité, monétisation et déploiement.
-                </p>
-                <div class="corporate-badge">
-                    <i class="fas fa-graduation-cap me-2"></i>
-                    STACK TECHNIQUE MAÎTRISÉE
-                </div>
-            </div>
+            <h2 style="color: var(--wikijs-blue); font-weight: 700; font-size: 2.5rem; margin-bottom: 2rem;">
+                <i class="fab fa-wikipedia-w me-3"></i>
+                Formation WikiJS & SSO Complète
+            </h2>
+            <p class="lead mb-4">
+                <strong>8 modules spécialisés</strong> pour créer et déployer une plateforme wiki moderne : 
+                installation, SSO, sécurité, personnalisation et monétisation.
+            </p>
             
-            <div class="tech-mastery">
-                <div class="tech-card wikijs">
-                    <div class="tech-illustration" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h5>WikiJS & Gestion Documentaire</h5>
-                    <p class="mb-0">Création, organisation et partage de connaissances collaboratives</p>
-                </div>
-                <div class="tech-card sso">
-                    <div class="tech-illustration" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h5>SSO & Authentification</h5>
-                    <p class="mb-0">OAuth, LDAP, SAML, Active Directory et gestion centralisée</p>
-                </div>
-                <div class="tech-card auth">
-                    <div class="tech-illustration" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <h5>Authentification Multi-Provider</h5>
-                    <p class="mb-0">OAuth 2.0, LDAP, SAML, Active Directory</p>
-                </div>
-                <div class="tech-card monetization">
-                    <div class="tech-illustration" style="background: linear-gradient(135deg, #059669, #047857);">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
-                    <h5>Monétisation Avancée</h5>
-                    <p class="mb-0">Stripe, PayPal, abonnements, certificats PDF</p>
-                </div>
-                <div class="tech-card cloud">
-                    <div class="tech-illustration" style="background: linear-gradient(135deg, #059669, #10b981);">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h5>Déploiement Production</h5>
-                    <p class="mb-0">Docker, Kubernetes, monitoring, haute disponibilité</p>
-                </div>
-            </div>
-
-            <div class="project-showcase" id="projects">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="me-3">
-                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--completion-gold), #f59e0b); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-rocket text-white" style="font-size: 1.5rem;"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h5 class="mb-1">🎓 Comment créer un cours de A à Z avec WikiJS</h5>
-                        <p class="text-muted mb-0">Guide complet pour transformer vos connaissances en cours professionnels monétisables</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.1)); border-radius: 8px; border-left: 4px solid var(--success-color);">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-server text-success me-2"></i>
-                                <strong>1. Installation WikiJS</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Docker • PostgreSQL • Configuration HTTPS</p>
-                        </div>
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1)); border-radius: 8px; border-left: 4px solid #dc2626;">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-shield-alt text-danger me-2"></i>
-                                <strong>2. Configuration SSO</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Google OAuth • LDAP • SAML</p>
-                        </div>
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.1)); border-radius: 8px; border-left: 4px solid #8b5cf6;">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-book text-purple me-2"></i>
-                                <strong>3. Création du Contenu</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Markdown • Vidéos • Exercices interactifs</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.1)); border-radius: 8px; border-left: 4px solid var(--info-color);">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-users text-info me-2"></i>
-                                <strong>4. Gestion des Utilisateurs</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Rôles • Permissions • Groupes</p>
-                        </div>
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border-radius: 8px; border-left: 4px solid var(--success-color);">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-dollar-sign text-success me-2"></i>
-                                <strong>5. Monétisation</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Paywall • Abonnements • Certificats</p>
-                        </div>
-                        <div class="mb-3 p-3" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1)); border-radius: 8px; border-left: 4px solid #f59e0b;">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-rocket text-warning me-2"></i>
-                                <strong>6. Déploiement Production</strong>
-                            </div>
-                            <p class="small mb-0 text-muted">Docker • Kubernetes • Monitoring</p>
-                        </div>
-
-
-                    </div>
+            <div class="alert alert-info d-flex align-items-center" role="alert">
+                <i class="fas fa-crown me-3 fa-2x"></i>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-1">Envie d'aller plus loin ?</h5>
+                    <p class="mb-2">Découvrez notre <strong>formation WikiJS Premium</strong> avec déploiement Cloud, intégrations avancées et stratégies de monétisation.</p>
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=wikijs-inline&utm_campaign=course-premium" 
+                       class="btn btn-info" target="_blank">
+                        <i class="fas fa-external-link-alt me-2"></i>Voir la Formation Premium
+                    </a>
                 </div>
             </div>
         </div>
 
+        <!-- Modules Section -->
+        <section id="modules" class="mb-5">
+            <h2 class="text-center mb-5" style="color: var(--dark-color); font-weight: 700;">
+                <i class="fas fa-graduation-cap me-3"></i>
+                Parcours de Formation
+            </h2>
 
-
-        <!-- Plan de Cours Détaillé -->
-        <div class="achievement-section mt-5">
-            <div class="text-center mb-5">
-                <h2 class="achievement-title">
-                    <i class="fas fa-map me-3"></i>Plan de Cours Détaillé
-                </h2>
-                <p class="lead text-muted">
-                    Formation complète WikiJS + SSO : de l'installation à la monétisation
-                </p>
-            </div>
-            
-            <!-- Phase par Phase -->
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="text-center mb-4">
-                        <div class="phase-illustration phase1" style="margin: 0 auto 1rem;">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <h4 class="text-primary">Phase 1 : Fondamentaux</h4>
-                        <p class="text-muted">Mise en place et configuration de base</p>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 4px solid #3b82f6;">
-                        <h6><i class="fas fa-play-circle me-2"></i>Module 1 : Introduction WikiJS</h6>
-                        <ul class="small mb-0">
-                            <li>Qu'est-ce que WikiJS et pourquoi l'utiliser</li>
-                            <li>Comparaison avec Confluence, Notion, GitBook</li>
-                            <li>Architecture et composants</li>
-                            <li>Cas d'usage : entreprise, éducation, documentation</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 4px solid #3b82f6;">
-                        <h6><i class="fas fa-server me-2"></i>Module 2 : Installation & Configuration</h6>
-                        <ul class="small mb-0">
-                            <li>Installation via Docker et Docker Compose</li>
-                            <li>Configuration PostgreSQL/MySQL</li>
-                            <li>HTTPS avec Let's Encrypt automatique</li>
-                            <li>Variables d'environnement et sécurité</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 4px solid #3b82f6;">
-                        <h6><i class="fas fa-cogs me-2"></i>Module 3 : Configuration de Base</h6>
-                        <ul class="small mb-0">
-                            <li>Interface d'administration complète</li>
-                            <li>Création et organisation des pages</li>
-                            <li>Éditeur Markdown avancé</li>
-                            <li>Gestion des médias et assets</li>
-                        </ul>
-                    </div>
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">1</div>
+                    <div><h3>Introduction WikiJS - Concepts de Base</h3></div>
                 </div>
-                
-                <div class="col-lg-4">
-                    <div class="text-center mb-4">
-                        <div class="phase-illustration phase2" style="margin: 0 auto 1rem;">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h4 class="text-success">Phase 2 : Authentification</h4>
-                        <p class="text-muted">SSO et sécurité avancée</p>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 4px solid #10b981;">
-                        <h6><i class="fas fa-key me-2"></i>Module 4 : Configuration SSO</h6>
-                        <ul class="small mb-0">
-                            <li>Concepts du Single Sign-On (SSO)</li>
-                            <li>Configuration Google OAuth 2.0</li>
-                            <li>Microsoft Azure AD integration</li>
-                            <li>Tests et dépannage SSO</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 4px solid #10b981;">
-                        <h6><i class="fas fa-users me-2"></i>Module 5 : Auth Avancée</h6>
-                        <ul class="small mb-0">
-                            <li>LDAP et Active Directory</li>
-                            <li>SAML 2.0 avec Okta/Auth0</li>
-                            <li>OpenID Connect (OIDC)</li>
-                            <li>Multi-provider et fallback</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 4px solid #10b981;">
-                        <h6><i class="fas fa-lock me-2"></i>Module 6 : Sécurité & Permissions</h6>
-                        <ul class="small mb-0">
-                            <li>Rôles et permissions granulaires</li>
-                            <li>Groupes d'utilisateurs automatiques</li>
-                            <li>Audit trail et logs de sécurité</li>
-                            <li>Protection CSRF et attaques XSS</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="text-center mb-4">
-                        <div class="phase-illustration phase3" style="margin: 0 auto 1rem;">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <h4 class="text-warning">Phase 3 : Monétisation</h4>
-                        <p class="text-muted">Business model et déploiement</p>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(245, 158, 11, 0.1); border-radius: 8px; border-left: 4px solid #f59e0b;">
-                        <h6><i class="fas fa-credit-card me-2"></i>Module 7 : Monétisation</h6>
-                        <ul class="small mb-0">
-                            <li>Stratégies de monétisation de contenu</li>
-                            <li>Integration Stripe pour paiements</li>
-                            <li>Système d'abonnements et memberships</li>
-                            <li>Certificats automatiques PDF</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mb-3 p-3" style="background: rgba(245, 158, 11, 0.1); border-radius: 8px; border-left: 4px solid #f59e0b;">
-                        <h6><i class="fas fa-rocket me-2"></i>Module 8 : Déploiement Pro</h6>
-                        <ul class="small mb-0">
-                            <li>Docker Swarm et Kubernetes</li>
-                            <li>Monitoring avec Grafana/Prometheus</li>
-                            <li>Sauvegardes automatiques</li>
-                            <li>Scaling horizontal et performance</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <h6><i class="fas fa-trophy me-2"></i>Projet Final</h6>
-                        <p class="small mb-0">Création d'un cours complet monétisé avec WikiJS, déployé en production avec SSO multi-provider.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Objectifs d'Apprentissage -->
-            <div class="mt-5 p-4" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(16, 185, 129, 0.05)); border-radius: 15px; border: 2px dashed rgba(59, 130, 246, 0.2);">
-                <h5 class="text-center mb-4"><i class="fas fa-target me-2"></i>À la fin de cette formation, vous saurez :</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Installer et configurer WikiJS en production</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Mettre en place un SSO complet (Google, Azure, LDAP)</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Créer des cours structurés et professionnels</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Sécuriser votre plateforme avec des permissions avancées</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i>Monétiser vos formations avec des abonnements</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Déployer avec Docker/Kubernetes</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Monitorer et maintenir votre installation</li>
-                            <li><i class="fas fa-check text-success me-2"></i>Automatiser les sauvegardes et la sécurité</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modules Navigation Overview -->
-        <div class="modules-overview-section">
-            <div class="text-center mb-5">
-                <h2 class="modules-main-title">
-                    <i class="fas fa-graduation-cap me-3"></i>
-                    Plan de Formation WikiJS + SSO
-                </h2>
-                <p class="lead text-muted">
-                    <strong>Objectif :</strong> Créer et monétiser des cours professionnels avec WikiJS
-                </p>
-                
-                <!-- Explication claire du plan -->
-                <div class="alert alert-primary mt-4 text-start">
-                    <h5><i class="fas fa-lightbulb me-2"></i>Que vas-tu apprendre concrètement ?</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-primary">📚 Partie 1 : Créer ton wiki</h6>
-                            <ul class="small mb-3">
-                                <li>Installer WikiJS sur ton serveur</li>
-                                <li>Créer des pages de cours structurées</li>
-                                <li>Organiser le contenu (modules, chapitres)</li>
-                                <li>Ajouter des vidéos, exercices, quiz</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-success">🔐 Partie 2 : Sécuriser l'accès</h6>
-                            <ul class="small mb-3">
-                                <li>Configurer le SSO (Google, Microsoft)</li>
-                                <li>Créer des groupes d'étudiants</li>
-                                <li>Définir qui peut voir quoi</li>
-                                <li>Protéger le contenu premium</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-warning">💰 Partie 3 : Monétiser</h6>
-                            <ul class="small mb-0">
-                                <li>Intégrer les paiements Stripe</li>
-                                <li>Créer des abonnements mensuels</li>
-                                <li>Générer des certificats PDF</li>
-                                <li>Analyser tes revenus</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-info">🚀 Partie 4 : Déployer</h6>
-                            <ul class="small mb-0">
-                                <li>Mettre en production avec Docker</li>
-                                <li>Configurer un nom de domaine</li>
-                                <li>Surveiller les performances</li>
-                                <li>Faire des sauvegardes automatiques</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Résultat Final -->
-                <div class="mt-4 p-4" style="background: linear-gradient(135deg, rgba(220, 20, 60, 0.1), rgba(37, 99, 235, 0.1)); border-radius: 15px; border: 2px solid rgba(220, 20, 60, 0.2);">
-                    <h5 class="text-center mb-3"><i class="fas fa-trophy me-2 text-warning"></i>À la fin de cette formation :</h5>
-                    <div class="text-center">
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <div class="p-3" style="background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                                    <i class="fas fa-globe fa-2x text-primary mb-2"></i>
-                                    <h6>Ton site de cours</h6>
-                                    <p class="small mb-0">exemple: <strong>cours.tondomaine.com</strong></p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3" style="background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                                    <i class="fas fa-users fa-2x text-success mb-2"></i>
-                                    <h6>Étudiants connectés</h6>
-                                    <p class="small mb-0">via <strong>Google/Microsoft</strong></p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3" style="background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                                    <i class="fas fa-credit-card fa-2x text-warning mb-2"></i>
-                                    <h6>Revenus automatiques</h6>
-                                    <p class="small mb-0"><strong>29€/mois</strong> par étudiant</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3" style="background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                                    <i class="fas fa-certificate fa-2x text-info mb-2"></i>
-                                    <h6>Certificats PDF</h6>
-                                    <p class="small mb-0">générés <strong>automatiquement</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-muted mb-3">Découverte de WikiJS, comparaison avec d'autres solutions et vue d'ensemble.</p>
+                <a href="module-1-introduction-wikijs-concepts-base.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
             </div>
 
-            <!-- Quick Navigation -->
-            <div class="quick-nav-section">
-                <h5 class="text-center mb-4">Navigation Rapide</h5>
-                <div class="row text-center">
-                    <div class="col-md-4">
-                        <div class="nav-category">
-                            <div class="nav-icon wikijs">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <h6>Fondamentaux WikiJS</h6>
-                            <p class="small text-muted">Modules 1-3: Installation et configuration</p>
-                            <div class="nav-modules">
-                                <a href="#module1" class="nav-module-link">1</a>
-                                <a href="#module2" class="nav-module-link">2</a>
-                                <a href="#module3" class="nav-module-link">3</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="nav-category">
-                            <div class="nav-icon sso">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h6>Authentification Avancée</h6>
-                            <p class="small text-muted">Modules 4-5: OAuth, LDAP, SAML</p>
-                            <div class="nav-modules">
-                                <a href="#module4" class="nav-module-link">4</a>
-                                <a href="#module5" class="nav-module-link">5</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="nav-category">
-                            <div class="nav-icon advanced">
-                                <i class="fas fa-rocket"></i>
-                            </div>
-                            <h6>Avancé & Business</h6>
-                            <p class="small text-muted">Modules 6-8: Sécurité, Monétisation, Déploiement</p>
-                            <div class="nav-modules">
-                                <a href="#module6" class="nav-module-link">6</a>
-                                <a href="#module7" class="nav-module-link">7</a>
-                                <a href="#module8" class="nav-module-link">8</a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">2</div>
+                    <div><h3>Installation et Configuration WikiJS</h3></div>
                 </div>
+                <p class="text-muted mb-3">Installation complète, configuration de base et premiers paramètres.</p>
+                <a href="module-2-installation-configuration-wikijs.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
             </div>
-        </div>
 
-        <!-- Phase 1: Fondamentaux Scala -->
-        <div class="modules-phase">
-            <div class="phase-header">
-                <div class="phase-illustration phase1">
-                    <i class="fas fa-code"></i>
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">3</div>
+                    <div><h3>Configuration SSO</h3></div>
                 </div>
-                <h3 class="phase-title">
-                    <span class="phase-number">Phase 1</span>
-                    Fondamentaux WikiJS
-                </h3>
-                <p class="phase-description">
-                    Apprenez à installer, configurer et utiliser WikiJS efficacement
-                </p>
+                <p class="text-muted mb-3">Configuration de l'authentification unique avec différents fournisseurs.</p>
+                <a href="module-3-configuration-sso.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
             </div>
-            
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">4</div>
+                    <div><h3>Authentification Avancée</h3></div>
+                </div>
+                <p class="text-muted mb-3">Techniques d'authentification avancées et intégrations personnalisées.</p>
+                <a href="module-4-authentification-avancee.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">5</div>
+                    <div><h3>Sécurité et Gestion des Utilisateurs</h3></div>
+                </div>
+                <p class="text-muted mb-3">Sécurisation avancée et gestion fine des utilisateurs et permissions.</p>
+                <a href="module-5-securite-gestion-utilisateurs.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">6</div>
+                    <div><h3>Personnalisation et Thèmes</h3></div>
+                </div>
+                <p class="text-muted mb-3">Personnalisation complète de l'interface et création de thèmes sur mesure.</p>
+                <a href="module-6-personnalisation-themes.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">7</div>
+                    <div><h3>Monétisation et Stratégies</h3></div>
+                </div>
+                <p class="text-muted mb-3">Stratégies de monétisation et modèles économiques pour votre wiki.</p>
+                <a href="module-7-monetisation-strategies.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">8</div>
+                    <div><h3>Déploiement et Maintenance</h3></div>
+                </div>
+                <p class="text-muted mb-3">Déploiement en production, maintenance et optimisation des performances.</p>
+                <a href="module-8-deploiement-maintenance.html" class="btn-module">
+                    <i class="fas fa-play"></i>Commencer le module
+                </a>
+            </div>
+        </section>
+
+        <!-- Navigation vers autres cours -->
+        <div class="related-courses mt-5 p-4" style="background: #f8fafc; border-radius: 12px;">
+            <h4 class="mb-3">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Autres formations disponibles
+            </h4>
             <div class="row">
-            <!-- Module 1 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module1">
-                    <div class="module-header">
-                        <div class="module-number">1</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-book me-1"></i>
-                                Introduction WikiJS
-                            </div>
+                <div class="col-md-4 mb-3">
+                    <a href="../java/" class="d-flex align-items-center p-3 text-decoration-none border rounded" style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #f89820; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fab fa-java"></i>
                         </div>
-                    </div>
-                    <div class="module-preview-image wikijs">
-                        <div style="font-size: 2rem; color: #3b82f6;">
-                            <i class="fas fa-book me-2"></i>
-                            <i class="fas fa-cogs"></i>
+                        <div>
+                            <h6 class="mb-1">Java Complet</h6>
+                            <small class="text-muted">12 modules • 60h</small>
                         </div>
-                    </div>
-                    <h3 class="module-title">Introduction à WikiJS et concepts de base</h3>
-                    <p class="module-description">
-                        Découverte de WikiJS : architecture, fonctionnalités, avantages,
-                        cas d'usage et comparaison avec d'autres solutions wiki.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>2.5h</span>
-                        <span><i class="fas fa-tasks"></i>6 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Introduction</span>
-                        <span><i class="fas fa-book text-info"></i>Concepts WikiJS</span>
-                    </div>
-                    <a href="module-1-introduction-wikijs-concepts-base.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
                     </a>
                 </div>
-            </div>
-
-            <!-- Module 2 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module2">
-                    <div class="module-header">
-                        <div class="module-number">2</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-tools me-1"></i>
-                                JVM, SBT, IDE Setup
-                            </div>
+                <div class="col-md-4 mb-3">
+                    <a href="../entity-framework/" class="d-flex align-items-center p-3 text-decoration-none border rounded" style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #512BD4; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-database"></i>
                         </div>
-                    </div>
-                    <h3 class="module-title">Installation et configuration de WikiJS</h3>
-                    <p class="module-description">
-                        Installation complète : Node.js, PostgreSQL/MySQL, configuration serveur,
-                        premiers paramétrages et mise en ligne d'un wiki.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>4h</span>
-                        <span><i class="fas fa-tasks"></i>8 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Installation</span>
-                        <span><i class="fas fa-server text-success"></i>Déploiement complet</span>
-                    </div>
-                    <a href="module-2-installation-configuration-wikijs.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
+                        <div>
+                            <h6 class="mb-1">Entity Framework</h6>
+                            <small class="text-muted">11 modules • 35h</small>
+                        </div>
                     </a>
                 </div>
-            </div>
-
-            <!-- Module 3 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module3">
-                    <div class="module-header">
-                        <div class="module-number">3</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-code me-1"></i>
-                                Syntaxe & Collections
-                            </div>
+                <div class="col-md-4 mb-3">
+                    <a href="../scala-spark/" class="d-flex align-items-center p-3 text-decoration-none border rounded" style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #dc143c; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-fire"></i>
                         </div>
-                    </div>
-                    <h3 class="module-title">Configuration de base et premières pages</h3>
-                    <p class="module-description">
-                        Interface d'administration, création de pages, structuration du contenu,
-                        gestion des utilisateurs de base et permissions élémentaires.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>3.5h</span>
-                        <span><i class="fas fa-tasks"></i>10 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Configuration</span>
-                        <span><i class="fas fa-cogs text-primary"></i>Wiki fonctionnel</span>
-                    </div>
-                    <a href="module-3-configuration-base-premieres-pages.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
+                        <div>
+                            <h6 class="mb-1">Scala & Apache Spark</h6>
+                            <small class="text-muted">8 modules • 40h</small>
+                        </div>
                     </a>
-                </div>
-            </div>
-            </div> <!-- End row Phase 1 -->
-        </div> <!-- End Phase 1 -->
-
-        <!-- Phase 2: Authentification Avancée -->
-        <div class="modules-phase">
-            <div class="phase-header">
-                <div class="phase-illustration phase2">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="phase-title">
-                    <span class="phase-number">Phase 2</span>
-                    Authentification avec SSO
-                </h3>
-                <p class="phase-description">
-                    Maîtrisez les systèmes d'authentification unique et les protocoles avancés
-                </p>
-            </div>
-            
-            <div class="row">
-            <!-- Module 4 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module4">
-                    <div class="module-header">
-                        <div class="module-number">4</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-database me-1"></i>
-                                RDD DataFrame Dataset
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-preview-image sso">
-                        <div style="font-size: 2rem; color: #10b981;">
-                            <i class="fas fa-shield-alt me-2"></i>
-                            <i class="fas fa-key"></i>
-                        </div>
-                    </div>
-                    <h3 class="module-title">Configuration du SSO (Single Sign-On)</h3>
-                    <p class="module-description">
-                        Mise en place du SSO : concepts, avantages, configuration avec
-                        différents providers (Google, Azure, AWS) et tests d'authentification.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>5h</span>
-                        <span><i class="fas fa-tasks"></i>12 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>SSO Setup</span>
-                        <span><i class="fas fa-shield-alt text-warning"></i>SSO maîtrisé</span>
-                    </div>
-                    <a href="module-4-configuration-sso-single-sign-on.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
-                    </a>
-                </div>
-            </div>
-
-            <!-- Module 5 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module5">
-                    <div class="module-header">
-                        <div class="module-number">5</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-chart-line me-1"></i>
-                                ETL & Optimisations
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="module-title">Méthodes d'authentification avancées</h3>
-                    <p class="module-description">
-                        OAuth 2.0, OpenID Connect, LDAP, SAML, Active Directory,
-                        configuration multi-providers et gestion centralisée des utilisateurs.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>6h</span>
-                        <span><i class="fas fa-tasks"></i>15 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Auth Avancée</span>
-                        <span><i class="fas fa-key text-success"></i>OAuth & LDAP</span>
-                    </div>
-                    <a href="module-5-authentification-avancee-oauth-ldap.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
-                    </a>
-                </div>
-            </div>
-            </div> <!-- End row Phase 2 -->
-        </div> <!-- End Phase 2 -->
-
-        <!-- Phase 3: Avancé & Cloud -->
-        <div class="modules-phase">
-            <div class="phase-header">
-                <div class="phase-illustration phase3">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <h3 class="phase-title">
-                    <span class="phase-number">Phase 3</span>
-                    Niveau Avancé & Cloud
-                </h3>
-                <p class="phase-description">
-                    Personnalisation avancée, monétisation et déploiement professionnel
-                </p>
-            </div>
-            
-            <div class="row">
-            <!-- Module 6 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module6">
-                    <div class="module-header">
-                        <div class="module-number">6</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-lambda me-1"></i>
-                                Monades & Implicits
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="module-title">Sécurité et gestion avancée des utilisateurs</h3>
-                    <p class="module-description">
-                        Sécurité approfondie : permissions granulaires, rôles personnalisés,
-                        audit de sécurité, protection contre les attaques et bonnes pratiques.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>4.5h</span>
-                        <span><i class="fas fa-tasks"></i>12 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Sécurité</span>
-                        <span><i class="fas fa-lock text-danger"></i>Sécurité expert</span>
-                    </div>
-                    <a href="module-6-securite-gestion-utilisateurs.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
-                    </a>
-                </div>
-            </div>
-
-            <!-- Module 7 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module7">
-                    <div class="module-header">
-                        <div class="module-number">7</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-dollar-sign me-1"></i>
-                                Monétisation & Business
-                            </div>
-                        </div>
-                    </div>
-                    <h3 class="module-title">Monétisation et stratégies business WikiJS</h3>
-                    <p class="module-description">
-                        Modèles de monétisation : abonnements, accès premium, intégration e-commerce,
-                        analytics et stratégies de croissance pour wikis commerciaux.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>5.5h</span>
-                        <span><i class="fas fa-tasks"></i>14 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Monétisation</span>
-                        <span><i class="fas fa-dollar-sign text-success"></i>Business model</span>
-                    </div>
-                    <a href="module-7-monetisation-strategies-business.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
-                    </a>
-                </div>
-            </div>
-
-            <!-- Module 8 -->
-            <div class="col-lg-6">
-                <div class="module-card" id="module8">
-                    <div class="module-header">
-                        <div class="module-number">8</div>
-                        <div class="flex-grow-1">
-                            <div class="module-tech-badge">
-                                <i class="fas fa-rocket me-1"></i>
-                                Déploiement & Maintenance
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-preview-image advanced">
-                        <div style="font-size: 2rem; color: #059669;">
-                            <i class="fas fa-cloud me-2"></i>
-                            <i class="fab fa-aws me-1"></i>
-                            <i class="fab fa-microsoft"></i>
-                        </div>
-                    </div>
-                    <h3 class="module-title">Déploiement avancé et maintenance</h3>
-                    <p class="module-description">
-                        Déploiement production : Docker, Kubernetes, monitoring, sauvegardes,
-                        mise à l'échelle, maintenance et optimisation des performances.
-                    </p>
-                    <div class="module-meta">
-                        <span><i class="fas fa-clock"></i>6h</span>
-                        <span><i class="fas fa-tasks"></i>15 exercices</span>
-                        <span><i class="fas fa-layer-group"></i>Production</span>
-                        <span><i class="fas fa-rocket text-primary"></i>Déploiement pro</span>
-                    </div>
-                    <a href="module-8-deploiement-avance-maintenance.html" class="btn-module">
-                        <i class="fas fa-eye"></i>
-                        Consulter le module
-                    </a>
-                </div>
-            </div>
-            </div> <!-- End row Phase 3 -->
-        </div> <!-- End Phase 3 -->
-
-        <!-- Final Success Section -->
-        <div class="achievement-section mt-5">
-            <div class="success-visual">
-                <div style="font-size: 4rem; margin-bottom: 1rem; position: relative; z-index: 2; color: var(--completion-green);">
-                    <i class="fas fa-trophy me-2"></i>
-                    <i class="fas fa-award me-2"></i>
-                    <i class="fas fa-medal"></i>
-                </div>
-                <h2 class="achievement-title" style="position: relative; z-index: 2;">Stack Technique Complète</h2>
-            </div>
-            <div class="text-center">
-                <div class="lead mb-4">
-                    <strong>42 heures de formation intensive</strong> • <strong>100+ exercices pratiques</strong> • <strong>6 projets industriels</strong>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <p class="text-muted">
-                            Cette formation vous donne les compétences pour déployer et gérer 
-                            des wikis professionnels avec authentification avancée et SSO sur toutes plateformes. 
-                            Vous maîtrisez maintenant toute la stack moderne des wikis sécurisés.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="contact-section" id="contact">
-            <div class="text-center">
-                <h3 class="mb-4">
-                    <i class="fas fa-handshake me-2"></i>
-                    Nous Contacter
-                </h3>
-                <p class="lead mb-5" style="color: white;">
-                    Des questions ? Besoin d'accompagnement ? L'équipe inskillflow est là pour vous aider.
-                </p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="contact-grid">
-                        <!-- Email Contact -->
-                        <div class="contact-card">
-                            <div class="contact-icon email">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-info">
-                                <h5>Email Professional</h5>
-                                <p class="mb-3">Contactez notre équipe pédagogique</p>
-                                <a href="mailto:contact@inskillflow.com" class="btn btn-contact-primary">
-                                    <i class="fas fa-paper-plane me-2"></i>
-                                    contact@inskillflow.com
-                                </a>
-                            </div>
-                        </div>
-    
-                        <!-- LinkedIn -->
-                        <div class="contact-card">
-                            <div class="contact-icon linkedin">
-                                <i class="fab fa-linkedin-in"></i>
-                            </div>
-                            <div class="contact-info">
-                                <h5>LinkedIn</h5>
-                                <p class="mb-3">Connectez-vous avec Haythem</p>
-                                <a href="https://www.linkedin.com/in/haythemrehouma/" target="_blank" class="btn btn-contact-secondary">
-                                    <i class="fab fa-linkedin me-2"></i>
-                                    Haythem Rehouma
-                                </a>
-                            </div>
-                        </div>
-    
-                        <!-- Site Web -->
-                        <div class="contact-card">
-                            <div class="contact-icon website">
-                                <i class="fas fa-globe"></i>
-                            </div>
-                            <div class="contact-info">
-                                <h5>inskillflow</h5>
-                                <p class="mb-3">Découvrez nos autres formations</p>
-                                <a href="https://www.inskillflow.com/" target="_blank" class="btn btn-contact-accent">
-                                    <i class="fas fa-external-link-alt me-2"></i>
-                                    inskillflow.com
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center mt-5">
-                        <div class="cta-section">
-                            <div class="cta-content">
-                                <h5 class="cta-title">
-                                    <i class="fas fa-rocket me-2"></i>
-                                    Envie d'aller plus loin ?
-                                </h5>
-                                <p class="cta-description">
-                                    Découvrez nos autres formations avancées et certifications professionnelles
-                                </p>
-                                <div class="cta-buttons">
-                                    <a href="https://www.inskillflow.com/" target="_blank" class="btn btn-cta-primary me-3">
-                                        <i class="fas fa-graduation-cap me-2"></i>
-                                        Autres Formations inskillflow
-                                    </a>
-                                    <a href="https://www.linkedin.com/in/haythemrehouma/" target="_blank" class="btn btn-cta-secondary">
-                                        <i class="fab fa-linkedin me-2"></i>
-                                        Profil LinkedIn
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 footer-section">
-                    <h4 class="footer-title">
-                        <i class="fas fa-graduation-cap me-2"></i>
-                        Formation WikiJS & SSO
-                    </h4>
-                    <p class="text-light opacity-75 mb-3">
-                        Formation complète pour maîtriser WikiJS et l'authentification moderne 
-                        avec déploiement professionnel et monétisation.
-                    </p>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <span class="badge bg-success">8 Modules</span>
-                        <span class="badge bg-warning">42 Heures</span>
-                        <span class="badge bg-info">100+ Exercices</span>
-                        <span class="badge bg-danger">6 Projets</span>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 footer-section">
-                    <h5 class="footer-title">Créateur</h5>
-                    <div class="mb-3">
-                        <h6 class="text-light">Haythem Rehouma</h6>
-                        <p class="text-light opacity-75 mb-2">Expert WikiJS & Systèmes d'Authentification</p>
-                    </div>
-                    
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/haythemrehouma/" target="_blank" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://www.inskillflow.com/" target="_blank" class="social-link" title="inskillflow Academy">
-                            <i class="fas fa-graduation-cap"></i>
-                        </a>
-                        <a href="https://github.com" target="_blank" class="social-link" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 footer-section">
-                    <h5 class="footer-title">Plateforme d'apprentissage</h5>
-                    <div class="mb-3">
-                        <a href="https://www.inskillflow.com/" target="_blank" class="footer-link">
-                            <i class="fas fa-external-link-alt"></i>
-                            inskillflow.com
-                        </a>
-                        <p class="text-light opacity-75 small mb-2">
-                            Plateforme de formations professionnelles en WikiJS, SSO, Authentification et Déploiement
-                        </p>
-                    </div>
-                    
-                    <div class="mt-3">
-                        <p class="text-light opacity-50 small">
-                            Build Tech Skills That Companies Need Today
-                        </p>
-                        <p class="text-light opacity-50 small">
-                            © 2025 inskillflow academy - Formation professionnelle
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <hr class="my-4 opacity-25">
-            
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="text-light opacity-75 mb-0">
-                        <i class="fas fa-heart me-1 text-danger"></i>
-                        Formation conçue avec passion pour la communauté Data
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="text-light opacity-50">
-                        Formation Professionnelle • WikiJS & Authentification • Enterprise Ready
-                    </small>
-                </div>
-            </div>
-        </div>
-    <!-- Contact Section -->
-   
-
-    </footer>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Animation d'entrée pour les cartes de modules
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        // Observer les cartes de modules pour l'animation
-        document.querySelectorAll('.module-card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-            observer.observe(card);
-        });
-
-        // Animation de la barre de progression circulaire
-        setTimeout(() => {
-            const progressCircle = document.getElementById('progressCircle');
-            if (progressCircle) {
-                const circumference = 565.48;
-                const offset = circumference - (100 / 100) * circumference;
-                progressCircle.style.strokeDashoffset = offset;
-            }
-        }, 1000);
-
-        // Animation des cartes de stats
-        document.querySelectorAll('.stats-card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.8)';
-            card.style.transition = `opacity 0.6s ease ${index * 0.2 + 0.5}s, transform 0.6s ease ${index * 0.2 + 0.5}s`;
-            
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'scale(1)';
-            }, (index * 200) + 500);
-        });
-
-        // Animation des badges technologiques
-        document.querySelectorAll('.tech-badge').forEach((badge, index) => {
-            badge.style.opacity = '0';
-            badge.style.transform = 'translateX(-20px)';
-            badge.style.transition = `opacity 0.5s ease ${index * 0.1 + 1}s, transform 0.5s ease ${index * 0.1 + 1}s`;
-            
-            setTimeout(() => {
-                badge.style.opacity = '1';
-                badge.style.transform = 'translateX(0)';
-            }, (index * 100) + 1000);
-        });
-
-        // Animation des illustrations techniques
-        document.querySelectorAll('.tech-illustration, .phase-illustration').forEach((illustration, index) => {
-            illustration.style.opacity = '0';
-            illustration.style.transform = 'scale(0.8) rotateY(45deg)';
-            illustration.style.transition = `opacity 0.8s ease ${index * 0.2 + 0.5}s, transform 0.8s ease ${index * 0.2 + 0.5}s`;
-            
-            setTimeout(() => {
-                illustration.style.opacity = '1';
-                illustration.style.transform = 'scale(1) rotateY(0deg)';
-            }, (index * 200) + 500);
-        });
-
-        // Animation des prévisualisations de modules
-        document.querySelectorAll('.module-preview-image').forEach((preview, index) => {
-            preview.style.opacity = '0';
-            preview.style.transform = 'translateY(20px)';
-            preview.style.transition = `opacity 0.6s ease ${index * 0.15 + 0.8}s, transform 0.6s ease ${index * 0.15 + 0.8}s`;
-            
-            setTimeout(() => {
-                preview.style.opacity = '1';
-                preview.style.transform = 'translateY(0)';
-            }, (index * 150) + 800);
-        });
-
-        // Effet de particules professionnel
-        function createProfessionalParticles() {
-            const colors = ['#dc143c', '#2563eb', '#059669', '#d97706', '#8b5cf6'];
-            const shapes = ['circle', 'square', 'diamond'];
-            const celebrationContainer = document.getElementById('celebrationContainer');
-            
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                    
-                    particle.style.position = 'fixed';
-                    particle.style.width = '6px';
-                    particle.style.height = '6px';
-                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.top = '-10px';
-                    particle.style.pointerEvents = 'none';
-                    particle.style.animation = 'fall 4s ease-out forwards';
-                    particle.style.opacity = '0.8';
-                    
-                    if (shape === 'circle') {
-                        particle.style.borderRadius = '50%';
-                    } else if (shape === 'diamond') {
-                        particle.style.transform = 'rotate(45deg)';
-                        particle.style.borderRadius = '2px';
-                    } else {
-                        particle.style.borderRadius = '1px';
-                    }
-                    
-                    celebrationContainer.appendChild(particle);
-                    
-                    setTimeout(() => {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                        }
-                    }, 4000);
-                }, i * 200);
-            }
-        }
-
-        // CSS pour l'animation de chute
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Déclencher les particules professionnelles après le chargement
-        setTimeout(createProfessionalParticles, 2000);
-
-        // Navigation Scroll Effect
-        function initNavbarScrollEffect() {
-            const navbar = document.getElementById('mainNavbar');
-            let lastScrollY = window.scrollY;
-            
-            function updateNavbar() {
-                const currentScrollY = window.scrollY;
-                
-                if (currentScrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-                
-                lastScrollY = currentScrollY;
-            }
-            
-            // Throttle scroll event pour de meilleures performances
-            let ticking = false;
-            function requestTick() {
-                if (!ticking) {
-                    requestAnimationFrame(updateNavbar);
-                    ticking = true;
-                    setTimeout(() => { ticking = false; }, 10);
-                }
-            }
-            
-            window.addEventListener('scroll', requestTick);
-            updateNavbar(); // Check initial state
-        }
-
-        // Smooth scroll pour les liens de navigation
-        function initSmoothScroll() {
-            const navLinks = document.querySelectorAll('#mainNavbar a[href^="#"]');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                    
-                    // Fermer le menu mobile si ouvert
-                    const navbarCollapse = document.querySelector('#navbarNav');
-                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-                        const bootstrapCollapse = new bootstrap.Collapse(navbarCollapse);
-                        bootstrapCollapse.hide();
-                    }
-                });
-            });
-        }
-
-        // Active link highlighting
-        function initActiveLinkHighlighting() {
-            const sections = document.querySelectorAll('section[id], div[id]');
-            const navLinks = document.querySelectorAll('#mainNavbar a[href^="#"]');
-            
-            function updateActiveLink() {
-                let current = '';
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                    if (scrollY >= sectionTop - 100 && scrollY < sectionTop + sectionHeight - 100) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-            
-            window.addEventListener('scroll', updateActiveLink);
-        }
-
-        // Initialiser tous les effets
-        document.addEventListener('DOMContentLoaded', function() {
-            initNavbarScrollEffect();
-            initSmoothScroll();
-            initActiveLinkHighlighting();
-        });
-    </script>
 </body>
 </html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9 - Collections et Génériques - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .collections-hierarchy {
+            background: #f8fafc;
+            border: 2px solid var(--info-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .performance-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+        }
+
+        .performance-table th {
+            background: var(--java-blue);
+            color: white;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 75%; /* 9/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-layer-group me-2"></i>
+                        Module 9 - Collections et Génériques
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 9 sur 12</small>
+                    
+                    <a href="#introduction-collections" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction Collections</a>
+                    <a href="#generiques" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Génériques</a>
+                    <a href="#arraylist" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">ArrayList</a>
+                    <a href="#linkedlist" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">LinkedList</a>
+                    <a href="#hashmap" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">HashMap</a>
+                    <a href="#treeset" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">TreeSet</a>
+                    <a href="#iterateurs" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Itérateurs</a>
+                    <a href="#comparateurs" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Comparateurs</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (22)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 9 - Collections et Génériques</h1>
+                        <p class="lead mb-0">Maîtrisez les structures de données avancées</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction Collections -->
+                        <section id="introduction-collections" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-boxes"></i>
+                                Framework Collections Java
+                            </h2>
+                            
+                            <p>Le Framework Collections de Java fournit une architecture unifiée pour représenter et manipuler des collections d'objets. Il remplace les tableaux pour la plupart des cas d'usage.</p>
+
+                            <div class="collections-hierarchy">
+                                <h6>Hiérarchie des Collections :</h6>
+                                <pre>
+                        Collection&lt;E&gt; (interface)
+                               │
+                    ┌──────────┼──────────┐
+                    │          │          │
+                 List&lt;E&gt;    Set&lt;E&gt;    Queue&lt;E&gt;
+                    │          │          │
+            ┌───────┼───────┐  │     ┌────┴────┐
+            │       │       │  │     │         │
+       ArrayList Vector LinkedList │  PriorityQueue Deque
+         │              │  │     │         │
+    Collections.     LinkedList │  HashSet    ArrayDeque
+    synchronizedList      │     │     │
+                         │     │  TreeSet
+                         │     │  LinkedHashSet
+                         │     │
+                         └─────┴─ Peuvent implémenter
+                                  plusieurs interfaces
+
+                    Map&lt;K,V&gt; (interface séparée)
+                           │
+                    ┌──────┼──────┐
+                    │      │      │
+                HashMap TreeMap LinkedHashMap
+                    │
+                Hashtable (legacy)
+                </pre>
+                            </div>
+
+                            <div class="performance-table">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Collection</th>
+                                            <th>Accès</th>
+                                            <th>Insertion</th>
+                                            <th>Suppression</th>
+                                            <th>Recherche</th>
+                                            <th>Cas d'Usage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>ArrayList</strong></td>
+                                            <td>O(1)</td>
+                                            <td>O(1)*</td>
+                                            <td>O(n)</td>
+                                            <td>O(n)</td>
+                                            <td>Accès fréquent par index</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>LinkedList</strong></td>
+                                            <td>O(n)</td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>O(n)</td>
+                                            <td>Insertions/suppressions fréquentes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>HashMap</strong></td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>Accès rapide par clé</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TreeMap</strong></td>
+                                            <td>O(log n)</td>
+                                            <td>O(log n)</td>
+                                            <td>O(log n)</td>
+                                            <td>O(log n)</td>
+                                            <td>Données triées</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>HashSet</strong></td>
+                                            <td>-</td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>O(1)</td>
+                                            <td>Unicité des éléments</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="text-muted p-2 d-block">* Amortie, O(n) dans le pire cas lors du redimensionnement</small>
+                            </div>
+                        </section>
+
+                        <!-- Génériques -->
+                        <section id="generiques" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-puzzle-piece"></i>
+                                Génériques (Generics)
+                            </h2>
+                            
+                            <p>Les génériques permettent de créer des classes, interfaces et méthodes qui fonctionnent avec différents types tout en conservant la sécurité de type à la compilation.</p>
+
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+// Classe générique personnalisée
+public class Conteneur&lt;T&gt; {
+    private T contenu;
+    private String description;
+    
+    public Conteneur(T contenu, String description) {
+        this.contenu = contenu;
+        this.description = description;
+    }
+    
+    public T getContenu() {
+        return contenu;
+    }
+    
+    public void setContenu(T nouveauContenu) {
+        this.contenu = nouveauContenu;
+        System.out.println("Contenu mis à jour: " + nouveauContenu);
+    }
+    
+    public void afficherInfos() {
+        System.out.println("=== CONTENEUR ===");
+        System.out.println("Description: " + description);
+        System.out.println("Type de contenu: " + contenu.getClass().getSimpleName());
+        System.out.println("Contenu: " + contenu);
+    }
+    
+    // Méthode générique
+    public &lt;U&gt; void comparer(U autreObjet) {
+        System.out.println("Comparaison entre " + contenu.getClass().getSimpleName() + 
+                          " et " + autreObjet.getClass().getSimpleName());
+        System.out.println("Types identiques: " + contenu.getClass().equals(autreObjet.getClass()));
+    }
+}
+
+// Classe avec génériques bornés
+public class ConteneurNumerique&lt;T extends Number&gt; {
+    private List&lt;T&gt; nombres;
+    
+    public ConteneurNumerique() {
+        this.nombres = new ArrayList&lt;&gt;();
+    }
+    
+    public void ajouter(T nombre) {
+        nombres.add(nombre);
+        System.out.println("Nombre ajouté: " + nombre);
+    }
+    
+    // Méthode utilisant les propriétés de Number
+    public double calculerSomme() {
+        double somme = 0;
+        for (T nombre : nombres) {
+            somme += nombre.doubleValue(); // Méthode de Number
+        }
+        return somme;
+    }
+    
+    public double calculerMoyenne() {
+        if (nombres.isEmpty()) return 0;
+        return calculerSomme() / nombres.size();
+    }
+    
+    public T trouverMax() {
+        if (nombres.isEmpty()) return null;
+        
+        T max = nombres.get(0);
+        for (T nombre : nombres) {
+            if (nombre.doubleValue() > max.doubleValue()) {
+                max = nombre;
+            }
+        }
+        return max;
+    }
+}
+
+public class DemonstrationGeneriques {
+    public static void main(String[] args) {
+        System.out.println("=== DÉMONSTRATION GÉNÉRIQUES ===");
+        
+        // 1. Conteneurs typés
+        Conteneur&lt;String&gt; conteneurTexte = new Conteneur&lt;&gt;("Formation Java", "Cours");
+        Conteneur&lt;Integer&gt; conteneurNombre = new Conteneur&lt;&gt;(42, "Réponse universelle");
+        Conteneur&lt;List&lt;String&gt;&gt; conteneurListe = new Conteneur&lt;&gt;(
+            Arrays.asList("Java", "Python", "JavaScript"), "Langages"
+        );
+        
+        conteneurTexte.afficherInfos();
+        conteneurNombre.afficherInfos();
+        conteneurListe.afficherInfos();
+        
+        // 2. Génériques bornés
+        System.out.println("\n=== GÉNÉRIQUES BORNÉS ===");
+        ConteneurNumerique&lt;Integer&gt; conteneurInt = new ConteneurNumerique&lt;&gt;();
+        conteneurInt.ajouter(10);
+        conteneurInt.ajouter(20);
+        conteneurInt.ajouter(30);
+        
+        ConteneurNumerique&lt;Double&gt; conteneurDouble = new ConteneurNumerique&lt;&gt;();
+        conteneurDouble.ajouter(3.14);
+        conteneurDouble.ajouter(2.71);
+        conteneurDouble.ajouter(1.41);
+        
+        System.out.println("Somme entiers: " + conteneurInt.calculerSomme());
+        System.out.println("Moyenne entiers: " + conteneurInt.calculerMoyenne());
+        System.out.println("Max entiers: " + conteneurInt.trouverMax());
+        
+        System.out.println("Somme doubles: " + conteneurDouble.calculerSomme());
+        System.out.println("Moyenne doubles: " + conteneurDouble.calculerMoyenne());
+        
+        // 3. Wildcards
+        demonstrerWildcards();
+    }
+    
+    // Méthodes avec wildcards
+    public static void demonstrerWildcards() {
+        System.out.println("\n=== WILDCARDS ===");
+        
+        List&lt;Integer&gt; entiers = Arrays.asList(1, 2, 3, 4, 5);
+        List&lt;Double&gt; decimaux = Arrays.asList(1.1, 2.2, 3.3, 4.4, 5.5);
+        List&lt;String&gt; textes = Arrays.asList("A", "B", "C", "D", "E");
+        
+        // Wildcard ? extends Number (covariance)
+        afficherNombres(entiers);
+        afficherNombres(decimaux);
+        // afficherNombres(textes); // Erreur de compilation
+        
+        // Wildcard ? super Integer (contravariance)
+        ajouterEntiers(entiers);
+        
+        // Wildcard ? (type inconnu)
+        afficherTaille(entiers);
+        afficherTaille(decimaux);
+        afficherTaille(textes);
+    }
+    
+    // Méthode avec upper bound wildcard
+    public static void afficherNombres(List&lt;? extends Number&gt; nombres) {
+        System.out.print("Nombres: ");
+        for (Number nombre : nombres) {
+            System.out.print(nombre.doubleValue() + " ");
+        }
+        System.out.println();
+    }
+    
+    // Méthode avec lower bound wildcard
+    public static void ajouterEntiers(List&lt;? super Integer&gt; liste) {
+        liste.add(100);
+        liste.add(200);
+        System.out.println("Entiers ajoutés à la liste");
+    }
+    
+    // Méthode avec unbounded wildcard
+    public static void afficherTaille(List&lt;?&gt; liste) {
+        System.out.println("Taille de la liste: " + liste.size());
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- ArrayList -->
+                        <section id="arraylist" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-list"></i>
+                                ArrayList - Liste Dynamique
+                            </h2>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class ArrayListMasterClass {
+    public static void main(String[] args) {
+        demonstrerArrayListBasique();
+        demonstrerArrayListAvance();
+        demonstrerPerformanceArrayList();
+    }
+    
+    public static void demonstrerArrayListBasique() {
+        System.out.println("=== ARRAYLIST BASIQUE ===");
+        
+        // Création et initialisation
+        ArrayList&lt;String&gt; langages = new ArrayList&lt;&gt;();
+        ArrayList&lt;String&gt; frameworks = new ArrayList&lt;&gt;(Arrays.asList("Spring", "Hibernate", "Maven"));
+        ArrayList&lt;String&gt; outils = new ArrayList&lt;&gt;(20); // Capacité initiale
+        
+        // Ajout d'éléments
+        langages.add("Java");
+        langages.add("Python");
+        langages.add("JavaScript");
+        langages.add(1, "C++"); // Insertion à l'index 1
+        
+        System.out.println("Langages: " + langages);
+        System.out.println("Taille: " + langages.size());
+        System.out.println("Est vide: " + langages.isEmpty());
+        
+        // Accès aux éléments
+        System.out.println("Premier: " + langages.get(0));
+        System.out.println("Dernier: " + langages.get(langages.size() - 1));
+        System.out.println("Index de Java: " + langages.indexOf("Java"));
+        
+        // Modification
+        langages.set(0, "Java 21"); // Remplacer l'élément à l'index 0
+        System.out.println("Après modification: " + langages);
+        
+        // Recherche
+        System.out.println("Contient Python: " + langages.contains("Python"));
+        
+        // Suppression
+        langages.remove("C++");           // Suppression par valeur
+        langages.remove(1);               // Suppression par index
+        System.out.println("Après suppressions: " + langages);
+        
+        // Parcours
+        System.out.println("\nParcours avec for-each:");
+        for (String langage : langages) {
+            System.out.println("- " + langage);
+        }
+        
+        System.out.println("\nParcours avec index:");
+        for (int i = 0; i < langages.size(); i++) {
+            System.out.println(i + ": " + langages.get(i));
+        }
+    }
+    
+    public static void demonstrerArrayListAvance() {
+        System.out.println("\n=== ARRAYLIST AVANCÉ ===");
+        
+        ArrayList&lt;Integer&gt; nombres = new ArrayList&lt;&gt;(Arrays.asList(5, 2, 8, 1, 9, 3));
+        System.out.println("Liste initiale: " + nombres);
+        
+        // Opérations sur collections
+        Collections.sort(nombres);
+        System.out.println("Après tri: " + nombres);
+        
+        Collections.reverse(nombres);
+        System.out.println("Après inversion: " + nombres);
+        
+        Collections.shuffle(nombres);
+        System.out.println("Après mélange: " + nombres);
+        
+        // Recherche binaire (nécessite une liste triée)
+        Collections.sort(nombres);
+        int index = Collections.binarySearch(nombres, 5);
+        System.out.println("Index de 5 (recherche binaire): " + index);
+        
+        // Statistiques
+        int min = Collections.min(nombres);
+        int max = Collections.max(nombres);
+        int frequence = Collections.frequency(nombres, 5);
+        
+        System.out.println("Min: " + min + ", Max: " + max + ", Fréquence de 5: " + frequence);
+        
+        // Sous-listes
+        List&lt;Integer&gt; sousListe = nombres.subList(1, 4);
+        System.out.println("Sous-liste [1-4): " + sousListe);
+        
+        // Conversion en tableau
+        Integer[] tableau = nombres.toArray(new Integer[0]);
+        System.out.println("Converti en tableau: " + Arrays.toString(tableau));
+    }
+    
+    public static void demonstrerPerformanceArrayList() {
+        System.out.println("\n=== PERFORMANCE ARRAYLIST ===");
+        
+        // Test de performance pour différentes opérations
+        int taille = 100000;
+        
+        // Test ajout en fin
+        long debut = System.nanoTime();
+        ArrayList&lt;Integer&gt; liste1 = new ArrayList&lt;&gt;();
+        for (int i = 0; i < taille; i++) {
+            liste1.add(i);
+        }
+        long dureeAjoutFin = System.nanoTime() - debut;
+        
+        // Test ajout au début (moins efficace)
+        debut = System.nanoTime();
+        ArrayList&lt;Integer&gt; liste2 = new ArrayList&lt;&gt;();
+        for (int i = 0; i < 1000; i++) { // Moins d'éléments car plus lent
+            liste2.add(0, i);
+        }
+        long dureeAjoutDebut = System.nanoTime() - debut;
+        
+        // Test accès aléatoire
+        Random random = new Random();
+        debut = System.nanoTime();
+        for (int i = 0; i < 10000; i++) {
+            int index = random.nextInt(liste1.size());
+            int valeur = liste1.get(index);
+        }
+        long dureeAcces = System.nanoTime() - debut;
+        
+        System.out.printf("Ajout en fin (%d éléments): %.2f ms%n", taille, dureeAjoutFin / 1_000_000.0);
+        System.out.printf("Ajout au début (1000 éléments): %.2f ms%n", dureeAjoutDebut / 1_000_000.0);
+        System.out.printf("Accès aléatoire (10000 accès): %.2f ms%n", dureeAcces / 1_000_000.0);
+        
+        System.out.println("Capacité finale: " + liste1.size());
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- HashMap -->
+                        <section id="hashmap" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-key"></i>
+                                HashMap - Dictionnaire Clé-Valeur
+                            </h2>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class HashMapMasterClass {
+    public static void main(String[] args) {
+        demonstrerHashMapBasique();
+        demonstrerHashMapAvance();
+        creerIndexInverse();
+    }
+    
+    public static void demonstrerHashMapBasique() {
+        System.out.println("=== HASHMAP BASIQUE ===");
+        
+        // Création et initialisation
+        HashMap&lt;String, Integer&gt; ages = new HashMap&lt;&gt;();
+        
+        // Ajout d'éléments
+        ages.put("Alice", 25);
+        ages.put("Bob", 30);
+        ages.put("Charlie", 22);
+        ages.put("Diana", 28);
+        
+        System.out.println("Map des âges: " + ages);
+        System.out.println("Taille: " + ages.size());
+        
+        // Accès aux éléments
+        System.out.println("Âge d'Alice: " + ages.get("Alice"));
+        System.out.println("Âge d'Eve: " + ages.get("Eve")); // null si clé inexistante
+        System.out.println("Âge d'Eve (avec défaut): " + ages.getOrDefault("Eve", 0));
+        
+        // Vérifications
+        System.out.println("Contient clé 'Bob': " + ages.containsKey("Bob"));
+        System.out.println("Contient valeur 25: " + ages.containsValue(25));
+        
+        // Modification
+        ages.put("Alice", 26); // Remplace la valeur existante
+        ages.putIfAbsent("Eve", 24); // Ajoute seulement si clé absente
+        
+        System.out.println("Après modifications: " + ages);
+        
+        // Suppression
+        Integer ageSuppr = ages.remove("Charlie");
+        System.out.println("Âge supprimé de Charlie: " + ageSuppr);
+        System.out.println("Après suppression: " + ages);
+        
+        // Parcours
+        System.out.println("\nParcours des clés:");
+        for (String nom : ages.keySet()) {
+            System.out.println("- " + nom);
+        }
+        
+        System.out.println("\nParcours des valeurs:");
+        for (Integer age : ages.values()) {
+            System.out.println("- " + age + " ans");
+        }
+        
+        System.out.println("\nParcours des entrées:");
+        for (Map.Entry&lt;String, Integer&gt; entree : ages.entrySet()) {
+            System.out.println("- " + entree.getKey() + " a " + entree.getValue() + " ans");
+        }
+    }
+    
+    public static void demonstrerHashMapAvance() {
+        System.out.println("\n=== HASHMAP AVANCÉ ===");
+        
+        // Map avec objets complexes
+        HashMap&lt;String, List&lt;Double&gt;&gt; notesEtudiants = new HashMap&lt;&gt;();
+        
+        // Ajout de notes pour chaque étudiant
+        notesEtudiants.put("Alice", new ArrayList&lt;&gt;(Arrays.asList(15.5, 18.0, 16.5)));
+        notesEtudiants.put("Bob", new ArrayList&lt;&gt;(Arrays.asList(12.0, 14.5, 13.5)));
+        notesEtudiants.put("Charlie", new ArrayList&lt;&gt;(Arrays.asList(17.0, 19.0, 18.5)));
+        
+        // Calcul des moyennes
+        System.out.println("Moyennes des étudiants:");
+        for (Map.Entry&lt;String, List&lt;Double&gt;&gt; entree : notesEtudiants.entrySet()) {
+            String etudiant = entree.getKey();
+            List&lt;Double&gt; notes = entree.getValue();
+            
+            double somme = 0;
+            for (double note : notes) {
+                somme += note;
+            }
+            double moyenne = somme / notes.size();
+            
+            System.out.printf("- %s: %.2f (notes: %s)%n", etudiant, moyenne, notes);
+        }
+        
+        // Ajout de note avec compute
+        notesEtudiants.computeIfPresent("Alice", (nom, notes) -&gt; {
+            notes.add(17.5);
+            System.out.println("Note ajoutée pour " + nom);
+            return notes;
+        });
+        
+        // Fusion de maps
+        HashMap&lt;String, Integer&gt; examensPassés = new HashMap&lt;&gt;();
+        examensPassés.put("Alice", 3);
+        examensPassés.put("Bob", 2);
+        examensPassés.put("Diana", 4);
+        
+        System.out.println("\nNombre d'examens passés:");
+        examensPassés.forEach((nom, nombre) -&gt; 
+            System.out.println("- " + nom + ": " + nombre + " examens"));
+    }
+    
+    // Exercice avancé : créer un index inversé
+    public static void creerIndexInverse() {
+        System.out.println("\n=== INDEX INVERSÉ ===");
+        
+        String[] documents = {
+            "Java est un langage de programmation orienté objet",
+            "Python est simple et puissant pour le développement rapide", 
+            "JavaScript est essentiel pour le développement web",
+            "Java et JavaScript sont des langages différents"
+        };
+        
+        // Créer un index inversé : mot -&gt; liste des documents
+        HashMap&lt;String, List&lt;Integer&gt;&gt; indexInverse = new HashMap&lt;&gt;();
+        
+        for (int i = 0; i < documents.length; i++) {
+            String[] mots = documents[i].toLowerCase().split("\\s+");
+            
+            for (String mot : mots) {
+                // Nettoyer le mot (supprimer ponctuation)
+                mot = mot.replaceAll("[^a-zA-Z0-9]", "");
+                
+                if (!mot.isEmpty()) {
+                    indexInverse.computeIfAbsent(mot, k -&gt; new ArrayList&lt;&gt;()).add(i);
+                }
+            }
+        }
+        
+        // Afficher l'index
+        System.out.println("Index inversé créé:");
+        indexInverse.entrySet().stream()
+            .sorted(Map.Entry.comparingByKey())
+            .forEach(entree -&gt; 
+                System.out.println("'" + entree.getKey() + "' → documents " + entree.getValue()));
+        
+        // Recherche de documents
+        System.out.println("\nRecherche de 'java':");
+        List&lt;Integer&gt; documentsJava = indexInverse.get("java");
+        if (documentsJava != null) {
+            for (int docId : documentsJava) {
+                System.out.println("Doc " + docId + ": " + documents[docId]);
+            }
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-8-gestion-exceptions.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 8 : Exceptions
+                            </a>
+                            <a href="module-10-programmation-fonctionnelle.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 10 : Fonctionnel
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

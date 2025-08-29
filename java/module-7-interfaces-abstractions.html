@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7 - Interfaces et Abstractions - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .interface-diagram {
+            background: #f8fafc;
+            border: 2px solid var(--info-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .design-pattern {
+            background: white;
+            border: 2px solid var(--success-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            height: 100%;
+            width: 58.33%; /* 7/12 modules */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        <i class="fas fa-puzzle-piece me-2"></i>
+                        Module 7 - Interfaces et Abstractions
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 7 sur 12</small>
+                    
+                    <a href="#introduction-interfaces" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction Interfaces</a>
+                    <a href="#declaration-interfaces" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Déclaration Interfaces</a>
+                    <a href="#implementation-multiple" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Implémentation Multiple</a>
+                    <a href="#methodes-default" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Méthodes Default</a>
+                    <a href="#methodes-statiques" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Méthodes Statiques</a>
+                    <a href="#interfaces-fonctionnelles" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Interfaces Fonctionnelles</a>
+                    <a href="#design-patterns" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Design Patterns</a>
+                    <a href="#abstraction-vs-interface" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Abstraction vs Interface</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices (14)</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 7 - Interfaces et Abstractions</h1>
+                        <p class="lead mb-0">Maîtrisez les contrats et l'architecture logicielle</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction Interfaces -->
+                        <section id="introduction-interfaces" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-handshake"></i>
+                                Introduction aux Interfaces
+                            </h2>
+                            
+                            <p>Une interface en Java est un contrat qui définit un ensemble de méthodes qu'une classe doit implémenter. C'est un moyen d'atteindre l'abstraction totale et de simuler l'héritage multiple.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Caractéristiques des Interfaces :</h5>
+                                <ul>
+                                    <li><strong>Contrat :</strong> Définit QUOI faire, pas COMMENT</li>
+                                    <li><strong>Abstraction pure :</strong> Toutes les méthodes sont abstraites (avant Java 8)</li>
+                                    <li><strong>Héritage multiple :</strong> Une classe peut implémenter plusieurs interfaces</li>
+                                    <li><strong>Constantes :</strong> Variables public static final par défaut</li>
+                                    <li><strong>Évolution :</strong> Méthodes default et static depuis Java 8</li>
+                                </ul>
+                            </div>
+
+                            <div class="interface-diagram">
+                                <h6>Différence Héritage vs Interface :</h6>
+                                <pre>
+HÉRITAGE (extends)              INTERFACE (implements)
+─────────────────              ──────────────────────
+        Animal                     Volant    Nageur
+          │                          │         │
+    ┌─────┴─────┐                   │         │
+  Chien      Chat                   │         │
+                                    │         │
+    Relation "EST-UN"         ┌─────┼─────────┼─────┐
+    (Chien EST UN Animal)     │     │         │     │
+                           Oiseau Avion   Poisson Canard
+                                              │
+                                        (implémente les 2)
+                                        
+    Relation "PEUT-FAIRE"
+    (Canard PEUT voler ET nager)
+                </pre>
+                            </div>
+                        </section>
+
+                        <!-- Déclaration Interfaces -->
+                        <section id="declaration-interfaces" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-file-contract"></i>
+                                Déclaration et Implémentation d'Interfaces
+                            </h2>
+                            
+                            <h4>Syntaxe de Base</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Interface pour les objets volants
+public interface Volant {
+    // Constantes (public static final par défaut)
+    double VITESSE_LUMIERE = 299792458; // m/s
+    int ALTITUDE_MAX_CIVILE = 12000;    // mètres
+    
+    // Méthodes abstraites (public abstract par défaut)
+    void decoller();
+    void atterrir();
+    void voler(double altitude);
+    double getAltitudeActuelle();
+    double getVitesseVol();
+}
+
+// Interface pour les objets nageurs
+public interface Nageur {
+    // Constantes
+    double PROFONDEUR_MAX_HUMAIN = 330; // mètres
+    
+    // Méthodes abstraites
+    void plonger();
+    void faireSurface();
+    void nager(double distance);
+    double getProfondeurActuelle();
+    double getVitesseNage();
+}
+
+// Interface pour les véhicules électriques
+public interface Electrique {
+    double TENSION_STANDARD = 400; // Volts
+    
+    void charger(int minutes);
+    void activerModeEco();
+    double getNiveauBatterie();
+    double getAutonomieRestante();
+}</code></pre>
+                            </div>
+
+                            <h4>Implémentation Simple</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Classe implémentant une interface
+public class Avion implements Volant {
+    private String modele;
+    private double altitudeActuelle;
+    private double vitesseActuelle;
+    private boolean enVol;
+    
+    public Avion(String modele) {
+        this.modele = modele;
+        this.altitudeActuelle = 0;
+        this.vitesseActuelle = 0;
+        this.enVol = false;
+        System.out.println("Avion " + modele + " créé");
+    }
+    
+    // Implémentation obligatoire des méthodes de l'interface
+    @Override
+    public void decoller() {
+        if (!enVol) {
+            System.out.println("🛫 " + modele + " décolle...");
+            enVol = true;
+            altitudeActuelle = 100; // Altitude initiale
+            vitesseActuelle = 250;  // Vitesse de croisière
+        } else {
+            System.out.println("L'avion est déjà en vol");
+        }
+    }
+    
+    @Override
+    public void atterrir() {
+        if (enVol) {
+            System.out.println("🛬 " + modele + " atterrit...");
+            enVol = false;
+            altitudeActuelle = 0;
+            vitesseActuelle = 0;
+        } else {
+            System.out.println("L'avion est déjà au sol");
+        }
+    }
+    
+    @Override
+    public void voler(double altitude) {
+        if (enVol) {
+            if (altitude <= ALTITUDE_MAX_CIVILE) {
+                this.altitudeActuelle = altitude;
+                System.out.printf("%s vole maintenant à %.0f mètres%n", modele, altitude);
+            } else {
+                System.out.println("Altitude trop élevée ! Maximum autorisé: " + ALTITUDE_MAX_CIVILE + "m");
+            }
+        } else {
+            System.out.println("L'avion doit d'abord décoller");
+        }
+    }
+    
+    @Override
+    public double getAltitudeActuelle() {
+        return altitudeActuelle;
+    }
+    
+    @Override
+    public double getVitesseVol() {
+        return vitesseActuelle;
+    }
+    
+    // Méthodes spécifiques à l'avion
+    public void afficherStatutVol() {
+        System.out.println("=== STATUT VOL " + modele + " ===");
+        System.out.println("En vol: " + enVol);
+        System.out.printf("Altitude: %.0f m%n", altitudeActuelle);
+        System.out.printf("Vitesse: %.0f km/h%n", vitesseActuelle);
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Implémentation Multiple</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Classe implémentant plusieurs interfaces
+public class Canard implements Volant, Nageur {
+    private String nom;
+    private double altitudeActuelle;
+    private double profondeurActuelle;
+    private boolean enVol;
+    private boolean sousEau;
+    
+    public Canard(String nom) {
+        this.nom = nom;
+        this.altitudeActuelle = 0;
+        this.profondeurActuelle = 0;
+        this.enVol = false;
+        this.sousEau = false;
+        System.out.println("Canard " + nom + " créé - Peut voler ET nager !");
+    }
+    
+    // Implémentation de l'interface Volant
+    @Override
+    public void decoller() {
+        if (!enVol && !sousEau) {
+            enVol = true;
+            altitudeActuelle = 50; // Les canards volent bas
+            System.out.println("🦆 " + nom + " décolle et vole à " + altitudeActuelle + "m");
+        } else if (sousEau) {
+            System.out.println(nom + " doit d'abord faire surface");
+        } else {
+            System.out.println(nom + " vole déjà");
+        }
+    }
+    
+    @Override
+    public void atterrir() {
+        if (enVol) {
+            enVol = false;
+            altitudeActuelle = 0;
+            System.out.println("🦆 " + nom + " se pose sur l'eau");
+        }
+    }
+    
+    @Override
+    public void voler(double altitude) {
+        if (enVol) {
+            if (altitude <= 500) { // Les canards ne volent pas très haut
+                this.altitudeActuelle = altitude;
+                System.out.printf("%s vole à %.0f mètres%n", nom, altitude);
+            } else {
+                System.out.println("Altitude trop élevée pour un canard ! Max: 500m");
+            }
+        }
+    }
+    
+    // Implémentation de l'interface Nageur
+    @Override
+    public void plonger() {
+        if (!enVol && !sousEau) {
+            sousEau = true;
+            profondeurActuelle = 2; // Les canards plongent peu profond
+            System.out.println("🦆 " + nom + " plonge sous l'eau (" + profondeurActuelle + "m)");
+        } else if (enVol) {
+            System.out.println(nom + " doit d'abord atterrir");
+        }
+    }
+    
+    @Override
+    public void faireSurface() {
+        if (sousEau) {
+            sousEau = false;
+            profondeurActuelle = 0;
+            System.out.println("🦆 " + nom + " fait surface");
+        }
+    }
+    
+    @Override
+    public void nager(double distance) {
+        if (!enVol && !sousEau) {
+            System.out.printf("%s nage %.1f mètres à la surface%n", nom, distance);
+        } else if (sousEau) {
+            System.out.printf("%s nage %.1f mètres sous l'eau%n", nom, distance);
+        } else {
+            System.out.println(nom + " doit d'abord atterrir pour nager");
+        }
+    }
+    
+    @Override
+    public double getAltitudeActuelle() { return altitudeActuelle; }
+    
+    @Override
+    public double getVitesseVol() { return enVol ? 60 : 0; } // km/h
+    
+    @Override
+    public double getProfondeurActuelle() { return profondeurActuelle; }
+    
+    @Override
+    public double getVitesseNage() { return 5; } // km/h
+    
+    // Méthode spécifique au canard
+    public void coincoiner() {
+        System.out.println("🦆 " + nom + " fait: Coin coin !");
+    }
+    
+    public void afficherStatut() {
+        System.out.println("=== STATUT " + nom.toUpperCase() + " ===");
+        if (enVol) {
+            System.out.println("État: En vol à " + altitudeActuelle + "m");
+        } else if (sousEau) {
+            System.out.println("État: Sous l'eau à " + profondeurActuelle + "m");
+        } else {
+            System.out.println("État: À la surface de l'eau");
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Méthodes Default -->
+                        <section id="methodes-default" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-cog"></i>
+                                Méthodes Default et Statiques (Java 8+)
+                            </h2>
+                            
+                            <p>Depuis Java 8, les interfaces peuvent contenir des méthodes avec implémentation : les méthodes <code>default</code> et <code>static</code>.</p>
+
+                            <div class="code-block">
+<pre><code class="language-java">// Interface moderne avec méthodes default et static
+public interface Drawable {
+    // Constantes
+    String DEFAULT_COLOR = "BLACK";
+    int DEFAULT_THICKNESS = 1;
+    
+    // Méthode abstraite (obligatoire à implémenter)
+    void draw();
+    
+    // Méthode default (implémentation par défaut)
+    default void setColor(String color) {
+        System.out.println("Couleur changée vers: " + color);
+    }
+    
+    default void setThickness(int thickness) {
+        if (thickness > 0) {
+            System.out.println("Épaisseur définie à: " + thickness);
+        } else {
+            System.out.println("Épaisseur invalide, utilisation de la valeur par défaut");
+        }
+    }
+    
+    default void drawWithBorder() {
+        System.out.println("--- Début du dessin avec bordure ---");
+        draw(); // Appel de la méthode abstraite
+        System.out.println("--- Fin du dessin avec bordure ---");
+    }
+    
+    // Méthode statique (appartient à l'interface)
+    static void printDrawingInstructions() {
+        System.out.println("=== INSTRUCTIONS DE DESSIN ===");
+        System.out.println("1. Définir la couleur avec setColor()");
+        System.out.println("2. Définir l'épaisseur avec setThickness()");
+        System.out.println("3. Dessiner avec draw()");
+        System.out.println("4. Optionnel: drawWithBorder() pour une bordure");
+    }
+    
+    static String getDefaultColor() {
+        return DEFAULT_COLOR;
+    }
+}
+
+// Interface pour les objets redimensionnables
+public interface Resizable {
+    void resize(double facteur);
+    
+    default void doubleSize() {
+        resize(2.0);
+        System.out.println("Taille doublée");
+    }
+    
+    default void halfSize() {
+        resize(0.5);
+        System.out.println("Taille réduite de moitié");
+    }
+    
+    static void printResizeHelp() {
+        System.out.println("Facteur > 1 : agrandir, Facteur < 1 : réduire");
+    }
+}
+
+// Classe implémentant plusieurs interfaces avec méthodes default
+public class CarreDessinable implements Drawable, Resizable {
+    private double cote;
+    private String couleur;
+    private int epaisseur;
+    
+    public CarreDessinable(double cote) {
+        this.cote = cote;
+        this.couleur = Drawable.getDefaultColor(); // Utilisation méthode static
+        this.epaisseur = DEFAULT_THICKNESS;
+        System.out.println("Carré créé: côté " + cote);
+    }
+    
+    // Implémentation obligatoire de draw()
+    @Override
+    public void draw() {
+        System.out.println("Dessin d'un carré " + couleur + " (côté: " + cote + "):");
+        
+        for (int i = 0; i < (int)cote; i++) {
+            for (int j = 0; j < (int)cote; j++) {
+                if (i == 0 || i == (int)cote - 1 || j == 0 || j == (int)cote - 1) {
+                    System.out.print("█");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    
+    // Implémentation obligatoire de resize()
+    @Override
+    public void resize(double facteur) {
+        if (facteur > 0) {
+            double ancienCote = cote;
+            cote *= facteur;
+            System.out.printf("Redimensionnement: %.1f → %.1f (facteur: %.2f)%n", 
+                            ancienCote, cote, facteur);
+        } else {
+            System.out.println("Facteur de redimensionnement invalide");
+        }
+    }
+    
+    // Redéfinition optionnelle d'une méthode default
+    @Override
+    public void setColor(String color) {
+        String ancienneCouleur = this.couleur;
+        this.couleur = color;
+        System.out.println("Couleur du carré: " + ancienneCouleur + " → " + color);
+    }
+    
+    // Méthode spécifique
+    public double calculerAire() {
+        return cote * cote;
+    }
+    
+    public double calculerPerimetre() {
+        return 4 * cote;
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Design Patterns -->
+                        <section id="design-patterns" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-drafting-compass"></i>
+                                Design Patterns avec Interfaces
+                            </h2>
+                            
+                            <h4>1. Pattern Strategy</h4>
+                            <p>Permet de changer d'algorithme à l'exécution.</p>
+                            
+                            <div class="code-block">
+<pre><code class="language-java">// Interface pour les stratégies de tri
+public interface StrategieTriStrategy {
+    void trier(int[] tableau);
+    String getNom();
+    String getComplexite();
+}
+
+// Implémentations concrètes des stratégies
+public class TriBullesStrategy implements StrategieTriStrategy {
+    @Override
+    public void trier(int[] tableau) {
+        System.out.println("Application du tri à bulles...");
+        int n = tableau.length;
+        
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (tableau[j] > tableau[j + 1]) {
+                    // Échange
+                    int temp = tableau[j];
+                    tableau[j] = tableau[j + 1];
+                    tableau[j + 1] = temp;
+                }
+            }
+        }
+    }
+    
+    @Override
+    public String getNom() { return "Tri à Bulles"; }
+    
+    @Override
+    public String getComplexite() { return "O(n²)"; }
+}
+
+public class TriSelectionStrategy implements StrategieTriStrategy {
+    @Override
+    public void trier(int[] tableau) {
+        System.out.println("Application du tri par sélection...");
+        int n = tableau.length;
+        
+        for (int i = 0; i < n - 1; i++) {
+            int indexMin = i;
+            for (int j = i + 1; j < n; j++) {
+                if (tableau[j] < tableau[indexMin]) {
+                    indexMin = j;
+                }
+            }
+            
+            // Échange
+            int temp = tableau[i];
+            tableau[i] = tableau[indexMin];
+            tableau[indexMin] = temp;
+        }
+    }
+    
+    @Override
+    public String getNom() { return "Tri par Sélection"; }
+    
+    @Override
+    public String getComplexite() { return "O(n²)"; }
+}
+
+public class TriInsertionStrategy implements StrategieTriStrategy {
+    @Override
+    public void trier(int[] tableau) {
+        System.out.println("Application du tri par insertion...");
+        
+        for (int i = 1; i < tableau.length; i++) {
+            int elementCourant = tableau[i];
+            int j = i - 1;
+            
+            while (j >= 0 && tableau[j] > elementCourant) {
+                tableau[j + 1] = tableau[j];
+                j--;
+            }
+            
+            tableau[j + 1] = elementCourant;
+        }
+    }
+    
+    @Override
+    public String getNom() { return "Tri par Insertion"; }
+    
+    @Override
+    public String getComplexite() { return "O(n²)"; }
+}
+
+// Contexte utilisant les stratégies
+public class TrieurAvecStrategie {
+    private StrategieTriStrategy strategie;
+    
+    public TrieurAvecStrategie(StrategieTriStrategy strategie) {
+        this.strategie = strategie;
+    }
+    
+    public void changerStrategie(StrategieTriStrategy nouvelleStrategie) {
+        this.strategie = nouvelleStrategie;
+        System.out.println("Stratégie changée vers: " + nouvelleStrategie.getNom());
+    }
+    
+    public void trierTableau(int[] tableau) {
+        System.out.println("Tri avec " + strategie.getNom() + " (Complexité: " + strategie.getComplexite() + ")");
+        System.out.println("Avant: " + java.util.Arrays.toString(tableau));
+        
+        long debut = System.nanoTime();
+        strategie.trier(tableau);
+        long duree = System.nanoTime() - debut;
+        
+        System.out.println("Après: " + java.util.Arrays.toString(tableau));
+        System.out.printf("Temps d'exécution: %.2f ms%n", duree / 1_000_000.0);
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>2. Pattern Observer</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Interface pour les observateurs
+public interface Observer {
+    void update(String message);
+    String getNom();
+}
+
+// Interface pour les sujets observés
+public interface Subject {
+    void ajouterObserver(Observer observer);
+    void retirerObserver(Observer observer);
+    void notifierObservers(String message);
+}
+
+// Implémentation du sujet - Station météo
+public class StationMeteo implements Subject {
+    private java.util.List<Observer> observers;
+    private double temperature;
+    private double humidite;
+    private double pression;
+    
+    public StationMeteo() {
+        this.observers = new java.util.ArrayList<>();
+        System.out.println("Station météo initialisée");
+    }
+    
+    @Override
+    public void ajouterObserver(Observer observer) {
+        observers.add(observer);
+        System.out.println("Observateur ajouté: " + observer.getNom());
+    }
+    
+    @Override
+    public void retirerObserver(Observer observer) {
+        observers.remove(observer);
+        System.out.println("Observateur retiré: " + observer.getNom());
+    }
+    
+    @Override
+    public void notifierObservers(String message) {
+        System.out.println("Notification à " + observers.size() + " observateur(s): " + message);
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+    
+    public void changerConditions(double temp, double humid, double press) {
+        this.temperature = temp;
+        this.humidite = humid;
+        this.pression = press;
+        
+        String message = String.format("Nouvelles conditions: %.1f°C, %.1f%% humidité, %.1f hPa", 
+                                      temp, humid, press);
+        notifierObservers(message);
+        
+        // Alertes spéciales
+        if (temp > 35) {
+            notifierObservers("⚠️  ALERTE CANICULE: " + temp + "°C");
+        }
+        if (press < 1000) {
+            notifierObservers("🌧️  ALERTE TEMPÊTE: Pression faible " + press + " hPa");
+        }
+    }
+}
+
+// Observateurs concrets
+public class AffichageMobile implements Observer {
+    private String nom;
+    
+    public AffichageMobile(String nom) {
+        this.nom = nom;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("📱 [" + nom + "] " + message);
+    }
+    
+    @Override
+    public String getNom() { return nom; }
+}
+
+public class SystemeAlarme implements Observer {
+    private String nom;
+    private boolean alarmeActive;
+    
+    public SystemeAlarme(String nom) {
+        this.nom = nom;
+        this.alarmeActive = false;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("🚨 [" + nom + "] " + message);
+        
+        if (message.contains("ALERTE")) {
+            alarmeActive = true;
+            System.out.println("🚨 ALARME ACTIVÉE par " + nom);
+        }
+    }
+    
+    @Override
+    public String getNom() { return nom; }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-dumbbell"></i>
+                                Exercices Pratiques sur les Interfaces (14 exercices)
+                            </h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-gamepad"></i> Exercice 1 : Système de Jeu RPG Complet
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un système de jeu RPG avec interfaces pour les capacités.</p>
+                                <p><strong>Architecture :</strong></p>
+                                <ul>
+                                    <li><strong>Interfaces :</strong> Combattant, Magicien, Soigneur, Voleur</li>
+                                    <li><strong>Classes :</strong> Guerrier, Mage, Prêtre, Assassin, Paladin (multi-interfaces)</li>
+                                    <li><strong>Système :</strong> Combat, sorts, soins, vol, expérience</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <h6>Architecture Complète du Jeu RPG :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">// Interfaces pour les capacités
+public interface Combattant {
+    int DEGATS_BASE = 10;
+    
+    void attaquer(Personnage cible);
+    void parer();
+    int calculerDegats();
+    
+    default void coupCritique(Personnage cible) {
+        System.out.println("💥 COUP CRITIQUE !");
+        int degats = calculerDegats() * 2;
+        cible.recevoirDegats(degats);
+    }
+}
+
+public interface Magicien {
+    int MANA_MAX_BASE = 100;
+    
+    void lancerSort(String nomSort, Personnage cible);
+    void restaurerMana(int quantite);
+    int getManaActuel();
+    
+    default boolean peutLancerSort(int coutMana) {
+        return getManaActuel() >= coutMana;
+    }
+}
+
+public interface Soigneur {
+    void soigner(Personnage cible);
+    void soignerGroupe(Personnage[] groupe);
+    
+    default void resurrection(Personnage cible) {
+        if (cible.estMort()) {
+            cible.ressusciter();
+            System.out.println("✨ " + cible.getNom() + " a été ressuscité !");
+        }
+    }
+}
+
+// Classe de base abstraite
+public abstract class Personnage {
+    protected String nom;
+    protected int niveau;
+    protected int pointsVieMax;
+    protected int pointsVieActuels;
+    protected int experience;
+    protected int experienceProchainNiveau;
+    
+    public Personnage(String nom, int pointsVieMax) {
+        this.nom = nom;
+        this.niveau = 1;
+        this.pointsVieMax = pointsVieMax;
+        this.pointsVieActuels = pointsVieMax;
+        this.experience = 0;
+        this.experienceProchainNiveau = 100;
+    }
+    
+    public void recevoirDegats(int degats) {
+        pointsVieActuels = Math.max(0, pointsVieActuels - degats);
+        System.out.println(nom + " reçoit " + degats + " dégâts (PV: " + pointsVieActuels + "/" + pointsVieMax + ")");
+        
+        if (estMort()) {
+            System.out.println("💀 " + nom + " est mort !");
+        }
+    }
+    
+    public void gagnerExperience(int exp) {
+        experience += exp;
+        System.out.println(nom + " gagne " + exp + " XP (Total: " + experience + ")");
+        
+        while (experience >= experienceProchainNiveau) {
+            monterNiveau();
+        }
+    }
+    
+    private void monterNiveau() {
+        niveau++;
+        experience -= experienceProchainNiveau;
+        experienceProchainNiveau = niveau * 100;
+        
+        // Augmentation des stats
+        pointsVieMax += 20;
+        pointsVieActuels = pointsVieMax; // Soins complets au niveau
+        
+        System.out.println("🆙 " + nom + " monte au niveau " + niveau + " !");
+        System.out.println("   PV max: " + pointsVieMax + " (+20)");
+    }
+    
+    public boolean estMort() { return pointsVieActuels <= 0; }
+    public void ressusciter() { pointsVieActuels = pointsVieMax / 2; }
+    
+    public abstract void utiliserCapaciteSpeciale();
+    
+    // Getters
+    public String getNom() { return nom; }
+    public int getNiveau() { return niveau; }
+    public int getPointsVie() { return pointsVieActuels; }
+}
+
+// Classe Guerrier (Combattant)
+public class Guerrier extends Personnage implements Combattant {
+    private int force;
+    private boolean enModeDefense;
+    
+    public Guerrier(String nom) {
+        super(nom, 150); // Plus de PV
+        this.force = 15;
+        this.enModeDefense = false;
+        System.out.println("⚔️  Guerrier " + nom + " créé (Force: " + force + ")");
+    }
+    
+    @Override
+    public void attaquer(Personnage cible) {
+        if (estMort()) {
+            System.out.println(nom + " ne peut pas attaquer (mort)");
+            return;
+        }
+        
+        int degats = calculerDegats();
+        System.out.println("⚔️  " + nom + " attaque " + cible.getNom() + " !");
+        
+        // Chance de coup critique (20%)
+        if (Math.random() < 0.2) {
+            coupCritique(cible);
+        } else {
+            cible.recevoirDegats(degats);
+        }
+        
+        gagnerExperience(10);
+    }
+    
+    @Override
+    public void parer() {
+        enModeDefense = true;
+        System.out.println("🛡️  " + nom + " se met en position défensive");
+    }
+    
+    @Override
+    public int calculerDegats() {
+        int degats = DEGATS_BASE + force + (niveau * 2);
+        if (enModeDefense) {
+            degats /= 2; // Moins de dégâts en défense
+            enModeDefense = false;
+        }
+        return degats;
+    }
+    
+    @Override
+    public void utiliserCapaciteSpeciale() {
+        System.out.println("🔥 " + nom + " utilise RAGE BERSERKER !");
+        System.out.println("   Force doublée pour le prochain combat !");
+        force *= 2;
+    }
+}
+
+// Classe Mage (Magicien + Combattant)
+public class Mage extends Personnage implements Magicien, Combattant {
+    private int intelligence;
+    private int manaActuel;
+    private int manaMax;
+    private String[] sortConnusus;
+    private int nbSorts;
+    
+    public Mage(String nom) {
+        super(nom, 80); // Moins de PV
+        this.intelligence = 20;
+        this.manaMax = 150;
+        this.manaActuel = manaMax;
+        this.sortConnusus = new String[10];
+        this.nbSorts = 0;
+        
+        // Sorts de base
+        apprendrSort("Boule de Feu");
+        apprendrSort("Éclair");
+        apprendrSort("Bouclier Magique");
+        
+        System.out.println("🧙 Mage " + nom + " créé (Intelligence: " + intelligence + ", Mana: " + manaMax + ")");
+    }
+    
+    public void apprendrSort(String nomSort) {
+        if (nbSorts < sortConnusus.length) {
+            sortConnusus[nbSorts] = nomSort;
+            nbSorts++;
+            System.out.println("✨ " + nom + " apprend le sort: " + nomSort);
+        }
+    }
+    
+    @Override
+    public void lancerSort(String nomSort, Personnage cible) {
+        if (estMort()) {
+            System.out.println(nom + " ne peut pas lancer de sort (mort)");
+            return;
+        }
+        
+        // Vérifier si le sort est connu
+        boolean sortConnu = false;
+        for (int i = 0; i < nbSorts; i++) {
+            if (sortConnusus[i].equals(nomSort)) {
+                sortConnu = true;
+                break;
+            }
+        }
+        
+        if (!sortConnu) {
+            System.out.println(nom + " ne connaît pas le sort: " + nomSort);
+            return;
+        }
+        
+        int coutMana = 0;
+        int degats = 0;
+        
+        switch (nomSort) {
+            case "Boule de Feu":
+                coutMana = 25;
+                degats = 30 + intelligence;
+                break;
+            case "Éclair":
+                coutMana = 20;
+                degats = 25 + intelligence;
+                break;
+            case "Bouclier Magique":
+                coutMana = 15;
+                degats = 0; // Sort défensif
+                break;
+        }
+        
+        if (peutLancerSort(coutMana)) {
+            manaActuel -= coutMana;
+            System.out.println("🔮 " + nom + " lance " + nomSort + " sur " + cible.getNom());
+            
+            if (degats > 0) {
+                cible.recevoirDegats(degats);
+            } else {
+                System.out.println("✨ Bouclier magique activé pour " + nom);
+            }
+            
+            gagnerExperience(15);
+        } else {
+            System.out.println("Mana insuffisant pour " + nomSort + " (Coût: " + coutMana + ", Actuel: " + manaActuel + ")");
+        }
+    }
+    
+    @Override
+    public void restaurerMana(int quantite) {
+        manaActuel = Math.min(manaMax, manaActuel + quantite);
+        System.out.println("💙 " + nom + " restaure " + quantite + " mana (" + manaActuel + "/" + manaMax + ")");
+    }
+    
+    @Override
+    public int getManaActuel() { return manaActuel; }
+    
+    // Implémentation de Combattant (attaque physique faible)
+    @Override
+    public void attaquer(Personnage cible) {
+        System.out.println("🪄 " + nom + " attaque avec son bâton");
+        cible.recevoirDegats(calculerDegats());
+    }
+    
+    @Override
+    public void parer() {
+        System.out.println("🛡️  " + nom + " invoque un bouclier magique");
+    }
+    
+    @Override
+    public int calculerDegats() {
+        return 5 + (intelligence / 3); // Dégâts physiques faibles
+    }
+    
+    @Override
+    public void utiliserCapaciteSpeciale() {
+        System.out.println("🌟 " + nom + " utilise MÉTÉORE !");
+        System.out.println("   Sort de zone dévastateur !");
+        manaActuel = Math.max(0, manaActuel - 50);
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-6-heritage-polymorphisme.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 6 : Héritage
+                            </a>
+                            <a href="module-8-gestion-exceptions.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 8 : Exceptions
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
