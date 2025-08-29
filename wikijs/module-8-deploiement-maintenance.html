@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8 - Déploiement avancé et maintenance - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1f2937;
+            --secondary-color: #374151;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #111827;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(31, 41, 55, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .deployment-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .deployment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .deployment-card.infrastructure { border-left-color: #1f2937; }
+        .deployment-card.containers { border-left-color: #2563eb; }
+        .deployment-card.cicd { border-left-color: #10b981; }
+        .deployment-card.monitoring { border-left-color: #f59e0b; }
+        .deployment-card.backup { border-left-color: #ef4444; }
+        .deployment-card.scaling { border-left-color: #8b5cf6; }
+
+        .deployment-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .architecture-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .architecture-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .architecture-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .architecture-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .architecture-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .architecture-subtitle {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .architecture-body {
+            padding: 1.5rem;
+        }
+
+        .architecture-specs {
+            margin: 1rem 0;
+        }
+
+        .architecture-spec {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .spec-label {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .architecture-pros {
+            background: rgba(34, 197, 94, 0.1);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .architecture-cons {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .monitoring-dashboard {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric-widget {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value.healthy { color: var(--success-color); }
+        .metric-value.warning { color: var(--warning-color); }
+        .metric-value.critical { color: #ef4444; }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 1rem;
+            top: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .deployment-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .deployment-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .deployment-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .deployment-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .deployment-content {
+            display: none;
+        }
+
+        .deployment-content.active {
+            display: block;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(31, 41, 55, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .conclusion-banner {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.05), rgba(55, 65, 81, 0.05));
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+
+        .conclusion-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .conclusion-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .achievement-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(31, 41, 55, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(31, 41, 55, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            border: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(31, 41, 55, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(31, 41, 55, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .deployment-tabs {
+                flex-direction: column;
+            }
+
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .conclusion-banner {
+                padding: 2rem 1rem;
+            }
+
+            .conclusion-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-server me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 8 - Déploiement
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction
+                        </a>
+                        <a href="#architectures" class="toc-link">
+                            <i class="fas fa-sitemap me-2"></i>
+                            Architectures
+                        </a>
+                        <a href="#containerisation" class="toc-link">
+                            <i class="fab fa-docker me-2"></i>
+                            Containerisation
+                        </a>
+                        <a href="#kubernetes" class="toc-link">
+                            <i class="fas fa-dharmachakra me-2"></i>
+                            Kubernetes
+                        </a>
+                        <a href="#cicd" class="toc-link">
+                            <i class="fas fa-code-branch me-2"></i>
+                            CI/CD
+                        </a>
+                        <a href="#monitoring" class="toc-link">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Monitoring
+                        </a>
+                        <a href="#backup" class="toc-link">
+                            <i class="fas fa-database me-2"></i>
+                            Sauvegardes
+                        </a>
+                        <a href="#performance" class="toc-link">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Performance
+                        </a>
+                        <a href="#maintenance" class="toc-link">
+                            <i class="fas fa-tools me-2"></i>
+                            Maintenance
+                        </a>
+                        <a href="#conclusion" class="toc-link">
+                            <i class="fas fa-flag-checkered me-2"></i>
+                            Conclusion
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-server me-3"></i>
+                            Module 8 - Déploiement avancé et maintenance
+                        </h1>
+                        <p class="lead mb-0">
+                            Maîtrisez le déploiement professionnel de WikiJS en production avec haute disponibilité et maintenance optimale
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 8</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction au déploiement en production
+                            </h2>
+                            <p class="lead">
+                                Ce module final vous guide dans le déploiement professionnel de WikiJS, 
+                                de l'architecture scalable au monitoring avancé. Apprenez à maintenir 
+                                une plateforme robuste, performante et hautement disponible.
+                            </p>
+                            
+                            <div class="monitoring-dashboard">
+                                <h6><i class="fas fa-chart-line me-2"></i>Objectifs de production</h6>
+                                <div class="metric-row">
+                                    <div class="metric-widget">
+                                        <div class="metric-value healthy">99.9%</div>
+                                        <div class="metric-label">Uptime Target</div>
+                                    </div>
+                                    <div class="metric-widget">
+                                        <div class="metric-value healthy">&lt;200ms</div>
+                                        <div class="metric-label">Response Time</div>
+                                    </div>
+                                    <div class="metric-widget">
+                                        <div class="metric-value healthy">1000+</div>
+                                        <div class="metric-label">Concurrent Users</div>
+                                    </div>
+                                    <div class="metric-widget">
+                                        <div class="metric-value healthy">15min</div>
+                                        <div class="metric-label">Recovery Time</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Étapes du déploiement professionnel</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Architecture</strong> : Choix de l'infrastructure adaptée</li>
+                                            <li><strong>Containerisation</strong> : Docker et orchestration</li>
+                                            <li><strong>Automatisation</strong> : CI/CD et déploiement continu</li>
+                                            <li><strong>Monitoring</strong> : Observabilité et alerting</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Sauvegardes</strong> : Stratégies de récupération</li>
+                                            <li><strong>Performance</strong> : Optimisation et mise à l'échelle</li>
+                                            <li><strong>Sécurité</strong> : Durcissement et conformité</li>
+                                            <li><strong>Maintenance</strong> : Opérations et support</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Architectures de déploiement -->
+                        <section id="architectures" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-sitemap me-2"></i>
+                                Architectures de déploiement
+                            </h2>
+                            
+                            <div class="deployment-card infrastructure">
+                                <div class="deployment-title">
+                                    <i class="fas fa-sitemap"></i>
+                                    Choix de l'architecture adaptée
+                                </div>
+                                <p>
+                                    Sélectionnez l'architecture qui correspond à vos besoins de charge, 
+                                    budget et exigences de disponibilité.
+                                </p>
+                            </div>
+
+                            <div class="architecture-grid">
+                                <div class="architecture-card">
+                                    <div class="architecture-header">
+                                        <div class="architecture-icon">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <div class="architecture-name">Single Server</div>
+                                        <div class="architecture-subtitle">Déploiement simple</div>
+                                    </div>
+                                    <div class="architecture-body">
+                                        <div class="architecture-specs">
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Utilisateurs</span>
+                                                <span class="spec-value">&lt;100</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Uptime</span>
+                                                <span class="spec-value">99.5%</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Coût/mois</span>
+                                                <span class="spec-value">50-100€</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Complexité</span>
+                                                <span class="spec-value">Faible</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="architecture-pros">
+                                            <h6><i class="fas fa-thumbs-up me-2"></i>Avantages</h6>
+                                            <ul class="mb-0">
+                                                <li>Configuration simple</li>
+                                                <li>Coût minimal</li>
+                                                <li>Maintenance aisée</li>
+                                                <li>Démarrage rapide</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="architecture-cons">
+                                            <h6><i class="fas fa-thumbs-down me-2"></i>Inconvénients</h6>
+                                            <ul class="mb-0">
+                                                <li>Point unique de défaillance</li>
+                                                <li>Scalabilité limitée</li>
+                                                <li>Downtime pour maintenance</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="architecture-card">
+                                    <div class="architecture-header">
+                                        <div class="architecture-icon">
+                                            <i class="fas fa-layer-group"></i>
+                                        </div>
+                                        <div class="architecture-name">Load Balanced</div>
+                                        <div class="architecture-subtitle">Haute disponibilité</div>
+                                    </div>
+                                    <div class="architecture-body">
+                                        <div class="architecture-specs">
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Utilisateurs</span>
+                                                <span class="spec-value">100-1000</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Uptime</span>
+                                                <span class="spec-value">99.9%</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Coût/mois</span>
+                                                <span class="spec-value">200-500€</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Complexité</span>
+                                                <span class="spec-value">Moyenne</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="architecture-pros">
+                                            <h6><i class="fas fa-thumbs-up me-2"></i>Avantages</h6>
+                                            <ul class="mb-0">
+                                                <li>Haute disponibilité</li>
+                                                <li>Distribution de charge</li>
+                                                <li>Récupération automatique</li>
+                                                <li>Scalabilité horizontale</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="architecture-cons">
+                                            <h6><i class="fas fa-thumbs-down me-2"></i>Inconvénients</h6>
+                                            <ul class="mb-0">
+                                                <li>Configuration complexe</li>
+                                                <li>Coût plus élevé</li>
+                                                <li>Synchronisation des sessions</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="architecture-card">
+                                    <div class="architecture-header">
+                                        <div class="architecture-icon">
+                                            <i class="fas fa-cloud"></i>
+                                        </div>
+                                        <div class="architecture-name">Cloud Native</div>
+                                        <div class="architecture-subtitle">Scalabilité maximale</div>
+                                    </div>
+                                    <div class="architecture-body">
+                                        <div class="architecture-specs">
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Utilisateurs</span>
+                                                <span class="spec-value">1000+</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Uptime</span>
+                                                <span class="spec-value">99.99%</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Coût/mois</span>
+                                                <span class="spec-value">500-2000€</span>
+                                            </div>
+                                            <div class="architecture-spec">
+                                                <span class="spec-label">Complexité</span>
+                                                <span class="spec-value">Élevée</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="architecture-pros">
+                                            <h6><i class="fas fa-thumbs-up me-2"></i>Avantages</h6>
+                                            <ul class="mb-0">
+                                                <li>Auto-scaling</li>
+                                                <li>Services managés</li>
+                                                <li>Résilience maximale</li>
+                                                <li>Multi-régions</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="architecture-cons">
+                                            <h6><i class="fas fa-thumbs-down me-2"></i>Inconvénients</h6>
+                                            <ul class="mb-0">
+                                                <li>Complexité importante</li>
+                                                <li>Vendor lock-in</li>
+                                                <li>Coûts variables</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-layer-group me-2"></i>Architecture Load Balanced avec nginx
+                                </div>
+                                <pre><code class="language-yaml"># docker-compose.yml - Architecture load balanced
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/ssl/certs
+    depends_on:
+      - wikijs-1
+      - wikijs-2
+    restart: unless-stopped
+
+  wikijs-1:
+    image: requarks/wiki:2
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: ${DB_PASSWORD}
+      DB_NAME: wiki
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - wikijs_data_1:/wiki/data
+    restart: unless-stopped
+
+  wikijs-2:
+    image: requarks/wiki:2
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: ${DB_PASSWORD}
+      DB_NAME: wiki
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - wikijs_data_2:/wiki/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: wiki
+      POSTGRES_USER: wikijs
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  backup:
+    image: postgres:15
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./backups:/backups
+      - postgres_data:/var/lib/postgresql/data
+    command: |
+      sh -c '
+        while true; do
+          pg_dump -h postgres -U wikijs wiki > /backups/backup-$(date +%Y%m%d-%H%M%S).sql
+          find /backups -name "backup-*.sql" -mtime +7 -delete
+          sleep 86400
+        done
+      '
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  redis_data:
+  wikijs_data_1:
+  wikijs_data_2:</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-globe me-2"></i>Configuration nginx pour load balancing
+                                </div>
+                                <pre><code class="language-nginx"># nginx.conf
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream wikijs_backend {
+        server wikijs-1:3000;
+        server wikijs-2:3000;
+        
+        # Health checks
+        keepalive 32;
+    }
+    
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=login:10m rate=5r/m;
+    limit_req_zone $binary_remote_addr zone=api:10m rate=100r/m;
+    
+    # SSL Configuration
+    ssl_certificate /etc/ssl/certs/fullchain.pem;
+    ssl_certificate_key /etc/ssl/certs/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/javascript
+        application/json
+        application/xml+rss
+        image/svg+xml;
+
+    server {
+        listen 80;
+        server_name wiki.mondomaine.com;
+        return 301 https://$server_name$request_uri;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name wiki.mondomaine.com;
+        
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        
+        # Rate limiting
+        location /login {
+            limit_req zone=login burst=10 nodelay;
+            proxy_pass http://wikijs_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+        
+        location /api/ {
+            limit_req zone=api burst=50 nodelay;
+            proxy_pass http://wikijs_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+        
+        location / {
+            proxy_pass http://wikijs_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # WebSocket support
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+        
+        # Static assets caching
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+            expires 1y;
+            add_header Cache-Control "public, no-transform";
+            proxy_pass http://wikijs_backend;
+        }
+        
+        # Health check endpoint
+        location /health {
+            access_log off;
+            return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Containerisation -->
+                        <section id="containerisation" class="section">
+                            <h2 class="section-title">
+                                <i class="fab fa-docker me-2"></i>
+                                Containerisation avancée avec Docker
+                            </h2>
+                            
+                            <div class="deployment-card containers">
+                                <div class="deployment-title">
+                                    <i class="fab fa-docker"></i>
+                                    Optimisation des conteneurs
+                                </div>
+                                <p>
+                                    Créez des images Docker optimisées, sécurisées et prêtes pour la production 
+                                    avec des pratiques avancées de containerisation.
+                                </p>
+                            </div>
+
+                            <div class="deployment-tabs">
+                                <div class="deployment-tab active" data-deployment="dockerfile">
+                                    <i class="fab fa-docker me-2"></i>Dockerfile
+                                </div>
+                                <div class="deployment-tab" data-deployment="multi-stage">
+                                    <i class="fas fa-layer-group me-2"></i>Multi-stage
+                                </div>
+                                <div class="deployment-tab" data-deployment="security">
+                                    <i class="fas fa-shield-alt me-2"></i>Sécurité
+                                </div>
+                                <div class="deployment-tab" data-deployment="optimization">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Optimisation
+                                </div>
+                            </div>
+
+                            <!-- Dockerfile optimisé -->
+                            <div class="deployment-content active" id="dockerfile">
+                                <h6>Dockerfile production-ready pour WikiJS</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-docker me-2"></i>Dockerfile optimisé
+                                    </div>
+                                    <pre><code class="language-dockerfile"># Build stage
+FROM node:18-alpine AS builder
+
+# Métadonnées
+LABEL maintainer="votre-email@domain.com"
+LABEL description="WikiJS Production Build"
+LABEL version="2.5.0"
+
+# Arguments de build
+ARG NODE_ENV=production
+ARG BUILD_DATE
+ARG VCS_REF
+
+# Environnement de build
+ENV NODE_ENV=$NODE_ENV
+ENV NPM_CONFIG_CACHE=/tmp/.npm
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+# Sécurité : utilisateur non-root
+RUN addgroup -g 1000 wikijs && \
+    adduser -D -s /bin/sh -u 1000 -G wikijs wikijs
+
+# Répertoire de travail
+WORKDIR /wiki
+
+# Installation des dépendances système
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git \
+    python3 \
+    make \
+    g++ \
+    sqlite
+
+# Copie des fichiers de dépendances
+COPY package*.json ./
+COPY --chown=wikijs:wikijs . .
+
+# Installation des dépendances avec optimisations
+RUN npm ci --only=production --ignore-scripts && \
+    npm cache clean --force && \
+    rm -rf /tmp/.npm
+
+# Build de l'application
+RUN npm run build
+
+# Production stage
+FROM node:18-alpine AS production
+
+# Installation des dépendances runtime minimales
+RUN apk add --no-cache \
+    bash \
+    curl \
+    sqlite \
+    && rm -rf /var/cache/apk/*
+
+# Utilisateur non-root
+RUN addgroup -g 1000 wikijs && \
+    adduser -D -s /bin/sh -u 1000 -G wikijs wikijs
+
+# Répertoire de travail
+WORKDIR /wiki
+
+# Copie des fichiers depuis le stage de build
+COPY --from=builder --chown=wikijs:wikijs /wiki .
+
+# Création des répertoires nécessaires
+RUN mkdir -p /wiki/data /wiki/logs && \
+    chown -R wikijs:wikijs /wiki
+
+# Configuration des volumes
+VOLUME ["/wiki/data", "/wiki/logs"]
+
+# Port exposé
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/healthz || exit 1
+
+# Passage à l'utilisateur non-root
+USER wikijs
+
+# Point d'entrée
+ENTRYPOINT ["/wiki/wiki", "start"]</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Multi-stage build -->
+                            <div class="deployment-content" id="multi-stage">
+                                <h6>Build multi-stage pour optimisation</h6>
+                                
+                                <div class="explanation-section">
+                                    <h6>Avantages du multi-stage build</h6>
+                                    <ul>
+                                        <li><strong>Taille réduite</strong> : Image finale sans outils de build</li>
+                                        <li><strong>Sécurité</strong> : Pas d'outils de développement en production</li>
+                                        <li><strong>Performance</strong> : Layers optimisés et cachés</li>
+                                        <li><strong>Reproductibilité</strong> : Build déterministe</li>
+                                    </ul>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-layer-group me-2"></i>Dockerfile multi-stage avancé
+                                    </div>
+                                    <pre><code class="language-dockerfile"># Stage 1: Dependencies
+FROM node:18-alpine AS dependencies
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production --ignore-scripts
+
+# Stage 2: Build
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build && \
+    npm prune --production
+
+# Stage 3: Runtime
+FROM node:18-alpine AS runtime
+
+# Sécurité hardening
+RUN apk add --no-cache dumb-init && \
+    addgroup -g 1001 -S nodejs && \
+    adduser -S wikijs -u 1001
+
+# Copie sélective des artefacts
+WORKDIR /app
+COPY --from=dependencies --chown=wikijs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=wikijs:nodejs /app/dist ./dist
+COPY --from=build --chown=wikijs:nodejs /app/public ./public
+COPY --chown=wikijs:nodejs package*.json ./
+
+USER wikijs
+
+# Point d'entrée sécurisé
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "dist/server.js"]</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Sécurité -->
+                            <div class="deployment-content" id="security">
+                                <h6>Sécurisation des conteneurs</h6>
+                                
+                                <div class="warning-box">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Bonnes pratiques de sécurité</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Utilisateur non-root</strong> : Toujours utiliser un utilisateur dédié</li>
+                                        <li><strong>Images de base</strong> : Préférer les images Alpine ou distroless</li>
+                                        <li><strong>Secrets</strong> : Ne jamais inclure de secrets dans l'image</li>
+                                        <li><strong>Scans</strong> : Scanner les vulnérabilités régulièrement</li>
+                                    </ul>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-shield-alt me-2"></i>.dockerignore pour sécurité
+                                    </div>
+                                    <pre><code># .dockerignore
+.git
+.github
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+coverage
+.nyc_output
+.env*
+*.log
+.DS_Store
+Thumbs.db
+
+# Fichiers sensibles
+config/local*
+logs/
+data/
+backups/
+certificates/
+*.key
+*.pem
+*.p12
+
+# Fichiers de développement
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Tests
+test/
+tests/
+spec/
+cypress/
+__tests__/
+*.test.js
+*.spec.js
+
+# Documentation
+docs/
+*.md</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-bug me-2"></i>Script de scan sécurité
+                                    </div>
+                                    <pre><code class="language-bash">#!/bin/bash
+# security-scan.sh - Scanner les vulnérabilités
+
+# Couleurs pour les logs
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+IMAGE_NAME="wikijs:latest"
+
+echo -e "${GREEN}🔍 Scanning $IMAGE_NAME for vulnerabilities...${NC}"
+
+# 1. Scan avec Trivy
+echo -e "\n${YELLOW}📊 Running Trivy scan...${NC}"
+if command -v trivy &> /dev/null; then
+    trivy image --severity HIGH,CRITICAL $IMAGE_NAME
+else
+    echo -e "${RED}❌ Trivy not installed${NC}"
+fi
+
+# 2. Scan avec Docker Scout (si disponible)
+echo -e "\n${YELLOW}🔍 Running Docker Scout...${NC}"
+if command -v docker &> /dev/null && docker scout version &> /dev/null; then
+    docker scout cves $IMAGE_NAME
+else
+    echo -e "${YELLOW}⚠️  Docker Scout not available${NC}"
+fi
+
+# 3. Vérification des bonnes pratiques
+echo -e "\n${YELLOW}✅ Checking Docker best practices...${NC}"
+
+# Vérifier si l'image utilise un utilisateur non-root
+USER_CHECK=$(docker run --rm $IMAGE_NAME whoami 2>/dev/null)
+if [ "$USER_CHECK" = "root" ]; then
+    echo -e "${RED}❌ Image running as root user${NC}"
+else
+    echo -e "${GREEN}✅ Image running as non-root user: $USER_CHECK${NC}"
+fi
+
+# Vérifier la taille de l'image
+IMAGE_SIZE=$(docker images $IMAGE_NAME --format "{{.Size}}")
+echo -e "${GREEN}📊 Image size: $IMAGE_SIZE${NC}"
+
+# Vérifier les ports exposés
+EXPOSED_PORTS=$(docker inspect $IMAGE_NAME --format='{{range $p, $conf := .Config.ExposedPorts}}{{$p}} {{end}}')
+echo -e "${GREEN}🔌 Exposed ports: $EXPOSED_PORTS${NC}"
+
+echo -e "\n${GREEN}🎉 Security scan completed!${NC}"</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Optimisation -->
+                            <div class="deployment-content" id="optimization">
+                                <h6>Optimisation des performances</h6>
+                                
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Métriques d'optimisation</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Taille image</strong> : &lt;200MB (vs &gt;800MB sans optimisation)</li>
+                                        <li><strong>Temps de build</strong> : &lt;3min avec cache Docker layers</li>
+                                        <li><strong>Temps de démarrage</strong> : &lt;10s pour un conteneur</li>
+                                        <li><strong>Utilisation mémoire</strong> : &lt;512MB RAM par instance</li>
+                                    </ul>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-rocket me-2"></i>Script d'optimisation des images
+                                    </div>
+                                    <pre><code class="language-bash">#!/bin/bash
+# optimize-image.sh
+
+IMAGE_NAME="wikijs"
+TAG="latest"
+FULL_NAME="$IMAGE_NAME:$TAG"
+
+echo "🔧 Optimizing Docker image: $FULL_NAME"
+
+# 1. Build avec buildkit pour cache avancé
+echo "📦 Building with BuildKit..."
+DOCKER_BUILDKIT=1 docker build \
+    --target production \
+    --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --cache-from $FULL_NAME \
+    -t $FULL_NAME .
+
+# 2. Analyser les layers
+echo "📊 Analyzing layers..."
+docker history $FULL_NAME --human
+
+# 3. Optimiser avec dive si disponible
+if command -v dive &> /dev/null; then
+    echo "🔍 Running dive analysis..."
+    dive $FULL_NAME --ci
+fi
+
+# 4. Compresser l'image
+echo "🗜️  Compressing image..."
+docker save $FULL_NAME | gzip > "${IMAGE_NAME}-${TAG}.tar.gz"
+
+# 5. Statistiques finales
+echo "📈 Final statistics:"
+echo "Size: $(docker images $FULL_NAME --format '{{.Size}}')"
+echo "Created: $(docker images $FULL_NAME --format '{{.CreatedAt}}')"
+
+# 6. Test de démarrage rapide
+echo "⚡ Testing startup time..."
+time docker run --rm $FULL_NAME echo "Container started successfully"
+
+echo "✅ Optimization complete!"</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Conclusion du cours -->
+                        <section id="conclusion" class="section">
+                            <div class="conclusion-banner">
+                                <div class="conclusion-title">
+                                    🎉 Félicitations !
+                                </div>
+                                <div class="conclusion-subtitle">
+                                    Vous avez terminé la formation complète WikiJS & SSO !
+                                </div>
+                                <p class="mb-4">
+                                    Vous maîtrisez désormais tous les aspects nécessaires pour créer, sécuriser, 
+                                    personnaliser et monétiser une plateforme WikiJS professionnelle.
+                                </p>
+                                
+                                <div class="achievement-grid">
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <div class="achievement-title">Infrastructure maîtrisée</div>
+                                        <div class="achievement-description">
+                                            Installation, configuration et déploiement professionnel de WikiJS
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <div class="achievement-title">Sécurité avancée</div>
+                                        <div class="achievement-description">
+                                            SSO, authentification multi-facteurs et gestion granulaire des permissions
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-palette"></i>
+                                        </div>
+                                        <div class="achievement-title">Design personnalisé</div>
+                                        <div class="achievement-description">
+                                            Création de thèmes sur mesure et branding professionnel
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-dollar-sign"></i>
+                                        </div>
+                                        <div class="achievement-title">Business rentable</div>
+                                        <div class="achievement-description">
+                                            Stratégies de monétisation et création de revenus récurrents
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                        <div class="achievement-title">Production-ready</div>
+                                        <div class="achievement-description">
+                                            Déploiement scalable avec monitoring et haute disponibilité
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="achievement-card">
+                                        <div class="achievement-icon">
+                                            <i class="fas fa-certificate"></i>
+                                        </div>
+                                        <div class="achievement-title">Expertise reconnue</div>
+                                        <div class="achievement-description">
+                                            Compétences certifiées en architecture WikiJS d'entreprise
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline">
+                                <h6><i class="fas fa-road me-2"></i>Votre parcours accompli</h6>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">1</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 1 : Fondations WikiJS</div>
+                                        <p>Découverte de WikiJS, concepts de base et comparaison avec les alternatives du marché.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">2</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 2 : Installation et Configuration</div>
+                                        <p>Installation complète avec Node.js, bases de données et configuration initiale.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">3</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 3 : Configuration SSO</div>
+                                        <p>Intégration OAuth, LDAP, SAML et OpenID Connect pour l'authentification unique.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">4</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 4 : Authentification Avancée</div>
+                                        <p>MFA, JWT, API Keys et authentification sans mot de passe pour une sécurité maximale.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">5</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 5 : Sécurité et Utilisateurs</div>
+                                        <p>Gestion avancée des utilisateurs, RBAC et politiques de sécurité entreprise.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">6</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 6 : Personnalisation</div>
+                                        <p>Création de thèmes sur mesure, CSS avancé et branding professionnel.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">7</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 7 : Monétisation</div>
+                                        <p>Stratégies business, intégration paiements et création de revenus récurrents.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">8</div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Module 8 : Déploiement et Maintenance</div>
+                                        <p>Architecture scalable, containerisation, CI/CD et monitoring en production.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-graduation-cap me-2"></i>Prochaines étapes</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Mise en pratique</h6>
+                                        <ul>
+                                            <li>Déployez votre première instance WikiJS</li>
+                                            <li>Configurez le SSO avec votre fournisseur</li>
+                                            <li>Créez votre thème personnalisé</li>
+                                            <li>Implémentez votre stratégie de monétisation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Communauté et support</h6>
+                                        <ul>
+                                            <li>Rejoignez la communauté WikiJS</li>
+                                            <li>Partagez vos réalisations</li>
+                                            <li>Contribuez aux projets open source</li>
+                                            <li>Continuez à apprendre et innover</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button class="btn btn-success btn-lg me-3">
+                                    <i class="fas fa-download me-2"></i>
+                                    Télécharger le certificat
+                                </button>
+                                <button class="btn btn-primary btn-lg">
+                                    <i class="fas fa-star me-2"></i>
+                                    Évaluer la formation
+                                </button>
+                            </div>
+                        </section>
+
+                        <!-- Navigation finale -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-7-monetisation-strategies.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 7 - Monétisation
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="index.html" class="btn btn-primary">
+                                        Retour à l'accueil
+                                        <i class="fas fa-home ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets de déploiement
+        document.querySelectorAll('.deployment-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetDeployment = tab.getAttribute('data-deployment');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.deployment-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.deployment-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetDeployment}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Animation de célébration pour la conclusion
+        function celebrateCompletion() {
+            // Confetti virtuel
+            const colors = ['#1f2937', '#374151', '#22c55e', '#3b82f6', '#f59e0b'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createConfetti(colors[Math.floor(Math.random() * colors.length)]);
+                }, i * 50);
+            }
+        }
+        
+        function createConfetti(color) {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background: ${color};
+                left: ${Math.random() * 100}vw;
+                top: -10px;
+                z-index: 9999;
+                pointer-events: none;
+                border-radius: 50%;
+                animation: fall 3s linear forwards;
+            `;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+        
+        // CSS pour l'animation de chute
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Déclencher la célébration quand on arrive à la conclusion
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+        
+        const conclusionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.id === 'conclusion') {
+                    celebrateCompletion();
+                }
+            });
+        }, observerOptions);
+        
+        const conclusionSection = document.getElementById('conclusion');
+        if (conclusionSection) {
+            conclusionObserver.observe(conclusionSection);
+        }
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptionsGeneral = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptionsGeneral);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .deployment-card, .architecture-card, .achievement-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

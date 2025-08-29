@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 - Database First Approach</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--ef-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 43, 212, 0.1);
+        }
+
+        .step-number {
+            background: var(--ef-purple);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .command-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .command-box::before {
+            content: '$ ';
+            color: #00ff00;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #00ff00;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .database-schema {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .table-representation {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: var(--ef-purple);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+        }
+
+        .table-field {
+            padding: 0.25rem 1rem;
+            border-bottom: 1px solid #eee;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .table-field:last-child {
+            border-bottom: none;
+        }
+
+        .pk {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .fk {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-database me-2"></i>
+                Module 3
+            </div>
+            <h1 class="module-title">Database First Approach</h1>
+            <p class="module-description">
+                Apprenez à générer automatiquement vos modèles Entity Framework à partir d'une base de données existante
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>4 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>10 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-layer-group me-1"></i>Database First
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Qu'est-ce que Database First expliqué pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                Qu'est-ce que l'Approche Database First ? (Guide Complet pour Débutants)
+            </h2>
+
+            <h3><i class="fas fa-graduation-cap me-2"></i>Rappel : Les Deux Approches Principales</h3>
+            
+            <p class="lead">
+                Dans le Module 1, nous avons vu qu'Entity Framework propose deux approches principales. 
+                Rappelons-les avec des analogies simples :
+            </p>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-hammer me-2"></i>Code First (Module 4)</h5>
+                        <p><strong>Analogie :</strong> Construire une maison à partir des plans</p>
+                        <ul>
+                            <li>Vous dessinez les plans (classes C#)</li>
+                            <li>Vous construisez la maison (base de données)</li>
+                            <li>La maison correspond exactement aux plans</li>
+                        </ul>
+                        <p class="small text-muted mb-0">
+                            <strong>Résumé :</strong> Code → Base de données
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h5><i class="fas fa-database me-2"></i>Database First (Ce module)</h5>
+                        <p><strong>Analogie :</strong> Dessiner les plans d'une maison existante</p>
+                        <ul>
+                            <li>Vous avez une maison déjà construite (base existante)</li>
+                            <li>Vous mesurez et dessinez les plans (génération automatique)</li>
+                            <li>Les plans correspondent à la maison existante</li>
+                        </ul>
+                        <p class="small text-muted mb-0">
+                            <strong>Résumé :</strong> Base de données → Code
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Database First : Explication Détaillée</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-info-circle me-2"></i>Qu'est-ce que Database First exactement ?</h5>
+                <p>
+                    <strong>Database First</strong> est une approche où vous partez d'une base de données 
+                    qui existe déjà et vous demandez à Entity Framework de créer automatiquement 
+                    toutes les classes C# correspondantes.
+                </p>
+                
+                <h6><i class="fas fa-cogs me-2"></i>Le processus en 3 étapes simples :</h6>
+                <ol>
+                    <li><strong>Vous avez</strong> une base de données avec des tables, colonnes, relations</li>
+                    <li><strong>Entity Framework analyse</strong> la structure de cette base</li>
+                    <li><strong>Entity Framework génère</strong> automatiquement les classes C# correspondantes</li>
+                </ol>
+            </div>
+
+            <h4><i class="fas fa-scenario me-2"></i>Scénarios Concrets où Utiliser Database First</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-building me-2 text-success"></i>Scénario 1 : Entreprise Existante</h6>
+                        <p class="small">
+                            Vous rejoignez une entreprise qui a déjà un système avec une base de données 
+                            de 50 tables créée il y a 10 ans. Vous devez créer une nouvelle application 
+                            qui utilise cette base existante.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Database First ! Vous générez automatiquement 
+                            toutes les 50 classes au lieu de les écrire à la main.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-users me-2 text-success"></i>Scénario 2 : Équipes Séparées</h6>
+                        <p class="small">
+                            Dans votre entreprise, l'équipe "Base de Données" crée et maintient 
+                            les bases de données, et l'équipe "Développement" crée les applications.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Database First ! L'équipe DB crée la base, 
+                            l'équipe Dev génère automatiquement les classes correspondantes.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-recycle me-2 text-success"></i>Scénario 3 : Migration d'Ancien Système</h6>
+                        <p class="small">
+                            Votre entreprise a un vieux système développé avec une autre technologie 
+                            (Java, PHP, etc.) mais veut migrer vers .NET tout en gardant la même base de données.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Database First ! Vous gardez la base existante 
+                            et créez une nouvelle application .NET qui l'utilise.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-clock me-2 text-success"></i>Scénario 4 : Prototype Rapide</h6>
+                        <p class="small">
+                            Votre patron vous demande de créer rapidement un prototype d'application 
+                            pour analyser les données d'une base existante.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Database First ! En 5 minutes, vous avez toutes 
+                            les classes prêtes pour commencer à développer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-balance-scale me-2"></i>Avantages et Inconvénients Expliqués Simplement</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-thumbs-up me-2 text-success"></i>Avantages de Database First</h5>
+                        
+                        <div class="mb-3">
+                            <h6><i class="fas fa-rocket me-1 text-success"></i>Rapidité de Développement</h6>
+                            <p class="small mb-0">
+                                Au lieu d'écrire 50 classes à la main (plusieurs heures), 
+                                vous les générez automatiquement en 2 minutes !
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="fas fa-shield-alt me-1 text-success"></i>Aucune Erreur de Frappe</h6>
+                            <p class="small mb-0">
+                                Entity Framework lit directement la structure de la base, 
+                                donc aucun risque d'erreur de nom de colonne ou de type.
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="fas fa-sync me-1 text-success"></i>Synchronisation Automatique</h6>
+                            <p class="small mb-0">
+                                Si l'équipe DB ajoute une nouvelle table, vous régénérez 
+                                vos classes et vous l'avez automatiquement !
+                            </p>
+                        </div>
+
+                        <div class="mb-0">
+                            <h6><i class="fas fa-puzzle-piece me-1 text-success"></i>Relations Automatiques</h6>
+                            <p class="small mb-0">
+                                EF détecte automatiquement les liens entre les tables 
+                                et crée les propriétés de navigation correspondantes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h5><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Inconvénients de Database First</h5>
+                        
+                        <div class="mb-3">
+                            <h6><i class="fas fa-lock me-1 text-warning"></i>Moins de Contrôle</h6>
+                            <p class="small mb-0">
+                                Vous ne pouvez pas choisir exactement comment vos classes 
+                                sont structurées - EF les génère selon ses règles.
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="fas fa-eraser me-1 text-warning"></i>Régénération = Perte de Modifications</h6>
+                            <p class="small mb-0">
+                                Si vous modifiez une classe générée puis régénérez, 
+                                vos modifications sont perdues ! (Mais on verra comment éviter ça)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="fas fa-chain me-1 text-warning"></i>Dépendance à la Base</h6>
+                            <p class="small mb-0">
+                                Votre code dépend de la structure de la base. 
+                                Si elle change, vous devez régénérer vos classes.
+                            </p>
+                        </div>
+
+                        <div class="mb-0">
+                            <h6><i class="fas fa-cog me-1 text-warning"></i>Configuration Plus Complexe</h6>
+                            <p class="small mb-0">
+                                Il faut configurer la connexion à la base existante 
+                                et parfois adapter les noms générés.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-route me-2"></i>Notre Plan d'Apprentissage pour ce Module</h4>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-map me-2"></i>Ce que nous allons faire ensemble :</h6>
+                <ol>
+                    <li><strong>Créer une base de données d'exemple</strong> → Un petit e-commerce avec produits, clients, commandes</li>
+                    <li><strong>Installer les outils nécessaires</strong> → Les packages pour générer les classes</li>
+                    <li><strong>Utiliser le "scaffolding"</strong> → La commande magique qui génère tout automatiquement</li>
+                    <li><strong>Analyser les classes générées</strong> → Comprendre ce qu'Entity Framework a créé</li>
+                    <li><strong>Utiliser ces classes</strong> → Écrire du code pour manipuler les données</li>
+                    <li><strong>Apprendre les astuces</strong> → Comment modifier sans perdre ses changements</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Important à retenir</h6>
+                <p class="mb-0">
+                    Database First n'est pas "mieux" ou "moins bien" que Code First. 
+                    Ce sont deux outils différents pour des situations différentes. 
+                    Un bon développeur Entity Framework maîtrise les deux approches et sait 
+                    choisir la bonne selon le contexte !
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 2: Préparation de la base de données expliquée pour débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-server"></i>
+                Préparation de la Base de Données d'Exemple (Étape par Étape)
+            </h2>
+
+            <p class="lead">
+                Pour apprendre Database First, nous avons besoin d'une base de données existante. 
+                Nous allons créer ensemble une petite base de données d'e-commerce avec des exemples concrets.
+            </p>
+
+            <h3><i class="fas fa-store me-2"></i>Notre Projet : Boutique en Ligne Simple</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-lightbulb me-2"></i>Qu'est-ce qu'on va créer ?</h5>
+                <p>
+                    Nous allons créer une base de données pour une petite boutique en ligne qui vend des produits. 
+                    Cette base contiendra :
+                </p>
+                <ul class="mb-0">
+                    <li><strong>Des catégories</strong> → Électronique, Vêtements, Livres, etc.</li>
+                    <li><strong>Des produits</strong> → Smartphone, T-shirt, Guide EF Core, etc.</li>
+                    <li><strong>Des clients</strong> → Les personnes qui achètent</li>
+                    <li><strong>Des commandes</strong> → Les achats effectués</li>
+                    <li><strong>Les détails des commandes</strong> → Quels produits dans chaque commande</li>
+                </ul>
+            </div>
+
+            <h4><i class="fas fa-sitemap me-2"></i>Structure de notre Base de Données</h4>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Comprendre les Relations</h6>
+                <p>Dans notre boutique, voici comment les données sont liées :</p>
+                <ul class="mb-0">
+                    <li><strong>Une catégorie</strong> peut contenir <strong>plusieurs produits</strong> (ex: "Électronique" → Smartphone, Ordinateur, etc.)</li>
+                    <li><strong>Un client</strong> peut passer <strong>plusieurs commandes</strong></li>
+                    <li><strong>Une commande</strong> peut contenir <strong>plusieurs produits</strong> (avec quantités différentes)</li>
+                    <li><strong>Un produit</strong> peut être dans <strong>plusieurs commandes</strong></li>
+                </ul>
+            </div>
+
+            <h4><i class="fas fa-database me-2"></i>Méthodes pour Créer la Base de Données</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-desktop me-2 text-success"></i>Méthode 1 : SQL Server Management Studio</h6>
+                        <p class="small">
+                            Si vous avez SQL Server Management Studio (SSMS) installé :
+                        </p>
+                        <ol class="small">
+                            <li>Ouvrez SSMS</li>
+                            <li>Connectez-vous à votre serveur local</li>
+                            <li>Créez une nouvelle requête</li>
+                            <li>Copiez-collez le script SQL ci-dessous</li>
+                            <li>Exécutez le script</li>
+                        </ol>
+                        <p class="small text-success mb-0">
+                            <strong>Avantage :</strong> Interface graphique, plus facile pour débuter
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-terminal me-2 text-info"></i>Méthode 2 : Ligne de Commande</h6>
+                        <p class="small">
+                            Si vous préférez la ligne de commande :
+                        </p>
+                        <ol class="small">
+                            <li>Ouvrez votre terminal</li>
+                            <li>Utilisez <code>sqlcmd</code></li>
+                            <li>Exécutez le script SQL</li>
+                        </ol>
+                        <p class="small text-info mb-0">
+                            <strong>Avantage :</strong> Plus rapide si vous maîtrisez
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-feather-alt me-2"></i>Alternative : Utiliser SQLite (Plus Simple)</h6>
+                <p>
+                    Si vous n'avez pas SQL Server installé, nous pouvons aussi utiliser SQLite 
+                    qui ne nécessite aucune installation. Le script sera légèrement différent 
+                    mais le principe reste le même.
+                </p>
+                <p class="mb-0">
+                    <strong>Pour ce module, nous utiliserons SQL Server, mais je donnerai aussi 
+                    la version SQLite pour ceux qui préfèrent.</strong>
+                </p>
+            </div>
+
+            <h3><i class="fas fa-code me-2"></i>Script SQL Complet (Expliqué Ligne par Ligne)</h3>
+
+            <h4>1. Création de la Base de Données</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Créer la base de données (le "conteneur" pour toutes nos tables)
+CREATE DATABASE ECommerceDB;
+GO
+
+-- Se connecter à notre nouvelle base de données
+USE ECommerceDB;
+GO</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Explication du code ci-dessus :</h6>
+                <ul class="mb-0">
+                    <li><code>CREATE DATABASE ECommerceDB;</code> → Crée une nouvelle base nommée "ECommerceDB"</li>
+                    <li><code>GO</code> → Commande SQL Server qui sépare les blocs d'instructions</li>
+                    <li><code>USE ECommerceDB;</code> → Dit à SQL Server d'utiliser notre nouvelle base</li>
+                </ul>
+            </div>
+
+            <h4>2. Table des Catégories</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table Categories : stocke les catégories de produits
+CREATE TABLE Categories (
+    CategoryId INT IDENTITY(1,1) PRIMARY KEY,  -- ID automatique qui s'incrémente
+    CategoryName NVARCHAR(100) NOT NULL,       -- Nom de la catégorie (obligatoire)
+    Description NVARCHAR(500),                 -- Description (optionnelle)
+    CreatedDate DATETIME2 DEFAULT GETDATE()    -- Date de création automatique
+);</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-table me-2"></i>Explication de la table Categories :</h6>
+                <ul class="mb-0">
+                    <li><code>CategoryId INT IDENTITY(1,1) PRIMARY KEY</code> → Clé primaire qui s'incrémente automatiquement (1, 2, 3, 4...)</li>
+                    <li><code>CategoryName NVARCHAR(100) NOT NULL</code> → Nom de la catégorie, maximum 100 caractères, obligatoire</li>
+                    <li><code>Description NVARCHAR(500)</code> → Description optionnelle, maximum 500 caractères</li>
+                    <li><code>CreatedDate DATETIME2 DEFAULT GETDATE()</code> → Date/heure de création, remplie automatiquement</li>
+                </ul>
+            </div>
+
+            <h4>3. Table des Produits</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table Products : stocke les produits de notre boutique
+CREATE TABLE Products (
+    ProductId INT IDENTITY(1,1) PRIMARY KEY,   -- ID automatique du produit
+    ProductName NVARCHAR(100) NOT NULL,        -- Nom du produit (obligatoire)
+    Description NVARCHAR(MAX),                 -- Description longue (optionnelle)
+    Price DECIMAL(18,2) NOT NULL,              -- Prix avec 2 décimales (obligatoire)
+    Stock INT DEFAULT 0,                       -- Quantité en stock (défaut = 0)
+    CategoryId INT NOT NULL,                   -- Lien vers la catégorie (obligatoire)
+    IsActive BIT DEFAULT 1,                    -- Produit actif ou non (défaut = actif)
+    CreatedDate DATETIME2 DEFAULT GETDATE(),   -- Date de création automatique
+    
+    -- Clé étrangère : ce produit appartient à une catégorie
+    FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)
+);</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-link me-2"></i>Comprendre la Clé Étrangère (Foreign Key) :</h6>
+                <p>
+                    <code>FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)</code> signifie :
+                </p>
+                <ul class="mb-0">
+                    <li>Chaque produit <strong>doit</strong> appartenir à une catégorie existante</li>
+                    <li>On ne peut pas supprimer une catégorie si elle contient des produits</li>
+                    <li>Cela garantit l'intégrité des données</li>
+                    <li>Entity Framework utilisera cette relation pour créer les propriétés de navigation</li>
+                </ul>
+            </div>
+
+            <h4>4. Table des Clients</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table Customers : stocke les informations des clients
+CREATE TABLE Customers (
+    CustomerId INT IDENTITY(1,1) PRIMARY KEY,  -- ID automatique du client
+    FirstName NVARCHAR(50) NOT NULL,           -- Prénom (obligatoire)
+    LastName NVARCHAR(50) NOT NULL,            -- Nom de famille (obligatoire)
+    Email NVARCHAR(100) UNIQUE NOT NULL,       -- Email unique et obligatoire
+    Phone NVARCHAR(20),                        -- Téléphone (optionnel)
+    Address NVARCHAR(255),                     -- Adresse (optionnelle)
+    City NVARCHAR(50),                         -- Ville (optionnelle)
+    Country NVARCHAR(50),                      -- Pays (optionnel)
+    CreatedDate DATETIME2 DEFAULT GETDATE()    -- Date d'inscription automatique
+);</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-user me-2"></i>Points importants sur la table Customers :</h6>
+                <ul class="mb-0">
+                    <li><code>Email NVARCHAR(100) UNIQUE NOT NULL</code> → L'email doit être unique (pas de doublons)</li>
+                    <li>Seuls <code>FirstName</code>, <code>LastName</code> et <code>Email</code> sont obligatoires</li>
+                    <li>Les autres champs sont optionnels (peuvent être NULL)</li>
+                </ul>
+            </div>
+
+            <h4>5. Table des Commandes</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table Orders : stocke les commandes passées par les clients
+CREATE TABLE Orders (
+    OrderId INT IDENTITY(1,1) PRIMARY KEY,     -- ID automatique de la commande
+    CustomerId INT NOT NULL,                   -- Quel client a passé cette commande
+    OrderDate DATETIME2 DEFAULT GETDATE(),     -- Date de la commande
+    TotalAmount DECIMAL(18,2) NOT NULL,        -- Montant total de la commande
+    Status NVARCHAR(20) DEFAULT 'Pending',     -- Statut : En attente, Expédiée, etc.
+    
+    -- Clé étrangère : cette commande appartient à un client
+    FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
+);</code></pre>
+            </div>
+
+            <h4>6. Table des Détails de Commande</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table OrderDetails : détaille quels produits sont dans chaque commande
+CREATE TABLE OrderDetails (
+    OrderDetailId INT IDENTITY(1,1) PRIMARY KEY, -- ID automatique du détail
+    OrderId INT NOT NULL,                        -- Dans quelle commande
+    ProductId INT NOT NULL,                      -- Quel produit
+    Quantity INT NOT NULL,                       -- Combien d'exemplaires
+    UnitPrice DECIMAL(18,2) NOT NULL,            -- Prix unitaire au moment de la commande
+    
+    -- Clés étrangères
+    FOREIGN KEY (OrderId) REFERENCES Orders(OrderId),
+    FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
+);</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-puzzle-piece me-2"></i>Pourquoi une table OrderDetails séparée ?</h6>
+                <p>
+                    Cette table résout le problème "plusieurs-à-plusieurs" :
+                </p>
+                <ul>
+                    <li>Une commande peut contenir plusieurs produits différents</li>
+                    <li>Un même produit peut être dans plusieurs commandes</li>
+                    <li>Pour chaque produit dans chaque commande, on veut stocker la quantité et le prix</li>
+                </ul>
+                <p class="mb-0">
+                    <strong>Exemple :</strong> Commande #1 contient 2x Smartphone + 1x T-shirt. 
+                    Cela fait 2 lignes dans OrderDetails.
+                </p>
+            </div>
+
+            <h3><i class="fas fa-data me-2"></i>Insertion de Données d'Exemple</h3>
+
+            <p>Maintenant, ajoutons quelques données pour que notre base ne soit pas vide :</p>
+
+            <h4>Ajout des Catégories</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Insertion des catégories de produits
+INSERT INTO Categories (CategoryName, Description) VALUES
+('Électronique', 'Appareils électroniques et gadgets technologiques'),
+('Vêtements', 'Vêtements pour hommes, femmes et enfants'),
+('Livres', 'Livres, manuels et publications diverses'),
+('Sport', 'Articles de sport et équipements de fitness');</code></pre>
+            </div>
+
+            <h4>Ajout des Produits</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Insertion des produits (attention aux CategoryId qui doivent exister)
+INSERT INTO Products (ProductName, Description, Price, Stock, CategoryId, IsActive) VALUES
+-- Produits Électronique (CategoryId = 1)
+('iPhone 15', 'Dernier smartphone Apple avec appareil photo 48MP', 999.99, 25, 1, 1),
+('MacBook Pro', 'Ordinateur portable professionnel 14 pouces', 2299.99, 10, 1, 1),
+('AirPods Pro', 'Écouteurs sans fil avec réduction de bruit', 279.99, 50, 1, 1),
+
+-- Produits Vêtements (CategoryId = 2)  
+('T-shirt Coton Bio', 'T-shirt 100% coton biologique, disponible en plusieurs couleurs', 29.99, 100, 2, 1),
+('Jean Slim', 'Jean coupe slim en denim stretch', 79.99, 75, 2, 1),
+('Sneakers', 'Chaussures de sport tendance et confortables', 129.99, 40, 2, 1),
+
+-- Produits Livres (CategoryId = 3)
+('Guide Entity Framework Core', 'Manuel complet pour maîtriser EF Core', 49.99, 200, 3, 1),
+('Clean Code', 'Principes et pratiques du code propre', 39.99, 150, 3, 1),
+
+-- Produits Sport (CategoryId = 4)
+('Tapis de Yoga', 'Tapis antidérapant pour yoga et fitness', 34.99, 60, 4, 1),
+('Haltères 5kg', 'Paire d\'haltères réglables 5kg', 89.99, 30, 4, 1);</code></pre>
+            </div>
+
+            <h4>Ajout des Clients</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Insertion des clients
+INSERT INTO Customers (FirstName, LastName, Email, Phone, Address, City, Country) VALUES
+('Marie', 'Dupont', 'marie.dupont@email.com', '+33123456789', '123 Rue de la Paix', 'Paris', 'France'),
+('Jean', 'Martin', 'jean.martin@email.com', '+33987654321', '456 Avenue des Champs', 'Lyon', 'France'),
+('Sophie', 'Bernard', 'sophie.bernard@email.com', '+33555666777', '789 Boulevard Victor Hugo', 'Marseille', 'France'),
+('Pierre', 'Dubois', 'pierre.dubois@email.com', '+33444333222', '321 Place de la République', 'Toulouse', 'France');</code></pre>
+            </div>
+
+            <h4>Ajout des Commandes et Détails</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Insertion de quelques commandes
+INSERT INTO Orders (CustomerId, TotalAmount, Status) VALUES
+(1, 1329.98, 'Shipped'),    -- Marie commande iPhone + AirPods
+(2, 109.98, 'Delivered'),   -- Jean commande T-shirt + Jean  
+(3, 89.98, 'Pending'),      -- Sophie commande 2 livres
+(1, 164.98, 'Processing');  -- Marie commande encore (Sneakers + Tapis)
+
+-- Insertion des détails des commandes
+INSERT INTO OrderDetails (OrderId, ProductId, Quantity, UnitPrice) VALUES
+-- Commande 1 de Marie (iPhone + AirPods)
+(1, 1, 1, 999.99),   -- 1x iPhone 15
+(1, 3, 1, 279.99),   -- 1x AirPods Pro
+
+-- Commande 2 de Jean (T-shirt + Jean)
+(2, 4, 1, 29.99),    -- 1x T-shirt
+(2, 5, 1, 79.99),    -- 1x Jean
+
+-- Commande 3 de Sophie (2 livres)
+(3, 7, 1, 49.99),    -- 1x Guide EF Core
+(3, 8, 1, 39.99),    -- 1x Clean Code
+
+-- Commande 4 de Marie (Sneakers + Tapis)
+(4, 6, 1, 129.99),   -- 1x Sneakers
+(4, 9, 1, 34.99);    -- 1x Tapis de Yoga</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-check-circle me-2"></i>Récapitulatif de notre Base de Données</h5>
+                <p>Nous avons maintenant une base de données complète avec :</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>4 catégories</strong> → Électronique, Vêtements, Livres, Sport</li>
+                            <li><strong>10 produits</strong> → Répartis dans les 4 catégories</li>
+                            <li><strong>4 clients</strong> → Marie, Jean, Sophie, Pierre</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li><strong>4 commandes</strong> → Avec différents statuts</li>
+                            <li><strong>8 détails de commande</strong> → Produits dans chaque commande</li>
+                            <li><strong>Relations complètes</strong> → Clés étrangères entre toutes les tables</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-save me-2"></i>Script Complet à Exécuter</h6>
+                <p>
+                    Copiez tout le script SQL depuis "CREATE DATABASE" jusqu'aux derniers INSERT, 
+                    et exécutez-le d'un coup dans SQL Server Management Studio ou votre outil préféré.
+                </p>
+                <p class="mb-0">
+                    <strong>Résultat attendu :</strong> Une base "ECommerceDB" avec 5 tables remplies de données d'exemple, 
+                    prête pour la génération Entity Framework !
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Section 3: Scaffolding expliqué pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-magic"></i>
+                Scaffolding : La Magie de la Génération Automatique (Guide Complet)
+            </h2>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Qu'est-ce que le Scaffolding ?</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-lightbulb me-2"></i>Analogie Simple</h5>
+                <p>
+                    Imaginez que vous êtes architecte et qu'on vous donne une maison déjà construite. 
+                    Votre travail est de créer les plans détaillés de cette maison en la mesurant 
+                    et en analysant sa structure.
+                </p>
+                <p class="mb-0">
+                    <strong>Le scaffolding fait exactement ça</strong> : il "mesure" votre base de données 
+                    existante et crée automatiquement toutes les classes C# correspondantes !
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-cogs me-2"></i>Concrètement, le Scaffolding va :</h6>
+                <ol class="mb-0">
+                    <li><strong>Se connecter</strong> à votre base de données ECommerceDB</li>
+                    <li><strong>Analyser</strong> toutes les tables (Categories, Products, Customers, Orders, OrderDetails)</li>
+                    <li><strong>Détecter</strong> les relations entre les tables (clés étrangères)</li>
+                    <li><strong>Générer automatiquement</strong> 6 fichiers C# :
+                        <ul>
+                            <li>Category.cs</li>
+                            <li>Product.cs</li>
+                            <li>Customer.cs</li>
+                            <li>Order.cs</li>
+                            <li>OrderDetail.cs</li>
+                            <li>ECommerceContext.cs (le DbContext)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3><i class="fas fa-tools me-2"></i>ÉTAPE 1 : Préparation de l'Environnement</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer un nouveau projet pour Database First</h5>
+                        <p>D'abord, créons un nouveau projet dédié à notre apprentissage Database First :</p>
+                        
+                        <div class="command-box">
+                            dotnet new console -n ECommerceDbFirst
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new console -n ECommerceDbFirst')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="command-box">
+                            cd ECommerceDbFirst
+                            <button class="copy-btn" onclick="copyToClipboard('cd ECommerceDbFirst')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Installer les packages Entity Framework nécessaires</h5>
+                        <p>Pour le scaffolding, nous avons besoin de packages spéciaux :</p>
+                        
+                        <h6>Package principal Entity Framework :</h6>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Provider SQL Server :</h6>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.SqlServer')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Outils de scaffolding (INDISPENSABLES) :</h6>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Tools
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Tools')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Design
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Design')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Pourquoi ces packages ?</h6>
+                            <ul class="mb-0">
+                                <li><strong>EntityFrameworkCore</strong> → Le moteur principal</li>
+                                <li><strong>SqlServer</strong> → Pour se connecter à SQL Server</li>
+                                <li><strong>Tools</strong> → Les commandes `dotnet ef` (scaffolding, migrations, etc.)</li>
+                                <li><strong>Design</strong> → Outils de génération de code à la compilation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Vérifier que tout est installé correctement</h5>
+                        
+                        <h6>Vérifier les packages :</h6>
+                        <div class="command-box">
+                            dotnet list package
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet list package')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Vérifier que les outils EF sont disponibles :</h6>
+                        <div class="command-box">
+                            dotnet ef --version
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef --version')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-check-circle me-2"></i>Résultats attendus :</h6>
+                            <ul class="mb-0">
+                                <li><code>dotnet list package</code> → Doit montrer les 4 packages EF installés</li>
+                                <li><code>dotnet ef --version</code> → Doit afficher la version d'Entity Framework CLI (ex: 8.0.0)</li>
+                                <li>Si vous avez des erreurs, vérifiez que tous les packages sont bien installés</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-magic me-2"></i>ÉTAPE 2 : La Commande Magique du Scaffolding</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Comprendre la commande de scaffolding</h5>
+                        
+                        <p>Voici la commande complète que nous allons utiliser (ne l'exécutez pas encore, on va l'expliquer d'abord) :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-bash">dotnet ef dbcontext scaffold \
+  "Server=(localdb)\mssqllocaldb;Database=ECommerceDB;Trusted_Connection=true;" \
+  Microsoft.EntityFrameworkCore.SqlServer \
+  --output-dir Models \
+  --context-dir Data \
+  --context ECommerceContext \
+  --data-annotations \
+  --force</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-microscope me-2"></i>Décortiquons cette commande mot par mot :</h6>
+                            <ul>
+                                <li><code>dotnet ef dbcontext scaffold</code> → La commande de base pour le scaffolding</li>
+                                <li><code>"Server=(localdb)..."</code> → Chaîne de connexion à notre base ECommerceDB</li>
+                                <li><code>Microsoft.EntityFrameworkCore.SqlServer</code> → Le provider à utiliser</li>
+                                <li><code>--output-dir Models</code> → Créer les classes d'entités dans le dossier "Models"</li>
+                                <li><code>--context-dir Data</code> → Créer le DbContext dans le dossier "Data"</li>
+                                <li><code>--context ECommerceContext</code> → Nommer le DbContext "ECommerceContext"</li>
+                                <li><code>--data-annotations</code> → Utiliser les attributs C# plutôt que Fluent API</li>
+                                <li><code>--force</code> → Écraser les fichiers s'ils existent déjà</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Version simplifiée pour commencer</h5>
+                        
+                        <p>Pour votre première fois, utilisez cette version plus simple :</p>
+                        
+                        <div class="command-box">
+                            dotnet ef dbcontext scaffold "Server=(localdb)\mssqllocaldb;Database=ECommerceDB;Trusted_Connection=true;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c ECommerceContext --data-annotations --force
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef dbcontext scaffold \"Server=(localdb)\\mssqllocaldb;Database=ECommerceDB;Trusted_Connection=true;\" Microsoft.EntityFrameworkCore.SqlServer -o Models -c ECommerceContext --data-annotations --force')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Cette commande va :</h6>
+                            <ol class="mb-0">
+                                <li>Se connecter à la base ECommerceDB</li>
+                                <li>Créer un dossier "Models" dans votre projet</li>
+                                <li>Générer 6 fichiers .cs (5 entités + 1 contexte)</li>
+                                <li>Utiliser des attributs C# pour la configuration</li>
+                                <li>Remplacer les fichiers s'ils existent déjà</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Exécuter le scaffolding</h5>
+                        
+                        <p>Maintenant, exécutez la commande ! Vous devriez voir quelque chose comme :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-text">Build started...
+Build succeeded.
+Scaffolding completed successfully.
+
+The following files were created:
+- Models\Category.cs
+- Models\Customer.cs
+- Models\Order.cs
+- Models\OrderDetail.cs  
+- Models\Product.cs
+- Models\ECommerceContext.cs</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-party-horn me-2"></i>Félicitations !</h6>
+                            <p class="mb-0">
+                                Si vous voyez ce message, le scaffolding a réussi ! 
+                                Entity Framework a analysé votre base de données et créé automatiquement 
+                                toutes les classes C# correspondantes.
+                            </p>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>En cas d'erreur :</h6>
+                            <ul class="mb-0">
+                                <li><strong>Erreur de connexion</strong> → Vérifiez que SQL Server est démarré et que la base ECommerceDB existe</li>
+                                <li><strong>Commande 'dotnet ef' non trouvée</strong> → Réinstallez le package Microsoft.EntityFrameworkCore.Tools</li>
+                                <li><strong>Erreur de provider</strong> → Vérifiez que Microsoft.EntityFrameworkCore.SqlServer est installé</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-folder-open me-2"></i>ÉTAPE 3 : Explorer les Fichiers Générés</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Structure des fichiers créés</h5>
+                        
+                        <p>Regardez la structure de votre projet maintenant :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-text">ECommerceDbFirst/
+├── Program.cs
+├── ECommerceDbFirst.csproj
+└── Models/
+    ├── Category.cs          ← Classe pour la table Categories
+    ├── Customer.cs          ← Classe pour la table Customers  
+    ├── Order.cs             ← Classe pour la table Orders
+    ├── OrderDetail.cs       ← Classe pour la table OrderDetails
+    ├── Product.cs           ← Classe pour la table Products
+    └── ECommerceContext.cs  ← Le DbContext principal</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-magic me-2"></i>Ce qui s'est passé automatiquement :</h6>
+                            <ul class="mb-0">
+                                <li><strong>Noms des classes</strong> → Singulier (Product) vs table au pluriel (Products)</li>
+                                <li><strong>Types de données</strong> → INT → int, NVARCHAR → string, DECIMAL → decimal, etc.</li>
+                                <li><strong>Propriétés de navigation</strong> → Category.Products, Product.Category, etc.</li>
+                                <li><strong>Attributs de validation</strong> → [Required], [StringLength], [Key], etc.</li>
+                                <li><strong>Configuration des relations</strong> → Clés étrangères détectées automatiquement</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-cogs me-2"></i>Options Avancées du Scaffolding (Pour Plus Tard)</h4>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-graduation-cap me-2"></i>Options utiles à connaître :</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><code>--table Products Categories</code> → Générer seulement certaines tables</li>
+                            <li><code>--no-onconfiguring</code> → Ne pas inclure OnConfiguring dans le DbContext</li>
+                            <li><code>--namespace MyApp.Models</code> → Définir l'espace de noms</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><code>--use-database-names</code> → Garder les noms exacts de la base</li>
+                            <li><code>--no-pluralize</code> → Ne pas singulariser les noms de classes</li>
+                            <li><code>--json</code> → Sortie en format JSON</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="small text-muted mb-0">
+                    <strong>Conseil :</strong> Maîtrisez d'abord la version de base avant d'explorer ces options avancées !
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 4: Modèles générés -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-file-code"></i>
+                Analyse des Modèles Générés
+            </h2>
+
+            <h4>1. Modèle Category généré</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DatabaseFirstDemo.Models
+{
+    public partial class Category
+    {
+        public Category()
+        {
+            Products = new HashSet&lt;Product&gt;();
+        }
+
+        [Key]
+        public int CategoryId { get; set; }
+        
+        [Required]
+        [StringLength(100)]
+        public string CategoryName { get; set; }
+        
+        [StringLength(500)]
+        public string Description { get; set; }
+        
+        [Column(TypeName = "datetime2")]
+        public DateTime CreatedDate { get; set; }
+
+        [InverseProperty(nameof(Product.Category))]
+        public virtual ICollection&lt;Product&gt; Products { get; set; }
+    }
+}</code></pre>
+            </div>
+
+            <h4>2. Modèle Product généré</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DatabaseFirstDemo.Models
+{
+    public partial class Product
+    {
+        public Product()
+        {
+            OrderDetails = new HashSet&lt;OrderDetail&gt;();
+        }
+
+        [Key]
+        public int ProductId { get; set; }
+        
+        [Required]
+        [StringLength(100)]
+        public string ProductName { get; set; }
+        
+        public string Description { get; set; }
+        
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
+        
+        public int Stock { get; set; }
+        
+        public int CategoryId { get; set; }
+        
+        public bool IsActive { get; set; }
+        
+        [Column(TypeName = "datetime2")]
+        public DateTime CreatedDate { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        [InverseProperty("Products")]
+        public virtual Category Category { get; set; }
+        
+        [InverseProperty(nameof(OrderDetail.Product))]
+        public virtual ICollection&lt;OrderDetail&gt; OrderDetails { get; set; }
+    }
+}</code></pre>
+            </div>
+
+            <h4>3. DbContext généré</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace DatabaseFirstDemo.Models
+{
+    public partial class ECommerceContext : DbContext
+    {
+        public ECommerceContext()
+        {
+        }
+
+        public ECommerceContext(DbContextOptions&lt;ECommerceContext&gt; options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet&lt;Category&gt; Categories { get; set; }
+        public virtual DbSet&lt;Customer&gt; Customers { get; set; }
+        public virtual DbSet&lt;Order&gt; Orders { get; set; }
+        public virtual DbSet&lt;OrderDetail&gt; OrderDetails { get; set; }
+        public virtual DbSet&lt;Product&gt; Products { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity&lt;Category&gt;(entity =>
+            {
+                entity.Property(e => e.CategoryName).HasMaxLength(100);
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity&lt;Product&gt;(entity =>
+            {
+                entity.Property(e => e.ProductName).HasMaxLength(100);
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Stock).HasDefaultValueSql("((0))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 5: Utilisation pratique -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-play"></i>
+                Utilisation Pratique des Modèles
+            </h2>
+
+            <h4>Configuration dans Program.cs</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+using DatabaseFirstDemo.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configuration du DbContext
+builder.Services.AddDbContext&lt;ECommerceContext&gt;(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+
+app.Run();</code></pre>
+            </div>
+
+            <h4>Exemples d'utilisation</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">using DatabaseFirstDemo.Models;
+using Microsoft.EntityFrameworkCore;
+
+// Injection du contexte
+public class ProductService
+{
+    private readonly ECommerceContext _context;
+
+    public ProductService(ECommerceContext context)
+    {
+        _context = context;
+    }
+
+    // Récupérer tous les produits avec leurs catégories
+    public async Task&lt;List&lt;Product&gt;&gt; GetProductsWithCategoriesAsync()
+    {
+        return await _context.Products
+            .Include(p => p.Category)
+            .Where(p => p.IsActive)
+            .ToListAsync();
+    }
+
+    // Ajouter un nouveau produit
+    public async Task&lt;Product&gt; AddProductAsync(Product product)
+    {
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+        return product;
+    }
+
+    // Recherche de produits par catégorie
+    public async Task&lt;List&lt;Product&gt;&gt; GetProductsByCategoryAsync(int categoryId)
+    {
+        return await _context.Products
+            .Where(p => p.CategoryId == categoryId && p.IsActive)
+            .OrderBy(p => p.ProductName)
+            .ToListAsync();
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 6: Mise à jour et régénération -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-sync-alt"></i>
+                Mise à Jour et Régénération
+            </h2>
+
+            <div class="warning-box">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Attention aux régénérations</h5>
+                <p>
+                    Quand vous régénérez les modèles, toutes vos modifications manuelles 
+                    seront perdues. Voici les stratégies pour éviter ce problème :
+                </p>
+            </div>
+
+            <h4>1. Classes partielles (Partial Classes)</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Models/Product.Extensions.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace DatabaseFirstDemo.Models
+{
+    public partial class Product
+    {
+        // Propriétés calculées qui ne seront pas écrasées
+        [NotMapped]
+        public string DisplayName => $"{ProductName} - {Price:C}";
+        
+        [NotMapped]
+        public bool IsInStock => Stock > 0;
+        
+        // Méthodes personnalisées
+        public void ApplyDiscount(decimal percentage)
+        {
+            Price = Price * (1 - percentage / 100);
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h4>2. Configuration personnalisée du DbContext</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Models/ECommerceContext.Extensions.cs
+using Microsoft.EntityFrameworkCore;
+
+namespace DatabaseFirstDemo.Models
+{
+    public partial class ECommerceContext
+    {
+        // Méthode partielle qui ne sera pas écrasée
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        {
+            // Configurations personnalisées
+            modelBuilder.Entity&lt;Product&gt;()
+                .HasIndex(p => p.ProductName)
+                .IsUnique();
+                
+            modelBuilder.Entity&lt;Customer&gt;()
+                .HasIndex(c => c.Email)
+                .IsUnique();
+                
+            // Seed data
+            modelBuilder.Entity&lt;Category&gt;().HasData(
+                new Category { CategoryId = 1, CategoryName = "Électronique", CreatedDate = DateTime.Now },
+                new Category { CategoryId = 2, CategoryName = "Vêtements", CreatedDate = DateTime.Now }
+            );
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h4>3. Commande de mise à jour sélective</h4>
+            <div class="command-box">
+                dotnet ef dbcontext scaffold "ConnectionString" Microsoft.EntityFrameworkCore.SqlServer -o Models -c ECommerceContext --table Products --table Categories --force
+                <button class="copy-btn" onclick="copyToClipboard('dotnet ef dbcontext scaffold \"ConnectionString\" Microsoft.EntityFrameworkCore.SqlServer -o Models -c ECommerceContext --table Products --table Categories --force')">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 7: Exercices pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Première génération Database First
+                </h5>
+                <p><strong>Objectif :</strong> Créer votre première application Database First</p>
+                <ol>
+                    <li>Créez la base de données ECommerceDB avec le script fourni</li>
+                    <li>Créez un nouveau projet console</li>
+                    <li>Utilisez scaffolding pour générer les modèles</li>
+                    <li>Testez la connexion et l'affichage des données</li>
+                </ol>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Extension des modèles
+                </h5>
+                <p><strong>Objectif :</strong> Étendre les modèles générés sans risquer de perdre les modifications</p>
+                <ol>
+                    <li>Créez des classes partielles pour Product et Customer</li>
+                    <li>Ajoutez des propriétés calculées (ex: FullName pour Customer)</li>
+                    <li>Ajoutez des méthodes métier (ex: CalculateDiscount pour Product)</li>
+                    <li>Régénérez les modèles et vérifiez que vos extensions sont conservées</li>
+                </ol>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Service de données complet
+                </h5>
+                <p><strong>Objectif :</strong> Créer un service complet utilisant les modèles générés</p>
+                <ol>
+                    <li>Créez une classe OrderService</li>
+                    <li>Implémentez les méthodes : CreateOrder, GetOrdersByCustomer, UpdateOrderStatus</li>
+                    <li>Utilisez Include() pour charger les données liées</li>
+                    <li>Ajoutez la gestion des erreurs et la validation</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-2-installation-configuration.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-4-code-first.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visuel
+                event.target.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    event.target.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

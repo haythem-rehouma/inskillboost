@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5 - Migrations Entity Framework</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--ef-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 43, 212, 0.1);
+        }
+
+        .step-number {
+            background: var(--ef-purple);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .command-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .command-box::before {
+            content: '$ ';
+            color: #00ff00;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #00ff00;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .migration-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .migration-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--ef-purple);
+        }
+
+        .migration-item {
+            position: relative;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            margin-left: 1rem;
+        }
+
+        .migration-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--ef-purple);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        /* Interactive checkboxes for exercises */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            accent-color: var(--ef-purple);
+        }
+
+        .list-unstyled li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .list-unstyled label {
+            flex: 1;
+            cursor: pointer;
+            padding-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-code-branch me-2"></i>
+                Module 5
+            </div>
+            <h1 class="module-title">Les Migrations Entity Framework</h1>
+            <p class="module-description">
+                Maîtrisez l'évolution de votre base de données avec les migrations : création, application, et gestion des changements
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>4 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>8 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-code-branch me-1"></i>Migrations
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Introduction aux Migrations expliquée pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                Qu'est-ce que les Migrations ? (Guide Complet pour Débutants)
+            </h2>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Analogie Simple : La Rénovation d'une Maison</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-home me-2"></i>Imaginez que vous rénovez votre maison</h5>
+                <p>
+                    Vous habitez dans une maison depuis 2 ans. Au début, elle avait :
+                </p>
+                <ul>
+                    <li>🏠 2 chambres, 1 salle de bain, 1 cuisine</li>
+                    <li>🎨 Murs blancs partout</li>
+                    <li>🪟 Fenêtres en bois</li>
+                </ul>
+                
+                <p>
+                    Mais vos besoins évoluent ! Vous voulez :
+                </p>
+                <ul>
+                    <li>➕ Ajouter une 3ème chambre</li>
+                    <li>🎨 Repeindre le salon en bleu</li>
+                    <li>🪟 Remplacer les fenêtres par du PVC</li>
+                    <li>🚿 Moderniser la salle de bain</li>
+                </ul>
+
+                <p class="mb-0">
+                    <strong>Les migrations Entity Framework fonctionnent exactement comme ça !</strong> 
+                    Votre base de données évolue au fil du temps, et les migrations sont vos 
+                    "plans de rénovation" qui transforment votre base étape par étape.
+                </p>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>Qu'est-ce qu'une Migration Concrètement ?</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Définition Simple</h6>
+                <p>
+                    Une <strong>migration</strong> est un fichier C# qui contient les instructions 
+                    pour transformer votre base de données d'un état A vers un état B.
+                </p>
+                
+                <h6>Par exemple :</h6>
+                <ul>
+                    <li><strong>État A</strong> → Table "Products" avec colonnes : Id, Name, Price</li>
+                    <li><strong>Migration</strong> → "Ajouter la colonne Description"</li>
+                    <li><strong>État B</strong> → Table "Products" avec colonnes : Id, Name, Price, Description</li>
+                </ul>
+
+                <p class="mb-0">
+                    <strong>Magique :</strong> Entity Framework génère automatiquement le code SQL 
+                    nécessaire pour passer de A à B !
+                </p>
+            </div>
+
+            <h3><i class="fas fa-history me-2"></i>Pourquoi les Migrations sont Indispensables ?</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-users me-2 text-success"></i>Travail en Équipe</h6>
+                        <p class="small">
+                            <strong>Problème :</strong> Vous modifiez votre modèle C#. Comment vos collègues 
+                            mettent-ils à jour leur base de données locale ?
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Ils appliquent vos migrations ! 
+                            Tout le monde a la même structure de base.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-rocket me-2 text-success"></i>Déploiement</h6>
+                        <p class="small">
+                            <strong>Problème :</strong> Votre application évolue. Comment mettre à jour 
+                            la base de données en production sans tout casser ?
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Les migrations s'appliquent automatiquement 
+                            au déploiement, en préservant les données existantes.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-history me-2 text-success"></i>Historique</h6>
+                        <p class="small">
+                            <strong>Problème :</strong> Vous voulez savoir quand et pourquoi 
+                            une colonne a été ajoutée à votre base.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Chaque migration est datée et documentée. 
+                            C'est l'historique complet de votre base !
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-undo me-2 text-success"></i>Retour en Arrière</h6>
+                        <p class="small">
+                            <strong>Problème :</strong> Une modification pose problème. 
+                            Comment revenir à l'état précédent ?
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Les migrations peuvent être annulées ! 
+                            Vous pouvez revenir à n'importe quel état antérieur.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-route me-2"></i>Le Cycle de Vie d'une Migration</h3>
+
+            <div class="migration-timeline">
+                <div class="migration-item">
+                    <h6><i class="fas fa-edit me-2 text-primary"></i>Étape 1 : Vous Modifiez votre Modèle</h6>
+                    <p class="mb-0">
+                        Vous ajoutez une propriété à votre classe C# : 
+                        <code>public string Description { get; set; }</code>
+                    </p>
+                </div>
+
+                <div class="migration-item">
+                    <h6><i class="fas fa-magic me-2 text-primary"></i>Étape 2 : Vous Créez une Migration</h6>
+                    <p class="mb-0">
+                        Commande : <code>dotnet ef migrations add AddDescription</code><br>
+                        EF compare votre modèle actuel avec la base et génère le code de migration.
+                    </p>
+                </div>
+
+                <div class="migration-item">
+                    <h6><i class="fas fa-play me-2 text-primary"></i>Étape 3 : Vous Appliquez la Migration</h6>
+                    <p class="mb-0">
+                        Commande : <code>dotnet ef database update</code><br>
+                        EF exécute le SQL généré pour modifier la base de données.
+                    </p>
+                </div>
+
+                <div class="migration-item">
+                    <h6><i class="fas fa-check-circle me-2 text-success"></i>Étape 4 : Mission Accomplie !</h6>
+                    <p class="mb-0">
+                        Votre base de données a maintenant la colonne "Description". 
+                        Vos données existantes sont préservées.
+                    </p>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-map me-2"></i>Notre Plan d'Apprentissage pour ce Module</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-list-ol me-2"></i>Ce que nous allons apprendre ensemble :</h6>
+                <ol>
+                    <li><strong>Créer votre première migration</strong> → Étape par étape, sans erreur</li>
+                    <li><strong>Comprendre les fichiers générés</strong> → Que contiennent-ils exactement ?</li>
+                    <li><strong>Appliquer et annuler des migrations</strong> → Aller et revenir en arrière</li>
+                    <li><strong>Gérer les données existantes</strong> → Migrations sans perte de données</li>
+                    <li><strong>Migrations avancées</strong> → Index, contraintes, données de référence</li>
+                    <li><strong>Déploiement en production</strong> → Appliquer les migrations en toute sécurité</li>
+                    <li><strong>Résoudre les problèmes courants</strong> → Conflits, erreurs, récupération</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Section 2: Première Migration Pas à Pas -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-play-circle"></i>
+                Votre Première Migration : Guide Pas à Pas (Super Débutant)
+            </h2>
+
+            <h3><i class="fas fa-rocket me-2"></i>Préparation : Créons un Projet d'Exemple</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer le projet et installer EF Core</h5>
+                        <p>Créons un nouveau projet dédié à l'apprentissage des migrations :</p>
+                        
+                        <div class="command-box">
+                            dotnet new console -n MigrationDemo
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new console -n MigrationDemo')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="command-box">
+                            cd MigrationDemo
+                            <button class="copy-btn" onclick="copyToClipboard('cd MigrationDemo')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        
+                        <p>Installer les packages Entity Framework :</p>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.SqlServer')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Tools
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Tools')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer le modèle initial simple</h5>
+                        <p>Créons un modèle très simple pour commencer :</p>
+                        
+                        <h6>Fichier : Models/Product.cs</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+
+namespace MigrationDemo.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
+        
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
+        
+        public decimal Price { get; set; }
+        
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+}</code></pre>
+                        </div>
+
+                        <h6>Fichier : Data/AppDbContext.cs</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+using MigrationDemo.Models;
+
+namespace MigrationDemo.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public DbSet&lt;Product&gt; Products { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MigrationDemo;Trusted_Connection=true;");
+        }
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Explication du Code</h6>
+                            <ul class="mb-0">
+                                <li><strong>Product</strong> → Modèle simple avec 4 propriétés</li>
+                                <li><strong>AppDbContext</strong> → Notre contexte de base de données</li>
+                                <li><strong>OnConfiguring</strong> → Connexion à SQL Server LocalDB (gratuit avec Visual Studio)</li>
+                                <li><strong>DbSet&lt;Product&gt;</strong> → Représente la table "Products"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-magic me-2"></i>Créer la Première Migration</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Générer la migration initiale</h5>
+                        <p>Maintenant, créons notre première migration qui va créer la table Products :</p>
+                        
+                        <div class="command-box">
+                            dotnet ef migrations add InitialCreate
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef migrations add InitialCreate')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-magic me-2"></i>Ce qui se passe :</h6>
+                            <ol class="mb-0">
+                                <li>EF analyse votre modèle Product</li>
+                                <li>Il compare avec la base (qui n'existe pas encore)</li>
+                                <li>Il génère le code pour créer la table Products</li>
+                                <li>Il crée un dossier "Migrations" avec 2 fichiers</li>
+                            </ol>
+                        </div>
+
+                        <p><strong>Résultat attendu :</strong></p>
+                        <div class="code-block">
+                            <pre><code class="language-text">Build started...
+Build succeeded.
+Done. To undo this action, use 'ef migrations remove'</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">4</div>
+                    <div class="flex-grow-1">
+                        <h5>Explorer les fichiers générés</h5>
+                        <p>La migration a créé un dossier "Migrations" avec 2 fichiers importants :</p>
+                        
+                        <h6>📁 Structure créée :</h6>
+                        <div class="code-block">
+                            <pre><code class="language-text">MigrationDemo/
+├── Models/
+│   └── Product.cs
+├── Data/
+│   └── AppDbContext.cs
+└── Migrations/
+    ├── 20241201120000_InitialCreate.cs      ← Le fichier de migration
+    └── AppDbContextModelSnapshot.cs         ← L'état actuel du modèle</code></pre>
+                        </div>
+
+                        <h6>📄 Contenu du fichier de migration :</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore.Migrations;
+
+public partial class InitialCreate : Migration
+{
+    // ↓ Code pour APPLIQUER la migration (créer la table)
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.CreateTable(
+            name: "Products",
+            columns: table => new
+            {
+                Id = table.Column&lt;int&gt;(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                Name = table.Column&lt;string&gt;(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                Price = table.Column&lt;decimal&gt;(type: "decimal(18,2)", nullable: false),
+                CreatedAt = table.Column&lt;DateTime&gt;(type: "datetime2", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Products", x => x.Id);
+            });
+    }
+
+    // ↓ Code pour ANNULER la migration (supprimer la table)
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropTable(
+            name: "Products");
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-brain me-2"></i>Comprendre les Méthodes</h6>
+                            <ul class="mb-0">
+                                <li><strong>Up()</strong> → Code pour appliquer la migration (aller vers l'avant)</li>
+                                <li><strong>Down()</strong> → Code pour annuler la migration (revenir en arrière)</li>
+                                <li><strong>MigrationBuilder</strong> → Outil pour générer le SQL automatiquement</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-play me-2"></i>Appliquer la Migration</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">5</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer la base de données</h5>
+                        <p>Maintenant, appliquons notre migration pour créer réellement la base de données :</p>
+                        
+                        <div class="command-box">
+                            dotnet ef database update
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef database update')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p><strong>Résultat attendu :</strong></p>
+                        <div class="code-block">
+                            <pre><code class="language-text">Build started...
+Build succeeded.
+Applying migration '20241201120000_InitialCreate'.
+Done.</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-check-circle me-2 text-success"></i>Félicitations ! Voici ce qui s'est passé :</h6>
+                            <ol class="mb-0">
+                                <li>EF a créé la base de données "MigrationDemo"</li>
+                                <li>Il a créé la table "Products" avec les 4 colonnes</li>
+                                <li>Il a créé une table système "__EFMigrationsHistory" pour suivre les migrations appliquées</li>
+                                <li>Votre base est maintenant prête à recevoir des données !</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">6</div>
+                    <div class="flex-grow-1">
+                        <h5>Vérifier le résultat</h5>
+                        <p>Vérifions que tout fonctionne en ajoutant quelques données de test :</p>
+                        
+                        <h6>Fichier : Program.cs</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using MigrationDemo.Data;
+using MigrationDemo.Models;
+
+Console.WriteLine("=== Test de notre première migration ===");
+
+using var context = new AppDbContext();
+
+// Ajouter quelques produits de test
+var products = new List&lt;Product&gt;
+{
+    new Product { Name = "iPhone 15", Price = 999.99m },
+    new Product { Name = "MacBook Pro", Price = 2299.99m },
+    new Product { Name = "AirPods Pro", Price = 279.99m }
+};
+
+context.Products.AddRange(products);
+await context.SaveChangesAsync();
+
+Console.WriteLine($"✅ {products.Count} produits ajoutés avec succès !");
+
+// Lire les données
+var allProducts = context.Products.ToList();
+Console.WriteLine($"\n📦 Produits en base de données :");
+
+foreach (var product in allProducts)
+{
+    Console.WriteLine($"- {product.Name} : {product.Price:C} (ID: {product.Id})");
+}
+
+Console.WriteLine("\n🎉 Migration réussie ! Votre base de données fonctionne parfaitement.");</code></pre>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet run
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet run')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p><strong>Résultat attendu :</strong></p>
+                        <div class="code-block">
+                            <pre><code class="language-text">=== Test de notre première migration ===
+✅ 3 produits ajoutés avec succès !
+
+📦 Produits en base de données :
+- iPhone 15 : 999,99 € (ID: 1)
+- MacBook Pro : 2 299,99 € (ID: 2)
+- AirPods Pro : 279,99 € (ID: 3)
+
+🎉 Migration réussie ! Votre base de données fonctionne parfaitement.</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Ajouter une Nouvelle Migration -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                Évolution du Modèle : Ajouter une Nouvelle Migration
+            </h2>
+
+            <h3><i class="fas fa-edit me-2"></i>Scénario : Nous Voulons Ajouter une Description aux Produits</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-lightbulb me-2"></i>Situation Réaliste</h6>
+                <p>
+                    Votre application fonctionne depuis 1 mois. Vous avez 100 produits en base de données. 
+                    Vos utilisateurs demandent maintenant d'ajouter une description détaillée pour chaque produit.
+                </p>
+                <p class="mb-0">
+                    <strong>Problème :</strong> Comment ajouter cette colonne sans perdre les données existantes ? 
+                    <strong>Réponse :</strong> Avec une migration !
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Modifier le modèle Product</h5>
+                        <p>D'abord, ajoutons la propriété Description à notre modèle :</p>
+                        
+                        <h6>Models/Product.cs (version mise à jour)</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+
+namespace MigrationDemo.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
+        
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
+        
+        // ✨ NOUVELLE PROPRIÉTÉ AJOUTÉE
+        [StringLength(1000)]
+        public string Description { get; set; }
+        
+        public decimal Price { get; set; }
+        
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Ce qui a changé :</h6>
+                            <ul class="mb-0">
+                                <li>➕ Ajout de la propriété <code>Description</code></li>
+                                <li>📏 Longueur limitée à 1000 caractères</li>
+                                <li>❓ Propriété nullable (pas de [Required]) → les produits existants auront Description = null</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer la migration pour cette modification</h5>
+                        <p>Créons une nouvelle migration qui ajoutera la colonne Description :</p>
+                        
+                        <div class="command-box">
+                            dotnet ef migrations add AddProductDescription
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef migrations add AddProductDescription')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p><strong>Résultat :</strong></p>
+                        <div class="code-block">
+                            <pre><code class="language-text">Build started...
+Build succeeded.
+Done. To undo this action, use 'ef migrations remove'</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-brain me-2"></i>Ce qu'Entity Framework a fait automatiquement :</h6>
+                            <ol class="mb-0">
+                                <li>Il a comparé votre modèle actuel avec l'état précédent</li>
+                                <li>Il a détecté l'ajout de la propriété Description</li>
+                                <li>Il a généré le code SQL pour ajouter la colonne</li>
+                                <li>Il a créé un nouveau fichier de migration</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Examiner la migration générée</h5>
+                        <p>Regardons ce qu'EF a généré dans le nouveau fichier de migration :</p>
+                        
+                        <h6>📁 Nouvelle structure :</h6>
+                        <div class="code-block">
+                            <pre><code class="language-text">Migrations/
+├── 20241201120000_InitialCreate.cs           ← Première migration
+├── 20241201140000_AddProductDescription.cs   ← NOUVELLE migration
+└── AppDbContextModelSnapshot.cs              ← État mis à jour</code></pre>
+                        </div>
+
+                        <h6>📄 Contenu de AddProductDescription.cs :</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore.Migrations;
+
+public partial class AddProductDescription : Migration
+{
+    // ↓ Ajouter la colonne Description
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn&lt;string&gt;(
+            name: "Description",
+            table: "Products",
+            type: "nvarchar(1000)",
+            maxLength: 1000,
+            nullable: true);  // ← nullable = true car pas de [Required]
+    }
+
+    // ↓ Supprimer la colonne Description (pour annuler)
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "Description",
+            table: "Products");
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-shield-alt me-2"></i>Sécurité des Données</h6>
+                            <p class="mb-0">
+                                Remarquez que <code>nullable: true</code> ! C'est crucial car vos produits 
+                                existants n'ont pas de description. EF ajoute la colonne avec des valeurs NULL 
+                                pour préserver vos données existantes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">4</div>
+                    <div class="flex-grow-1">
+                        <h5>Appliquer la nouvelle migration</h5>
+                        <p>Appliquons cette migration pour ajouter la colonne à notre base :</p>
+                        
+                        <div class="command-box">
+                            dotnet ef database update
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef database update')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p><strong>Résultat :</strong></p>
+                        <div class="code-block">
+                            <pre><code class="language-text">Build started...
+Build succeeded.
+Applying migration '20241201140000_AddProductDescription'.
+Done.</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-check-circle me-2 text-success"></i>Mission Accomplie !</h6>
+                            <ul class="mb-0">
+                                <li>✅ Colonne "Description" ajoutée à la table Products</li>
+                                <li>✅ Vos 3 produits existants sont toujours là</li>
+                                <li>✅ Leur Description est NULL (normal)</li>
+                                <li>✅ Vous pouvez maintenant ajouter des descriptions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">5</div>
+                    <div class="flex-grow-1">
+                        <h5>Tester la nouvelle fonctionnalité</h5>
+                        <p>Mettons à jour notre code de test pour utiliser la nouvelle propriété :</p>
+                        
+                        <h6>Program.cs (version mise à jour)</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using MigrationDemo.Data;
+using MigrationDemo.Models;
+
+Console.WriteLine("=== Test après ajout de la colonne Description ===");
+
+using var context = new AppDbContext();
+
+// Lire les produits existants
+var existingProducts = context.Products.ToList();
+Console.WriteLine($"📦 Produits existants (Description devrait être null) :");
+
+foreach (var product in existingProducts)
+{
+    Console.WriteLine($"- {product.Name} : {product.Price:C}");
+    Console.WriteLine($"  Description: {product.Description ?? "[Pas de description]"}");
+}
+
+// Ajouter un nouveau produit AVEC description
+var newProduct = new Product 
+{ 
+    Name = "iPad Pro", 
+    Price = 1099.99m,
+    Description = "Tablette professionnelle avec écran Liquid Retina et puce M2"
+};
+
+context.Products.Add(newProduct);
+await context.SaveChangesAsync();
+
+Console.WriteLine($"\n✅ Nouveau produit ajouté avec description !");
+
+// Mettre à jour un produit existant
+var iPhone = existingProducts.First(p => p.Name == "iPhone 15");
+iPhone.Description = "Smartphone révolutionnaire avec appareil photo 48MP";
+await context.SaveChangesAsync();
+
+Console.WriteLine($"✅ Description ajoutée à l'iPhone existant !");
+
+Console.WriteLine("\n🎉 La migration fonctionne parfaitement ! Données préservées et nouvelles fonctionnalités disponibles.");</code></pre>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet run
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet run')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Gestion des Migrations -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Gestion Avancée des Migrations
+            </h2>
+
+            <h3><i class="fas fa-list me-2"></i>Commandes Essentielles des Migrations</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-terminal me-2"></i>Commandes de Base</h6>
+                        <ul class="small mb-0">
+                            <li><code>dotnet ef migrations add [Nom]</code><br>→ Créer une nouvelle migration</li>
+                            <li><code>dotnet ef database update</code><br>→ Appliquer toutes les migrations</li>
+                            <li><code>dotnet ef migrations list</code><br>→ Lister toutes les migrations</li>
+                            <li><code>dotnet ef migrations remove</code><br>→ Supprimer la dernière migration</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-magic me-2"></i>Commandes Avancées</h6>
+                        <ul class="small mb-0">
+                            <li><code>dotnet ef database update [Migration]</code><br>→ Revenir à une migration spécifique</li>
+                            <li><code>dotnet ef migrations script</code><br>→ Générer un script SQL</li>
+                            <li><code>dotnet ef database drop</code><br>→ Supprimer la base complètement</li>
+                            <li><code>dotnet ef dbcontext info</code><br>→ Informations sur le contexte</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-undo me-2"></i>Annuler une Migration</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Scénario : Oups, j'ai fait une erreur !</h6>
+                <p>
+                    Imaginez que vous venez de créer une migration qui ajoute une colonne "Weight" 
+                    mais vous réalisez que vous vouliez "Weight" en grammes, pas en kilos. 
+                    Comment revenir en arrière ?
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Créons d'abord une migration "problématique"</h5>
+                        
+                        <p>Ajoutons temporairement une propriété Weight à Product :</p>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// Dans Models/Product.cs, ajoutez temporairement :
+public decimal Weight { get; set; } // En kilos - ERREUR !</code></pre>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet ef migrations add AddProductWeight
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef migrations add AddProductWeight')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Annuler la migration (avant application)</h5>
+                        
+                        <p>Si vous n'avez PAS encore fait <code>dotnet ef database update</code> :</p>
+                        <div class="command-box">
+                            dotnet ef migrations remove
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef migrations remove')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p>Cette commande :</p>
+                        <ul>
+                            <li>✅ Supprime le fichier de migration</li>
+                            <li>✅ Remet le ModelSnapshot à l'état précédent</li>
+                            <li>✅ Aucun impact sur la base de données</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Annuler une migration déjà appliquée</h5>
+                        
+                        <p>Si vous AVEZ déjà fait <code>dotnet ef database update</code> :</p>
+                        
+                        <h6>Option 1 : Revenir à la migration précédente</h6>
+                        <div class="command-box">
+                            dotnet ef database update AddProductDescription
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet ef database update AddProductDescription')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Option 2 : Créer une migration corrective</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// Supprimez la propriété Weight du modèle, puis :
+dotnet ef migrations add RemoveProductWeight</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Quelle option choisir ?</h6>
+                            <ul class="mb-0">
+                                <li><strong>Option 1</strong> → Si vous êtes seul et en développement</li>
+                                <li><strong>Option 2</strong> → Si d'autres développeurs ont déjà la migration ou si c'est en production</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-history me-2"></i>Historique des Migrations</h3>
+
+            <div class="command-box">
+                dotnet ef migrations list
+                <button class="copy-btn" onclick="copyToClipboard('dotnet ef migrations list')">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <p><strong>Résultat typique :</strong></p>
+            <div class="code-block">
+                <pre><code class="language-text">20241201120000_InitialCreate (Applied)
+20241201140000_AddProductDescription (Applied)
+20241201160000_AddProductWeight (Pending)</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Comprendre l'état des migrations :</h6>
+                <ul class="mb-0">
+                    <li><strong>(Applied)</strong> → Migration déjà appliquée à la base de données</li>
+                    <li><strong>(Pending)</strong> → Migration créée mais pas encore appliquée</li>
+                    <li><strong>Ordre chronologique</strong> → Les migrations s'appliquent dans l'ordre de création</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Exercices Pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques : Maîtriser les Migrations
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Votre Première Migration Complète (Super Débutant)
+                </h5>
+                <p><strong>Objectif :</strong> Créer un projet complet avec migrations de A à Z</p>
+                
+                <h6>📋 Checklist à compléter :</h6>
+                <ul class="list-unstyled">
+                    <li><input type="checkbox" id="ex1-1"><label for="ex1-1">Créer un nouveau projet "BlogDemo"</label></li>
+                    <li><input type="checkbox" id="ex1-2"><label for="ex1-2">Installer les packages EF Core + SQL Server + Tools</label></li>
+                    <li><input type="checkbox" id="ex1-3"><label for="ex1-3">Créer un modèle "BlogPost" avec : Id, Title, Content, PublishedDate</label></li>
+                    <li><input type="checkbox" id="ex1-4"><label for="ex1-4">Créer un DbContext "BlogContext"</label></li>
+                    <li><input type="checkbox" id="ex1-5"><label for="ex1-5">Créer la migration initiale "InitialCreate"</label></li>
+                    <li><input type="checkbox" id="ex1-6"><label for="ex1-6">Appliquer la migration</label></li>
+                    <li><input type="checkbox" id="ex1-7"><label for="ex1-7">Tester en ajoutant 3 articles de blog</label></li>
+                    <li><input type="checkbox" id="ex1-8"><label for="ex1-8">Vérifier que les données sont bien sauvegardées</label></li>
+                </ul>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-lightbulb me-2"></i>Conseils :</h6>
+                    <ul class="mb-0">
+                        <li>Utilisez <code>[Required]</code> pour Title</li>
+                        <li>Utilisez <code>[StringLength(200)]</code> pour Title</li>
+                        <li>Content peut être illimité (pas d'annotation)</li>
+                        <li>PublishedDate peut être nullable avec <code>DateTime?</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Évolution du Modèle (Débutant)
+                </h5>
+                <p><strong>Objectif :</strong> Faire évoluer le modèle avec plusieurs migrations</p>
+                
+                <ol>
+                    <li><strong>Migration 2 :</strong> Ajouter une propriété "Author" (string, 100 caractères max, obligatoire)</li>
+                    <li><strong>Migration 3 :</strong> Ajouter une propriété "ViewCount" (int, défaut 0)</li>
+                    <li><strong>Migration 4 :</strong> Ajouter une propriété "IsPublished" (bool, défaut false)</li>
+                </ol>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-question-circle me-2"></i>Questions de réflexion :</h6>
+                    <ul class="mb-0">
+                        <li>Que va-t-il se passer aux articles existants quand vous ajoutez "Author" obligatoire ?</li>
+                        <li>Comment EF gère-t-il les valeurs par défaut ?</li>
+                        <li>Dans quel ordre les migrations vont-elles s'appliquer ?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Gestion d'Erreurs et Récupération (Intermédiaire)
+                </h5>
+                <p><strong>Objectif :</strong> Apprendre à gérer les situations problématiques</p>
+                
+                <h6>Scénario :</h6>
+                <ol>
+                    <li>Créez une migration qui ajoute "Email" obligatoire à BlogPost</li>
+                    <li>Appliquez-la (cela devrait échouer car les articles existants n'ont pas d'email)</li>
+                    <li>Résolvez le problème en modifiant la migration pour rendre Email nullable</li>
+                    <li>Créez ensuite une migration séparée pour remplir les emails manquants</li>
+                    <li>Enfin, créez une migration pour rendre Email obligatoire</li>
+                </ol>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-brain me-2"></i>Apprentissage :</h6>
+                    <p class="mb-0">
+                        Cet exercice vous apprend à gérer les migrations complexes avec des données existantes. 
+                        En production, on ne peut pas simplement ajouter une colonne obligatoire !
+                    </p>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 4 : Projet E-commerce Complet (Avancé)
+                </h5>
+                <p><strong>Objectif :</strong> Créer un système e-commerce complet avec migrations</p>
+                
+                <h6>Modèles à créer (dans l'ordre) :</h6>
+                <ol>
+                    <li><strong>Migration 1 :</strong> Category (Id, Name, Description)</li>
+                    <li><strong>Migration 2 :</strong> Product (Id, Name, Price, CategoryId)</li>
+                    <li><strong>Migration 3 :</strong> Customer (Id, FirstName, LastName, Email)</li>
+                    <li><strong>Migration 4 :</strong> Order (Id, CustomerId, OrderDate, TotalAmount)</li>
+                    <li><strong>Migration 5 :</strong> OrderItem (Id, OrderId, ProductId, Quantity, UnitPrice)</li>
+                </ol>
+
+                <h6>Défis supplémentaires :</h6>
+                <ul>
+                    <li>Ajoutez des données de référence (seed data) dans les migrations</li>
+                    <li>Créez des index sur les colonnes importantes</li>
+                    <li>Gérez les relations entre toutes les entités</li>
+                    <li>Testez l'annulation de migrations</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-4-code-first.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-6-linq-queries.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visuel
+                event.target.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    event.target.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

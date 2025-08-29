@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Banque Moderne - Entity Framework Core</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .project-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .project-badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .step-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--ef-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 43, 212, 0.1);
+        }
+
+        .step-number {
+            background: var(--ef-purple);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .command-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .command-box::before {
+            content: '> ';
+            color: #00ff00;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #00ff00;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .improvement-card {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--success-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .problem-card {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .architecture-diagram {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .layer-box {
+            background: var(--ef-purple);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <div class="project-header">
+        <div class="container">
+            <div class="project-badge">
+                <i class="fas fa-university me-2"></i>
+                Projet Pratique
+            </div>
+            <h1 class="project-title">Banque Moderne - Entity Framework Core</h1>
+            <p class="project-description">
+                Modernisation complète du projet DAO bancaire : de Entity Framework 6 vers EF Core 8 avec architecture Clean
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>8 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-code me-1"></i>Architecture Clean
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-shield-alt me-1"></i>Sécurisé
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Contexte et Objectifs du Projet -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-bullseye"></i>
+                Contexte et Objectifs du Projet
+            </h2>
+
+            <h3><i class="fas fa-info-circle me-2"></i>Présentation du Projet Bancaire</h3>
+            
+            <p>Ce projet consiste à développer une application bancaire moderne utilisant Entity Framework Core pour la gestion des comptes. L'objectif est de créer une architecture robuste, sécurisée et évolutive.</p>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-list me-2"></i>Fonctionnalités Principales</h5>
+                <ul>
+                    <li><strong>Gestion des comptes bancaires</strong> - Création, consultation, modification</li>
+                    <li><strong>Opérations bancaires</strong> - Crédit, débit, virements entre comptes</li>
+                    <li><strong>Reporting et statistiques</strong> - Tableaux de bord et analyses</li>
+                    <li><strong>API REST</strong> - Interface moderne pour applications externes</li>
+                    <li><strong>Sécurité avancée</strong> - Validation, transactions, audit trail</li>
+                </ul>
+            </div>
+
+            <h3><i class="fas fa-graduation-cap me-2"></i>Concepts Techniques Expliqués</h3>
+
+            <div class="content-section">
+                <h4><i class="fas fa-database me-2"></i>Entity Framework Core - Les Fondamentaux</h4>
+                
+                <div class="highlight-box">
+                    <h6><strong>Qu'est-ce qu'Entity Framework Core ?</strong></h6>
+                    <p>Entity Framework Core (EF Core) est un <strong>ORM (Object-Relational Mapping)</strong> développé par Microsoft. Son rôle est de faire le pont entre votre code C# orienté objet et votre base de données relationnelle.</p>
+                    
+                    <p><strong>Analogie simple :</strong> Imaginez EF Core comme un traducteur qui parle couramment deux langues : le C# et le SQL. Quand vous voulez récupérer des données, au lieu d'écrire du SQL complexe, vous parlez en C# et EF Core traduit automatiquement en SQL pour la base de données.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-cube me-2"></i>DbContext - Le Chef d'Orchestre</h6>
+                            <p><strong>Rôle :</strong> Le DbContext est le point central de toute application EF Core. C'est lui qui :</p>
+                            <ul>
+                                <li>Gère la connexion à la base de données</li>
+                                <li>Suit les modifications sur vos objets (Change Tracking)</li>
+                                <li>Traduit vos requêtes LINQ en SQL</li>
+                                <li>Gère les transactions</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>// Le DbContext représente une session 
+// avec la base de données
+public class BanqueDbContext : DbContext
+{
+    // Configuration et DbSets ici
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-table me-2"></i>DbSet - Les Collections de Tables</h6>
+                            <p><strong>Rôle :</strong> Un DbSet représente une table dans votre base de données sous forme de collection C#.</p>
+                            <ul>
+                                <li>Chaque DbSet = une table</li>
+                                <li>Permet les opérations CRUD (Create, Read, Update, Delete)</li>
+                                <li>Support des requêtes LINQ</li>
+                                <li>Suivi automatique des modifications</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>// DbSet&lt;Compte&gt; représente la table T_Comptes
+public DbSet&lt;Compte&gt; Comptes { get; set; }
+
+// Utilisation :
+var compte = context.Comptes.First();
+context.Comptes.Add(nouveauCompte);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-forward me-2"></i>Code First - Du Code vers la Base</h6>
+                            <p><strong>Principe :</strong> Vous définissez vos classes C# (entités) et EF Core génère automatiquement la base de données.</p>
+                            <p><strong>Avantages :</strong></p>
+                            <ul>
+                                <li>Contrôle total depuis le code</li>
+                                <li>Versioning avec les migrations</li>
+                                <li>Travail en équipe facilité</li>
+                                <li>Déploiement automatisé</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>// 1. Vous créez votre classe
+public class Compte { ... }
+
+// 2. EF Core génère la table
+// CREATE TABLE T_Comptes (...)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-tags me-2"></i>Data Annotations - Configuration Simple</h6>
+                            <p><strong>Rôle :</strong> Les Data Annotations sont des attributs que vous placez sur vos propriétés pour configurer EF Core.</p>
+                            <p><strong>Exemples courants :</strong></p>
+                            <ul>
+                                <li><code>[Key]</code> - Clé primaire</li>
+                                <li><code>[Required]</code> - Champ obligatoire</li>
+                                <li><code>[StringLength(50)]</code> - Taille max</li>
+                                <li><code>[Column("C_Nom")]</code> - Nom de colonne</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>[Key] // Clé primaire
+[Column("IdCompte")] // Nom de colonne
+public long CompteId { get; set; }
+
+[Required] // NOT NULL en SQL
+[StringLength(20)] // VARCHAR(20)
+public string Numero { get; set; }</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h4><i class="fas fa-building me-2"></i>Architecture Clean - Explications Détaillées</h4>
+                
+                <div class="warning-box">
+                    <h6><strong>Pourquoi une architecture en couches ?</strong></h6>
+                    <p>Imaginez construire une maison : vous ne mélangez pas la plomberie, l'électricité et la décoration dans la même pièce. De même, en programmation, on sépare les responsabilités pour :</p>
+                    <ul>
+                        <li><strong>Faciliter la maintenance</strong> - Changer une couche sans affecter les autres</li>
+                        <li><strong>Améliorer la testabilité</strong> - Tester chaque partie indépendamment</li>
+                        <li><strong>Favoriser la réutilisabilité</strong> - Réutiliser des composants dans d'autres projets</li>
+                        <li><strong>Clarifier les responsabilités</strong> - Chaque couche a un rôle précis</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-cube me-2"></i>Core Domain - Le Cœur Métier</h6>
+                            <p><strong>Contenu :</strong></p>
+                            <ul>
+                                <li><strong>Entités</strong> - Vos objets métier (Compte, Client, etc.)</li>
+                                <li><strong>Interfaces</strong> - Contrats que doivent respecter les autres couches</li>
+                                <li><strong>Value Objects</strong> - Objets sans identité (Adresse, Montant)</li>
+                                <li><strong>Domain Services</strong> - Logique métier complexe</li>
+                            </ul>
+                            <p><strong>Règle d'or :</strong> Cette couche ne dépend de RIEN d'autre. Elle est pure logique métier.</p>
+                            <div class="code-block">
+                                <pre><code>// Exemple d'entité métier
+public class Compte
+{
+    public void Crediter(decimal montant)
+    {
+        // Logique métier pure
+        if (montant <= 0)
+            throw new ArgumentException("Montant invalide");
+        
+        Solde += montant;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-database me-2"></i>Infrastructure - L'Accès aux Données</h6>
+                            <p><strong>Contenu :</strong></p>
+                            <ul>
+                                <li><strong>DbContext</strong> - Configuration EF Core</li>
+                                <li><strong>Repositories</strong> - Implémentations concrètes des interfaces</li>
+                                <li><strong>Configurations</strong> - Mapping entités/tables</li>
+                                <li><strong>Migrations</strong> - Évolution de la base</li>
+                            </ul>
+                            <p><strong>Responsabilité :</strong> Tout ce qui touche à la persistance des données.</p>
+                            <div class="code-block">
+                                <pre><code>// Repository concret
+public class CompteRepository : ICompteRepository
+{
+    private readonly BanqueDbContext _context;
+    
+    public async Task&lt;Compte&gt; GetByIdAsync(long id)
+    {
+        return await _context.Comptes
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-cogs me-2"></i>Service Layer - L'Orchestration</h6>
+                            <p><strong>Rôle :</strong> Cette couche orchestre les opérations complexes qui impliquent plusieurs entités ou repositories.</p>
+                            <p><strong>Responsabilités :</strong></p>
+                            <ul>
+                                <li>Coordonner plusieurs repositories</li>
+                                <li>Gérer les transactions complexes</li>
+                                <li>Appliquer les règles métier transversales</li>
+                                <li>Gérer la logique applicative</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>public class VirementService
+{
+    public async Task&lt;bool&gt; EffectuerVirement(
+        string compteSource, 
+        string compteDestination, 
+        decimal montant)
+    {
+        // Orchestration de l'opération
+        using var transaction = await _context.BeginTransactionAsync();
+        
+        var source = await _compteRepo.GetByNumeroAsync(compteSource);
+        var destination = await _compteRepo.GetByNumeroAsync(compteDestination);
+        
+        // Logique métier
+        if (!source.PeutDebiter(montant))
+            return false;
+            
+        source.Debiter(montant);
+        destination.Crediter(montant);
+        
+        await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
+        
+        return true;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-globe me-2"></i>API Layer - L'Interface Externe</h6>
+                            <p><strong>Rôle :</strong> Point d'entrée de votre application. Cette couche expose vos fonctionnalités au monde extérieur.</p>
+                            <p><strong>Contenu :</strong></p>
+                            <ul>
+                                <li><strong>Controllers</strong> - Endpoints REST</li>
+                                <li><strong>DTOs</strong> - Objets de transfert de données</li>
+                                <li><strong>Validators</strong> - Validation des entrées</li>
+                                <li><strong>Middleware</strong> - Gestion des erreurs, logs, etc.</li>
+                            </ul>
+                            <div class="code-block">
+                                <pre><code>[ApiController]
+[Route("api/[controller]")]
+public class ComptesController : ControllerBase
+{
+    private readonly ICompteRepository _repository;
+    
+    [HttpGet("{numero}")]
+    public async Task&lt;ActionResult&lt;Compte&gt;&gt; GetCompte(string numero)
+    {
+        var compte = await _repository.GetByNumeroAsync(numero);
+        
+        if (compte == null)
+            return NotFound();
+            
+        return Ok(compte);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h4><i class="fas fa-tools me-2"></i>Patterns et Concepts Avancés Expliqués</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-layer-group me-2"></i>Repository Pattern - Qu'est-ce que c'est ?</h6>
+                            <p><strong>Définition :</strong> Le Repository Pattern est une couche d'abstraction entre votre logique métier et votre accès aux données.</p>
+                            
+                            <p><strong>Analogie :</strong> Imaginez une bibliothèque. Vous ne fouillez pas directement dans les rayons, vous demandez au bibliothécaire (Repository) qui connaît parfaitement l'organisation et vous apporte le livre.</p>
+                            
+                            <p><strong>Avantages :</strong></p>
+                            <ul>
+                                <li>Votre code métier ne connaît pas EF Core</li>
+                                <li>Facilite les tests (mock du repository)</li>
+                                <li>Possibilité de changer de base de données</li>
+                                <li>Centralise les requêtes complexes</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <pre><code>// Interface (contrat)
+public interface ICompteRepository
+{
+    Task&lt;Compte&gt; GetByIdAsync(long id);
+    Task&lt;IEnumerable&lt;Compte&gt;&gt; GetAllAsync();
+    Task AddAsync(Compte compte);
+    // ... autres méthodes
+}
+
+// Implémentation EF Core
+public class CompteRepository : ICompteRepository
+{
+    private readonly BanqueDbContext _context;
+    
+    public async Task&lt;Compte&gt; GetByIdAsync(long id)
+    {
+        return await _context.Comptes.FindAsync(id);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-plug me-2"></i>Dependency Injection - L'Inversion de Contrôle</h6>
+                            <p><strong>Principe :</strong> Au lieu que vos classes créent leurs dépendances, elles les reçoivent de l'extérieur.</p>
+                            
+                            <p><strong>Analogie :</strong> Au lieu d'aller chercher vous-même votre café (créer l'objet), quelqu'un vous l'apporte (injection).</p>
+                            
+                            <p><strong>Avant (mauvais) :</strong></p>
+                            <div class="code-block">
+                                <pre><code>public class ComptesController
+{
+    private readonly CompteRepository _repo;
+    
+    public ComptesController()
+    {
+        // Couplage fort !
+        _repo = new CompteRepository(new BanqueDbContext());
+    }
+}</code></pre>
+                            </div>
+                            
+                            <p><strong>Après (bon) :</strong></p>
+                            <div class="code-block">
+                                <pre><code>public class ComptesController
+{
+                                    private readonly ICompteRepository _repo;
+    
+    // L'interface est injectée
+    public ComptesController(ICompteRepository repo)
+    {
+        _repo = repo; // Couplage faible !
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-sync-alt me-2"></i>Async/Await - Programmation Asynchrone</h6>
+                            <p><strong>Pourquoi ?</strong> Les opérations de base de données sont lentes. Pendant qu'on attend la réponse, le thread peut traiter d'autres requêtes.</p>
+                            
+                            <p><strong>Analogie :</strong> Au restaurant, le serveur ne reste pas planté devant la cuisine en attendant votre plat. Il va servir d'autres tables pendant ce temps.</p>
+                            
+                            <p><strong>Synchrone (bloquant) :</strong></p>
+                            <div class="code-block">
+                                <pre><code>public Compte GetCompte(long id)
+{
+    // Le thread attend ici (bloqué)
+    return _context.Comptes.Find(id);
+}</code></pre>
+                            </div>
+                            
+                            <p><strong>Asynchrone (non-bloquant) :</strong></p>
+                            <div class="code-block">
+                                <pre><code>public async Task&lt;Compte&gt; GetCompteAsync(long id)
+{
+    // Le thread est libéré pendant l'attente
+    return await _context.Comptes.FindAsync(id);
+}</code></pre>
+                            </div>
+                            
+                            <p><strong>Résultat :</strong> Votre API peut gérer beaucoup plus d'utilisateurs simultanés !</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="step-card">
+                            <h6><i class="fas fa-search me-2"></i>LINQ - Language Integrated Query</h6>
+                            <p><strong>Définition :</strong> LINQ permet d'écrire des requêtes directement en C# au lieu de SQL.</p>
+                            
+                            <p><strong>Avantages :</strong></p>
+                            <ul>
+                                <li>IntelliSense et vérification à la compilation</li>
+                                <li>Syntaxe familière pour les développeurs C#</li>
+                                <li>Fortement typé (pas d'erreurs de typage)</li>
+                                <li>Réutilisable et composable</li>
+                            </ul>
+                            
+                            <p><strong>SQL traditionnel :</strong></p>
+                            <div class="code-block">
+                                <pre><code>SELECT * FROM T_Comptes 
+WHERE C_Solde > 100 
+ORDER BY C_DateCreation DESC</code></pre>
+                            </div>
+                            
+                            <p><strong>LINQ équivalent :</strong></p>
+                            <div class="code-block">
+                                <pre><code>var comptes = await _context.Comptes
+    .Where(c => c.Solde > 100)
+    .OrderByDescending(c => c.DateCreation)
+    .ToListAsync();</code></pre>
+                            </div>
+                            
+                            <p><strong>Résultat :</strong> EF Core traduit automatiquement votre LINQ en SQL optimisé !</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="step-card">
+                            <h6><i class="fas fa-exchange-alt me-2"></i>Migrations - Évolution de la Base de Données</h6>
+                            <p><strong>Problème résolu :</strong> Comment faire évoluer la structure de votre base de données sans perdre les données ?</p>
+                            
+                            <p><strong>Principe :</strong> Les migrations sont des "scripts de transformation" qui décrivent comment passer d'une version de la base à une autre.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6>1. Vous modifiez votre entité</h6>
+                                    <div class="code-block">
+                                        <pre><code>public class Compte
+{
+    public long CompteId { get; set; }
+    public string Numero { get; set; }
+    public decimal Solde { get; set; }
+    // Nouvelle propriété
+    public string Email { get; set; }
+}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>2. Vous générez la migration</h6>
+                                    <div class="code-block">
+                                        <pre><code>dotnet ef migrations add AjoutEmail</code></pre>
+                                    </div>
+                                    <p>EF Core génère automatiquement :</p>
+                                    <div class="code-block">
+                                        <pre><code>public partial class AjoutEmail : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.AddColumn&lt;string&gt;(
+            name: "C_Email",
+            table: "T_Comptes",
+            maxLength: 100,
+            nullable: true);
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>3. Vous appliquez à la base</h6>
+                                    <div class="code-block">
+                                        <pre><code>dotnet ef database update</code></pre>
+                                    </div>
+                                    <p>Résultat en SQL :</p>
+                                    <div class="code-block">
+                                        <pre><code>ALTER TABLE T_Comptes 
+ADD C_Email NVARCHAR(100) NULL;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="highlight-box">
+                                <h6><strong>Avantages des Migrations :</strong></h6>
+                                <ul class="mb-0">
+                                    <li><strong>Versioning</strong> - Chaque changement est tracé</li>
+                                    <li><strong>Rollback</strong> - Possibilité de revenir en arrière</li>
+                                    <li><strong>Équipe</strong> - Synchronisation automatique entre développeurs</li>
+                                    <li><strong>Déploiement</strong> - Application automatique en production</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-shield-alt me-2"></i>Bonnes Pratiques Implémentées</h3>
+
+            <div class="problem-card">
+                <h6><i class="fas fa-star me-2"></i>Standards de Développement</h6>
+                <ul>
+                    <li><strong>Types appropriés</strong> - Utilisation de decimal pour les montants monétaires</li>
+                    <li><strong>Gestion des ressources</strong> - Disposal automatique des contextes</li>
+                    <li><strong>Sécurité SQL</strong> - Requêtes paramétrées et protection contre l'injection</li>
+                    <li><strong>Configuration externalisée</strong> - Paramètres dans appsettings.json</li>
+                    <li><strong>Validation robuste</strong> - Contrôles métier et techniques</li>
+                    <li><strong>Gestion d'erreurs</strong> - Try-catch appropriés et logging</li>
+                    <li><strong>Conventions de nommage</strong> - Standards .NET respectés</li>
+                    <li><strong>Documentation</strong> - Commentaires XML et documentation API</li>
+                </ul>
+            </div>
+
+            <h3><i class="fas fa-sitemap me-2"></i>Architecture du Projet</h3>
+
+            <div class="architecture-diagram">
+                <h6><i class="fas fa-layer-group me-2"></i>Structure en Couches</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="layer-box">
+                            <i class="fas fa-globe me-2"></i><br>
+                            <strong>API Layer</strong><br>
+                            Controllers REST<br>
+                            DTOs et Validation
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="layer-box">
+                            <i class="fas fa-cogs me-2"></i><br>
+                            <strong>Service Layer</strong><br>
+                            Logique Métier<br>
+                            Orchestration
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="layer-box">
+                            <i class="fas fa-database me-2"></i><br>
+                            <strong>Infrastructure</strong><br>
+                            Repository Pattern<br>
+                            Entity Framework
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="layer-box">
+                            <i class="fas fa-cube me-2"></i><br>
+                            <strong>Core Domain</strong><br>
+                            Entités Métier<br>
+                            Interfaces
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-lightbulb me-2"></i>Avantages de cette Architecture</h6>
+                <ul class="mb-0">
+                    <li><strong>Testabilité</strong> - Chaque couche peut être testée indépendamment</li>
+                    <li><strong>Maintenabilité</strong> - Code organisé et séparation des responsabilités</li>
+                    <li><strong>Évolutivité</strong> - Facilité d'ajout de nouvelles fonctionnalités</li>
+                    <li><strong>Réutilisabilité</strong> - Composants réutilisables dans d'autres projets</li>
+                    <li><strong>Performance</strong> - Optimisations ciblées par couche</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Création du Projet -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-rocket"></i>
+                Étape 1 : Création du Projet Moderne
+            </h2>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer la solution et les projets</h5>
+                        <p>Créons une solution avec architecture Clean en 4 projets :</p>
+                        
+                        <div class="command-box">
+                            dotnet new sln -n BanqueModerne
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new sln -n BanqueModerne')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet new classlib -n BanqueModerne.Core
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new classlib -n BanqueModerne.Core')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet new classlib -n BanqueModerne.Infrastructure
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new classlib -n BanqueModerne.Infrastructure')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet new webapi -n BanqueModerne.Api
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new webapi -n BanqueModerne.Api')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet new xunit -n BanqueModerne.Tests
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new xunit -n BanqueModerne.Tests')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Ajouter les projets à la solution</h5>
+                        
+                        <div class="command-box">
+                            dotnet sln add BanqueModerne.Core/BanqueModerne.Core.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet sln add BanqueModerne.Core/BanqueModerne.Core.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet sln add BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet sln add BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet sln add BanqueModerne.Api/BanqueModerne.Api.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet sln add BanqueModerne.Api/BanqueModerne.Api.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet sln add BanqueModerne.Tests/BanqueModerne.Tests.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet sln add BanqueModerne.Tests/BanqueModerne.Tests.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Configurer les références entre projets</h5>
+                        
+                        <div class="command-box">
+                            dotnet add BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet add BanqueModerne.Api/BanqueModerne.Api.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add BanqueModerne.Api/BanqueModerne.Api.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet add BanqueModerne.Api/BanqueModerne.Api.csproj reference BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add BanqueModerne.Api/BanqueModerne.Api.csproj reference BanqueModerne.Infrastructure/BanqueModerne.Infrastructure.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet add BanqueModerne.Tests/BanqueModerne.Tests.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add BanqueModerne.Tests/BanqueModerne.Tests.csproj reference BanqueModerne.Core/BanqueModerne.Core.csproj')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Couche Core -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-cube"></i>
+                Étape 2 : Couche Core - Entités et Interfaces
+            </h2>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Configuration du projet Core</h5>
+                        <p>Modifier le fichier <code>BanqueModerne.Core.csproj</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-xml">&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" /&gt;
+  &lt;/ItemGroup&gt;
+
+&lt;/Project&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Entité Compte modernisée</h5>
+                        <p>Créer <code>Entities/Compte.cs</code> dans BanqueModerne.Core :</p>
+                        
+                        <div class="warning-box">
+                            <h6><strong>Qu'est-ce qu'une Entité ?</strong></h6>
+                            <p>Une entité représente un objet métier de votre domaine. Elle contient :</p>
+                            <ul>
+                                <li><strong>Des propriétés</strong> - Les données (CompteId, Numero, Solde...)</li>
+                                <li><strong>Des méthodes métier</strong> - Les actions possibles (Crediter, Debiter...)</li>
+                                <li><strong>Des règles de validation</strong> - Ce qui est autorisé ou non</li>
+                                <li><strong>Un état cohérent</strong> - L'objet ne peut jamais être dans un état invalide</li>
+                            </ul>
+                            <p><strong>Important :</strong> L'entité ne sait PAS comment elle est stockée (base de données, fichier, mémoire...). Elle contient uniquement la logique métier pure.</p>
+                        </div>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BanqueModerne.Core.Entities;
+
+/// &lt;summary&gt;
+/// Entité représentant un compte bancaire
+/// Version modernisée basée sur le draft original
+/// &lt;/summary&gt;
+[Table("T_Comptes")]
+public class Compte
+{
+    #region Propriétés
+
+    /// &lt;summary&gt;
+    /// Identifiant unique du compte (clé primaire auto-incrémentée)
+    /// &lt;/summary&gt;
+    [Key]
+    [Column("IdCompte")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long CompteId { get; set; }
+
+    /// &lt;summary&gt;
+    /// Numéro de compte unique (ex: "101", "102")
+    /// &lt;/summary&gt;
+    [Column("C_Numero")]
+    [Required(ErrorMessage = "Le numéro de compte est obligatoire")]
+    [StringLength(20, MinimumLength = 1, ErrorMessage = "Le numéro doit contenir entre 1 et 20 caractères")]
+    public string Numero { get; set; } = string.Empty;
+
+    /// &lt;summary&gt;
+    /// Solde du compte (utilisation de decimal pour la précision monétaire)
+    /// &lt;/summary&gt;
+    [Column("C_Solde", TypeName = "decimal(18,2)")]
+    [Range(0, double.MaxValue, ErrorMessage = "Le solde ne peut pas être négatif")]
+    public decimal Solde { get; set; }
+
+    /// &lt;summary&gt;
+    /// Date de création du compte
+    /// &lt;/summary&gt;
+    [Column("C_DateCreation")]
+    [Required]
+    public DateTime DateCreation { get; set; }
+
+    /// &lt;summary&gt;
+    /// Date de dernière modification (pour l'audit)
+    /// &lt;/summary&gt;
+    [Column("C_DateModification")]
+    public DateTime? DateModification { get; set; }
+
+    /// &lt;summary&gt;
+    /// Indique si le compte est actif
+    /// &lt;/summary&gt;
+    [Column("C_IsActif")]
+    public bool IsActif { get; set; } = true;
+
+    #endregion
+
+    #region Constructeurs
+
+    /// &lt;summary&gt;
+    /// Constructeur complet
+    /// &lt;/summary&gt;
+    public Compte(string numero, DateTime dateCreation, decimal solde)
+    {
+        Numero = numero ?? throw new ArgumentNullException(nameof(numero));
+        DateCreation = dateCreation;
+        Solde = solde &gt;= 0 ? solde : throw new ArgumentException("Le solde ne peut pas être négatif", nameof(solde));
+    }
+
+    /// &lt;summary&gt;
+    /// Constructeur avec numéro seulement
+    /// &lt;/summary&gt;
+    public Compte(string numero) : this(numero, DateTime.UtcNow, 0) { }
+
+    /// &lt;summary&gt;
+    /// Constructeur par défaut (requis pour EF Core)
+    /// &lt;/summary&gt;
+    public Compte() : this("UNDEFINED") { }
+
+    #endregion
+
+    #region Méthodes Métier
+
+    /// &lt;summary&gt;
+    /// Crédite le compte du montant spécifié
+    /// &lt;/summary&gt;
+    public void Crediter(decimal montant)
+    {
+        if (montant &lt;= 0)
+            throw new ArgumentException("Le montant à créditer doit être positif", nameof(montant));
+
+        if (!IsActif)
+            throw new InvalidOperationException("Impossible de créditer un compte inactif");
+
+        Solde += montant;
+        DateModification = DateTime.UtcNow;
+    }
+
+    /// &lt;summary&gt;
+    /// Débite le compte du montant spécifié
+    /// &lt;/summary&gt;
+    public bool Debiter(decimal montant)
+    {
+        if (montant &lt;= 0)
+            throw new ArgumentException("Le montant à débiter doit être positif", nameof(montant));
+
+        if (!IsActif)
+            throw new InvalidOperationException("Impossible de débiter un compte inactif");
+
+        if (montant &gt; Solde)
+            return false; // Solde insuffisant
+
+        Solde -= montant;
+        DateModification = DateTime.UtcNow;
+        return true;
+    }
+
+    /// &lt;summary&gt;
+    /// Vérifie si le compte peut être débité
+    /// &lt;/summary&gt;
+    public bool PeutDebiter(decimal montant) =&gt; IsActif && montant &gt; 0 && montant &lt;= Solde;
+
+    /// &lt;summary&gt;
+    /// Active/désactive le compte
+    /// &lt;/summary&gt;
+    public void Activer() { IsActif = true; DateModification = DateTime.UtcNow; }
+    public void Desactiver() { IsActif = false; DateModification = DateTime.UtcNow; }
+
+    #endregion
+
+    #region Méthodes de Déconstruction (du draft original)
+
+    public void Deconstruct(out string numero, out decimal solde, out DateTime dateCreation)
+    {
+        numero = Numero; solde = Solde; dateCreation = DateCreation;
+    }
+
+    public void Deconstruct(out string numero, out decimal solde)
+    {
+        numero = Numero; solde = Solde;
+    }
+
+    #endregion
+
+    #region Overrides
+
+    public override string ToString()
+    {
+        var statut = IsActif ? "Actif" : "Inactif";
+        return $"Compte {Numero} - Solde: {Solde:C} - Créé le: {DateCreation:dd/MM/yyyy} - Statut: {statut}";
+    }
+
+    public override bool Equals(object? obj) =&gt; 
+        obj is Compte other && Numero.Equals(other.Numero, StringComparison.OrdinalIgnoreCase);
+
+    public override int GetHashCode() =&gt; 
+        Numero.GetHashCode(StringComparison.OrdinalIgnoreCase);
+
+    #endregion
+}</code></pre>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-star me-2"></i>Explications Détaillées du Code</h6>
+                            
+                            <h6><strong>1. Data Annotations Expliquées :</strong></h6>
+                            <ul>
+                                <li><code>[Table("T_Comptes")]</code> - Nom de la table en base (par défaut = nom de la classe)</li>
+                                <li><code>[Key]</code> - Indique la clé primaire (EF Core la détecte aussi automatiquement si propriété finit par "Id")</li>
+                                <li><code>[Column("IdCompte")]</code> - Nom de la colonne (par défaut = nom de la propriété)</li>
+                                <li><code>[DatabaseGenerated(DatabaseGeneratedOption.Identity)]</code> - Auto-incrément en base</li>
+                                <li><code>[Required]</code> - NOT NULL en SQL + validation côté client</li>
+                                <li><code>[StringLength(20)]</code> - VARCHAR(20) en SQL + validation de longueur</li>
+                                <li><code>[Range(0, double.MaxValue)]</code> - Validation de plage de valeurs</li>
+                            </ul>
+                            
+                            <h6><strong>2. Types de Données Choisis :</strong></h6>
+                            <ul>
+                                <li><code>long CompteId</code> - Entier 64 bits pour gérer des millions de comptes</li>
+                                <li><code>string Numero</code> - Chaîne pour numéros alphanumériques (ex: "FR7630001007941234567890185")</li>
+                                <li><code>decimal Solde</code> - Précision exacte pour l'argent (pas de problèmes d'arrondi)</li>
+                                <li><code>DateTime DateCreation</code> - Date et heure précises</li>
+                                <li><code>DateTime? DateModification</code> - Nullable car pas toujours modifié</li>
+                                <li><code>bool IsActif</code> - Booléen pour l'état du compte</li>
+                            </ul>
+                            
+                            <h6><strong>3. Constructeurs et leur Rôle :</strong></h6>
+                            <ul>
+                                <li><strong>Constructeur complet</strong> - Garantit qu'un compte est créé dans un état valide</li>
+                                <li><strong>Constructeur simplifié</strong> - Facilite la création avec valeurs par défaut</li>
+                                <li><strong>Constructeur vide</strong> - Requis par EF Core pour la désérialisation</li>
+                            </ul>
+                            
+                            <h6><strong>4. Méthodes Métier et Encapsulation :</strong></h6>
+                            <ul>
+                                <li><code>Crediter()</code> - Contrôle que le montant est positif et le compte actif</li>
+                                <li><code>Debiter()</code> - Vérifie le solde suffisant avant débit</li>
+                                <li><code>PeutDebiter()</code> - Permet de vérifier sans modifier l'état</li>
+                                <li><strong>Principe :</strong> L'objet se protège lui-même contre les états invalides</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Interfaces Repository modernisées</h5>
+                        <p>Créer <code>Interfaces/ICompteRepository.cs</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using BanqueModerne.Core.Entities;
+
+namespace BanqueModerne.Core.Interfaces;
+
+/// &lt;summary&gt;
+/// Interface repository pour les comptes bancaires
+/// Version modernisée avec async/await et méthodes étendues
+/// &lt;/summary&gt;
+public interface ICompteRepository
+{
+    // Méthodes CRUD de base
+    Task&lt;Compte?&gt; GetByIdAsync(long compteId);
+    Task&lt;Compte?&gt; GetByNumeroAsync(string numero);
+    Task&lt;IEnumerable&lt;Compte&gt;&gt; GetAllAsync();
+    Task&lt;IEnumerable&lt;Compte&gt;&gt; GetActifsAsync();
+    
+    Task&lt;Compte&gt; AddAsync(Compte compte);
+    Task UpdateAsync(Compte compte);
+    Task DeleteAsync(long compteId);
+    
+    // Méthodes du draft original modernisées
+    Task&lt;(string Numero, decimal Solde)&gt; GetNumeroAndSoldeAsync(string numero);
+    Task&lt;Tuple&lt;string, decimal&gt;&gt; GetNumeroAndSoldeTupleAsync(string numero);
+    Task&lt;string&gt; GetInformationComptesAsync();
+    
+    // Nouvelles méthodes métier
+    Task&lt;bool&gt; ExistsByNumeroAsync(string numero);
+    Task&lt;decimal&gt; GetSoldeTotalAsync();
+    Task&lt;IEnumerable&lt;Compte&gt;&gt; GetComptesByPlageAsync(decimal soldeMin, decimal soldeMax);
+    Task&lt;int&gt; GetNombreComptesAsync();
+    
+    // Opérations métier
+    Task&lt;bool&gt; CrediterAsync(string numero, decimal montant);
+    Task&lt;bool&gt; DebiterAsync(string numero, decimal montant);
+    Task&lt;bool&gt; TransfererAsync(string numeroSource, string numeroDestination, decimal montant);
+}
+
+/// &lt;summary&gt;
+/// Interface pour les statistiques des comptes
+/// &lt;/summary&gt;
+public interface ICompteStatisticsService
+{
+    Task&lt;CompteStatistics&gt; GetStatisticsAsync();
+    Task&lt;IEnumerable&lt;Compte&gt;&gt; GetTopComptesAsync(int count);
+    Task&lt;decimal&gt; GetSoldeMoyenAsync();
+}
+
+/// &lt;summary&gt;
+/// Statistiques des comptes
+/// &lt;/summary&gt;
+public record CompteStatistics(
+    int NombreTotal,
+    int NombreActifs,
+    decimal SoldeTotal,
+    decimal SoldeMoyen,
+    decimal SoldeMinimum,
+    decimal SoldeMaximum
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Couche Infrastructure -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-database"></i>
+                Étape 3 : Couche Infrastructure - Entity Framework Core
+            </h2>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Configuration du projet Infrastructure</h5>
+                        <p>Modifier <code>BanqueModerne.Infrastructure.csproj</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-xml">&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" /&gt;
+  &lt;/ItemGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;ProjectReference Include="..\BanqueModerne.Core\BanqueModerne.Core.csproj" /&gt;
+  &lt;/ItemGroup&gt;
+
+&lt;/Project&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>DbContext modernisé</h5>
+                        <p>Créer <code>Data/BanqueDbContext.cs</code> :</p>
+                        
+                        <div class="warning-box">
+                            <h6><strong>Rôle du DbContext - Explications Détaillées</strong></h6>
+                            <p>Le DbContext est le <strong>cerveau central</strong> d'Entity Framework. Voici ce qu'il fait concrètement :</p>
+                            <ul>
+                                <li><strong>Connection Management</strong> - Ouvre/ferme les connexions automatiquement</li>
+                                <li><strong>Change Tracking</strong> - Suit quels objets ont été modifiés</li>
+                                <li><strong>Query Translation</strong> - Convertit LINQ en SQL</li>
+                                <li><strong>Identity Map</strong> - Évite les doublons d'objets en mémoire</li>
+                                <li><strong>Unit of Work</strong> - Groupe les modifications en une transaction</li>
+                                <li><strong>Lazy Loading</strong> - Charge les données à la demande</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+using BanqueModerne.Core.Entities;
+
+namespace BanqueModerne.Infrastructure.Data;
+
+/// &lt;summary&gt;
+/// Context de base de données modernisé avec EF Core 8
+/// &lt;/summary&gt;
+public class BanqueDbContext : DbContext
+{
+    public BanqueDbContext(DbContextOptions&lt;BanqueDbContext&gt; options) : base(options) { }
+
+    public DbSet&lt;Compte&gt; Comptes { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Configuration de l'entité Compte
+        modelBuilder.Entity&lt;Compte&gt;(entity =&gt;
+        {
+            // Table et schéma
+            entity.ToTable("T_Comptes", "dbo");
+
+            // Clé primaire
+            entity.HasKey(e =&gt; e.CompteId);
+            entity.Property(e =&gt; e.CompteId)
+                  .HasColumnName("IdCompte")
+                  .ValueGeneratedOnAdd();
+
+            // Numéro de compte - unique et indexé
+            entity.Property(e =&gt; e.Numero)
+                  .HasColumnName("C_Numero")
+                  .HasMaxLength(20)
+                  .IsRequired();
+            entity.HasIndex(e =&gt; e.Numero)
+                  .IsUnique()
+                  .HasDatabaseName("IX_Comptes_Numero");
+
+            // Solde avec précision monétaire
+            entity.Property(e =&gt; e.Solde)
+                  .HasColumnName("C_Solde")
+                  .HasColumnType("decimal(18,2)")
+                  .HasDefaultValue(0);
+
+            // Dates
+            entity.Property(e =&gt; e.DateCreation)
+                  .HasColumnName("C_DateCreation")
+                  .HasDefaultValueSql("GETUTCDATE()");
+
+            entity.Property(e =&gt; e.DateModification)
+                  .HasColumnName("C_DateModification");
+
+            // Statut actif
+            entity.Property(e =&gt; e.IsActif)
+                  .HasColumnName("C_IsActif")
+                  .HasDefaultValue(true);
+        });
+
+        // Données de test (Seed Data)
+        SeedData(modelBuilder);
+    }
+
+    /// &lt;summary&gt;
+    /// Initialise la base avec des données de test
+    /// Basé sur les données du draft original
+    /// &lt;/summary&gt;
+    private static void SeedData(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity&lt;Compte&gt;().HasData(
+            new Compte { CompteId = 1, Numero = "101", Solde = 100, DateCreation = new DateTime(2016, 10, 10), IsActif = true },
+            new Compte { CompteId = 2, Numero = "102", Solde = 0, DateCreation = new DateTime(2017, 7, 18), IsActif = true },
+            new Compte { CompteId = 3, Numero = "103", Solde = 100, DateCreation = new DateTime(2017, 3, 15), IsActif = true },
+            new Compte { CompteId = 4, Numero = "104", Solde = 500, DateCreation = new DateTime(2016, 2, 5), IsActif = true },
+            new Compte { CompteId = 5, Numero = "105", Solde = 200, DateCreation = new DateTime(2015, 8, 3), IsActif = true },
+            new Compte { CompteId = 6, Numero = "106", Solde = 200, DateCreation = new DateTime(2014, 9, 24), IsActif = true },
+            new Compte { CompteId = 7, Numero = "107", Solde = 200, DateCreation = new DateTime(2015, 1, 27), IsActif = true }
+        );
+    }
+
+    /// &lt;summary&gt;
+    /// Sauvegarde avec gestion automatique des dates de modification
+    /// &lt;/summary&gt;
+    public override async Task&lt;int&gt; SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // Mise à jour automatique des dates de modification
+        var entries = ChangeTracker.Entries&lt;Compte&gt;()
+            .Where(e =&gt; e.State == EntityState.Modified);
+
+        foreach (var entry in entries)
+        {
+            entry.Entity.DateModification = DateTime.UtcNow;
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Explications Ligne par Ligne du DbContext</h6>
+                            
+                            <h6><strong>1. Déclaration et Héritage :</strong></h6>
+                            <ul>
+                                <li><code>public class BanqueDbContext : DbContext</code> - Hérite de DbContext pour bénéficier de toutes ses fonctionnalités</li>
+                                <li><code>DbContextOptions&lt;BanqueDbContext&gt; options</code> - Configuration injectée (chaîne de connexion, provider...)</li>
+                            </ul>
+                            
+                            <h6><strong>2. DbSet - Les Tables :</strong></h6>
+                            <ul>
+                                <li><code>public DbSet&lt;Compte&gt; Comptes { get; set; }</code> - Représente la table T_Comptes</li>
+                                <li><strong>Nom de propriété</strong> : "Comptes" (pluriel) = nom de table par défaut</li>
+                                <li><strong>Type générique</strong> : &lt;Compte&gt; = type d'entité stockée</li>
+                                <li><strong>Utilisation</strong> : _context.Comptes.Where(...), _context.Comptes.Add(...)</li>
+                            </ul>
+                            
+                            <h6><strong>3. OnModelCreating - Configuration Fluent API :</strong></h6>
+                            <ul>
+                                <li><code>modelBuilder.Entity&lt;Compte&gt;()</code> - Configure l'entité Compte</li>
+                                <li><code>.ToTable("T_Comptes", "dbo")</code> - Nom de table et schéma explicites</li>
+                                <li><code>.HasKey(e => e.CompteId)</code> - Définit la clé primaire</li>
+                                <li><code>.HasIndex(e => e.Numero).IsUnique()</code> - Crée un index unique</li>
+                                <li><code>.HasDefaultValue(0)</code> - Valeur par défaut en base</li>
+                                <li><code>.HasDefaultValueSql("GETUTCDATE()")</code> - Fonction SQL par défaut</li>
+                            </ul>
+                            
+                            <h6><strong>4. Seed Data - Données de Test :</strong></h6>
+                            <ul>
+                                <li><code>modelBuilder.Entity&lt;Compte&gt;().HasData(...)</code> - Insère des données au démarrage</li>
+                                <li><strong>Avantage</strong> : Données cohérentes pour développement et tests</li>
+                                <li><strong>Production</strong> : Généralement désactivé en production</li>
+                            </ul>
+                            
+                            <h6><strong>5. SaveChangesAsync Override - Audit Automatique :</strong></h6>
+                            <ul>
+                                <li><code>ChangeTracker.Entries&lt;Compte&gt;()</code> - Récupère tous les comptes modifiés</li>
+                                <li><code>EntityState.Modified</code> - Filtre uniquement les entités modifiées</li>
+                                <li><code>DateModification = DateTime.UtcNow</code> - Met à jour automatiquement</li>
+                                <li><strong>Résultat</strong> : Audit trail automatique sans code supplémentaire</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Repository Implementation</h5>
+                        <p>Créer <code>Repositories/CompteRepository.cs</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+using BanqueModerne.Core.Entities;
+using BanqueModerne.Core.Interfaces;
+using BanqueModerne.Infrastructure.Data;
+using System.Text;
+
+namespace BanqueModerne.Infrastructure.Repositories;
+
+/// &lt;summary&gt;
+/// Implémentation du repository pour les comptes
+/// Version modernisée avec EF Core et async/await
+/// &lt;/summary&gt;
+public class CompteRepository : ICompteRepository
+{
+    private readonly BanqueDbContext _context;
+
+    public CompteRepository(BanqueDbContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
+
+    #region CRUD de base
+
+    public async Task&lt;Compte?&gt; GetByIdAsync(long compteId)
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c =&gt; c.CompteId == compteId);
+    }
+
+    public async Task&lt;Compte?&gt; GetByNumeroAsync(string numero)
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c =&gt; c.Numero == numero);
+    }
+
+    public async Task&lt;IEnumerable&lt;Compte&gt;&gt; GetAllAsync()
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .OrderBy(c =&gt; c.Numero)
+            .ToListAsync();
+    }
+
+    public async Task&lt;IEnumerable&lt;Compte&gt;&gt; GetActifsAsync()
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .Where(c =&gt; c.IsActif)
+            .OrderBy(c =&gt; c.Numero)
+            .ToListAsync();
+    }
+
+    public async Task&lt;Compte&gt; AddAsync(Compte compte)
+    {
+        if (compte == null) throw new ArgumentNullException(nameof(compte));
+        
+        // Vérifier l'unicité du numéro
+        var exists = await ExistsByNumeroAsync(compte.Numero);
+        if (exists)
+            throw new InvalidOperationException($"Un compte avec le numéro {compte.Numero} existe déjà");
+
+        _context.Comptes.Add(compte);
+        await _context.SaveChangesAsync();
+        return compte;
+    }
+
+    public async Task UpdateAsync(Compte compte)
+    {
+        if (compte == null) throw new ArgumentNullException(nameof(compte));
+        
+        _context.Comptes.Update(compte);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(long compteId)
+    {
+        var compte = await _context.Comptes.FindAsync(compteId);
+        if (compte != null)
+        {
+            _context.Comptes.Remove(compte);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    #endregion
+
+    #region Méthodes du draft original modernisées
+
+    public async Task&lt;(string Numero, decimal Solde)&gt; GetNumeroAndSoldeAsync(string numero)
+    {
+        var result = await _context.Comptes
+            .AsNoTracking()
+            .Where(c =&gt; c.Numero == numero)
+            .Select(c =&gt; new { c.Numero, c.Solde })
+            .FirstOrDefaultAsync();
+
+        return result != null ? (result.Numero, result.Solde) : (string.Empty, 0);
+    }
+
+    public async Task&lt;Tuple&lt;string, decimal&gt;&gt; GetNumeroAndSoldeTupleAsync(string numero)
+    {
+        var result = await _context.Comptes
+            .AsNoTracking()
+            .Where(c =&gt; c.Numero == numero)
+            .Select(c =&gt; new Tuple&lt;string, decimal&gt;(c.Numero, c.Solde))
+            .FirstOrDefaultAsync();
+
+        return result ?? new Tuple&lt;string, decimal&gt;(string.Empty, 0);
+    }
+
+    public async Task&lt;string&gt; GetInformationComptesAsync()
+    {
+        var comptes = await _context.Comptes.AsNoTracking().ToListAsync();
+        
+        if (!comptes.Any())
+            return "Aucun compte trouvé";
+
+        var sb = new StringBuilder();
+        sb.AppendLine("=== INFORMATIONS SUR LES COMPTES ===");
+        sb.AppendLine($"Nombre total de comptes : {comptes.Count}");
+        sb.AppendLine($"Comptes actifs : {comptes.Count(c =&gt; c.IsActif)}");
+        sb.AppendLine($"Comptes inactifs : {comptes.Count(c =&gt; !c.IsActif)}");
+        sb.AppendLine($"Solde total : {comptes.Sum(c =&gt; c.Solde):C}");
+        sb.AppendLine($"Solde moyen : {comptes.Average(c =&gt; c.Solde):C}");
+        sb.AppendLine($"Solde minimum : {comptes.Min(c =&gt; c.Solde):C}");
+        sb.AppendLine($"Solde maximum : {comptes.Max(c =&gt; c.Solde):C}");
+        
+        return sb.ToString();
+    }
+
+    #endregion
+
+    #region Nouvelles méthodes métier
+
+    public async Task&lt;bool&gt; ExistsByNumeroAsync(string numero)
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .AnyAsync(c =&gt; c.Numero == numero);
+    }
+
+    public async Task&lt;decimal&gt; GetSoldeTotalAsync()
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .SumAsync(c =&gt; c.Solde);
+    }
+
+    public async Task&lt;IEnumerable&lt;Compte&gt;&gt; GetComptesByPlageAsync(decimal soldeMin, decimal soldeMax)
+    {
+        return await _context.Comptes
+            .AsNoTracking()
+            .Where(c =&gt; c.Solde &gt;= soldeMin && c.Solde &lt;= soldeMax)
+            .OrderBy(c =&gt; c.Solde)
+            .ToListAsync();
+    }
+
+    public async Task&lt;int&gt; GetNombreComptesAsync()
+    {
+        return await _context.Comptes.CountAsync();
+    }
+
+    #endregion
+
+    #region Opérations métier
+
+    public async Task&lt;bool&gt; CrediterAsync(string numero, decimal montant)
+    {
+        var compte = await _context.Comptes.FirstOrDefaultAsync(c =&gt; c.Numero == numero);
+        if (compte == null) return false;
+
+        try
+        {
+            compte.Crediter(montant);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task&lt;bool&gt; DebiterAsync(string numero, decimal montant)
+    {
+        var compte = await _context.Comptes.FirstOrDefaultAsync(c =&gt; c.Numero == numero);
+        if (compte == null) return false;
+
+        try
+        {
+            var success = compte.Debiter(montant);
+            if (success)
+            {
+                await _context.SaveChangesAsync();
+            }
+            return success;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task&lt;bool&gt; TransfererAsync(string numeroSource, string numeroDestination, decimal montant)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        
+        try
+        {
+            var compteSource = await _context.Comptes.FirstOrDefaultAsync(c =&gt; c.Numero == numeroSource);
+            var compteDestination = await _context.Comptes.FirstOrDefaultAsync(c =&gt; c.Numero == numeroDestination);
+
+            if (compteSource == null || compteDestination == null) return false;
+
+            if (!compteSource.Debiter(montant)) return false;
+            
+            compteDestination.Crediter(montant);
+            
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            
+            return true;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return false;
+        }
+    }
+
+    #endregion
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Couche API -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-globe"></i>
+                Étape 4 : Couche API - Contrôleurs REST
+            </h2>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Configuration du projet API</h5>
+                        <p>Modifier <code>BanqueModerne.Api.csproj</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-xml">&lt;Project Sdk="Microsoft.NET.Sdk.Web"&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" /&gt;
+    &lt;PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" /&gt;
+  &lt;/ItemGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;ProjectReference Include="..\BanqueModerne.Core\BanqueModerne.Core.csproj" /&gt;
+    &lt;ProjectReference Include="..\BanqueModerne.Infrastructure\BanqueModerne.Infrastructure.csproj" /&gt;
+  &lt;/ItemGroup&gt;
+
+&lt;/Project&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Configuration Program.cs</h5>
+                        <p>Modifier <code>Program.cs</code> pour configurer les services :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+using BanqueModerne.Infrastructure.Data;
+using BanqueModerne.Core.Interfaces;
+using BanqueModerne.Infrastructure.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configuration de la base de données
+builder.Services.AddDbContext&lt;BanqueDbContext&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Injection de dépendances
+builder.Services.AddScoped&lt;ICompteRepository, CompteRepository&gt;();
+
+// Services API
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =&gt;
+{
+    c.SwaggerDoc("v1", new() 
+    { 
+        Title = "Banque Moderne API", 
+        Version = "v1",
+        Description = "API REST pour la gestion des comptes bancaires - Version modernisée"
+    });
+});
+
+// CORS pour le développement
+builder.Services.AddCors(options =&gt;
+{
+    options.AddPolicy("DevPolicy", builder =&gt;
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+var app = builder.Build();
+
+// Initialisation de la base de données
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService&lt;BanqueDbContext&gt;();
+    await context.Database.EnsureCreatedAsync();
+}
+
+// Configuration du pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =&gt; 
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Banque Moderne API V1");
+        c.RoutePrefix = string.Empty; // Swagger à la racine
+    });
+    app.UseCors("DevPolicy");
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Configuration appsettings.json</h5>
+                        <p>Modifier <code>appsettings.json</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=BanqueModerne;Trusted_Connection=true;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">4</div>
+                    <div class="flex-grow-1">
+                        <h5>Contrôleur Comptes</h5>
+                        <p>Créer <code>Controllers/ComptesController.cs</code> :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using Microsoft.AspNetCore.Mvc;
+using BanqueModerne.Core.Entities;
+using BanqueModerne.Core.Interfaces;
+
+namespace BanqueModerne.Api.Controllers;
+
+/// &lt;summary&gt;
+/// Contrôleur pour la gestion des comptes bancaires
+/// &lt;/summary&gt;
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+public class ComptesController : ControllerBase
+{
+    private readonly ICompteRepository _compteRepository;
+    private readonly ILogger&lt;ComptesController&gt; _logger;
+
+    public ComptesController(ICompteRepository compteRepository, ILogger&lt;ComptesController&gt; logger)
+    {
+        _compteRepository = compteRepository;
+        _logger = logger;
+    }
+
+    /// &lt;summary&gt;
+    /// Récupère tous les comptes
+    /// &lt;/summary&gt;
+    [HttpGet]
+    public async Task&lt;ActionResult&lt;IEnumerable&lt;Compte&gt;&gt;&gt; GetComptes()
+    {
+        try
+        {
+            var comptes = await _compteRepository.GetAllAsync();
+            return Ok(comptes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors de la récupération des comptes");
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Récupère un compte par son numéro
+    /// &lt;/summary&gt;
+    [HttpGet("{numero}")]
+    public async Task&lt;ActionResult&lt;Compte&gt;&gt; GetCompte(string numero)
+    {
+        try
+        {
+            var compte = await _compteRepository.GetByNumeroAsync(numero);
+            if (compte == null)
+                return NotFound($"Compte {numero} non trouvé");
+
+            return Ok(compte);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors de la récupération du compte {Numero}", numero);
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Crée un nouveau compte
+    /// &lt;/summary&gt;
+    [HttpPost]
+    public async Task&lt;ActionResult&lt;Compte&gt;&gt; CreateCompte([FromBody] CreateCompteRequest request)
+    {
+        try
+        {
+            var compte = new Compte(request.Numero, DateTime.UtcNow, request.SoldeInitial);
+            var nouveauCompte = await _compteRepository.AddAsync(compte);
+            
+            return CreatedAtAction(nameof(GetCompte), 
+                new { numero = nouveauCompte.Numero }, nouveauCompte);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors de la création du compte");
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Crédite un compte
+    /// &lt;/summary&gt;
+    [HttpPost("{numero}/crediter")]
+    public async Task&lt;IActionResult&gt; CrediterCompte(string numero, [FromBody] OperationRequest request)
+    {
+        try
+        {
+            var success = await _compteRepository.CrediterAsync(numero, request.Montant);
+            if (!success)
+                return NotFound($"Compte {numero} non trouvé ou opération impossible");
+
+            return Ok(new { Message = $"Compte {numero} crédité de {request.Montant:C}" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors du crédit du compte {Numero}", numero);
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Débite un compte
+    /// &lt;/summary&gt;
+    [HttpPost("{numero}/debiter")]
+    public async Task&lt;IActionResult&gt; DebiterCompte(string numero, [FromBody] OperationRequest request)
+    {
+        try
+        {
+            var success = await _compteRepository.DebiterAsync(numero, request.Montant);
+            if (!success)
+                return BadRequest("Solde insuffisant ou compte non trouvé");
+
+            return Ok(new { Message = $"Compte {numero} débité de {request.Montant:C}" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors du débit du compte {Numero}", numero);
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Effectue un virement entre deux comptes
+    /// &lt;/summary&gt;
+    [HttpPost("virement")]
+    public async Task&lt;IActionResult&gt; EffectuerVirement([FromBody] VirementRequest request)
+    {
+        try
+        {
+            var success = await _compteRepository.TransfererAsync(
+                request.NumeroSource, request.NumeroDestination, request.Montant);
+                
+            if (!success)
+                return BadRequest("Virement impossible - vérifiez les comptes et le solde");
+
+            return Ok(new { 
+                Message = $"Virement de {request.Montant:C} effectué de {request.NumeroSource} vers {request.NumeroDestination}" 
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors du virement");
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Récupère les statistiques des comptes
+    /// &lt;/summary&gt;
+    [HttpGet("statistiques")]
+    public async Task&lt;ActionResult&lt;string&gt;&gt; GetStatistiques()
+    {
+        try
+        {
+            var stats = await _compteRepository.GetInformationComptesAsync();
+            return Ok(new { Statistiques = stats });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors de la récupération des statistiques");
+            return StatusCode(500, "Erreur interne du serveur");
+        }
+    }
+}
+
+// DTOs pour les requêtes
+public record CreateCompteRequest(string Numero, decimal SoldeInitial = 0);
+public record OperationRequest(decimal Montant);
+public record VirementRequest(string NumeroSource, string NumeroDestination, decimal Montant);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Tests et Déploiement -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-vial"></i>
+                Étape 5 : Tests et Lancement
+            </h2>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Lancement de l'application</h5>
+                        
+                        <div class="command-box">
+                            cd BanqueModerne.Api
+                            <button class="copy-btn" onclick="copyToClipboard('cd BanqueModerne.Api')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="command-box">
+                            dotnet run
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet run')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <p>L'API sera accessible sur : <strong>https://localhost:7XXX</strong></p>
+                        <p>Swagger UI sera disponible à la racine pour tester les endpoints.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Tests des endpoints</h5>
+                        <p>Testez les fonctionnalités avec Swagger ou curl :</p>
+                        
+                        <h6>Récupérer tous les comptes :</h6>
+                        <div class="command-box">
+                            curl -X GET "https://localhost:7XXX/api/comptes"
+                            <button class="copy-btn" onclick="copyToClipboard('curl -X GET &quot;https://localhost:7XXX/api/comptes&quot;')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Récupérer un compte spécifique :</h6>
+                        <div class="command-box">
+                            curl -X GET "https://localhost:7XXX/api/comptes/101"
+                            <button class="copy-btn" onclick="copyToClipboard('curl -X GET &quot;https://localhost:7XXX/api/comptes/101&quot;')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Créditer un compte :</h6>
+                        <div class="command-box">
+                            curl -X POST "https://localhost:7XXX/api/comptes/101/crediter" -H "Content-Type: application/json" -d '{"montant": 50.00}'
+                            <button class="copy-btn" onclick="copyToClipboard('curl -X POST &quot;https://localhost:7XXX/api/comptes/101/crediter&quot; -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;montant&quot;: 50.00}&#39;')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Améliorations Apportées -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-trophy"></i>
+                Résumé des Améliorations
+            </h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="improvement-card">
+                        <h6><i class="fas fa-code me-2"></i>Améliorations Techniques</h6>
+                        <ul>
+                            <li><strong>EF Core 8</strong> - Performance et fonctionnalités modernes</li>
+                            <li><strong>Async/Await</strong> - Scalabilité améliorée</li>
+                            <li><strong>Decimal pour l'argent</strong> - Précision monétaire</li>
+                            <li><strong>Nullable Reference Types</strong> - Sécurité de type</li>
+                            <li><strong>Injection de dépendances</strong> - Testabilité</li>
+                            <li><strong>Configuration externalisée</strong> - Flexibilité</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="improvement-card">
+                        <h6><i class="fas fa-shield-alt me-2"></i>Améliorations Sécurité</h6>
+                        <ul>
+                            <li><strong>Validation robuste</strong> - Exceptions explicites</li>
+                            <li><strong>Transactions</strong> - Intégrité des données</li>
+                            <li><strong>Logging structuré</strong> - Traçabilité</li>
+                            <li><strong>Gestion d'erreurs</strong> - Robustesse</li>
+                            <li><strong>API REST sécurisée</strong> - Standards modernes</li>
+                            <li><strong>Audit trail</strong> - Dates de modification</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="improvement-card">
+                        <h6><i class="fas fa-rocket me-2"></i>Améliorations Performance</h6>
+                        <ul>
+                            <li><strong>AsNoTracking</strong> - Requêtes optimisées</li>
+                            <li><strong>Index sur numéro</strong> - Recherches rapides</li>
+                            <li><strong>Requêtes asynchrones</strong> - Non-bloquant</li>
+                            <li><strong>Connection pooling</strong> - EF Core intégré</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="improvement-card">
+                        <h6><i class="fas fa-tools me-2"></i>Améliorations Architecture</h6>
+                        <ul>
+                            <li><strong>Clean Architecture</strong> - Séparation claire</li>
+                            <li><strong>Repository Pattern</strong> - Abstraction des données</li>
+                            <li><strong>API REST</strong> - Interface moderne</li>
+                            <li><strong>Swagger/OpenAPI</strong> - Documentation automatique</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-graduation-cap me-2"></i>Concepts Entity Framework Utilisés</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Code First</strong> - Entités vers base de données</li>
+                            <li><strong>Data Annotations</strong> - Configuration déclarative</li>
+                            <li><strong>Fluent API</strong> - Configuration avancée</li>
+                            <li><strong>Seed Data</strong> - Données de test intégrées</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Migrations</strong> - Évolution du schéma</li>
+                            <li><strong>LINQ</strong> - Requêtes expressives</li>
+                            <li><strong>Transactions</strong> - Intégrité des données</li>
+                            <li><strong>Change Tracking</strong> - Optimisations automatiques</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="index.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Retour à l'accueil
+            </a>
+            <a href="index.html#modules" class="btn-nav">
+                Voir tous les modules
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visuel
+                event.target.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(function() {
+                    event.target.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Erreur lors de la copie: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

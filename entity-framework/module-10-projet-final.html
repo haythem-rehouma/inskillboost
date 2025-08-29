@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10 - Projet Final : E-commerce Complet</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .project-phase {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .phase-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--ef-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 43, 212, 0.1);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tech-badge {
+            background: var(--ef-purple);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .progress-tracker {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .milestone {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: white;
+            border-left: 4px solid var(--border-color);
+        }
+
+        .milestone.completed {
+            border-left-color: var(--success-color);
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .milestone-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            background: var(--border-color);
+            color: white;
+        }
+
+        .milestone.completed .milestone-icon {
+            background: var(--success-color);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        .congratulations {
+            background: linear-gradient(135deg, var(--success-color), var(--ef-green));
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-trophy me-2"></i>
+                Module 10
+            </div>
+            <h1 class="module-title">Projet Final : E-commerce Complet</h1>
+            <p class="module-description">
+                Synthétisez toutes vos connaissances dans un projet e-commerce professionnel et complet
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>20 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-code me-1"></i>Projet complet
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-trophy me-1"></i>Certification
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Vue d'ensemble du projet -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-eye"></i>
+                Vue d'Ensemble : TechShop - Votre E-commerce de A à Z
+            </h2>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-store me-2"></i>Présentation du Projet</h5>
+                <p>
+                    <strong>TechShop</strong> est une boutique en ligne spécialisée dans les produits technologiques. 
+                    Ce projet final vous permettra de mettre en pratique TOUS les concepts appris dans cette formation :
+                </p>
+                <ul class="mb-0">
+                    <li>🏗️ Architecture Code First avec migrations</li>
+                    <li>🔍 Requêtes LINQ optimisées</li>
+                    <li>🚀 Performances avec AsNoTracking et projections</li>
+                    <li>🔗 Relations complexes Many-to-Many, One-to-One</li>
+                    <li>🛡️ Sécurité et bonnes pratiques</li>
+                </ul>
+            </div>
+
+            <h3><i class="fas fa-users me-2"></i>Personas et Cas d'Usage</h3>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-user me-2 text-primary"></i>Client</h6>
+                        <ul class="small">
+                            <li>Parcourir le catalogue</li>
+                            <li>Rechercher des produits</li>
+                            <li>Gérer son panier</li>
+                            <li>Passer commande</li>
+                            <li>Suivre ses commandes</li>
+                            <li>Laisser des avis</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-user-tie me-2 text-success"></i>Administrateur</h6>
+                        <ul class="small">
+                            <li>Gérer les produits</li>
+                            <li>Gérer les catégories</li>
+                            <li>Traiter les commandes</li>
+                            <li>Gérer les stocks</li>
+                            <li>Analyser les ventes</li>
+                            <li>Modérer les avis</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-truck me-2 text-info"></i>Vendeur</h6>
+                        <ul class="small">
+                            <li>Ajouter ses produits</li>
+                            <li>Gérer son inventaire</li>
+                            <li>Traiter ses commandes</li>
+                            <li>Voir ses statistiques</li>
+                            <li>Gérer son profil</li>
+                            <li>Communiquer avec clients</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-layer-group me-2"></i>Stack Technique</h3>
+
+            <div class="tech-stack">
+                <span class="tech-badge">ASP.NET Core 8</span>
+                <span class="tech-badge">Entity Framework Core</span>
+                <span class="tech-badge">SQL Server</span>
+                <span class="tech-badge">JWT Authentication</span>
+                <span class="tech-badge">FluentValidation</span>
+                <span class="tech-badge">AutoMapper</span>
+                <span class="tech-badge">Swagger/OpenAPI</span>
+                <span class="tech-badge">xUnit Tests</span>
+                <span class="tech-badge">Docker</span>
+            </div>
+        </div>
+
+        <!-- Section 2: Architecture et Modélisation -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-sitemap"></i>
+                Architecture et Modélisation des Données
+            </h2>
+
+            <h3><i class="fas fa-database me-2"></i>Modèle de Données Complet</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Entités principales du système TechShop
+
+// === GESTION DES UTILISATEURS ===
+public abstract class User
+{
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+    public bool IsActive { get; set; }
+}
+
+public class Customer : User
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public string PhoneNumber { get; set; }
+    
+    // Relations
+    public ICollection&lt;Address&gt; Addresses { get; set; }
+    public ICollection&lt;Order&gt; Orders { get; set; }
+    public ICollection&lt;Review&gt; Reviews { get; set; }
+    public ICollection&lt;WishlistItem&gt; WishlistItems { get; set; }
+}
+
+public class Vendor : User
+{
+    public string CompanyName { get; set; }
+    public string ContactPerson { get; set; }
+    public string TaxNumber { get; set; }
+    public decimal CommissionRate { get; set; }
+    public bool IsApproved { get; set; }
+    
+    // Relations
+    public ICollection&lt;Product&gt; Products { get; set; }
+    public VendorProfile Profile { get; set; }
+}
+
+public class Administrator : User
+{
+    public string Role { get; set; }
+    public DateTime AppointmentDate { get; set; }
+    public int SecurityLevel { get; set; }
+}
+
+// === GESTION DES PRODUITS ===
+public class Category
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string IconUrl { get; set; }
+    public int DisplayOrder { get; set; }
+    public bool IsActive { get; set; }
+    
+    // Hiérarchie
+    public int? ParentCategoryId { get; set; }
+    public Category ParentCategory { get; set; }
+    public ICollection&lt;Category&gt; SubCategories { get; set; }
+    
+    // Relations
+    public ICollection&lt;ProductCategory&gt; ProductCategories { get; set; }
+}
+
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string ShortDescription { get; set; }
+    public decimal Price { get; set; }
+    public decimal? CompareAtPrice { get; set; }
+    public int StockQuantity { get; set; }
+    public string SKU { get; set; }
+    public bool IsActive { get; set; }
+    public bool IsFeatured { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    
+    // Vendor
+    public int VendorId { get; set; }
+    public Vendor Vendor { get; set; }
+    
+    // Relations
+    public ICollection&lt;ProductCategory&gt; ProductCategories { get; set; }
+    public ICollection&lt;ProductImage&gt; Images { get; set; }
+    public ICollection&lt;ProductAttribute&gt; Attributes { get; set; }
+    public ICollection&lt;Review&gt; Reviews { get; set; }
+    public ICollection&lt;OrderItem&gt; OrderItems { get; set; }
+    public ICollection&lt;WishlistItem&gt; WishlistItems { get; set; }
+}
+
+// Table de jointure Many-to-Many
+public class ProductCategory
+{
+    public int ProductId { get; set; }
+    public Product Product { get; set; }
+    
+    public int CategoryId { get; set; }
+    public Category Category { get; set; }
+    
+    public bool IsPrimary { get; set; }
+    public DateTime AddedAt { get; set; }
+}
+
+// === GESTION DES COMMANDES ===
+public class Order
+{
+    public int Id { get; set; }
+    public string OrderNumber { get; set; }
+    public DateTime OrderDate { get; set; }
+    public OrderStatus Status { get; set; }
+    public decimal SubTotal { get; set; }
+    public decimal TaxAmount { get; set; }
+    public decimal ShippingAmount { get; set; }
+    public decimal TotalAmount { get; set; }
+    public string Notes { get; set; }
+    
+    // Customer
+    public int CustomerId { get; set; }
+    public Customer Customer { get; set; }
+    
+    // Addresses
+    public int BillingAddressId { get; set; }
+    public Address BillingAddress { get; set; }
+    
+    public int ShippingAddressId { get; set; }
+    public Address ShippingAddress { get; set; }
+    
+    // Relations
+    public ICollection&lt;OrderItem&gt; OrderItems { get; set; }
+    public ICollection&lt;OrderStatusHistory&gt; StatusHistory { get; set; }
+    public Payment Payment { get; set; }
+}
+
+public class OrderItem
+{
+    public int Id { get; set; }
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+    public decimal TotalPrice { get; set; }
+    
+    // Relations
+    public int OrderId { get; set; }
+    public Order Order { get; set; }
+    
+    public int ProductId { get; set; }
+    public Product Product { get; set; }
+}
+
+public enum OrderStatus
+{
+    Pending = 1,
+    Processing = 2,
+    Shipped = 3,
+    Delivered = 4,
+    Cancelled = 5,
+    Refunded = 6
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>Configuration Fluent API</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Configuration de l'héritage TPH pour User
+    modelBuilder.Entity&lt;User&gt;()
+        .HasDiscriminator&lt;string&gt;("UserType")
+        .HasValue&lt;Customer&gt;("Customer")
+        .HasValue&lt;Vendor&gt;("Vendor")
+        .HasValue&lt;Administrator&gt;("Administrator");
+
+    // Configuration des relations Many-to-Many
+    modelBuilder.Entity&lt;ProductCategory&gt;()
+        .HasKey(pc => new { pc.ProductId, pc.CategoryId });
+        
+    modelBuilder.Entity&lt;ProductCategory&gt;()
+        .HasOne(pc => pc.Product)
+        .WithMany(p => p.ProductCategories)
+        .HasForeignKey(pc => pc.ProductId);
+        
+    modelBuilder.Entity&lt;ProductCategory&gt;()
+        .HasOne(pc => pc.Category)
+        .WithMany(c => c.ProductCategories)
+        .HasForeignKey(pc => pc.CategoryId);
+
+    // Configuration des relations One-to-One
+    modelBuilder.Entity&lt;Vendor&gt;()
+        .HasOne(v => v.Profile)
+        .WithOne(p => p.Vendor)
+        .HasForeignKey&lt;VendorProfile&gt;(p => p.VendorId);
+
+    // Index et contraintes
+    modelBuilder.Entity&lt;User&gt;()
+        .HasIndex(u => u.Username).IsUnique();
+        
+    modelBuilder.Entity&lt;User&gt;()
+        .HasIndex(u => u.Email).IsUnique();
+        
+    modelBuilder.Entity&lt;Product&gt;()
+        .HasIndex(p => p.SKU).IsUnique();
+        
+    modelBuilder.Entity&lt;Order&gt;()
+        .HasIndex(o => o.OrderNumber).IsUnique();
+
+    // Configuration des propriétés
+    modelBuilder.Entity&lt;Product&gt;()
+        .Property(p => p.Price)
+        .HasPrecision(18, 2);
+        
+    modelBuilder.Entity&lt;Order&gt;()
+        .Property(o => o.OrderNumber)
+        .HasMaxLength(20);
+
+    // Données de référence (Seed Data)
+    SeedData(modelBuilder);
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 3: Phases de développement -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-tasks"></i>
+                Plan de Développement par Phases
+            </h2>
+
+            <div class="progress-tracker">
+                <h5><i class="fas fa-map-signs me-2"></i>Roadmap du Projet</h5>
+                
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 0 : Setup et Architecture</h6>
+                        <p class="small mb-0">Configuration projet, structure, base de données</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 1 : Gestion des Utilisateurs</h6>
+                        <p class="small mb-0">Authentification, autorisation, profils utilisateur</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 2 : Catalogue Produits</h6>
+                        <p class="small mb-0">CRUD produits, catégories, images, attributs</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 3 : Panier et Commandes</h6>
+                        <p class="small mb-0">Gestion panier, processus commande, paiement</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 4 : Recherche et Filtres</h6>
+                        <p class="small mb-0">Moteur de recherche, filtres avancés, pagination</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 5 : Administration</h6>
+                        <p class="small mb-0">Dashboard admin, statistiques, gestion globale</p>
+                    </div>
+                </div>
+
+                <div class="milestone">
+                    <div class="milestone-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div>
+                        <h6>Phase 6 : Optimisation et Déploiement</h6>
+                        <p class="small mb-0">Performance, tests, sécurité, déploiement</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-phase">
+                <h5 class="phase-title">
+                    <i class="fas fa-play me-2"></i>
+                    Phase 1 Détaillée : Gestion des Utilisateurs
+                </h5>
+                
+                <h6>🎯 Objectifs</h6>
+                <ul>
+                    <li>Système d'authentification JWT sécurisé</li>
+                    <li>Gestion des rôles (Customer, Vendor, Admin)</li>
+                    <li>Profils utilisateur avec validation</li>
+                    <li>Gestion des adresses</li>
+                </ul>
+
+                <h6>📋 Tâches Techniques</h6>
+                <ol>
+                    <li><strong>Modèles et Migrations</strong>
+                        <div class="code-block">
+                            <pre><code class="language-bash"># Créer les migrations
+dotnet ef migrations add CreateUserTables
+dotnet ef database update
+
+# Vérifier la structure générée</code></pre>
+                        </div>
+                    </li>
+                    
+                    <li><strong>Services d'Authentification</strong>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">public interface IAuthService
+{
+    Task&lt;AuthResult&gt; RegisterAsync(RegisterRequest request);
+    Task&lt;AuthResult&gt; LoginAsync(LoginRequest request);
+    Task&lt;AuthResult&gt; RefreshTokenAsync(string refreshToken);
+    Task LogoutAsync(string userId);
+}
+
+public class AuthService : IAuthService
+{
+    private readonly UserManager&lt;User&gt; userManager;
+    private readonly ITokenService tokenService;
+    private readonly IPasswordHasher&lt;User&gt; passwordHasher;
+
+    // Implémentation complète avec validation,
+    // hashage de mot de passe, génération JWT
+}</code></pre>
+                        </div>
+                    </li>
+
+                    <li><strong>Contrôleurs API</strong>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    [HttpPost("register")]
+    public async Task&lt;IActionResult&gt; Register([FromBody] RegisterRequest request)
+    {
+        // Validation, création utilisateur, retour JWT
+    }
+
+    [HttpPost("login")]
+    public async Task&lt;IActionResult&gt; Login([FromBody] LoginRequest request)
+    {
+        // Authentification, génération token
+    }
+
+    [HttpPost("refresh")]
+    [Authorize]
+    public async Task&lt;IActionResult&gt; RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        // Renouvellement du token
+    }
+}</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <h6>✅ Critères de Validation</h6>
+                <ul>
+                    <li>Tests unitaires pour tous les services</li>
+                    <li>Validation des entrées avec FluentValidation</li>
+                    <li>Gestion d'erreurs robuste</li>
+                    <li>Documentation Swagger complète</li>
+                    <li>Sécurité : pas de données sensibles exposées</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Fonctionnalités Avancées -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Fonctionnalités Avancées et Défis Techniques
+            </h2>
+
+            <h3><i class="fas fa-search me-2"></i>Moteur de Recherche Intelligent</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">public class ProductSearchService
+{
+    private readonly IProductRepository productRepository;
+    private readonly ILogger&lt;ProductSearchService&gt; logger;
+
+    public async Task&lt;SearchResult&lt;ProductDto&gt;&gt; SearchAsync(ProductSearchQuery query)
+    {
+        var baseQuery = productRepository.GetQueryable()
+            .AsNoTracking()
+            .Where(p => p.IsActive);
+
+        // Recherche textuelle
+        if (!string.IsNullOrEmpty(query.SearchTerm))
+        {
+            var searchTerm = query.SearchTerm.ToLower();
+            baseQuery = baseQuery.Where(p => 
+                p.Name.ToLower().Contains(searchTerm) ||
+                p.Description.ToLower().Contains(searchTerm) ||
+                p.ProductCategories.Any(pc => pc.Category.Name.ToLower().Contains(searchTerm))
+            );
+        }
+
+        // Filtres par catégorie
+        if (query.CategoryIds?.Any() == true)
+        {
+            baseQuery = baseQuery.Where(p => 
+                p.ProductCategories.Any(pc => query.CategoryIds.Contains(pc.CategoryId))
+            );
+        }
+
+        // Filtres par prix
+        if (query.MinPrice.HasValue)
+            baseQuery = baseQuery.Where(p => p.Price >= query.MinPrice.Value);
+            
+        if (query.MaxPrice.HasValue)
+            baseQuery = baseQuery.Where(p => p.Price <= query.MaxPrice.Value);
+
+        // Filtres par vendor
+        if (query.VendorIds?.Any() == true)
+        {
+            baseQuery = baseQuery.Where(p => query.VendorIds.Contains(p.VendorId));
+        }
+
+        // Tri dynamique
+        baseQuery = query.SortBy?.ToLower() switch
+        {
+            "price_asc" => baseQuery.OrderBy(p => p.Price),
+            "price_desc" => baseQuery.OrderByDescending(p => p.Price),
+            "name" => baseQuery.OrderBy(p => p.Name),
+            "newest" => baseQuery.OrderByDescending(p => p.CreatedAt),
+            "rating" => baseQuery.OrderByDescending(p => p.Reviews.Average(r => r.Rating)),
+            _ => baseQuery.OrderBy(p => p.Name)
+        };
+
+        // Pagination
+        var totalCount = await baseQuery.CountAsync();
+        var products = await baseQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                CompareAtPrice = p.CompareAtPrice,
+                ImageUrl = p.Images.OrderBy(i => i.DisplayOrder).Select(i => i.Url).FirstOrDefault(),
+                VendorName = p.Vendor.CompanyName,
+                AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0,
+                ReviewCount = p.Reviews.Count(),
+                IsInStock = p.StockQuantity > 0
+            })
+            .ToListAsync();
+
+        return new SearchResult&lt;ProductDto&gt;
+        {
+            Items = products,
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize,
+            TotalPages = (int)Math.Ceiling((double)totalCount / query.PageSize)
+        };
+    }
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-chart-line me-2"></i>Dashboard Analytics Temps Réel</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">public class DashboardService
+{
+    public async Task&lt;DashboardStats&gt; GetStatsAsync(DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        fromDate ??= DateTime.Today.AddDays(-30);
+        toDate ??= DateTime.Today.AddDays(1);
+
+        // Exécution parallèle de toutes les requêtes pour de meilleures performances
+        var tasks = new[]
+        {
+            GetSalesStatsAsync(fromDate.Value, toDate.Value),
+            GetProductStatsAsync(),
+            GetCustomerStatsAsync(fromDate.Value, toDate.Value),
+            GetTopProductsAsync(fromDate.Value, toDate.Value, 10),
+            GetSalesTrendAsync(fromDate.Value, toDate.Value),
+            GetCategoryStatsAsync()
+        };
+
+        await Task.WhenAll(tasks);
+
+        return new DashboardStats
+        {
+            Sales = await tasks[0] as SalesStats,
+            Products = await tasks[1] as ProductStats,
+            Customers = await tasks[2] as CustomerStats,
+            TopProducts = await tasks[3] as List&lt;TopProductDto&gt;,
+            SalesTrend = await tasks[4] as List&lt;SalesTrendDto&gt;,
+            Categories = await tasks[5] as List&lt;CategoryStatsDto&gt;
+        };
+    }
+
+    private async Task&lt;SalesStats&gt; GetSalesStatsAsync(DateTime fromDate, DateTime toDate)
+    {
+        var orders = context.Orders
+            .AsNoTracking()
+            .Where(o => o.OrderDate >= fromDate && o.OrderDate < toDate);
+
+        return new SalesStats
+        {
+            TotalRevenue = await orders.SumAsync(o => o.TotalAmount),
+            OrderCount = await orders.CountAsync(),
+            AverageOrderValue = await orders.AverageAsync(o => o.TotalAmount),
+            ConversionRate = await CalculateConversionRateAsync(fromDate, toDate)
+        };
+    }
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-shield-alt me-2"></i>Sécurité et Audit</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Exigences de Sécurité</h6>
+                <ul>
+                    <li><strong>Authentification robuste</strong> : JWT avec refresh tokens</li>
+                    <li><strong>Autorisation granulaire</strong> : Policies et Claims</li>
+                    <li><strong>Validation complète</strong> : FluentValidation sur tous les inputs</li>
+                    <li><strong>Audit trail</strong> : Log de toutes les actions sensibles</li>
+                    <li><strong>Rate limiting</strong> : Protection contre les attaques</li>
+                    <li><strong>HTTPS obligatoire</strong> : Chiffrement de toutes les communications</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Middleware d'audit automatique
+public class AuditMiddleware
+{
+    private readonly RequestDelegate next;
+    private readonly IAuditService auditService;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        if (ShouldAudit(context))
+        {
+            var auditEntry = new AuditEntry
+            {
+                UserId = context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Action = $"{context.Request.Method} {context.Request.Path}",
+                Timestamp = DateTime.UtcNow,
+                IpAddress = context.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = context.Request.Headers["User-Agent"]
+            };
+
+            // Capturer la requête si nécessaire
+            if (context.Request.Method != "GET")
+            {
+                auditEntry.RequestData = await CaptureRequestAsync(context.Request);
+            }
+
+            await auditService.LogAsync(auditEntry);
+        }
+
+        await next(context);
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 5: Tests et Déploiement -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-vial"></i>
+                Tests, Qualité et Déploiement
+            </h2>
+
+            <h3><i class="fas fa-check-double me-2"></i>Stratégie de Tests</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-pyramid me-2"></i>Pyramide de Tests</h6>
+                <ul>
+                    <li><strong>Tests Unitaires (70%)</strong> → Services, Repositories, Validators</li>
+                    <li><strong>Tests d'Intégration (20%)</strong> → API Endpoints, Database</li>
+                    <li><strong>Tests E2E (10%)</strong> → Parcours utilisateur complets</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Exemple de test d'intégration
+public class ProductControllerTests : IClassFixture&lt;WebApplicationFactory&lt;Program&gt;&gt;
+{
+    private readonly WebApplicationFactory&lt;Program&gt; factory;
+    private readonly HttpClient client;
+
+    public ProductControllerTests(WebApplicationFactory&lt;Program&gt; factory)
+    {
+        this.factory = factory;
+        this.client = factory.CreateClient();
+    }
+
+    [Fact]
+    public async Task GetProducts_ReturnsSuccessAndCorrectContentType()
+    {
+        // Arrange
+        var request = "/api/products?page=1&pageSize=10";
+
+        // Act
+        var response = await client.GetAsync(request);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal("application/json; charset=utf-8", 
+                    response.Content.Headers.ContentType?.ToString());
+
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize&lt;PagedResult&lt;ProductDto&gt;&gt;(content);
+        
+        Assert.NotNull(result);
+        Assert.True(result.Items.Count <= 10);
+    }
+
+    [Fact]
+    public async Task CreateProduct_WithValidData_ReturnsCreated()
+    {
+        // Arrange
+        await AuthenticateAsync(); // Helper pour s'authentifier
+        
+        var product = new CreateProductRequest
+        {
+            Name = "Test Product",
+            Description = "Test Description",
+            Price = 99.99m,
+            StockQuantity = 10,
+            CategoryIds = new[] { 1 }
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/products", product);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        
+        var createdProduct = await response.Content.ReadFromJsonAsync&lt;ProductDto&gt;();
+        Assert.Equal(product.Name, createdProduct.Name);
+    }
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-docker me-2"></i>Containerisation et Déploiement</h3>
+
+            <div class="code-block">
+                <pre><code class="language-dockerfile"># Dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["TechShop.Api/TechShop.Api.csproj", "TechShop.Api/"]
+COPY ["TechShop.Core/TechShop.Core.csproj", "TechShop.Core/"]
+COPY ["TechShop.Infrastructure/TechShop.Infrastructure.csproj", "TechShop.Infrastructure/"]
+RUN dotnet restore "TechShop.Api/TechShop.Api.csproj"
+COPY . .
+WORKDIR "/src/TechShop.Api"
+RUN dotnet build "TechShop.Api.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "TechShop.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "TechShop.Api.dll"]</code></pre>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+
+services:
+  techshop-api:
+    build: .
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TechShopDB;User Id=sa;Password=YourStrong@Passw0rd;
+    depends_on:
+      - sqlserver
+    networks:
+      - techshop-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - techshop-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  techshop-network:
+    driver: bridge</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 6: Livrables et Évaluation -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-check"></i>
+                Livrables et Critères d'Évaluation
+            </h2>
+
+            <h3><i class="fas fa-box me-2"></i>Livrables Attendus</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-code me-2"></i>Code Source</h6>
+                        <ul class="small">
+                            <li>Repository GitHub complet</li>
+                            <li>Architecture Clean/Onion</li>
+                            <li>Code documenté et commenté</li>
+                            <li>Respect des conventions C#</li>
+                            <li>Gestion d'erreurs robuste</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-database me-2"></i>Base de Données</h6>
+                        <ul class="small">
+                            <li>Modèle relationnel complet</li>
+                            <li>Migrations versionnées</li>
+                            <li>Seed data réaliste</li>
+                            <li>Index de performance</li>
+                            <li>Contraintes d'intégrité</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-globe me-2"></i>API REST</h6>
+                        <ul class="small">
+                            <li>Endpoints complets CRUD</li>
+                            <li>Documentation Swagger</li>
+                            <li>Authentification JWT</li>
+                            <li>Validation des entrées</li>
+                            <li>Gestion des erreurs HTTP</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h6><i class="fas fa-vial me-2"></i>Tests et Qualité</h6>
+                        <ul class="small">
+                            <li>Couverture de tests > 80%</li>
+                            <li>Tests unitaires et intégration</li>
+                            <li>Tests de performance</li>
+                            <li>Analyse de code statique</li>
+                            <li>CI/CD pipeline</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-star me-2"></i>Grille d'Évaluation</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-trophy me-2"></i>Critères de Notation (Total : 100 points)</h6>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>🏗️ Architecture et Code (40 points)</h6>
+                        <ul class="small">
+                            <li>Architecture Clean/DDD (10 pts)</li>
+                            <li>Qualité du code (10 pts)</li>
+                            <li>Respect des patterns (10 pts)</li>
+                            <li>Gestion d'erreurs (10 pts)</li>
+                        </ul>
+
+                        <h6>🔍 Fonctionnalités (30 points)</h6>
+                        <ul class="small">
+                            <li>CRUD complet (10 pts)</li>
+                            <li>Recherche et filtres (10 pts)</li>
+                            <li>Gestion commandes (10 pts)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>🛡️ Sécurité et Performance (20 points)</h6>
+                        <ul class="small">
+                            <li>Authentification/Autorisation (10 pts)</li>
+                            <li>Validation et sécurisation (5 pts)</li>
+                            <li>Optimisations EF (5 pts)</li>
+                        </ul>
+
+                        <h6>✅ Tests et Documentation (10 points)</h6>
+                        <ul class="small">
+                            <li>Couverture de tests (5 pts)</li>
+                            <li>Documentation API (3 pts)</li>
+                            <li>README et setup (2 pts)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Félicitations -->
+        <div class="congratulations">
+            <h2><i class="fas fa-trophy me-3"></i>Félicitations !</h2>
+            <p class="lead">
+                Vous avez terminé la formation Entity Framework complète ! 
+                Vous maîtrisez maintenant tous les aspects de ce puissant ORM.
+            </p>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-certificate fa-3x mb-2"></i>
+                        <h5>Certification</h5>
+                        <p class="small">Vous êtes désormais certifié Entity Framework</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-users fa-3x mb-2"></i>
+                        <h5>Communauté</h5>
+                        <p class="small">Rejoignez notre communauté de développeurs</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-rocket fa-3x mb-2"></i>
+                        <h5>Carrière</h5>
+                        <p class="small">Boostez votre carrière avec ces compétences</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-9-securite-bonnes-pratiques.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="index.html" class="btn-nav">
+                Retour à l'accueil
+                <i class="fas fa-home ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

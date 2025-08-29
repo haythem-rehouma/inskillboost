@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2 - Installation et Configuration</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Nouveaux styles pour les éléments interactifs */
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 0.5rem;
+        }
+
+        .list-unstyled li {
+            margin-bottom: 0.5rem;
+        }
+
+        .list-unstyled label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .list-unstyled label:hover {
+            color: var(--ef-purple);
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--ef-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 43, 212, 0.1);
+        }
+
+        .step-number {
+            background: var(--ef-purple);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .command-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .command-box::before {
+            content: '$ ';
+            color: #00ff00;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #00ff00;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-cog me-2"></i>
+                Module 2
+            </div>
+            <h1 class="module-title">Installation et Configuration</h1>
+            <p class="module-description">
+                Apprenez à installer et configurer Entity Framework Core dans vos projets .NET
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>2 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>6 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-layer-group me-1"></i>Configuration
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Prérequis expliqués pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-list-check"></i>
+                Prérequis et Outils Nécessaires (Guide Complet pour Débutants)
+            </h2>
+
+            <p class="lead">
+                Avant de commencer à utiliser Entity Framework, nous devons nous assurer que votre ordinateur 
+                dispose de tous les outils nécessaires. C'est comme préparer sa cuisine avant de cuisiner !
+            </p>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Qu'est-ce qu'on va installer et pourquoi ?</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-lightbulb me-2"></i>Analogie simple</h5>
+                <p>
+                    Imaginez que vous voulez construire une maison. Vous avez besoin :
+                </p>
+                <ul>
+                    <li><strong>D'outils</strong> (marteau, scie, etc.) → <strong>.NET SDK</strong></li>
+                    <li><strong>D'un plan de travail</strong> (établi) → <strong>IDE (Visual Studio, VS Code)</strong></li>
+                    <li><strong>D'un endroit pour stocker vos matériaux</strong> (garage) → <strong>Base de données</strong></li>
+                </ul>
+                <p class="mb-0">
+                    Entity Framework a besoin de ces mêmes éléments pour fonctionner !
+                </p>
+            </div>
+
+            <h4><i class="fas fa-tools me-2"></i>1. Le .NET SDK - Votre "Boîte à Outils"</h4>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="warning-box">
+                        <h6><i class="fas fa-question-circle me-2"></i>Qu'est-ce que le .NET SDK ?</h6>
+                        <p>
+                            Le <strong>SDK</strong> (Software Development Kit) est comme une boîte à outils géante qui contient :
+                        </p>
+                        <ul>
+                            <li><strong>Le compilateur</strong> : transforme votre code C# en programme exécutable</li>
+                            <li><strong>Les bibliothèques de base</strong> : fonctions prêtes à utiliser</li>
+                            <li><strong>Les outils de ligne de commande</strong> : pour créer, compiler et exécuter vos projets</li>
+                            <li><strong>Le runtime</strong> : l'environnement pour exécuter vos applications</li>
+                        </ul>
+                        <p class="mb-0">
+                            <strong>Analogie :</strong> C'est comme avoir tous les outils d'un mécanicien dans une seule valise !
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-download me-2"></i>Comment télécharger .NET ?</h6>
+                        <ol>
+                            <li>Allez sur <a href="https://dotnet.microsoft.com/download" target="_blank">https://dotnet.microsoft.com/download</a></li>
+                            <li>Téléchargez <strong>.NET 8 SDK</strong> (version LTS recommandée)</li>
+                            <li>Lancez l'installateur et suivez les instructions</li>
+                            <li>Redémarrez votre ordinateur après l'installation</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="highlight-box text-center">
+                        <h6><i class="fab fa-microsoft me-2"></i>Versions .NET</h6>
+                        <div class="mb-2">
+                            <span class="badge bg-success px-3 py-2">
+                                <i class="fas fa-star me-1"></i>.NET 8 LTS
+                            </span>
+                        </div>
+                        <p class="small">
+                            <strong>LTS</strong> = Long Term Support<br>
+                            Support garanti jusqu'en 2026
+                        </p>
+                        <div class="mb-2">
+                            <span class="badge bg-warning px-3 py-2">
+                                .NET 7
+                            </span>
+                        </div>
+                        <p class="small">Support jusqu'en mai 2024</p>
+                    </div>
+                </div>
+            </div>
+
+            <h5><i class="fas fa-check-circle me-2"></i>Vérifier que .NET est bien installé</h5>
+            
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h6>Ouvrir un terminal/invite de commandes</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="highlight-box text-center">
+                                    <h6><i class="fab fa-windows me-2"></i>Windows</h6>
+                                    <p class="small">Appuyez sur <kbd>Win + R</kbd><br>Tapez <code>cmd</code><br>Appuyez sur Entrée</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="highlight-box text-center">
+                                    <h6><i class="fab fa-apple me-2"></i>Mac</h6>
+                                    <p class="small">Appuyez sur <kbd>Cmd + Espace</kbd><br>Tapez <code>Terminal</code><br>Appuyez sur Entrée</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="highlight-box text-center">
+                                    <h6><i class="fab fa-linux me-2"></i>Linux</h6>
+                                    <p class="small">Appuyez sur <kbd>Ctrl + Alt + T</kbd><br>ou cherchez "Terminal"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h6>Taper ces commandes pour vérifier</h6>
+                        
+                        <h6>Vérifier la version de .NET :</h6>
+                        <div class="command-box">
+                            dotnet --version
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet --version')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="small text-muted">
+                            <strong>Résultat attendu :</strong> Quelque chose comme <code>8.0.100</code> ou <code>7.0.xxx</code>
+                        </p>
+
+                        <h6>Voir tous les SDKs installés :</h6>
+                        <div class="command-box">
+                            dotnet --list-sdks
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet --list-sdks')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="small text-muted">
+                            <strong>Résultat attendu :</strong> Liste des versions installées
+                        </p>
+
+                        <h6>Vérifier les runtimes disponibles :</h6>
+                        <div class="command-box">
+                            dotnet --list-runtimes
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet --list-runtimes')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-code me-2"></i>2. Un IDE - Votre "Atelier de Développement"</h4>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-question-circle me-2"></i>Qu'est-ce qu'un IDE ?</h6>
+                <p>
+                    <strong>IDE</strong> = Integrated Development Environment (Environnement de Développement Intégré)
+                </p>
+                <p>
+                    C'est comme un <strong>atelier complet</strong> pour développeur qui combine :
+                </p>
+                <ul class="mb-0">
+                    <li><strong>Un éditeur de texte intelligent</strong> (coloration, auto-complétion)</li>
+                    <li><strong>Un compilateur intégré</strong> (pour transformer votre code)</li>
+                    <li><strong>Un debugger</strong> (pour trouver les erreurs)</li>
+                    <li><strong>Des outils de gestion de projet</strong></li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white text-center">
+                            <i class="fab fa-microsoft fa-2x"></i>
+                            <h6 class="mt-2 mb-0">Visual Studio</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="highlight-box">
+                                <h6 class="text-success"><i class="fas fa-plus-circle me-1"></i>Avantages</h6>
+                                <ul class="small mb-0">
+                                    <li>Interface très complète</li>
+                                    <li>Excellent IntelliSense</li>
+                                    <li>Debugger puissant</li>
+                                    <li>Intégration parfaite avec .NET</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h6 class="text-warning"><i class="fas fa-minus-circle me-1"></i>Inconvénients</h6>
+                                <ul class="small mb-0">
+                                    <li>Lourd (plusieurs GB)</li>
+                                    <li>Windows/Mac uniquement</li>
+                                    <li>Peut être complexe pour débuter</li>
+                                </ul>
+                            </div>
+                            <p class="small text-center">
+                                <strong>Recommandé pour :</strong> Développement Windows professionnel
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white text-center">
+                            <i class="fas fa-code fa-2x"></i>
+                            <h6 class="mt-2 mb-0">Visual Studio Code</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="highlight-box">
+                                <h6 class="text-success"><i class="fas fa-plus-circle me-1"></i>Avantages</h6>
+                                <ul class="small mb-0">
+                                    <li>Léger et rapide</li>
+                                    <li>Gratuit et open-source</li>
+                                    <li>Multi-plateforme</li>
+                                    <li>Nombreuses extensions</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h6 class="text-warning"><i class="fas fa-minus-circle me-1"></i>Inconvénients</h6>
+                                <ul class="small mb-0">
+                                    <li>Moins de fonctionnalités intégrées</li>
+                                    <li>Configuration requise</li>
+                                </ul>
+                            </div>
+                            <p class="small text-center">
+                                <strong>Recommandé pour :</strong> Débutants et développement multi-plateforme
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-warning text-white text-center">
+                            <i class="fas fa-rocket fa-2x"></i>
+                            <h6 class="mt-2 mb-0">JetBrains Rider</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="highlight-box">
+                                <h6 class="text-success"><i class="fas fa-plus-circle me-1"></i>Avantages</h6>
+                                <ul class="small mb-0">
+                                    <li>Très puissant</li>
+                                    <li>Excellent refactoring</li>
+                                    <li>Multi-plateforme</li>
+                                    <li>Intégration Git parfaite</li>
+                                </ul>
+                            </div>
+                            <div class="warning-box">
+                                <h6 class="text-warning"><i class="fas fa-minus-circle me-1"></i>Inconvénients</h6>
+                                <ul class="small mb-0">
+                                    <li>Payant (30 jours d'essai)</li>
+                                    <li>Consommation RAM élevée</li>
+                                </ul>
+                            </div>
+                            <p class="small text-center">
+                                <strong>Recommandé pour :</strong> Développeurs expérimentés
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-star me-2"></i>Recommandation pour débutants</h6>
+                <p class="mb-0">
+                    Commencez avec <strong>Visual Studio Code</strong> ! Il est gratuit, léger, et parfait pour apprendre. 
+                    Vous pourrez toujours passer à Visual Studio plus tard si vous développez principalement sur Windows.
+                </p>
+            </div>
+
+            <h4><i class="fas fa-database me-2"></i>3. Une Base de Données - Votre "Entrepôt de Données"</h4>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-question-circle me-2"></i>Pourquoi avons-nous besoin d'une base de données ?</h6>
+                <p>
+                    Entity Framework est un <strong>pont</strong> entre votre code C# et une base de données. 
+                    Sans base de données, c'est comme avoir un pont qui ne mène nulle part !
+                </p>
+                <p class="mb-0">
+                    <strong>Analogie :</strong> Si votre code C# est une voiture, la base de données est le garage 
+                    où vous stockez toutes vos affaires.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-feather-alt me-2 text-success"></i>SQLite (Recommandé pour débuter)</h6>
+                        <ul>
+                            <li><strong>Aucune installation requise</strong></li>
+                            <li>Base de données dans un simple fichier</li>
+                            <li>Parfait pour apprendre et tester</li>
+                            <li>Utilisé par de nombreuses applications mobiles</li>
+                        </ul>
+                        <p class="small text-success mb-0">
+                            <strong>Parfait pour :</strong> Apprentissage, prototypes, applications simples
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-server me-2 text-primary"></i>SQL Server (Pour la production)</h6>
+                        <ul>
+                            <li>Base de données professionnelle de Microsoft</li>
+                            <li>Très puissante et robuste</li>
+                            <li>Excellente intégration avec .NET</li>
+                            <li>Version gratuite : SQL Server Express</li>
+                        </ul>
+                        <p class="small text-primary mb-0">
+                            <strong>Parfait pour :</strong> Applications professionnelles, gros volumes de données
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-lightbulb me-2"></i>Notre stratégie d'apprentissage</h6>
+                <p>
+                    Dans cette formation, nous commencerons avec <strong>SQLite</strong> car :
+                </p>
+                <ul class="mb-0">
+                    <li>Pas d'installation compliquée</li>
+                    <li>Pas de configuration serveur</li>
+                    <li>Vous pouvez vous concentrer sur Entity Framework, pas sur la base de données</li>
+                    <li>Plus tard, nous verrons comment passer à SQL Server</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Installation pas à pas ultra-détaillée -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-download"></i>
+                Installation d'Entity Framework Core (Guide Pas à Pas)
+            </h2>
+
+            <p class="lead">
+                Maintenant que nous avons tous les prérequis, nous allons installer Entity Framework Core étape par étape. 
+                Suivez chaque étape dans l'ordre, sans rien sauter !
+            </p>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Qu'est-ce qu'on va faire exactement ?</h6>
+                <ol class="mb-0">
+                    <li><strong>Créer un nouveau projet</strong> → Comme créer un nouveau dossier de travail</li>
+                    <li><strong>Installer Entity Framework</strong> → Ajouter les outils nécessaires</li>
+                    <li><strong>Installer un provider de base de données</strong> → Choisir le type de base à utiliser</li>
+                    <li><strong>Tester que tout fonctionne</strong> → Vérifier que l'installation est OK</li>
+                </ol>
+            </div>
+
+            <h3><i class="fas fa-folder-plus me-2"></i>ÉTAPE 1 : Création du Projet</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Ouvrir le terminal dans le bon dossier</h5>
+                        <p>Nous allons créer notre projet dans un dossier dédié à nos apprentissages Entity Framework.</p>
+                        
+                        <h6><i class="fas fa-folder me-2"></i>Créer un dossier pour nos projets</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Sur Windows :</h6>
+                                <div class="command-box">
+                                    mkdir C:\MesProjetsProgrammation
+                                    <button class="copy-btn" onclick="copyToClipboard('mkdir C:\\MesProjetsProgrammation')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="command-box">
+                                    cd C:\MesProjetsProgrammation
+                                    <button class="copy-btn" onclick="copyToClipboard('cd C:\\MesProjetsProgrammation')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Sur Mac/Linux :</h6>
+                                <div class="command-box">
+                                    mkdir ~/MesProjetsProgrammation
+                                    <button class="copy-btn" onclick="copyToClipboard('mkdir ~/MesProjetsProgrammation')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="command-box">
+                                    cd ~/MesProjetsProgrammation
+                                    <button class="copy-btn" onclick="copyToClipboard('cd ~/MesProjetsProgrammation')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Explication des commandes</h6>
+                            <ul class="mb-0">
+                                <li><code>mkdir</code> = "make directory" = créer un dossier</li>
+                                <li><code>cd</code> = "change directory" = aller dans un dossier</li>
+                                <li><code>~</code> = votre dossier utilisateur (sur Mac/Linux)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Créer le projet Entity Framework</h5>
+                        
+                        <h6>Commande pour créer le projet :</h6>
+                        <div class="command-box">
+                            dotnet new console -n MonPremierEntityFramework
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet new console -n MonPremierEntityFramework')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <h6><i class="fas fa-question-circle me-2"></i>Que fait cette commande ?</h6>
+                            <ul class="mb-0">
+                                <li><code>dotnet new console</code> → Crée un nouveau projet d'application console</li>
+                                <li><code>-n MonPremierEntityFramework</code> → Le nom du projet (vous pouvez le changer)</li>
+                                <li>Cette commande va créer un dossier avec tous les fichiers de base</li>
+                            </ul>
+                        </div>
+
+                        <h6>Entrer dans le dossier du projet :</h6>
+                        <div class="command-box">
+                            cd MonPremierEntityFramework
+                            <button class="copy-btn" onclick="copyToClipboard('cd MonPremierEntityFramework')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6><i class="fas fa-check-circle me-2"></i>Vérifier que le projet a été créé</h6>
+                        <div class="command-box">
+                            dir
+                            <button class="copy-btn" onclick="copyToClipboard('dir')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="small text-muted">
+                            (Sur Mac/Linux, utilisez <code>ls</code> au lieu de <code>dir</code>)
+                        </p>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-eye me-2"></i>Ce que vous devriez voir :</h6>
+                            <ul class="mb-0">
+                                <li><code>Program.cs</code> → Le fichier principal de votre programme</li>
+                                <li><code>MonPremierEntityFramework.csproj</code> → Le fichier de configuration du projet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-download me-2"></i>ÉTAPE 2 : Installation des Packages Entity Framework</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-question-circle me-2"></i>Qu'est-ce qu'un package NuGet ?</h6>
+                <p>
+                    Un <strong>package</strong> est comme une boîte qui contient du code prêt à utiliser, 
+                    créé par d'autres développeurs. <strong>NuGet</strong> est le "magasin" où .NET stocke tous ces packages.
+                </p>
+                <p class="mb-0">
+                    <strong>Analogie :</strong> C'est comme télécharger une app sur votre téléphone, 
+                    mais pour ajouter des fonctionnalités à votre projet de programmation !
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Installer le package principal Entity Framework</h5>
+                        
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Que fait cette commande ?</h6>
+                            <ul class="mb-0">
+                                <li><code>dotnet add package</code> → Ajoute un package à votre projet</li>
+                                <li><code>Microsoft.EntityFrameworkCore</code> → Le nom du package EF principal</li>
+                                <li>Cette commande télécharge et installe Entity Framework</li>
+                                <li>Vous verrez des messages de téléchargement défiler</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-box">
+                            <h6><i class="fas fa-clock me-2"></i>Patience !</h6>
+                            <p class="mb-0">
+                                La première installation peut prendre 1-2 minutes car .NET télécharge 
+                                tous les fichiers nécessaires. C'est normal !
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Installer le provider SQLite (base de données simple)</h5>
+                        
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Sqlite')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-puzzle-piece me-2"></i>Qu'est-ce qu'un provider ?</h6>
+                            <p>
+                                Un <strong>provider</strong> est comme un "adaptateur" qui permet à Entity Framework 
+                                de parler à un type spécifique de base de données.
+                            </p>
+                            <ul class="mb-0">
+                                <li><strong>SQLite provider</strong> → Pour les bases de données SQLite</li>
+                                <li><strong>SQL Server provider</strong> → Pour les bases de données SQL Server</li>
+                                <li><strong>PostgreSQL provider</strong> → Pour les bases de données PostgreSQL</li>
+                                <li>Nous utilisons SQLite car c'est le plus simple pour apprendre !</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">3</div>
+                    <div class="flex-grow-1">
+                        <h5>Installer les outils de développement (optionnel mais recommandé)</h5>
+                        
+                        <h6>Outils Entity Framework :</h6>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Tools
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Tools')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <h6>Outils de design :</h6>
+                        <div class="command-box">
+                            dotnet add package Microsoft.EntityFrameworkCore.Design
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Design')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-tools me-2"></i>À quoi servent ces outils ?</h6>
+                            <ul class="mb-0">
+                                <li><strong>Tools</strong> → Commandes pour gérer la base de données (migrations, etc.)</li>
+                                <li><strong>Design</strong> → Outils pour générer du code automatiquement</li>
+                                <li>Ces outils nous seront utiles dans les prochains modules</li>
+                                <li>Mieux vaut les installer maintenant !</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-check-double me-2"></i>ÉTAPE 3 : Vérification de l'Installation</h3>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">1</div>
+                    <div class="flex-grow-1">
+                        <h5>Vérifier les packages installés</h5>
+                        
+                        <div class="command-box">
+                            dotnet list package
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet list package')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-list me-2"></i>Ce que vous devriez voir :</h6>
+                            <div class="code-block">
+                                <pre><code class="language-text">Packages de niveau supérieur
+> Microsoft.EntityFrameworkCore        8.x.x
+> Microsoft.EntityFrameworkCore.Design 8.x.x
+> Microsoft.EntityFrameworkCore.Sqlite 8.x.x
+> Microsoft.EntityFrameworkCore.Tools  8.x.x</code></pre>
+                            </div>
+                            <p class="small text-success mb-0">
+                                <strong>Parfait !</strong> Si vous voyez ces 4 packages, l'installation a réussi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="d-flex">
+                    <div class="step-number">2</div>
+                    <div class="flex-grow-1">
+                        <h5>Vérifier que le projet compile</h5>
+                        
+                        <div class="command-box">
+                            dotnet build
+                            <button class="copy-btn" onclick="copyToClipboard('dotnet build')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Que fait cette commande ?</h6>
+                            <ul>
+                                <li><code>dotnet build</code> → Compile (construit) votre projet</li>
+                                <li>Vérifie qu'il n'y a pas d'erreurs dans le code</li>
+                                <li>Télécharge toutes les dépendances si nécessaire</li>
+                            </ul>
+
+                            <h6><i class="fas fa-check-circle me-2 text-success"></i>Résultat attendu :</h6>
+                            <div class="code-block">
+                                <pre><code class="language-text">Build succeeded.
+    0 Warning(s)
+    0 Error(s)</code></pre>
+                            </div>
+                            <p class="small text-success mb-0">
+                                Si vous voyez "Build succeeded", c'est parfait !
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Que faire si ça ne marche pas ?</h6>
+                
+                <h6>Problème 1 : "dotnet command not found"</h6>
+                <ul>
+                    <li>→ .NET SDK n'est pas installé ou pas dans le PATH</li>
+                    <li>→ Redémarrez votre terminal après l'installation de .NET</li>
+                    <li>→ Vérifiez avec <code>dotnet --version</code></li>
+                </ul>
+
+                <h6>Problème 2 : Erreurs de packages</h6>
+                <ul>
+                    <li>→ Vérifiez votre connexion internet</li>
+                    <li>→ Essayez : <code>dotnet restore</code></li>
+                    <li>→ Supprimez le dossier "bin" et "obj" puis refaites <code>dotnet build</code></li>
+                </ul>
+
+                <h6>Problème 3 : Versions incompatibles</h6>
+                <ul class="mb-0">
+                    <li>→ Utilisez toujours la même version pour tous les packages EF</li>
+                    <li>→ Spécifiez une version : <code>dotnet add package Microsoft.EntityFrameworkCore --version 8.0.0</code></li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-trophy me-2"></i>Félicitations !</h6>
+                <p class="mb-0">
+                    Si vous êtes arrivé jusqu'ici sans erreur, vous avez installé Entity Framework Core avec succès ! 
+                    Votre environnement de développement est maintenant prêt pour la suite de la formation.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 3: Providers de base de données -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-server"></i>
+                Providers de Base de Données
+            </h2>
+
+            <p>Entity Framework Core supporte plusieurs systèmes de base de données via des providers :</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-database me-2"></i>
+                                SQL Server
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-block">
+                                <pre><code class="language-bash">Microsoft.EntityFrameworkCore.SqlServer</code></pre>
+                            </div>
+                            <small class="text-muted">Provider officiel Microsoft pour SQL Server</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-elephant me-2"></i>
+                                PostgreSQL
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-block">
+                                <pre><code class="language-bash">Npgsql.EntityFrameworkCore.PostgreSQL</code></pre>
+                            </div>
+                            <small class="text-muted">Provider open-source pour PostgreSQL</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-warning text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-feather-alt me-2"></i>
+                                SQLite
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-block">
+                                <pre><code class="language-bash">Microsoft.EntityFrameworkCore.Sqlite</code></pre>
+                            </div>
+                            <small class="text-muted">Idéal pour le développement et les tests</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <h5>Autres providers disponibles</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fab fa-aws me-2 text-warning"></i><strong>MySQL :</strong> <code>Pomelo.EntityFrameworkCore.MySql</code></li>
+                    <li><i class="fas fa-leaf me-2 text-success"></i><strong>Oracle :</strong> <code>Oracle.EntityFrameworkCore</code></li>
+                    <li><i class="fas fa-memory me-2 text-info"></i><strong>In-Memory :</strong> <code>Microsoft.EntityFrameworkCore.InMemory</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Configuration de base -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Configuration de Base
+            </h2>
+
+            <h4>1. Création du modèle de données</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Models/Product.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace EFCoreDemo.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; }
+        
+        [MaxLength(500)]
+        public string Description { get; set; }
+        
+        public decimal Price { get; set; }
+        
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        
+        public bool IsActive { get; set; } = true;
+    }
+}</code></pre>
+            </div>
+
+            <h4>2. Création du DbContext</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Data/ApplicationDbContext.cs
+using Microsoft.EntityFrameworkCore;
+using EFCoreDemo.Models;
+
+namespace EFCoreDemo.Data
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public DbSet&lt;Product&gt; Products { get; set; }
+
+        public ApplicationDbContext(DbContextOptions&lt;ApplicationDbContext&gt; options)
+            : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(
+                    "Server=(localdb)\\mssqllocaldb;Database=EFCoreDemoDB;Trusted_Connection=true;MultipleActiveResultSets=true");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity&lt;Product&gt;(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
+            });
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h4>3. Configuration avec Dependency Injection (ASP.NET Core)</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Program.cs (ASP.NET Core)
+using Microsoft.EntityFrameworkCore;
+using EFCoreDemo.Data;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configuration de la chaîne de connexion
+builder.Services.AddDbContext&lt;ApplicationDbContext&gt;(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+
+app.Run();</code></pre>
+            </div>
+
+            <h4>4. Fichier de configuration appsettings.json</h4>
+            <div class="code-block">
+                <pre><code class="language-json">{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=EFCoreDemoDB;Trusted_Connection=true;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.EntityFrameworkCore": "Information"
+    }
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 5: Premier test -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-play"></i>
+                Premier Test de Fonctionnement
+            </h2>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Program.cs
+using Microsoft.EntityFrameworkCore;
+using EFCoreDemo.Data;
+using EFCoreDemo.Models;
+
+using var context = new ApplicationDbContext();
+
+// Créer la base de données si elle n'existe pas
+await context.Database.EnsureCreatedAsync();
+
+// Ajouter un produit de test
+var product = new Product
+{
+    Name = "Ordinateur portable",
+    Description = "PC portable haute performance",
+    Price = 1299.99m
+};
+
+context.Products.Add(product);
+await context.SaveChangesAsync();
+
+// Récupérer tous les produits
+var products = await context.Products.ToListAsync();
+
+foreach (var p in products)
+{
+    Console.WriteLine($"Produit: {p.Name} - Prix: {p.Price:C}");
+}
+
+Console.WriteLine("Entity Framework Core fonctionne correctement !");</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-rocket me-2"></i>Test de l'installation</h6>
+                <p class="mb-2">Exécutez le programme pour vérifier que tout fonctionne :</p>
+                <div class="command-box">
+                    dotnet run
+                    <button class="copy-btn" onclick="copyToClipboard('dotnet run')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Exercices pratiques progressifs -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques Progressifs (Mise en Application)
+            </h2>
+
+            <p class="lead">
+                Ces exercices vont vous permettre de mettre en pratique ce que vous venez d'apprendre. 
+                Ils sont classés par ordre de difficulté croissante. Prenez votre temps !
+            </p>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-baby me-2"></i>
+                    Exercice 1 : Vérification de votre Installation (Super Débutant)
+                </h5>
+                <p><strong>Objectif :</strong> S'assurer que votre environnement fonctionne correctement</p>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-clipboard-list me-2"></i>Checklist à compléter :</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Vérifications de base :</h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <input type="checkbox" id="check1" class="me-2">
+                                    <label for="check1">.NET SDK installé et fonctionnel</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check2" class="me-2">
+                                    <label for="check2">IDE choisi et configuré</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check3" class="me-2">
+                                    <label for="check3">Terminal/invite de commandes accessible</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check4" class="me-2">
+                                    <label for="check4">Dossier de projets créé</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Commandes à tester :</h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <input type="checkbox" id="check5" class="me-2">
+                                    <label for="check5"><code>dotnet --version</code> fonctionne</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check6" class="me-2">
+                                    <label for="check6"><code>dotnet --list-sdks</code> montre au moins une version</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check7" class="me-2">
+                                    <label for="check7">Projet de test créé et compilé</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="check8" class="me-2">
+                                    <label for="check8">Packages Entity Framework installés</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-lightbulb me-2"></i>Instructions détaillées :</h6>
+                    <ol>
+                        <li>Ouvrez un terminal dans votre dossier de projets</li>
+                        <li>Tapez chaque commande et notez le résultat</li>
+                        <li>Si une commande ne fonctionne pas, relisez la section correspondante</li>
+                        <li>Cochez chaque case uniquement quand c'est OK</li>
+                    </ol>
+                    <p class="mb-0">
+                        <strong>Ne passez à l'exercice suivant que si toutes les cases sont cochées !</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-hammer me-2"></i>
+                    Exercice 2 : Créer votre Premier Projet Entity Framework (Débutant)
+                </h5>
+                <p><strong>Objectif :</strong> Créer un projet complet avec Entity Framework et SQLite</p>
+
+                <div class="step-card">
+                    <div class="d-flex">
+                        <div class="step-number">1</div>
+                        <div class="flex-grow-1">
+                            <h6>Créer le projet "MaBibliothèque"</h6>
+                            <p>Nous allons créer un projet pour gérer une petite bibliothèque personnelle.</p>
+                            
+                            <div class="command-box">
+                                dotnet new console -n MaBibliotheque
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet new console -n MaBibliotheque')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="command-box">
+                                cd MaBibliotheque
+                                <button class="copy-btn" onclick="copyToClipboard('cd MaBibliotheque')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="d-flex">
+                        <div class="step-number">2</div>
+                        <div class="flex-grow-1">
+                            <h6>Installer les packages Entity Framework</h6>
+                            <p>Installez UNIQUEMENT les packages suivants (dans cet ordre) :</p>
+                            
+                            <div class="command-box">
+                                dotnet add package Microsoft.EntityFrameworkCore
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="command-box">
+                                dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Sqlite')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="command-box">
+                                dotnet add package Microsoft.EntityFrameworkCore.Tools
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet add package Microsoft.EntityFrameworkCore.Tools')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="d-flex">
+                        <div class="step-number">3</div>
+                        <div class="flex-grow-1">
+                            <h6>Vérifier l'installation</h6>
+                            
+                            <div class="command-box">
+                                dotnet list package
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet list package')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="command-box">
+                                dotnet build
+                                <button class="copy-btn" onclick="copyToClipboard('dotnet build')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+
+                            <div class="highlight-box">
+                                <h6><i class="fas fa-check-circle me-2"></i>Résultats attendus :</h6>
+                                <ul class="mb-0">
+                                    <li><code>dotnet list package</code> → Doit montrer les 3 packages installés</li>
+                                    <li><code>dotnet build</code> → Doit afficher "Build succeeded"</li>
+                                    <li>Si vous avez des erreurs, relisez la section troubleshooting</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-question-circle me-2"></i>Questions de vérification :</h6>
+                    <ol class="mb-0">
+                        <li>Combien de packages Entity Framework avez-vous installés ?</li>
+                        <li>Pourquoi avons-nous choisi SQLite plutôt que SQL Server ?</li>
+                        <li>Que fait la commande <code>dotnet build</code> ?</li>
+                        <li>Dans quel dossier se trouve maintenant votre projet ?</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-code me-2"></i>
+                    Exercice 3 : Premier Code Entity Framework (Intermédiaire)
+                </h5>
+                <p><strong>Objectif :</strong> Écrire votre premier code avec Entity Framework</p>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-info-circle me-2"></i>Ce que nous allons faire :</h6>
+                    <p>
+                        Nous allons créer une classe simple <code>Livre</code> et un <code>DbContext</code> 
+                        pour gérer notre bibliothèque. Ne vous inquiétez pas si vous ne comprenez pas tout, 
+                        nous détaillerons dans les prochains modules !
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="d-flex">
+                        <div class="step-number">1</div>
+                        <div class="flex-grow-1">
+                            <h6>Créer la classe Livre</h6>
+                            <p>Créez un nouveau fichier <code>Livre.cs</code> dans votre projet :</p>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-csharp">// Livre.cs
+using System;
+
+namespace MaBibliotheque
+{
+    public class Livre
+    {
+        // Propriétés de base d'un livre
+        public int Id { get; set; }                    // Identifiant unique
+        public string Titre { get; set; }              // Titre du livre
+        public string Auteur { get; set; }             // Nom de l'auteur
+        public DateTime DatePublication { get; set; }   // Date de publication
+        public decimal Prix { get; set; }              // Prix du livre
+        public bool EstDisponible { get; set; } = true; // Disponible ou emprunté
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="highlight-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Explication du code :</h6>
+                                <ul class="mb-0">
+                                    <li><code>public int Id</code> → Clé primaire automatique</li>
+                                    <li><code>public string Titre</code> → Colonne pour le titre</li>
+                                    <li><code>= true</code> → Valeur par défaut</li>
+                                    <li>Chaque propriété deviendra une colonne dans la base</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="d-flex">
+                        <div class="step-number">2</div>
+                        <div class="flex-grow-1">
+                            <h6>Créer le DbContext</h6>
+                            <p>Créez un nouveau fichier <code>BibliothequeContext.cs</code> :</p>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-csharp">// BibliothequeContext.cs
+using Microsoft.EntityFrameworkCore;
+
+namespace MaBibliotheque
+{
+    public class BibliothequeContext : DbContext
+    {
+        // Cette propriété représente la table "Livres" dans la base
+        public DbSet&lt;Livre&gt; Livres { get; set; }
+
+        // Configuration de la connexion à la base de données
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Utiliser SQLite avec un fichier local
+            optionsBuilder.UseSqlite("Data Source=bibliotheque.db");
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="highlight-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Explication du code :</h6>
+                                <ul class="mb-0">
+                                    <li><code>: DbContext</code> → Notre classe hérite de DbContext</li>
+                                    <li><code>DbSet&lt;Livre&gt; Livres</code> → Collection de tous les livres</li>
+                                    <li><code>UseSqlite("Data Source=bibliotheque.db")</code> → Base SQLite dans un fichier</li>
+                                    <li>Le fichier <code>bibliotheque.db</code> sera créé automatiquement</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-brain me-2"></i>Questions de compréhension :</h6>
+                    <ol class="mb-0">
+                        <li>Où se trouve le fichier de base de données créé ?</li>
+                        <li>Que fait <code>context.Database.EnsureCreatedAsync()</code> ?</li>
+                        <li>Pourquoi utilise-t-on <code>await context.SaveChangesAsync()</code> ?</li>
+                        <li>Si vous relancez le programme, combien de livres aurez-vous ?</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-graduation-cap me-2"></i>Récapitulatif de vos Apprentissages</h5>
+                <p>Après avoir terminé ces exercices, vous devriez pouvoir :</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li>✅ Installer .NET SDK et vérifier l'installation</li>
+                            <li>✅ Créer un nouveau projet .NET</li>
+                            <li>✅ Installer les packages Entity Framework via NuGet</li>
+                            <li>✅ Comprendre ce qu'est un provider de base de données</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="mb-0">
+                            <li>✅ Créer une classe d'entité simple</li>
+                            <li>✅ Créer un DbContext basique</li>
+                            <li>✅ Compiler et exécuter un projet Entity Framework</li>
+                            <li>✅ Débugger les problèmes d'installation courants</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0">
+                    <strong>Prochaine étape :</strong> Dans le Module 3, nous approfondirons l'approche Database First 
+                    et apprendrons à générer automatiquement nos modèles à partir d'une base existante !
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 7: Résolution des problèmes -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-tools"></i>
+                Résolution des Problèmes Courants
+            </h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Erreur de connexion</h6>
+                        <p><strong>Symptôme :</strong> "Cannot open database"</p>
+                        <p><strong>Solution :</strong></p>
+                        <ul class="mb-0">
+                            <li>Vérifiez la chaîne de connexion</li>
+                            <li>Assurez-vous que SQL Server est démarré</li>
+                            <li>Vérifiez les permissions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Conflit de versions</h6>
+                        <p><strong>Symptôme :</strong> "Assembly version conflict"</p>
+                        <p><strong>Solution :</strong></p>
+                        <ul class="mb-0">
+                            <li>Utilisez la même version pour tous les packages EF</li>
+                            <li>Nettoyez et reconstruisez le projet</li>
+                            <li>Vérifiez les dépendances transitives</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-lightbulb me-2"></i>Commandes utiles pour le diagnostic</h6>
+                <div class="command-box">
+                    dotnet list package --include-transitive
+                    <button class="copy-btn" onclick="copyToClipboard('dotnet list package --include-transitive')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="command-box">
+                    dotnet clean && dotnet restore
+                    <button class="copy-btn" onclick="copyToClipboard('dotnet clean && dotnet restore')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-1-introduction-entity-framework.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-3-database-first.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visuel
+                event.target.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    event.target.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7 - Performance et Optimisation Entity Framework</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .performance-comparison {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .good-practice {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--success-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .bad-practice {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .performance-metric {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--ef-purple);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        /* Interactive checkboxes for exercises */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            accent-color: var(--ef-purple);
+        }
+
+        .list-unstyled li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .list-unstyled label {
+            flex: 1;
+            cursor: pointer;
+            padding-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Module 7
+            </div>
+            <h1 class="module-title">Performance et Optimisation</h1>
+            <p class="module-description">
+                Optimisez vos applications Entity Framework : techniques avancées, bonnes pratiques, et monitoring des performances
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>5 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>12 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tachometer-alt me-1"></i>Optimisation
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Introduction aux Performances -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-rocket"></i>
+                Pourquoi les Performances sont Cruciales ? (Guide pour Débutants)
+            </h2>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Analogie : La Différence entre une Ferrari et une 2CV</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-car me-2"></i>Imaginez deux applications web identiques</h5>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="performance-metric">
+                            <div class="metric-value text-danger">5s</div>
+                            <div class="metric-label">Application lente</div>
+                        </div>
+                        <ul class="small">
+                            <li>😤 Utilisateurs frustrés</li>
+                            <li>📱 Abandonnent l'application</li>
+                            <li>💸 Perte de ventes</li>
+                            <li>🔍 Mauvais référencement Google</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="performance-metric">
+                            <div class="metric-value text-success">0.5s</div>
+                            <div class="metric-label">Application rapide</div>
+                        </div>
+                        <ul class="small">
+                            <li>😊 Utilisateurs satisfaits</li>
+                            <li>💪 Engagement élevé</li>
+                            <li>💰 Plus de conversions</li>
+                            <li>🚀 Meilleur SEO</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="mb-0">
+                    <strong>La différence ?</strong> Souvent, c'est juste quelques optimisations Entity Framework ! 
+                    Une requête mal écrite peut transformer votre Ferrari en 2CV.
+                </p>
+            </div>
+
+            <h3><i class="fas fa-chart-line me-2"></i>Impact des Performances : Chiffres Réels</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Statistiques Alarmantes</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="performance-metric">
+                            <div class="metric-value">53%</div>
+                            <div class="metric-label">abandonnent si > 3s</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric">
+                            <div class="metric-value">1s</div>
+                            <div class="metric-label">= -7% conversions</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric">
+                            <div class="metric-value">100ms</div>
+                            <div class="metric-label">= -1% ventes</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="performance-metric">
+                            <div class="metric-value">2s</div>
+                            <div class="metric-label">= -103% bounce rate</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0">
+                    <strong>Source :</strong> Google, Amazon, études diverses sur l'impact de la vitesse
+                </p>
+            </div>
+
+            <h3><i class="fas fa-bug me-2"></i>Les Pièges de Performance les Plus Courants</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="bad-practice">
+                        <h6><i class="fas fa-times-circle me-2 text-danger"></i>Problème N+1</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// ❌ TRÈS LENT : 1 + N requêtes SQL
+var products = context.Products.ToList();
+foreach(var product in products) 
+{
+    // Nouvelle requête SQL à chaque fois !
+    Console.WriteLine(product.Category.Name);
+}</code></pre>
+                        </div>
+                        <p class="small mb-0">
+                            <strong>Résultat :</strong> 100 produits = 101 requêtes SQL !
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="good-practice">
+                        <h6><i class="fas fa-check-circle me-2 text-success"></i>Solution Optimisée</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// ✅ RAPIDE : 1 seule requête SQL
+var products = context.Products
+    .Include(p => p.Category)
+    .ToList();
+    
+foreach(var product in products) 
+{
+    // Pas de requête SQL, données déjà en mémoire
+    Console.WriteLine(product.Category.Name);
+}</code></pre>
+                        </div>
+                        <p class="small mb-0">
+                            <strong>Résultat :</strong> 100 produits = 1 requête SQL !
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-map me-2"></i>Notre Plan d'Optimisation</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-list-ol me-2"></i>Les 7 Piliers de la Performance EF :</h6>
+                <ol>
+                    <li><strong>AsNoTracking</strong> → Requêtes en lecture seule ultra-rapides</li>
+                    <li><strong>Projections</strong> → Ne récupérer que les données nécessaires</li>
+                    <li><strong>Requêtes asynchrones</strong> → Ne pas bloquer l'interface utilisateur</li>
+                    <li><strong>Mise en cache</strong> → Éviter les requêtes répétitives</li>
+                    <li><strong>Index de base de données</strong> → Accélérer les recherches</li>
+                    <li><strong>Pagination efficace</strong> → Gérer les grandes collections</li>
+                    <li><strong>Monitoring et debugging</strong> → Mesurer et identifier les goulots</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Section 2: AsNoTracking et Requêtes en Lecture Seule -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-eye"></i>
+                AsNoTracking : Turbo pour les Requêtes en Lecture Seule
+            </h2>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Qu'est-ce que le Change Tracking ?</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Le Tracking par Défaut</h6>
+                <p>
+                    Par défaut, Entity Framework <strong>"surveille"</strong> tous les objets que vous récupérez 
+                    de la base de données. Il mémorise leur état initial pour détecter les modifications 
+                    quand vous appelez <code>SaveChanges()</code>.
+                </p>
+                
+                <h6>Ce que fait EF en arrière-plan :</h6>
+                <ul class="mb-0">
+                    <li>📸 Prend un "snapshot" de chaque objet récupéré</li>
+                    <li>🔍 Compare l'état actuel avec le snapshot lors de SaveChanges()</li>
+                    <li>📝 Génère les requêtes UPDATE nécessaires</li>
+                    <li>💾 Garde tout en mémoire jusqu'à la fin du contexte</li>
+                </ul>
+            </div>
+
+            <div class="performance-comparison">
+                <h6><i class="fas fa-balance-scale me-2"></i>Comparaison : Avec vs Sans Tracking</h6>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-danger">❌ Avec Tracking (défaut)</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// EF surveille ces 1000 produits
+var products = context.Products
+    .Where(p => p.IsActive)
+                    .ToList(); // 1000 objets surveillés
+
+// Utilisation en lecture seule
+foreach(var product in products)
+{
+    Console.WriteLine($"{product.Name}: {product.Price:C}");
+}
+// ⚠️ EF garde tout en mémoire inutilement</code></pre>
+                        </div>
+                        <ul class="small text-danger">
+                            <li>🐌 Plus lent à l'exécution</li>
+                            <li>🧠 Plus de mémoire consommée</li>
+                            <li>📸 Snapshots inutiles créés</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-success">✅ Sans Tracking (AsNoTracking)</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// EF ne surveille pas ces objets
+var products = context.Products
+    .AsNoTracking()  // 🚀 TURBO MODE
+    .Where(p => p.IsActive)
+    .ToList(); // 1000 objets NON surveillés
+
+// Utilisation en lecture seule
+foreach(var product in products)
+{
+    Console.WriteLine($"{product.Name}: {product.Price:C}");
+}
+// ✅ EF libère la mémoire immédiatement</code></pre>
+                        </div>
+                        <ul class="small text-success">
+                            <li>🚀 30-40% plus rapide</li>
+                            <li>💾 50% moins de mémoire</li>
+                            <li>🧹 Nettoyage automatique</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-rocket me-2"></i>Quand Utiliser AsNoTracking ?</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-check-circle me-2 text-success"></i>Utilisez AsNoTracking pour :</h6>
+                <ul>
+                    <li><strong>Affichage de listes</strong> → Catalogues produits, tableaux de données</li>
+                    <li><strong>Rapports et statistiques</strong> → Données en lecture seule</li>
+                    <li><strong>API GET</strong> → Endpoints qui retournent des données</li>
+                    <li><strong>Recherche et filtrage</strong> → Résultats de recherche</li>
+                    <li><strong>Export de données</strong> → CSV, Excel, PDF</li>
+                    <li><strong>Calculs et agrégations</strong> → Sommes, moyennes, comptages</li>
+                </ul>
+            </div>
+
+            <div class="danger-box">
+                <h6><i class="fas fa-times-circle me-2 text-danger"></i>N'utilisez PAS AsNoTracking pour :</h6>
+                <ul class="mb-0">
+                    <li><strong>Modifications prévues</strong> → Si vous allez modifier les objets</li>
+                    <li><strong>Relations complexes</strong> → Navigation properties peuvent être cassées</li>
+                    <li><strong>Objets partagés</strong> → Entre plusieurs parties de l'application</li>
+                </ul>
+            </div>
+
+            <h3><i class="fas fa-code me-2"></i>Exemples Pratiques Détaillés</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-list me-2"></i>Exemple 1 : Liste de Produits (Catalogue)</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// 🎯 Objectif : Afficher un catalogue de produits
+public async Task&lt;List&lt;ProductDto&gt;&gt; GetProductCatalogAsync()
+{
+    return await context.Products
+        .AsNoTracking()  // ✅ Lecture seule = AsNoTracking
+        .Include(p => p.Category)
+        .Where(p => p.IsActive)
+        .OrderBy(p => p.Category.Name)
+        .ThenBy(p => p.Price)
+        .Select(p => new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            CategoryName = p.Category.Name,
+            IsInStock = p.Stock > 0
+        })
+        .ToListAsync();
+}
+
+// ✅ Résultat : 50% plus rapide qu'avec tracking !</code></pre>
+                </div>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-chart-bar me-2"></i>Exemple 2 : Dashboard avec Statistiques</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public async Task&lt;DashboardStats&gt; GetDashboardStatsAsync()
+{
+    // ✅ Toutes ces requêtes sont en lecture seule
+    var totalProducts = await context.Products
+        .AsNoTracking()
+        .CountAsync();
+        
+    var activeProducts = await context.Products
+        .AsNoTracking()
+        .CountAsync(p => p.IsActive);
+        
+    var averagePrice = await context.Products
+        .AsNoTracking()
+        .Where(p => p.IsActive)
+        .AverageAsync(p => p.Price);
+        
+    var topCategories = await context.Categories
+        .AsNoTracking()
+        .Select(c => new
+        {
+            Name = c.Name,
+            ProductCount = c.Products.Count(p => p.IsActive)
+        })
+        .OrderByDescending(x => x.ProductCount)
+        .Take(5)
+        .ToListAsync();
+
+    return new DashboardStats
+    {
+        TotalProducts = totalProducts,
+        ActiveProducts = activeProducts,
+        AveragePrice = averagePrice,
+        TopCategories = topCategories
+    };
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>AsNoTracking Global</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-globe me-2"></i>Configuration Globale (Avancé)</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// Dans votre DbContext, pour désactiver le tracking par défaut
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    optionsBuilder
+        .UseSqlServer(connectionString)
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); // 🚀 Global
+}
+
+// Puis réactivez le tracking quand nécessaire
+var productsToModify = context.Products
+    .AsTracking()  // ✅ Réactiver le tracking pour modifications
+    .Where(p => p.CategoryId == categoryId)
+    .ToList();
+
+// Modifier les produits...
+productsToModify.ForEach(p => p.IsActive = false);
+await context.SaveChangesAsync(); // ✅ Modifications sauvegardées</code></pre>
+                </div>
+                
+                <div class="warning-box">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Attention !</h6>
+                    <p class="mb-0">
+                        La configuration globale peut casser certaines fonctionnalités. 
+                        Utilisez-la seulement si vous maîtrisez parfaitement Entity Framework.
+                    </p>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-chart-line me-2"></i>Mesurer l'Impact de AsNoTracking</h3>
+
+            <div class="performance-comparison">
+                <h6><i class="fas fa-stopwatch me-2"></i>Benchmark Réel</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// 🧪 Test de performance
+var stopwatch = Stopwatch.StartNew();
+
+// Test 1 : AVEC tracking
+var productsWithTracking = context.Products
+    .Include(p => p.Category)
+    .Take(1000)
+    .ToList();
+    
+stopwatch.Stop();
+Console.WriteLine($"Avec tracking: {stopwatch.ElapsedMilliseconds}ms");
+
+stopwatch.Restart();
+
+// Test 2 : SANS tracking
+var productsNoTracking = context.Products
+    .AsNoTracking()
+    .Include(p => p.Category)
+    .Take(1000)
+    .ToList();
+    
+stopwatch.Stop();
+Console.WriteLine($"Sans tracking: {stopwatch.ElapsedMilliseconds}ms");
+
+// 📊 Résultats typiques :
+// Avec tracking: 250ms
+// Sans tracking: 150ms
+// 🚀 Gain : 40% plus rapide !</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Projections et Select Optimisé -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-filter"></i>
+                Projections : Ne Récupérer que ce dont Vous Avez Besoin
+            </h2>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Analogie : Commander au Restaurant</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-utensils me-2"></i>Deux façons de commander</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="bad-practice">
+                            <h6>❌ Le Glouton</h6>
+                            <p class="small">
+                                "Apportez-moi TOUT le menu ! Entrées, plats, desserts, 
+                                boissons... Je ne mangerai que les frites, mais prenez tout !"
+                            </p>
+                            <ul class="small">
+                                <li>💸 Très cher</li>
+                                <li>⏰ Très long</li>
+                                <li>🗑️ Énorme gaspillage</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="good-practice">
+                            <h6>✅ Le Malin</h6>
+                            <p class="small">
+                                "Je voudrais juste une portion de frites, s'il vous plaît."
+                            </p>
+                            <ul class="small">
+                                <li>💰 Économique</li>
+                                <li>⚡ Rapide</li>
+                                <li>🎯 Exactement ce qu'il faut</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0">
+                    <strong>Les projections Entity Framework fonctionnent pareil !</strong> 
+                    Au lieu de récupérer des objets complets, vous ne prenez que les propriétés nécessaires.
+                </p>
+            </div>
+
+            <h3><i class="fas fa-times-circle me-2 text-danger"></i>Le Problème : Récupérer Trop de Données</h3>
+
+            <div class="bad-practice">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>Exemple de Gaspillage</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ❌ GASPILLAGE : Récupère TOUTES les colonnes
+var products = context.Products
+    .Include(p => p.Category)
+    .Where(p => p.IsActive)
+    .ToList();
+
+// Mais on utilise seulement 3 propriétés !
+foreach (var product in products)
+{
+    Console.WriteLine($"{product.Name} - {product.Price:C}");
+    // On n'utilise PAS : Description, Stock, CreatedAt, UpdatedAt, etc.
+}
+
+// 📊 Problèmes :
+// - Transfert réseau inutile (Description peut faire 1000 caractères)
+// - Mémoire gaspillée (objets complets en RAM)
+// - Temps de sérialisation/désérialisation
+// - Bande passante réseau</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-check-circle me-2 text-success"></i>La Solution : Projections avec Select</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-magic me-2"></i>Version Optimisée</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ✅ OPTIMISÉ : Ne récupère que les colonnes nécessaires
+var products = context.Products
+    .Where(p => p.IsActive)
+    .Select(p => new
+    {
+        Name = p.Name,
+        Price = p.Price,
+        CategoryName = p.Category.Name  // Jointure automatique !
+    })
+    .ToList();
+
+// Utilisation identique
+foreach (var product in products)
+{
+    Console.WriteLine($"{product.Name} - {product.Price:C}");
+}
+
+// 🚀 Avantages :
+// - SQL optimisé : SELECT Name, Price, CategoryName FROM...
+// - Moins de données transférées
+// - Moins de mémoire utilisée
+// - Plus rapide à exécuter</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-code me-2"></i>Types de Projections</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="good-practice">
+                        <h6><i class="fas fa-cube me-2"></i>1. Objets Anonymes</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// ✅ Pour usage local uniquement
+var products = context.Products
+    .Select(p => new  // Objet anonyme
+    {
+        p.Name,
+        p.Price,
+        CategoryName = p.Category.Name,
+        InStock = p.Stock > 0
+    })
+    .ToList();
+
+// Usage : dans la même méthode
+foreach (var p in products)
+{
+    Console.WriteLine(p.Name);
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="good-practice">
+                        <h6><i class="fas fa-cubes me-2"></i>2. Classes DTO</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">// ✅ Pour retourner depuis une méthode
+public class ProductDto
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string CategoryName { get; set; }
+    public bool InStock { get; set; }
+}
+
+var products = context.Products
+    .Select(p => new ProductDto
+    {
+        Name = p.Name,
+        Price = p.Price,
+        CategoryName = p.Category.Name,
+        InStock = p.Stock > 0
+    })
+    .ToList();</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-star me-2"></i>Exemples Avancés de Projections</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-list me-2"></i>Exemple 1 : Liste Produits pour API</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public async Task&lt;List&lt;ProductListDto&gt;&gt; GetProductsForApiAsync(int page, int pageSize)
+{
+    return await context.Products
+        .AsNoTracking()  // Lecture seule
+        .Where(p => p.IsActive)
+        .OrderBy(p => p.Name)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .Select(p => new ProductListDto  // Projection optimisée
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            CategoryName = p.Category.Name,
+            ImageUrl = p.ImageUrl,
+            InStock = p.Stock > 0,
+            // ✅ On ne récupère PAS Description, CreatedAt, etc.
+        })
+        .ToListAsync();
+}
+
+// 📊 Résultat : 70% moins de données transférées !</code></pre>
+                </div>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-chart-pie me-2"></i>Exemple 2 : Statistiques Agrégées</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public async Task&lt;List&lt;CategoryStatsDto&gt;&gt; GetCategoryStatsAsync()
+{
+    return await context.Categories
+        .AsNoTracking()
+        .Select(c => new CategoryStatsDto
+        {
+            CategoryName = c.Name,
+            TotalProducts = c.Products.Count(),
+            ActiveProducts = c.Products.Count(p => p.IsActive),
+            AveragePrice = c.Products.Where(p => p.IsActive).Average(p => p.Price),
+            MinPrice = c.Products.Where(p => p.IsActive).Min(p => p.Price),
+            MaxPrice = c.Products.Where(p => p.IsActive).Max(p => p.Price),
+            TotalStock = c.Products.Sum(p => p.Stock)
+        })
+        .Where(s => s.ActiveProducts > 0)  // Filtrer après projection
+        .OrderByDescending(s => s.TotalProducts)
+        .ToListAsync();
+}
+
+// 🚀 Une seule requête SQL avec toutes les agrégations !</code></pre>
+                </div>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-search me-2"></i>Exemple 3 : Moteur de Recherche</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public async Task&lt;SearchResultDto&gt; SearchProductsAsync(string searchTerm, int page = 1)
+{
+    const int pageSize = 20;
+    
+    var query = context.Products
+        .AsNoTracking()
+        .Where(p => p.IsActive)
+        .Where(p => p.Name.Contains(searchTerm) || 
+                   p.Description.Contains(searchTerm) ||
+                   p.Category.Name.Contains(searchTerm));
+    
+    var totalCount = await query.CountAsync();
+    
+    var products = await query
+        .OrderBy(p => p.Name)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .Select(p => new ProductSearchDto  // Projection pour recherche
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            CategoryName = p.Category.Name,
+            ImageUrl = p.ImageUrl,
+            // ✅ Snippet de description (pas la description complète)
+            DescriptionSnippet = p.Description.Substring(0, 100) + "...",
+            InStock = p.Stock > 0
+        })
+        .ToListAsync();
+    
+    return new SearchResultDto
+    {
+        Products = products,
+        TotalCount = totalCount,
+        PageCount = (int)Math.Ceiling((double)totalCount / pageSize),
+        CurrentPage = page
+    };
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-chart-bar me-2"></i>Mesurer l'Impact des Projections</h3>
+
+            <div class="performance-comparison">
+                <h6><i class="fas fa-database me-2"></i>Comparaison SQL Généré</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-danger">❌ Sans Projection</h6>
+                        <div class="code-block">
+                            <pre><code class="language-sql">-- Récupère TOUTES les colonnes
+SELECT p.Id, p.Name, p.Description, 
+       p.Price, p.Stock, p.IsActive,
+       p.CreatedAt, p.UpdatedAt,
+       p.ImageUrl, p.CategoryId,
+       c.Id, c.Name, c.Description,
+       c.CreatedAt, c.UpdatedAt
+FROM Products p
+INNER JOIN Categories c ON p.CategoryId = c.Id
+WHERE p.IsActive = 1</code></pre>
+                        </div>
+                        <p class="small text-danger">📊 Taille : ~500 bytes par ligne</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-success">✅ Avec Projection</h6>
+                        <div class="code-block">
+                            <pre><code class="language-sql">-- Récupère SEULEMENT les colonnes nécessaires
+SELECT p.Name, p.Price, c.Name AS CategoryName
+FROM Products p
+INNER JOIN Categories c ON p.CategoryId = c.Id
+WHERE p.IsActive = 1</code></pre>
+                        </div>
+                        <p class="small text-success">📊 Taille : ~50 bytes par ligne</p>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <h6><i class="fas fa-calculator me-2"></i>Calcul d'Impact</h6>
+                    <p>
+                        Pour 1000 produits :
+                    </p>
+                    <ul class="mb-0">
+                        <li><strong>Sans projection :</strong> 500KB transférés</li>
+                        <li><strong>Avec projection :</strong> 50KB transférés</li>
+                        <li><strong>Gain :</strong> 90% moins de données = 10x plus rapide !</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Exercices Pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques : Optimisation des Performances
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Audit de Performance (Débutant)
+                </h5>
+                <p><strong>Objectif :</strong> Identifier et corriger les problèmes de performance courants</p>
+                
+                <h6>📋 Code à optimiser :</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ❌ CODE LENT - Trouvez les problèmes !
+public List&lt;string&gt; GetProductNames()
+{
+    var products = context.Products.ToList();
+    var names = new List&lt;string&gt;();
+    
+    foreach(var product in products)
+    {
+        if(product.Category.Name == "Électronique")
+        {
+            names.Add(product.Name);
+        }
+    }
+    
+    return names;
+}</code></pre>
+                </div>
+
+                <h6>🎯 Missions :</h6>
+                <ul class="list-unstyled">
+                    <li><input type="checkbox" id="ex1-1"><label for="ex1-1">Identifier le problème N+1</label></li>
+                    <li><input type="checkbox" id="ex1-2"><label for="ex1-2">Ajouter AsNoTracking (lecture seule)</label></li>
+                    <li><input type="checkbox" id="ex1-3"><label for="ex1-3">Utiliser une projection avec Select</label></li>
+                    <li><input type="checkbox" id="ex1-4"><label for="ex1-4">Filtrer au niveau de la requête, pas en C#</label></li>
+                    <li><input type="checkbox" id="ex1-5"><label for="ex1-5">Rendre la méthode asynchrone</label></li>
+                    <li><input type="checkbox" id="ex1-6"><label for="ex1-6">Mesurer l'amélioration avec Stopwatch</label></li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Optimisation d'API (Intermédiaire)
+                </h5>
+                <p><strong>Objectif :</strong> Optimiser un endpoint d'API pour de meilleures performances</p>
+                
+                <h6>🎯 Scénario :</h6>
+                <p>Votre API <code>/api/products</code> est très lente. Elle doit retourner :</p>
+                <ul>
+                    <li>Liste paginée des produits actifs</li>
+                    <li>Nom, prix, catégorie, statut stock</li>
+                    <li>Tri par nom ou prix</li>
+                    <li>Filtrage par catégorie optionnel</li>
+                </ul>
+
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ❌ Version lente actuelle
+[HttpGet]
+public IActionResult GetProducts(int page = 1, string category = null, string sortBy = "name")
+{
+    var products = context.Products
+        .Include(p => p.Category)
+        .ToList();
+        
+    if (!string.IsNullOrEmpty(category))
+        products = products.Where(p => p.Category.Name == category).ToList();
+        
+    products = products.Where(p => p.IsActive).ToList();
+    
+    if (sortBy == "price")
+        products = products.OrderBy(p => p.Price).ToList();
+    else
+        products = products.OrderBy(p => p.Name).ToList();
+        
+    var pagedProducts = products.Skip((page - 1) * 10).Take(10).ToList();
+    
+    return Ok(pagedProducts);
+}
+
+// ✅ Votre mission : Optimiser cette méthode !</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-lightbulb me-2"></i>Points à optimiser :</h6>
+                    <ol>
+                        <li>Déplacer tous les filtres au niveau SQL</li>
+                        <li>Utiliser AsNoTracking</li>
+                        <li>Créer une projection DTO</li>
+                        <li>Rendre asynchrone</li>
+                        <li>Ajouter la pagination au niveau SQL</li>
+                        <li>Retourner des métadonnées de pagination</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Dashboard de Performance (Avancé)
+                </h5>
+                <p><strong>Objectif :</strong> Créer un dashboard ultra-rapide avec de nombreuses statistiques</p>
+                
+                <h6>📊 Statistiques à calculer :</h6>
+                <ul>
+                    <li>Nombre total de produits, clients, commandes</li>
+                    <li>Chiffre d'affaires du mois</li>
+                    <li>Top 5 des catégories par nombre de produits</li>
+                    <li>Top 5 des produits les plus vendus</li>
+                    <li>Évolution des ventes sur 12 mois</li>
+                    <li>Taux de conversion par catégorie</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-stopwatch me-2"></i>Contrainte Performance</h6>
+                    <p class="mb-0">
+                        Le dashboard doit se charger en moins de 500ms avec une base de données 
+                        contenant 100 000 produits, 50 000 clients et 200 000 commandes.
+                    </p>
+                </div>
+
+                <h6>💡 Techniques à utiliser :</h6>
+                <ul>
+                    <li>Requêtes parallèles avec <code>Task.WhenAll</code></li>
+                    <li>Projections optimisées</li>
+                    <li>AsNoTracking partout</li>
+                    <li>Agrégations au niveau SQL</li>
+                    <li>Mise en cache des résultats</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 4 : Audit Complet d'Application (Expert)
+                </h5>
+                <p><strong>Objectif :</strong> Analyser et optimiser une application e-commerce complète</p>
+                
+                <h6>🔍 Mission d'audit :</h6>
+                <ol>
+                    <li><strong>Identifier les requêtes lentes</strong> avec logging SQL</li>
+                    <li><strong>Mesurer les performances</strong> avant/après optimisations</li>
+                    <li><strong>Créer un rapport d'optimisation</strong> avec recommandations</li>
+                    <li><strong>Implémenter un monitoring</strong> des performances en continu</li>
+                </ol>
+
+                <h6>🛠️ Outils à utiliser :</h6>
+                <ul>
+                    <li><code>MiniProfiler</code> pour profiler les requêtes</li>
+                    <li><code>BenchmarkDotNet</code> pour mesurer les performances</li>
+                    <li>Logging EF avec <code>LogTo</code></li>
+                    <li>Analyse des plans d'exécution SQL</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-trophy me-2"></i>Objectifs de Performance</h6>
+                    <ul class="mb-0">
+                        <li>Page d'accueil : &lt; 200ms</li>
+                        <li>Recherche produits : &lt; 300ms</li>
+                        <li>Détail produit : &lt; 100ms</li>
+                        <li>Panier et checkout : &lt; 500ms</li>
+                        <li>Dashboard admin : &lt; 1s</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-6-linq-queries.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-8-relations-avancees.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Feedback visuel
+                event.target.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    event.target.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

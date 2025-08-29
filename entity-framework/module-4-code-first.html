@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4 - Code First Approach</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .approach-comparison {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+
+        .approach-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .approach-header {
+            background: var(--ef-purple);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .conventions-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .conventions-table th {
+            background: var(--ef-green);
+            color: white;
+            text-align: center;
+        }
+
+        .fluent-example {
+            background: linear-gradient(135deg, rgba(35, 155, 86, 0.1), rgba(40, 167, 69, 0.1));
+            border-left: 4px solid var(--ef-green);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .annotation-example {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 140, 66, 0.1));
+            border-left: 4px solid var(--ef-orange);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-code me-2"></i>
+                Module 4
+            </div>
+            <h1 class="module-title">Code First Approach</h1>
+            <p class="module-description">
+                Maîtrisez l'approche Code First : créez votre base de données à partir de vos classes C#
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>5 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>12 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-layer-group me-1"></i>Code First
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Introduction Code First expliquée pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-rocket"></i>
+                Qu'est-ce que l'Approche Code First ? (Guide Complet pour Débutants)
+            </h2>
+
+            <h3><i class="fas fa-graduation-cap me-2"></i>Rappel : Database First vs Code First</h3>
+            
+            <p class="lead">
+                Dans le Module 3, nous avons appris Database First (partir d'une base existante). 
+                Maintenant, nous allons découvrir Code First, qui est l'approche inverse !
+            </p>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h5><i class="fas fa-database me-2"></i>Database First (Module 3)</h5>
+                        <p><strong>Analogie :</strong> Dessiner les plans d'une maison existante</p>
+                        <ul>
+                            <li>✅ Vous avez une base de données déjà créée</li>
+                            <li>✅ Entity Framework génère les classes C#</li>
+                            <li>✅ Les classes correspondent à la base existante</li>
+                        </ul>
+                        <p class="small text-muted mb-0">
+                            <strong>Direction :</strong> Base de données → Classes C#
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-code me-2"></i>Code First (Ce module)</h5>
+                        <p><strong>Analogie :</strong> Construire une maison à partir des plans</p>
+                        <ul>
+                            <li>✅ Vous écrivez les classes C# d'abord</li>
+                            <li>✅ Entity Framework génère la base de données</li>
+                            <li>✅ La base correspond exactement à vos classes</li>
+                        </ul>
+                        <p class="small text-muted mb-0">
+                            <strong>Direction :</strong> Classes C# → Base de données
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Code First : Explication Détaillée</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-info-circle me-2"></i>Qu'est-ce que Code First exactement ?</h5>
+                <p>
+                    <strong>Code First</strong> est une approche où vous commencez par écrire vos classes C# 
+                    (vos "modèles" de données), et Entity Framework crée automatiquement la base de données 
+                    qui correspond parfaitement à ces classes.
+                </p>
+                
+                <h6><i class="fas fa-cogs me-2"></i>Le processus en 4 étapes simples :</h6>
+                <ol>
+                    <li><strong>Vous écrivez</strong> vos classes C# (Product, Category, Customer, etc.)</li>
+                    <li><strong>Vous configurez</strong> Entity Framework (optionnel)</li>
+                    <li><strong>Entity Framework analyse</strong> vos classes</li>
+                    <li><strong>Entity Framework crée</strong> automatiquement la base de données correspondante</li>
+                </ol>
+            </div>
+
+            <h4><i class="fas fa-scenario me-2"></i>Scénarios Concrets où Utiliser Code First</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-seedling me-2 text-success"></i>Scénario 1 : Nouveau Projet</h6>
+                        <p class="small">
+                            Vous commencez un tout nouveau projet d'application. 
+                            Aucune base de données n'existe encore, vous partez de zéro.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Code First ! Vous concevez vos modèles métier 
+                            en C# et laissez EF créer la base de données parfaite.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-users-cog me-2 text-success"></i>Scénario 2 : Équipe de Développeurs</h6>
+                        <p class="small">
+                            Votre équipe est composée uniquement de développeurs C#. 
+                            Personne n'est expert en bases de données SQL.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Code First ! Vous travaillez avec ce que vous 
+                            maîtrisez (C#) et EF s'occupe du SQL.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-code-branch me-2 text-success"></i>Scénario 3 : Développement Agile</h6>
+                        <p class="small">
+                            Votre projet évolue rapidement. Vous ajoutez souvent de nouvelles 
+                            fonctionnalités qui nécessitent de nouveaux champs ou tables.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Code First avec migrations ! Vous modifiez 
+                            vos classes et EF met à jour la base automatiquement.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-cloud me-2 text-success"></i>Scénario 4 : Déploiement Multi-Environnement</h6>
+                        <p class="small">
+                            Vous devez déployer sur développement, test, préproduction, production. 
+                            Chaque environnement doit avoir la même structure de base.
+                        </p>
+                        <p class="small text-success mb-0">
+                            <strong>Solution :</strong> Code First ! Vos classes voyagent avec votre code, 
+                            la base se crée identiquement partout.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-balance-scale me-2"></i>Avantages et Inconvénients Expliqués Simplement</h4>
+
+            <div class="approach-comparison">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="approach-card">
+                            <div class="approach-header">
+                                <i class="fas fa-code me-2"></i>Code First
+                            </div>
+                            
+                            <h6><i class="fas fa-thumbs-up me-2 text-success"></i>Avantages</h6>
+                            
+                            <div class="mb-3">
+                                <h6><i class="fas fa-crown me-1 text-success"></i>Contrôle Total du Modèle</h6>
+                                <p class="small mb-0">
+                                    Vous décidez de tout : noms des tables, types de colonnes, 
+                                    relations, contraintes. C'est VOTRE vision qui compte.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-history me-1 text-success"></i>Évolution avec Migrations</h6>
+                                <p class="small mb-0">
+                                    Besoin d'ajouter une colonne ? Modifiez votre classe, 
+                                    créez une migration, et EF met à jour toutes les bases.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-robot me-1 text-success"></i>Intégration CI/CD</h6>
+                                <p class="small mb-0">
+                                    Vos pipelines de déploiement peuvent automatiquement 
+                                    mettre à jour les bases de données.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-tags me-1 text-success"></i>Versioning du Schéma</h6>
+                                <p class="small mb-0">
+                                    Chaque changement de base est tracé, versionné, 
+                                    et peut être annulé si nécessaire.
+                                </p>
+                            </div>
+
+                            <div class="mb-0">
+                                <h6><i class="fas fa-rocket me-1 text-success"></i>Développement Moderne</h6>
+                                <p class="small mb-0">
+                                    Approche recommandée pour les nouvelles applications .NET.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="approach-card">
+                            <div class="approach-header">
+                                <i class="fas fa-database me-2"></i>Database First
+                            </div>
+                            
+                            <h6><i class="fas fa-thumbs-up me-2 text-success"></i>Avantages</h6>
+                            
+                            <div class="mb-3">
+                                <h6><i class="fas fa-database me-1 text-success"></i>Base Existante</h6>
+                                <p class="small mb-0">
+                                    Parfait quand vous avez déjà une base de données 
+                                    avec des années de données.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-magic me-1 text-success"></i>Génération Automatique</h6>
+                                <p class="small mb-0">
+                                    50 tables ? Pas de problème, EF génère 50 classes 
+                                    en quelques secondes.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6><i class="fas fa-users me-1 text-success"></i>Équipes Séparées</h6>
+                                <p class="small mb-0">
+                                    L'équipe DB travaille sur la base, l'équipe Dev 
+                                    sur l'application, indépendamment.
+                                </p>
+                            </div>
+
+                            <div class="mb-0">
+                                <h6><i class="fas fa-archive me-1 text-success"></i>Systèmes Legacy</h6>
+                                <p class="small mb-0">
+                                    Idéal pour moderniser d'anciens systèmes 
+                                    sans toucher à la base existante.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="warning-box">
+                            <h6><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Inconvénients Code First</h6>
+                            
+                            <div class="mb-2">
+                                <h6><i class="fas fa-cogs me-1 text-warning"></i>Configuration Plus Complexe</h6>
+                                <p class="small mb-0">
+                                    Vous devez apprendre les Data Annotations et Fluent API 
+                                    pour des configurations avancées.
+                                </p>
+                            </div>
+
+                            <div class="mb-0">
+                                <h6><i class="fas fa-graduation-cap me-1 text-warning"></i>Courbe d'Apprentissage</h6>
+                                <p class="small mb-0">
+                                    Plus de concepts à maîtriser : migrations, conventions, 
+                                    relations, etc.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="warning-box">
+                            <h6><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Inconvénients Database First</h6>
+                            
+                            <div class="mb-2">
+                                <h6><i class="fas fa-lock me-1 text-warning"></i>Moins de Contrôle</h6>
+                                <p class="small mb-0">
+                                    Vous subissez la structure existante de la base, 
+                                    même si elle n'est pas optimale.
+                                </p>
+                            </div>
+
+                            <div class="mb-0">
+                                <h6><i class="fas fa-eraser me-1 text-warning"></i>Régénération Écrase</h6>
+                                <p class="small mb-0">
+                                    Chaque régénération efface vos modifications 
+                                    personnalisées (sauf si bien organisées).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4><i class="fas fa-route me-2"></i>Notre Plan d'Apprentissage pour ce Module</h4>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-map me-2"></i>Ce que nous allons apprendre ensemble :</h6>
+                <ol>
+                    <li><strong>Les conventions par défaut</strong> → Comment EF devine la structure de base</li>
+                    <li><strong>Les Data Annotations</strong> → Configurer avec des attributs C#</li>
+                    <li><strong>La Fluent API</strong> → Configuration avancée dans le DbContext</li>
+                    <li><strong>Les relations complexes</strong> → Many-to-Many, One-to-One, héritage</li>
+                    <li><strong>La création de base</strong> → Méthodes pour générer la base de données</li>
+                    <li><strong>Les bonnes pratiques</strong> → Comment bien organiser son projet</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Important à retenir</h6>
+                <p>
+                    Code First ne remplace pas Database First. Ce sont deux outils complémentaires :
+                </p>
+                <ul class="mb-0">
+                    <li><strong>Nouveau projet</strong> → Code First recommandé</li>
+                    <li><strong>Base existante</strong> → Database First plus pratique</li>
+                    <li><strong>Équipe mixte</strong> → Choisir selon les compétences</li>
+                    <li><strong>Projet évolutif</strong> → Code First + migrations = parfait</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Conventions par défaut expliquées pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Les Conventions par Défaut d'Entity Framework (Guide Complet)
+            </h2>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Qu'est-ce qu'une Convention ?</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-lightbulb me-2"></i>Analogie Simple</h5>
+                <p>
+                    Imaginez que vous entrez dans un restaurant. Même sans qu'on vous le dise, 
+                    vous savez que :
+                </p>
+                <ul>
+                    <li>Les fourchettes sont à gauche de l'assiette</li>
+                    <li>Les couteaux sont à droite</li>
+                    <li>Le verre est en haut à droite</li>
+                </ul>
+                <p class="mb-0">
+                    <strong>Les conventions Entity Framework fonctionnent pareil !</strong> 
+                    EF "devine" comment organiser votre base de données en suivant des règles 
+                    logiques et prévisibles.
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-magic me-2"></i>La Magie des Conventions</h6>
+                <p>
+                    Quand vous écrivez une classe C# simple comme <code>Product</code>, 
+                    Entity Framework applique automatiquement des règles pour créer 
+                    la table SQL correspondante. <strong>Vous n'avez rien à configurer !</strong>
+                </p>
+                <p class="mb-0">
+                    C'est ce qui rend Code First si puissant : vous écrivez du C# normal, 
+                    et EF s'occupe de tout le SQL pour vous.
+                </p>
+            </div>
+
+            <h3><i class="fas fa-table me-2"></i>Les Conventions Principales (Expliquées Simplement)</h3>
+
+            <div class="table-responsive">
+                <table class="table table-striped conventions-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Élément</th>
+                            <th style="width: 30%;">Convention EF</th>
+                            <th style="width: 25%;">Exemple</th>
+                            <th style="width: 25%;">Résultat SQL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nom de table</strong></td>
+                            <td>Nom de la classe (au pluriel)</td>
+                            <td><code>Product</code> → <code>Products</code></td>
+                            <td><code>CREATE TABLE Products</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clé primaire</strong></td>
+                            <td><code>Id</code> ou <code>[ClassName]Id</code></td>
+                            <td><code>Id</code> ou <code>ProductId</code></td>
+                            <td><code>Id INT PRIMARY KEY IDENTITY</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clé étrangère</strong></td>
+                            <td><code>[NavigationProperty]Id</code></td>
+                            <td><code>CategoryId</code> pour <code>Category</code></td>
+                            <td><code>CategoryId INT FOREIGN KEY</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type string</strong></td>
+                            <td><code>nvarchar(max)</code>, nullable</td>
+                            <td><code>string Name</code></td>
+                            <td><code>Name NVARCHAR(MAX) NULL</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type int</strong></td>
+                            <td><code>int</code>, non nullable</td>
+                            <td><code>int Stock</code></td>
+                            <td><code>Stock INT NOT NULL</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type decimal</strong></td>
+                            <td><code>decimal(18,2)</code></td>
+                            <td><code>decimal Price</code></td>
+                            <td><code>Price DECIMAL(18,2) NOT NULL</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type DateTime</strong></td>
+                            <td><code>datetime2(7)</code></td>
+                            <td><code>DateTime CreatedAt</code></td>
+                            <td><code>CreatedAt DATETIME2(7) NOT NULL</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type bool</strong></td>
+                            <td><code>bit</code></td>
+                            <td><code>bool IsActive</code></td>
+                            <td><code>IsActive BIT NOT NULL</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Collection</strong></td>
+                            <td>Relation One-to-Many</td>
+                            <td><code>ICollection&lt;Order&gt;</code></td>
+                            <td>Pas de colonne (relation)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Objet</strong></td>
+                            <td>Navigation property</td>
+                            <td><code>Category Category</code></td>
+                            <td>Pas de colonne (relation)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3><i class="fas fa-code me-2"></i>Exemple Concret : De la Classe C# à la Table SQL</h3>
+
+            <p>Voyons comment EF transforme une classe C# simple en table SQL :</p>
+
+            <h4>1. Notre Classe C# (Code First)</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Cette classe utilise UNIQUEMENT les conventions par défaut
+// Aucune configuration supplémentaire nécessaire !
+public class Product
+{
+    // Convention : Id = clé primaire auto-incrémentée
+    public int Id { get; set; }
+    
+    // Convention : string = NVARCHAR(MAX) NULL
+    public string Name { get; set; }
+    
+    // Convention : string = NVARCHAR(MAX) NULL  
+    public string Description { get; set; }
+    
+    // Convention : decimal = DECIMAL(18,2) NOT NULL
+    public decimal Price { get; set; }
+    
+    // Convention : int = INT NOT NULL
+    public int Stock { get; set; }
+    
+    // Convention : bool = BIT NOT NULL
+    public bool IsActive { get; set; }
+    
+    // Convention : DateTime = DATETIME2(7) NOT NULL
+    public DateTime CreatedAt { get; set; }
+    
+    // Convention : Cette propriété + CategoryId = clé étrangère
+    public int CategoryId { get; set; }
+    public Category Category { get; set; }
+    
+    // Convention : ICollection = relation One-to-Many
+    // Un Product peut être dans plusieurs OrderItems
+    public ICollection<OrderItem> OrderItems { get; set; }
+}</code></pre>
+            </div>
+
+            <h4>2. Table SQL Générée Automatiquement</h4>
+            <div class="code-block">
+                <pre><code class="language-sql">-- Table créée automatiquement par Entity Framework
+CREATE TABLE Products (
+    Id INT IDENTITY(1,1) PRIMARY KEY,           -- Auto-incrémenté
+    Name NVARCHAR(MAX) NULL,                    -- Texte illimité, optionnel
+    Description NVARCHAR(MAX) NULL,             -- Texte illimité, optionnel  
+    Price DECIMAL(18,2) NOT NULL,               -- Prix avec 2 décimales, obligatoire
+    Stock INT NOT NULL,                         -- Nombre entier, obligatoire
+    IsActive BIT NOT NULL,                      -- Booléen, obligatoire
+    CreatedAt DATETIME2(7) NOT NULL,            -- Date/heure précise, obligatoire
+    CategoryId INT NOT NULL,                    -- Clé étrangère, obligatoire
+    
+    -- Contrainte de clé étrangère automatique
+    CONSTRAINT FK_Products_Categories_CategoryId 
+        FOREIGN KEY (CategoryId) REFERENCES Categories(Id)
+);</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-magic me-2"></i>Ce qui s'est passé automatiquement :</h6>
+                <ul>
+                    <li><strong>Nom de table</strong> → <code>Product</code> devient <code>Products</code> (pluriel)</li>
+                    <li><strong>Clé primaire</strong> → <code>Id</code> devient <code>PRIMARY KEY IDENTITY</code></li>
+                    <li><strong>Types de données</strong> → Chaque type C# a son équivalent SQL optimal</li>
+                    <li><strong>Nullable/Non-nullable</strong> → <code>string</code> = nullable, <code>int</code> = non-nullable</li>
+                    <li><strong>Clé étrangère</strong> → <code>CategoryId</code> + <code>Category</code> = relation automatique</li>
+                    <li><strong>Relations</strong> → <code>ICollection&lt;OrderItem&gt;</code> = relation One-to-Many</li>
+                </ul>
+            </div>
+
+            <h3><i class="fas fa-brain me-2"></i>Comment Entity Framework "Devine" les Relations</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-arrow-right me-2"></i>Relation One-to-Many</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">public class Category
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    
+    // Collection = "Many"
+    // Une catégorie a plusieurs produits
+    public ICollection&lt;Product&gt; Products { get; set; }
+}
+
+public class Product  
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    
+    // Clé étrangère
+    public int CategoryId { get; set; }
+    
+    // Navigation = "One"  
+    // Un produit a une catégorie
+    public Category Category { get; set; }
+}</code></pre>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            <strong>EF comprend :</strong> Category (1) ↔ Products (Many)
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-arrows-alt-h me-2"></i>Relation Many-to-Many</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    
+    // Collection = "Many"
+    // Un étudiant a plusieurs cours
+    public ICollection&lt;Course&gt; Courses { get; set; }
+}
+
+public class Course
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    
+    // Collection = "Many"
+    // Un cours a plusieurs étudiants  
+    public ICollection&lt;Student&gt; Students { get; set; }
+}</code></pre>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            <strong>EF comprend :</strong> Students (Many) ↔ Courses (Many)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Exemple Pratique : Créons un Modèle Complet</h3>
+
+            <p>Créons ensemble un modèle simple pour une bibliothèque, en utilisant UNIQUEMENT les conventions :</p>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Modèle complet utilisant uniquement les conventions EF
+// Aucune annotation, aucune configuration !
+
+public class Author
+{
+    public int Id { get; set; }              // PK auto
+    public string FirstName { get; set; }    // NVARCHAR(MAX) NULL
+    public string LastName { get; set; }     // NVARCHAR(MAX) NULL
+    public DateTime BirthDate { get; set; }  // DATETIME2(7) NOT NULL
+    
+    // Un auteur peut écrire plusieurs livres
+    public ICollection&lt;Book&gt; Books { get; set; }
+}
+
+public class Book  
+{
+    public int Id { get; set; }              // PK auto
+    public string Title { get; set; }        // NVARCHAR(MAX) NULL
+    public string ISBN { get; set; }         // NVARCHAR(MAX) NULL
+    public DateTime PublishedDate { get; set; } // DATETIME2(7) NOT NULL
+    public decimal Price { get; set; }       // DECIMAL(18,2) NOT NULL
+    public bool IsAvailable { get; set; }    // BIT NOT NULL
+    
+    // Relation avec Author
+    public int AuthorId { get; set; }        // FK NOT NULL
+    public Author Author { get; set; }       // Navigation property
+    
+    // Un livre peut avoir plusieurs emprunts
+    public ICollection&lt;Loan&gt; Loans { get; set; }
+}
+
+public class Member
+{
+    public int Id { get; set; }              // PK auto
+    public string FirstName { get; set; }    // NVARCHAR(MAX) NULL
+    public string LastName { get; set; }     // NVARCHAR(MAX) NULL
+    public string Email { get; set; }        // NVARCHAR(MAX) NULL
+    public DateTime JoinDate { get; set; }   // DATETIME2(7) NOT NULL
+    
+    // Un membre peut avoir plusieurs emprunts
+    public ICollection&lt;Loan&gt; Loans { get; set; }
+}
+
+public class Loan
+{
+    public int Id { get; set; }              // PK auto
+    public DateTime LoanDate { get; set; }   // DATETIME2(7) NOT NULL
+    public DateTime? ReturnDate { get; set; } // DATETIME2(7) NULL (nullable)
+    public bool IsReturned { get; set; }     // BIT NOT NULL
+    
+    // Relations
+    public int BookId { get; set; }          // FK vers Book
+    public Book Book { get; set; }
+    
+    public int MemberId { get; set; }        // FK vers Member  
+    public Member Member { get; set; }
+}</code></pre>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-database me-2"></i>Tables SQL Générées Automatiquement</h6>
+                <p>Avec ces 4 classes simples, Entity Framework va créer :</p>
+                <ul>
+                    <li><strong>4 tables</strong> : Authors, Books, Members, Loans</li>
+                    <li><strong>4 clés primaires</strong> : toutes auto-incrémentées</li>
+                    <li><strong>3 clés étrangères</strong> : AuthorId dans Books, BookId et MemberId dans Loans</li>
+                    <li><strong>Tous les types de données</strong> : string → NVARCHAR(MAX), int → INT, etc.</li>
+                    <li><strong>Toutes les contraintes</strong> : NOT NULL pour les types valeur, NULL pour les références</li>
+                </ul>
+                <p class="mb-0">
+                    <strong>Résultat :</strong> Une base de données complète et fonctionnelle, 
+                    sans une seule ligne de configuration !
+                </p>
+            </div>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Quand les Conventions Suffisent-elles ?</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-check-circle me-2 text-success"></i>Les conventions sont parfaites pour :</h6>
+                        <ul class="mb-0">
+                            <li>Prototypes rapides</li>
+                            <li>Applications simples</li>
+                            <li>Premiers projets Entity Framework</li>
+                            <li>Modèles avec des noms standards</li>
+                            <li>Relations simples One-to-Many</li>
+                            <li>Développement rapide</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h6><i class="fas fa-cogs me-2 text-warning"></i>Vous aurez besoin de configuration pour :</h6>
+                        <ul class="mb-0">
+                            <li>Noms de tables/colonnes spécifiques</li>
+                            <li>Longueurs de chaînes limitées</li>
+                            <li>Contraintes métier (prix > 0)</li>
+                            <li>Index personnalisés</li>
+                            <li>Relations complexes Many-to-Many</li>
+                            <li>Compatibilité avec bases existantes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-graduation-cap me-2"></i>Conseil pour Débutants</h6>
+                <p class="mb-0">
+                    <strong>Commencez TOUJOURS par les conventions !</strong> 
+                    Écrivez vos classes simplement, laissez EF faire sa magie, 
+                    et n'ajoutez de la configuration que quand vous en avez vraiment besoin. 
+                    C'est plus facile à comprendre et à maintenir.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 3: Data Annotations expliquées pour super débutants -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-tags"></i>
+                Configuration avec Data Annotations (Guide Complet pour Débutants)
+            </h2>
+
+            <h3><i class="fas fa-question-circle me-2"></i>Qu'est-ce que les Data Annotations ?</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-lightbulb me-2"></i>Analogie Simple</h5>
+                <p>
+                    Imaginez que vous organisez votre bibliothèque personnelle. Sur chaque livre, 
+                    vous collez des petites étiquettes :
+                </p>
+                <ul>
+                    <li>📚 "OBLIGATOIRE" → Ce livre doit absolument être lu</li>
+                    <li>📏 "MAX 300 pages" → Limite de taille</li>
+                    <li>🏷️ "Fantastique" → Catégorie du livre</li>
+                    <li>⚠️ "Fragile" → Manipulation spéciale</li>
+                </ul>
+                <p class="mb-0">
+                    <strong>Les Data Annotations fonctionnent exactement pareil !</strong> 
+                    Ce sont des "étiquettes" que vous collez sur vos propriétés C# pour dire 
+                    à Entity Framework comment les traiter dans la base de données.
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-magic me-2"></i>Pourquoi utiliser les Data Annotations ?</h6>
+                <p>
+                    Les conventions par défaut sont parfaites, mais parfois vous voulez :
+                </p>
+                <ul>
+                    <li><strong>Contrôler les noms</strong> → Table "Produits" au lieu de "Products"</li>
+                    <li><strong>Limiter les tailles</strong> → Nom maximum 50 caractères</li>
+                    <li><strong>Rendre obligatoire</strong> → Email ne peut pas être vide</li>
+                    <li><strong>Ajouter des contraintes</strong> → Prix doit être positif</li>
+                </ul>
+                <p class="mb-0">
+                    Les Data Annotations vous permettent de faire tout ça directement 
+                    sur vos classes, de manière très lisible !
+                </p>
+            </div>
+
+            <h3><i class="fas fa-step-forward me-2"></i>Progression d'Apprentissage : Du Simple au Complexe</h3>
+
+            <h4>Niveau 1 : Les Annotations de Base (Super Faciles)</h4>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-baby me-2"></i>Exemple Super Simple</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+
+public class Product
+{
+    public int Id { get; set; }
+    
+    // [Required] = Cette propriété ne peut pas être NULL
+    [Required]
+    public string Name { get; set; }
+    
+    // [StringLength(100)] = Maximum 100 caractères
+    [StringLength(100)]
+    public string Description { get; set; }
+    
+    public decimal Price { get; set; }
+}</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-arrow-right me-2"></i>Ce qui change dans la base de données :</h6>
+                    <ul class="mb-0">
+                        <li><code>Name</code> → <code>Name NVARCHAR(MAX) NOT NULL</code> (obligatoire !)</li>
+                        <li><code>Description</code> → <code>Description NVARCHAR(100) NULL</code> (limité à 100 caractères)</li>
+                        <li><code>Price</code> → <code>Price DECIMAL(18,2) NOT NULL</code> (inchangé, convention par défaut)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Niveau 2 : Contrôler les Noms et Types</h4>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-tags me-2"></i>Personnaliser les Noms</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+// [Table("Produits")] = La table s'appellera "Produits" au lieu de "Products"
+[Table("Produits")]
+public class Product
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(50)]
+    // [Column("NomProduit")] = La colonne s'appellera "NomProduit" au lieu de "Name"
+    [Column("NomProduit")]
+    public string Name { get; set; }
+    
+    [StringLength(500)]
+    [Column("DescriptionProduit")]
+    public string Description { get; set; }
+    
+    // [Column(TypeName = "decimal(10,2)")] = Précision personnalisée
+    [Column(TypeName = "decimal(10,2)")]
+    public decimal Price { get; set; }
+}</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-database me-2"></i>Table SQL générée :</h6>
+                    <div class="code-block">
+                        <pre><code class="language-sql">CREATE TABLE Produits (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    NomProduit NVARCHAR(50) NOT NULL,
+    DescriptionProduit NVARCHAR(500) NULL,
+    Price DECIMAL(10,2) NOT NULL
+);</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Niveau 3 : Clés Primaires et Étrangères Personnalisées</h4>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-key me-2"></i>Gérer les Clés</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class Product
+{
+    // [Key] = Clé primaire explicite (utile si la propriété ne s'appelle pas "Id")
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incrémenté
+    public int ProductId { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+    
+    public decimal Price { get; set; }
+    
+    // Clé étrangère vers Category
+    public int CategoryId { get; set; }
+    
+    // [ForeignKey("CategoryId")] = Indique explicitement la clé étrangère
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; }
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-info-circle me-2"></i>Explication des Options de Génération</h6>
+                    <ul class="mb-0">
+                        <li><code>DatabaseGeneratedOption.Identity</code> → Auto-incrémenté (1, 2, 3, 4...)</li>
+                        <li><code>DatabaseGeneratedOption.Computed</code> → Calculé par la base (ex: date de création)</li>
+                        <li><code>DatabaseGeneratedOption.None</code> → Vous devez fournir la valeur</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Niveau 4 : Validation et Contraintes Métier</h4>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-shield-alt me-2"></i>Ajouter des Validations</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class Product
+{
+    public int Id { get; set; }
+    
+    [Required(ErrorMessage = "Le nom du produit est obligatoire")]
+    [StringLength(100, MinimumLength = 2, 
+        ErrorMessage = "Le nom doit contenir entre 2 et 100 caractères")]
+    public string Name { get; set; }
+    
+    [StringLength(1000)]
+    public string Description { get; set; }
+    
+    // [Range] = Le prix doit être entre 0.01 et 99999.99
+    [Range(0.01, 99999.99, 
+        ErrorMessage = "Le prix doit être entre 0.01 et 99999.99")]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Price { get; set; }
+    
+    // [Range] pour les entiers aussi
+    [Range(0, int.MaxValue, 
+        ErrorMessage = "Le stock ne peut pas être négatif")]
+    public int Stock { get; set; }
+    
+    // Validation d'email
+    [Required]
+    [EmailAddress(ErrorMessage = "Format d'email invalide")]
+    [StringLength(100)]
+    public string ContactEmail { get; set; }
+    
+    // Validation d'URL
+    [Url(ErrorMessage = "URL invalide")]
+    public string WebsiteUrl { get; set; }
+}</code></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h6><i class="fas fa-check-circle me-2"></i>Types de Validation Disponibles</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><code>[Required]</code> → Obligatoire</li>
+                                <li><code>[StringLength(max)]</code> → Longueur max</li>
+                                <li><code>[Range(min, max)]</code> → Plage de valeurs</li>
+                                <li><code>[EmailAddress]</code> → Format email</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li><code>[Url]</code> → Format URL</li>
+                                <li><code>[Phone]</code> → Format téléphone</li>
+                                <li><code>[RegularExpression]</code> → Pattern personnalisé</li>
+                                <li><code>[Compare]</code> → Comparer avec autre propriété</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Niveau 5 : Propriétés Spéciales et Avancées</h4>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-cogs me-2"></i>Fonctionnalités Avancées</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class Product
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+    
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Price { get; set; }
+    
+    public int Stock { get; set; }
+    
+    // [NotMapped] = Cette propriété N'EXISTE PAS dans la base de données
+    // C'est une propriété calculée uniquement en C#
+    [NotMapped]
+    public decimal TotalValue => Price * Stock;
+    
+    // [NotMapped] pour des propriétés complexes
+    [NotMapped]
+    public string DisplayName => $"{Name} - {Price:C}";
+    
+    // [Timestamp] = Colonne de versioning pour la concurrence optimiste
+    // Se met à jour automatiquement à chaque modification
+    [Timestamp]
+    public byte[] RowVersion { get; set; }
+    
+    // Propriété avec valeur par défaut
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Column(TypeName = "datetime2")]
+    public DateTime CreatedAt { get; set; }
+    
+    // [Display] = Utilisé par les interfaces utilisateur (MVC, Blazor)
+    [Display(Name = "Date de création", 
+             Description = "Date à laquelle le produit a été créé")]
+    public DateTime CreationDate { get; set; }
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Attention aux Propriétés [NotMapped]</h6>
+                    <ul class="mb-0">
+                        <li><strong>[NotMapped]</strong> = La propriété existe en C# mais PAS en base de données</li>
+                        <li><strong>Utilisez-le pour</strong> : propriétés calculées, formatage, logique métier</li>
+                        <li><strong>Attention</strong> : Ces propriétés ne sont pas sauvegardées ni recherchables en base</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-list-ul me-2"></i>Référence Complète des Data Annotations</h3>
+
+            <div class="table-responsive">
+                <table class="table table-striped conventions-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Annotation</th>
+                            <th style="width: 35%;">Description</th>
+                            <th style="width: 40%;">Exemple</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>[Key]</strong></td>
+                            <td>Définit la clé primaire</td>
+                            <td><code>[Key] public int ProductId { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Required]</strong></td>
+                            <td>Champ obligatoire (NOT NULL)</td>
+                            <td><code>[Required] public string Name { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[StringLength(n)]</strong></td>
+                            <td>Longueur maximum de chaîne</td>
+                            <td><code>[StringLength(100)] public string Name { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[MaxLength(n)]</strong></td>
+                            <td>Longueur maximum (chaînes et tableaux)</td>
+                            <td><code>[MaxLength(50)] public string Code { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Column("name")]</strong></td>
+                            <td>Nom de colonne personnalisé</td>
+                            <td><code>[Column("ProductName")] public string Name { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Table("name")]</strong></td>
+                            <td>Nom de table personnalisé</td>
+                            <td><code>[Table("Produits")] public class Product</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[ForeignKey("prop")]</strong></td>
+                            <td>Définit la clé étrangère</td>
+                            <td><code>[ForeignKey("CategoryId")] public Category Category { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[NotMapped]</strong></td>
+                            <td>Propriété ignorée par EF</td>
+                            <td><code>[NotMapped] public string FullName => $"{FirstName} {LastName}";</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Timestamp]</strong></td>
+                            <td>Colonne de concurrence optimiste</td>
+                            <td><code>[Timestamp] public byte[] RowVersion { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Range(min, max)]</strong></td>
+                            <td>Plage de valeurs autorisées</td>
+                            <td><code>[Range(0.01, 999.99)] public decimal Price { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[EmailAddress]</strong></td>
+                            <td>Validation format email</td>
+                            <td><code>[EmailAddress] public string Email { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[Display(Name = "")]</strong></td>
+                            <td>Nom d'affichage pour l'UI</td>
+                            <td><code>[Display(Name = "Prix unitaire")] public decimal Price { get; set; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>[DatabaseGenerated]</strong></td>
+                            <td>Mode de génération de valeur</td>
+                            <td><code>[DatabaseGenerated(DatabaseGeneratedOption.Identity)]</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Exemple Complet : Modèle E-commerce avec Data Annotations</h3>
+
+            <div class="annotation-example">
+                <h6><i class="fas fa-store me-2"></i>Modèle Complet et Réaliste</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+[Table("Categories")]
+public class Category
+{
+    [Key]
+    public int Id { get; set; }
+    
+    [Required(ErrorMessage = "Le nom de la catégorie est obligatoire")]
+    [StringLength(50, MinimumLength = 2)]
+    [Column("CategoryName")]
+    public string Name { get; set; }
+    
+    [StringLength(200)]
+    public string Description { get; set; }
+    
+    [Display(Name = "Date de création")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime CreatedAt { get; set; }
+    
+    // Navigation property
+    public virtual ICollection&lt;Product&gt; Products { get; set; }
+}
+
+[Table("Products")]
+public class Product
+{
+    [Key]
+    public int Id { get; set; }
+    
+    [Required(ErrorMessage = "Le nom du produit est obligatoire")]
+    [StringLength(100, MinimumLength = 2, 
+        ErrorMessage = "Le nom doit contenir entre 2 et 100 caractères")]
+    [Display(Name = "Nom du produit")]
+    public string Name { get; set; }
+    
+    [StringLength(1000)]
+    [Display(Name = "Description")]
+    public string Description { get; set; }
+    
+    [Required]
+    [Range(0.01, 99999.99, ErrorMessage = "Le prix doit être positif")]
+    [Column(TypeName = "decimal(18,2)")]
+    [Display(Name = "Prix unitaire")]
+    public decimal Price { get; set; }
+    
+    [Range(0, int.MaxValue, ErrorMessage = "Le stock ne peut pas être négatif")]
+    [Display(Name = "Stock disponible")]
+    public int Stock { get; set; }
+    
+    [Display(Name = "Produit actif")]
+    public bool IsActive { get; set; } = true;
+    
+    [StringLength(13, MinimumLength = 10)]
+    [Display(Name = "Code-barres")]
+    public string Barcode { get; set; }
+    
+    [Url(ErrorMessage = "URL invalide")]
+    [Display(Name = "Image du produit")]
+    public string ImageUrl { get; set; }
+    
+    // Propriétés calculées (pas en base de données)
+    [NotMapped]
+    [Display(Name = "Valeur totale du stock")]
+    public decimal TotalStockValue => Price * Stock;
+    
+    [NotMapped]
+    [Display(Name = "En stock")]
+    public bool InStock => Stock > 0;
+    
+    [NotMapped]
+    [Display(Name = "Nom complet")]
+    public string DisplayName => $"{Name} - {Price:C}";
+    
+    // Relations
+    [Required]
+    [Display(Name = "Catégorie")]
+    public int CategoryId { get; set; }
+    
+    [ForeignKey("CategoryId")]
+    public virtual Category Category { get; set; }
+    
+    // Versioning pour concurrence optimiste
+    [Timestamp]
+    public byte[] RowVersion { get; set; }
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Display(Name = "Date de création")]
+    public DateTime CreatedAt { get; set; }
+    
+    [Display(Name = "Date de modification")]
+    public DateTime? ModifiedAt { get; set; }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-graduation-cap me-2"></i>Bonnes Pratiques avec les Data Annotations</h6>
+                <ul class="mb-0">
+                    <li><strong>Commencez simple</strong> → [Required] et [StringLength] suffisent souvent</li>
+                    <li><strong>Messages d'erreur clairs</strong> → Toujours en français pour les utilisateurs</li>
+                    <li><strong>[Display(Name = "")]</strong> → Noms conviviaux pour l'interface utilisateur</li>
+                    <li><strong>[NotMapped]</strong> → Pour les propriétés calculées uniquement</li>
+                    <li><strong>Validation métier</strong> → [Range] pour les contraintes business</li>
+                    <li><strong>Cohérence</strong> → Même style d'annotations dans tout le projet</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Fluent API -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-code-branch"></i>
+                Configuration avec Fluent API
+            </h2>
+
+            <p>La Fluent API offre une configuration plus puissante et flexible que les Data Annotations :</p>
+
+            <div class="fluent-example">
+                <h5><i class="fas fa-code me-2"></i>Configuration dans OnModelCreating</h5>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public class ECommerceContext : DbContext
+{
+    public DbSet&lt;Product&gt; Products { get; set; }
+    public DbSet&lt;Category&gt; Categories { get; set; }
+    public DbSet&lt;Order&gt; Orders { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Configuration de l'entité Product
+        modelBuilder.Entity&lt;Product&gt;(entity =>
+        {
+            // Table et clé primaire
+            entity.ToTable("Products");
+            entity.HasKey(p => p.Id);
+            
+            // Propriétés
+            entity.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("ProductName");
+                
+            entity.Property(p => p.Description)
+                .HasMaxLength(500)
+                .IsUnicode(true);
+                
+            entity.Property(p => p.Price)
+                .HasColumnType("decimal(18,2)")
+                .HasPrecision(18, 2);
+                
+            entity.Property(p => p.CreatedDate)
+                .HasDefaultValueSql("GETDATE()");
+                
+            // Index
+            entity.HasIndex(p => p.Name)
+                .IsUnique()
+                .HasDatabaseName("IX_Product_Name");
+                
+            // Relations
+            entity.HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Configuration de Category
+        modelBuilder.Entity&lt;Category&gt;(entity =>
+        {
+            entity.ToTable("Categories");
+            entity.HasKey(c => c.Id);
+            
+            entity.Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h4>Avantages de la Fluent API</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-plus-circle me-2 text-success"></i>Plus puissante</h6>
+                        <ul class="mb-0">
+                            <li>Configuration complexe des relations</li>
+                            <li>Contraintes avancées</li>
+                            <li>Configuration conditionnelle</li>
+                            <li>Séparation des préoccupations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-cog me-2 text-info"></i>Plus flexible</h6>
+                        <ul class="mb-0">
+                            <li>Configuration centralisée</li>
+                            <li>Réutilisation de configurations</li>
+                            <li>Configuration par environnement</li>
+                            <li>IntelliSense complet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Relations complexes -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-project-diagram"></i>
+                Configuration des Relations Complexes
+            </h2>
+
+            <h4>1. Relation Many-to-Many avec entité de jointure</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Modèles
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ICollection&lt;StudentCourse&gt; StudentCourses { get; set; }
+}
+
+public class Course
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public ICollection&lt;StudentCourse&gt; StudentCourses { get; set; }
+}
+
+public class StudentCourse
+{
+    public int StudentId { get; set; }
+    public Student Student { get; set; }
+    
+    public int CourseId { get; set; }
+    public Course Course { get; set; }
+    
+    public DateTime EnrollmentDate { get; set; }
+    public decimal Grade { get; set; }
+}
+
+// Configuration Fluent API
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity&lt;StudentCourse&gt;()
+        .HasKey(sc => new { sc.StudentId, sc.CourseId }); // Clé composite
+        
+    modelBuilder.Entity&lt;StudentCourse&gt;()
+        .HasOne(sc => sc.Student)
+        .WithMany(s => s.StudentCourses)
+        .HasForeignKey(sc => sc.StudentId);
+        
+    modelBuilder.Entity&lt;StudentCourse&gt;()
+        .HasOne(sc => sc.Course)
+        .WithMany(c => c.StudentCourses)
+        .HasForeignKey(sc => sc.CourseId);
+}</code></pre>
+            </div>
+
+            <h4>2. Relation One-to-One</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">public class User
+{
+    public int Id { get; set; }
+    public string Email { get; set; }
+    public UserProfile Profile { get; set; }
+}
+
+public class UserProfile
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime BirthDate { get; set; }
+    
+    public int UserId { get; set; }
+    public User User { get; set; }
+}
+
+// Configuration
+modelBuilder.Entity&lt;User&gt;()
+    .HasOne(u => u.Profile)
+    .WithOne(p => p.User)
+    .HasForeignKey&lt;UserProfile&gt;(p => p.UserId);</code></pre>
+            </div>
+
+            <h4>3. Héritage Table Per Hierarchy (TPH)</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">public abstract class Person
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+public class Student : Person
+{
+    public string StudentNumber { get; set; }
+}
+
+public class Teacher : Person
+{
+    public string Department { get; set; }
+}
+
+// Configuration
+modelBuilder.Entity&lt;Person&gt;()
+    .HasDiscriminator&lt;string&gt;("PersonType")
+    .HasValue&lt;Student&gt;("Student")
+    .HasValue&lt;Teacher&gt;("Teacher");</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 6: Création de la base de données -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-database"></i>
+                Création de la Base de Données
+            </h2>
+
+            <h4>Méthodes de création</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-magic me-2"></i>EnsureCreated() - Simple</h6>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using var context = new ECommerceContext();
+
+// Crée la base si elle n'existe pas
+await context.Database.EnsureCreatedAsync();
+
+// Supprime la base si elle existe
+await context.Database.EnsureDeletedAsync();</code></pre>
+                        </div>
+                        <p class="small text-muted">Idéal pour les tests et prototypes</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-code-branch me-2"></i>Migrations - Production</h6>
+                        <div class="code-block">
+                            <pre><code class="language-bash"># Créer une migration
+dotnet ef migrations add InitialCreate
+
+# Appliquer les migrations
+dotnet ef database update</code></pre>
+                        </div>
+                        <p class="small text-muted">Recommandé pour la production</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Exemple complet d'application Code First</h4>
+            <div class="code-block">
+                <pre><code class="language-csharp">// Program.cs
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configuration du DbContext
+builder.Services.AddDbContext&lt;ECommerceContext&gt;(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+
+// Création de la base de données au démarrage (développement uniquement)
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService&lt;ECommerceContext&gt;();
+    await context.Database.EnsureCreatedAsync();
+    
+    // Seed data optionnel
+    if (!context.Categories.Any())
+    {
+        context.Categories.AddRange(
+            new Category { Name = "Électronique" },
+            new Category { Name = "Vêtements" }
+        );
+        await context.SaveChangesAsync();
+    }
+}
+
+app.Run();</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 7: Exercices pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Premier projet Code First
+                </h5>
+                <p><strong>Objectif :</strong> Créer une application Code First simple</p>
+                <ol>
+                    <li>Créez un nouveau projet console</li>
+                    <li>Définissez les classes Product et Category</li>
+                    <li>Créez un DbContext avec les conventions par défaut</li>
+                    <li>Testez la création de base de données avec EnsureCreated()</li>
+                </ol>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Configuration avec Data Annotations
+                </h5>
+                <p><strong>Objectif :</strong> Maîtriser les Data Annotations</p>
+                <ol>
+                    <li>Reprenez le projet précédent</li>
+                    <li>Ajoutez des contraintes avec Data Annotations</li>
+                    <li>Configurez les longueurs de chaînes, les types de colonnes</li>
+                    <li>Ajoutez des propriétés calculées avec [NotMapped]</li>
+                </ol>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Configuration Fluent API avancée
+                </h5>
+                <p><strong>Objectif :</strong> Utiliser la Fluent API pour des configurations complexes</p>
+                <ol>
+                    <li>Créez un système de blog avec Post, Author, Tag</li>
+                    <li>Configurez une relation Many-to-Many entre Post et Tag</li>
+                    <li>Utilisez uniquement la Fluent API (pas d'annotations)</li>
+                    <li>Ajoutez des index et contraintes personnalisées</li>
+                </ol>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 4 : Projet e-commerce complet
+                </h5>
+                <p><strong>Objectif :</strong> Développer un modèle e-commerce complet</p>
+                <ol>
+                    <li>Modélisez : Product, Category, Customer, Order, OrderItem</li>
+                    <li>Configurez toutes les relations avec Fluent API</li>
+                    <li>Ajoutez des contraintes métier (prix positif, stock >= 0)</li>
+                    <li>Implémentez des méthodes de service pour les opérations CRUD</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Section 8: Bonnes pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Bonnes Pratiques Code First
+            </h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="highlight-box">
+                        <h6><i class="fas fa-check-circle me-2 text-success"></i>À faire</h6>
+                        <ul class="mb-0">
+                            <li>Utilisez des migrations en production</li>
+                            <li>Préférez Fluent API pour configurations complexes</li>
+                            <li>Séparez la configuration dans des classes</li>
+                            <li>Utilisez des conventions de nommage cohérentes</li>
+                            <li>Validez vos modèles avec des tests</li>
+                            <li>Documentez les relations complexes</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="warning-box">
+                        <h6><i class="fas fa-times-circle me-2 text-danger"></i>À éviter</h6>
+                        <ul class="mb-0">
+                            <li>EnsureCreated() en production</li>
+                            <li>Mélanger annotations et Fluent API</li>
+                            <li>Configurations trop complexes dans OnModelCreating</li>
+                            <li>Ignorer les conventions EF</li>
+                            <li>Relations circulaires non gérées</li>
+                            <li>Modèles anémiques sans logique métier</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-3-database-first.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-5-migrations.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

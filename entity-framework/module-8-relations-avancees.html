@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8 - Relations Avancées et Modélisation Complexe</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .relation-diagram {
+            background: #f8f9fa;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .entity-box {
+            background: var(--ef-purple);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .relation-arrow {
+            font-size: 1.5rem;
+            color: var(--ef-green);
+            margin: 0 1rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-project-diagram me-2"></i>
+                Module 8
+            </div>
+            <h1 class="module-title">Relations Avancées et Modélisation Complexe</h1>
+            <p class="module-description">
+                Maîtrisez les relations complexes : Many-to-Many, One-to-One, héritage, et architectures avancées
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>4 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>10 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-project-diagram me-1"></i>Relations
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Relations Many-to-Many -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-arrows-alt-h"></i>
+                Relations Many-to-Many : Gérer les Associations Complexes
+            </h2>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Comprendre Many-to-Many avec des Exemples Concrets</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-users me-2"></i>Analogie : Étudiants et Cours</h5>
+                <ul>
+                    <li>👨‍🎓 Un étudiant peut suivre plusieurs cours</li>
+                    <li>📚 Un cours peut avoir plusieurs étudiants</li>
+                    <li>📝 Chaque inscription a des informations spécifiques (date, note, etc.)</li>
+                </ul>
+                
+                <div class="relation-diagram">
+                    <div class="entity-box">Student</div>
+                    <span class="relation-arrow">↔</span>
+                    <div class="entity-box">StudentCourse</div>
+                    <span class="relation-arrow">↔</span>
+                    <div class="entity-box">Course</div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-code me-2"></i>Implémentation Many-to-Many avec Table de Jointure</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Entité Student
+public class Student
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string FirstName { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string LastName { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+    
+    public DateTime EnrollmentDate { get; set; }
+    
+    // Navigation vers les inscriptions
+    public ICollection&lt;StudentCourse&gt; StudentCourses { get; set; } = new List&lt;StudentCourse&gt;();
+}
+
+// Entité Course
+public class Course
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(200)]
+    public string Title { get; set; }
+    
+    [StringLength(1000)]
+    public string Description { get; set; }
+    
+    public int Credits { get; set; }
+    
+    public decimal Price { get; set; }
+    
+    // Navigation vers les inscriptions
+    public ICollection&lt;StudentCourse&gt; StudentCourses { get; set; } = new List&lt;StudentCourse&gt;();
+}
+
+// Table de jointure avec données supplémentaires
+public class StudentCourse
+{
+    // Clé composite
+    public int StudentId { get; set; }
+    public int CourseId { get; set; }
+    
+    // Navigation properties
+    public Student Student { get; set; }
+    public Course Course { get; set; }
+    
+    // Données spécifiques à l'inscription
+    public DateTime EnrollmentDate { get; set; }
+    public decimal? Grade { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime? CompletionDate { get; set; }
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>Configuration Fluent API</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Configuration de la table de jointure StudentCourse
+    modelBuilder.Entity&lt;StudentCourse&gt;(entity =>
+    {
+        // Clé composite
+        entity.HasKey(sc => new { sc.StudentId, sc.CourseId });
+        
+        // Relation avec Student
+        entity.HasOne(sc => sc.Student)
+              .WithMany(s => s.StudentCourses)
+              .HasForeignKey(sc => sc.StudentId)
+              .OnDelete(DeleteBehavior.Cascade);
+        
+        // Relation avec Course
+        entity.HasOne(sc => sc.Course)
+              .WithMany(c => c.StudentCourses)
+              .HasForeignKey(sc => sc.CourseId)
+              .OnDelete(DeleteBehavior.Cascade);
+        
+        // Configuration des propriétés
+        entity.Property(sc => sc.EnrollmentDate)
+              .HasDefaultValueSql("GETDATE()");
+              
+        entity.Property(sc => sc.Grade)
+              .HasPrecision(3, 1); // Ex: 18.5
+    });
+    
+    // Index pour améliorer les performances
+    modelBuilder.Entity&lt;StudentCourse&gt;()
+        .HasIndex(sc => sc.EnrollmentDate);
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-search me-2"></i>Requêtes Many-to-Many</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// 1. Étudiants d'un cours spécifique
+var studentsInCourse = await context.Students
+    .Where(s => s.StudentCourses.Any(sc => sc.CourseId == courseId))
+    .Include(s => s.StudentCourses)
+        .ThenInclude(sc => sc.Course)
+    .ToListAsync();
+
+// 2. Cours d'un étudiant avec notes
+var studentCourses = await context.StudentCourses
+    .Include(sc => sc.Course)
+    .Include(sc => sc.Student)
+    .Where(sc => sc.StudentId == studentId)
+    .Select(sc => new
+    {
+        CourseName = sc.Course.Title,
+        Grade = sc.Grade,
+        IsCompleted = sc.IsCompleted,
+        EnrollmentDate = sc.EnrollmentDate
+    })
+    .ToListAsync();
+
+// 3. Statistiques par cours
+var courseStats = await context.Courses
+    .Select(c => new
+    {
+        CourseName = c.Title,
+        TotalStudents = c.StudentCourses.Count(),
+        CompletedStudents = c.StudentCourses.Count(sc => sc.IsCompleted),
+        AverageGrade = c.StudentCourses
+            .Where(sc => sc.Grade.HasValue)
+            .Average(sc => sc.Grade.Value)
+    })
+    .ToListAsync();
+
+// 4. Inscrire un étudiant à un cours
+var enrollment = new StudentCourse
+{
+    StudentId = studentId,
+    CourseId = courseId,
+    EnrollmentDate = DateTime.Now
+};
+
+context.StudentCourses.Add(enrollment);
+await context.SaveChangesAsync();</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 2: Relations One-to-One -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-link"></i>
+                Relations One-to-One : Modéliser les Associations Uniques
+            </h2>
+
+            <h3><i class="fas fa-lightbulb me-2"></i>Scénarios One-to-One</h3>
+
+            <div class="highlight-box">
+                <h5><i class="fas fa-user me-2"></i>Exemples Courants</h5>
+                <ul>
+                    <li>👤 User ↔ UserProfile (informations étendues)</li>
+                    <li>🏢 Company ↔ CompanySettings (configuration)</li>
+                    <li>📄 Invoice ↔ InvoiceDetails (détails étendus)</li>
+                    <li>🚗 Car ↔ CarSpecifications (spécifications techniques)</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Entité principale
+public class User
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string Username { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+    
+    // Navigation One-to-One
+    public UserProfile Profile { get; set; }
+}
+
+// Entité dépendante
+public class UserProfile
+{
+    public int Id { get; set; }
+    
+    [StringLength(100)]
+    public string FirstName { get; set; }
+    
+    [StringLength(100)]
+    public string LastName { get; set; }
+    
+    public DateTime? BirthDate { get; set; }
+    
+    [StringLength(500)]
+    public string Bio { get; set; }
+    
+    public string AvatarUrl { get; set; }
+    
+    [StringLength(100)]
+    public string Country { get; set; }
+    
+    [StringLength(100)]
+    public string City { get; set; }
+    
+    // Clé étrangère vers User
+    public int UserId { get; set; }
+    public User User { get; set; }
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>Configuration One-to-One</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Configuration One-to-One
+    modelBuilder.Entity&lt;User&gt;()
+        .HasOne(u => u.Profile)
+        .WithOne(p => p.User)
+        .HasForeignKey&lt;UserProfile&gt;(p => p.UserId)
+        .OnDelete(DeleteBehavior.Cascade);
+    
+    // Index unique sur la clé étrangère
+    modelBuilder.Entity&lt;UserProfile&gt;()
+        .HasIndex(p => p.UserId)
+        .IsUnique();
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-database me-2"></i>Utilisation One-to-One</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Créer un utilisateur avec profil
+var user = new User
+{
+    Username = "john_doe",
+    Email = "john@example.com",
+    CreatedAt = DateTime.Now,
+    Profile = new UserProfile
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        BirthDate = new DateTime(1990, 5, 15),
+        Bio = "Développeur passionné",
+        Country = "France",
+        City = "Paris"
+    }
+};
+
+context.Users.Add(user);
+await context.SaveChangesAsync();
+
+// Récupérer avec profil
+var userWithProfile = await context.Users
+    .Include(u => u.Profile)
+    .FirstOrDefaultAsync(u => u.Id == userId);
+
+// Mise à jour du profil
+if (userWithProfile?.Profile != null)
+{
+    userWithProfile.Profile.Bio = "Nouvelle bio";
+    await context.SaveChangesAsync();
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 3: Héritage -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-sitemap"></i>
+                Héritage : Modéliser les Hiérarchies de Classes
+            </h2>
+
+            <h3><i class="fas fa-tree me-2"></i>Stratégies d'Héritage</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-info-circle me-2"></i>Trois Stratégies Principales</h6>
+                <ul>
+                    <li><strong>Table Per Hierarchy (TPH)</strong> → Une table pour toute la hiérarchie</li>
+                    <li><strong>Table Per Type (TPT)</strong> → Une table par type</li>
+                    <li><strong>Table Per Concrete Type (TPC)</strong> → Une table par type concret</li>
+                </ul>
+            </div>
+
+            <h4>1. Table Per Hierarchy (TPH) - Recommandée</h4>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Classe de base abstraite
+public abstract class Person
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string FirstName { get; set; }
+    
+    [Required]
+    [StringLength(100)]
+    public string LastName { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+}
+
+// Classes dérivées
+public class Student : Person
+{
+    [Required]
+    [StringLength(20)]
+    public string StudentNumber { get; set; }
+    
+    public DateTime EnrollmentDate { get; set; }
+    
+    public decimal GPA { get; set; }
+    
+    public ICollection&lt;StudentCourse&gt; StudentCourses { get; set; }
+}
+
+public class Teacher : Person
+{
+    [Required]
+    [StringLength(100)]
+    public string Department { get; set; }
+    
+    public DateTime HireDate { get; set; }
+    
+    public decimal Salary { get; set; }
+    
+    [StringLength(100)]
+    public string Specialization { get; set; }
+}
+
+public class Administrator : Person
+{
+    [Required]
+    [StringLength(100)]
+    public string Role { get; set; }
+    
+    public DateTime AppointmentDate { get; set; }
+    
+    public int SecurityLevel { get; set; }
+}</code></pre>
+            </div>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Configuration TPH
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity&lt;Person&gt;()
+        .HasDiscriminator&lt;string&gt;("PersonType")
+        .HasValue&lt;Student&gt;("Student")
+        .HasValue&lt;Teacher&gt;("Teacher")
+        .HasValue&lt;Administrator&gt;("Admin");
+    
+    // Configuration spécifique aux étudiants
+    modelBuilder.Entity&lt;Student&gt;()
+        .Property(s => s.GPA)
+        .HasPrecision(3, 2);
+    
+    // Index sur le discriminator
+    modelBuilder.Entity&lt;Person&gt;()
+        .HasIndex("PersonType");
+}</code></pre>
+            </div>
+
+            <h3><i class="fas fa-search me-2"></i>Requêtes avec Héritage</h3>
+
+            <div class="code-block">
+                <pre><code class="language-csharp">// Toutes les personnes
+var allPeople = await context.People.ToListAsync();
+
+// Seulement les étudiants
+var students = await context.People
+    .OfType&lt;Student&gt;()
+    .ToListAsync();
+
+// Étudiants avec GPA élevé
+var topStudents = await context.People
+    .OfType&lt;Student&gt;()
+    .Where(s => s.GPA >= 3.5m)
+    .OrderByDescending(s => s.GPA)
+    .ToListAsync();
+
+// Professeurs d'un département
+var mathTeachers = await context.People
+    .OfType&lt;Teacher&gt;()
+    .Where(t => t.Department == "Mathematics")
+    .ToListAsync();
+
+// Statistiques par type
+var stats = await context.People
+    .GroupBy(p => p.GetType().Name)
+    .Select(g => new
+    {
+        Type = g.Key,
+        Count = g.Count()
+    })
+    .ToListAsync();</code></pre>
+            </div>
+        </div>
+
+        <!-- Section 4: Exercices Pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques : Relations Avancées
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Système de Blog avec Tags (Many-to-Many)
+                </h5>
+                <p><strong>Objectif :</strong> Créer un système de blog avec articles et tags</p>
+                
+                <h6>📝 Modèles à créer :</h6>
+                <ul>
+                    <li><strong>BlogPost</strong> : Title, Content, PublishDate, AuthorId</li>
+                    <li><strong>Tag</strong> : Name, Color, Description</li>
+                    <li><strong>BlogPostTag</strong> : Table de jointure avec DateAdded</li>
+                </ul>
+
+                <h6>🎯 Fonctionnalités à implémenter :</h6>
+                <ul>
+                    <li>Ajouter/supprimer des tags à un article</li>
+                    <li>Lister tous les articles d'un tag</li>
+                    <li>Statistiques : tags les plus utilisés</li>
+                    <li>Recherche d'articles par tags multiples</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Profils Utilisateurs (One-to-One)
+                </h5>
+                <p><strong>Objectif :</strong> Système d'utilisateurs avec profils étendus</p>
+                
+                <h6>👤 Architecture :</h6>
+                <ul>
+                    <li><strong>User</strong> : Données d'authentification</li>
+                    <li><strong>UserProfile</strong> : Informations personnelles</li>
+                    <li><strong>UserSettings</strong> : Préférences utilisateur</li>
+                </ul>
+
+                <h6>🔧 Défis :</h6>
+                <ul>
+                    <li>Gérer la création optionnelle des profils</li>
+                    <li>Mise à jour en cascade</li>
+                    <li>Validation des données liées</li>
+                    <li>Performance des requêtes avec Include</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Hiérarchie d'Employés (Héritage)
+                </h5>
+                <p><strong>Objectif :</strong> Modéliser différents types d'employés</p>
+                
+                <h6>🏢 Hiérarchie :</h6>
+                <ul>
+                    <li><strong>Employee</strong> (base) : Name, Email, HireDate, Salary</li>
+                    <li><strong>Developer</strong> : ProgrammingLanguages, YearsExperience</li>
+                    <li><strong>Manager</strong> : TeamSize, Budget</li>
+                    <li><strong>SalesRep</strong> : Territory, Commission</li>
+                </ul>
+
+                <h6>📊 Rapports à créer :</h6>
+                <ul>
+                    <li>Masse salariale par type d'employé</li>
+                    <li>Développeurs par langage</li>
+                    <li>Managers avec leur équipe</li>
+                    <li>Performance des commerciaux</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 4 : E-commerce Complet (Toutes Relations)
+                </h5>
+                <p><strong>Objectif :</strong> Système e-commerce avec toutes les relations</p>
+                
+                <h6>🛒 Architecture Complète :</h6>
+                <ul>
+                    <li><strong>Many-to-Many</strong> : Products ↔ Categories, Orders ↔ Products</li>
+                    <li><strong>One-to-One</strong> : User ↔ UserProfile, Product ↔ ProductDetails</li>
+                    <li><strong>One-to-Many</strong> : User → Orders, Category → Products</li>
+                    <li><strong>Héritage</strong> : User → Customer/Admin/Vendor</li>
+                </ul>
+
+                <h6>🎯 Fonctionnalités Avancées :</h6>
+                <ul>
+                    <li>Panier avec gestion des quantités</li>
+                    <li>Historique des commandes</li>
+                    <li>Système de reviews avec notes</li>
+                    <li>Gestion des stocks et variations</li>
+                    <li>Rapports de ventes multi-dimensionnels</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-stopwatch me-2"></i>Contraintes Performance</h6>
+                    <ul class="mb-0">
+                        <li>Optimiser toutes les requêtes avec AsNoTracking</li>
+                        <li>Utiliser des projections pour les listes</li>
+                        <li>Implémenter la pagination sur toutes les collections</li>
+                        <li>Créer des index appropriés</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-7-performance-optimisation.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-9-securite-bonnes-pratiques.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

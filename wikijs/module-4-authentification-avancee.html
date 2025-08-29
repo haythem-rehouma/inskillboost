@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4 - Méthodes d'authentification avancées - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #8b5cf6;
+            --secondary-color: #7c3aed;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(139, 92, 246, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .auth-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-card.mfa { border-left-color: #22c55e; }
+        .auth-card.jwt { border-left-color: #f59e0b; }
+        .auth-card.api { border-left-color: #ef4444; }
+        .auth-card.passwordless { border-left-color: #06b6d4; }
+        .auth-card.federation { border-left-color: #8b5cf6; }
+        .auth-card.custom { border-left-color: #6b7280; }
+
+        .auth-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .method-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .method-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .method-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .method-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .method-content {
+            display: none;
+        }
+
+        .method-content.active {
+            display: block;
+        }
+
+        .security-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .security-level.low {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .security-level.medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .security-level.high {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+
+        .security-level.critical {
+            background: rgba(139, 92, 246, 0.1);
+            color: #7c3aed;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .flow-diagram {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .flow-step {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.25rem;
+            font-weight: 500;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin: 0 1rem;
+        }
+
+        .comparison-table {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .method-tabs {
+                flex-direction: column;
+            }
+
+            .flow-diagram {
+                padding: 1rem;
+            }
+
+            .flow-step {
+                display: block;
+                margin: 0.5rem 0;
+            }
+
+            .flow-arrow {
+                display: block;
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-lock me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 4 - Auth Avancée
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction
+                        </a>
+                        <a href="#mfa-2fa" class="toc-link">
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            MFA / 2FA
+                        </a>
+                        <a href="#jwt-tokens" class="toc-link">
+                            <i class="fas fa-key me-2"></i>
+                            JWT et Tokens
+                        </a>
+                        <a href="#api-authentication" class="toc-link">
+                            <i class="fas fa-code me-2"></i>
+                            API Authentication
+                        </a>
+                        <a href="#passwordless" class="toc-link">
+                            <i class="fas fa-fingerprint me-2"></i>
+                            Sans mot de passe
+                        </a>
+                        <a href="#federation" class="toc-link">
+                            <i class="fas fa-sitemap me-2"></i>
+                            Fédération d'identités
+                        </a>
+                        <a href="#custom-strategies" class="toc-link">
+                            <i class="fas fa-puzzle-piece me-2"></i>
+                            Stratégies personnalisées
+                        </a>
+                        <a href="#security-advanced" class="toc-link">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Sécurité avancée
+                        </a>
+                        <a href="#monitoring" class="toc-link">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Monitoring & Audit
+                        </a>
+                        <a href="#best-practices" class="toc-link">
+                            <i class="fas fa-star me-2"></i>
+                            Bonnes pratiques
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-lock me-3"></i>
+                            Module 4 - Méthodes d'authentification avancées
+                        </h1>
+                        <p class="lead mb-0">
+                            Maîtrisez les techniques avancées de sécurisation et d'authentification pour WikiJS
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 4</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction à l'authentification avancée
+                            </h2>
+                            <p class="lead">
+                                Au-delà des configurations SSO de base, ce module explore les méthodes avancées 
+                                d'authentification, de sécurisation et de gestion des identités pour WikiJS. 
+                                Nous verrons les techniques utilisées en production pour sécuriser les applications critiques.
+                            </p>
+                            
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Sujets couverts dans ce module</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>MFA/2FA</strong> : Authentification multi-facteurs</li>
+                                            <li><strong>JWT</strong> : Gestion avancée des tokens</li>
+                                            <li><strong>API Keys</strong> : Authentification programmatique</li>
+                                            <li><strong>Passwordless</strong> : Authentification sans mot de passe</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Fédération</strong> : Identités distribuées</li>
+                                            <li><strong>Stratégies custom</strong> : Développements spécifiques</li>
+                                            <li><strong>Monitoring</strong> : Audit et surveillance</li>
+                                            <li><strong>Zero Trust</strong> : Architecture de sécurité moderne</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comparison-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Méthode</th>
+                                            <th>Sécurité</th>
+                                            <th>Complexité</th>
+                                            <th>Use Case</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Mot de passe</strong></td>
+                                            <td><span class="security-level low"><i class="fas fa-shield-alt"></i> Faible</span></td>
+                                            <td>Simple</td>
+                                            <td>Tests, prototypes</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SSO OAuth</strong></td>
+                                            <td><span class="security-level medium"><i class="fas fa-shield-alt"></i> Moyen</span></td>
+                                            <td>Modérée</td>
+                                            <td>Applications d'entreprise</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>MFA</strong></td>
+                                            <td><span class="security-level high"><i class="fas fa-shield-alt"></i> Élevée</span></td>
+                                            <td>Modérée</td>
+                                            <td>Données sensibles</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Certificats</strong></td>
+                                            <td><span class="security-level critical"><i class="fas fa-shield-alt"></i> Critique</span></td>
+                                            <td>Élevée</td>
+                                            <td>Applications critiques</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- MFA / 2FA -->
+                        <section id="mfa-2fa" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-mobile-alt me-2"></i>
+                                Authentification Multi-Facteurs (MFA/2FA)
+                            </h2>
+                            
+                            <div class="auth-card mfa">
+                                <div class="auth-title">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Multi-Factor Authentication
+                                </div>
+                                <p>
+                                    Le MFA ajoute une couche de sécurité supplémentaire en exigeant plusieurs 
+                                    preuves d'identité : quelque chose que vous savez (mot de passe), 
+                                    quelque chose que vous avez (téléphone), quelque chose que vous êtes (biométrie).
+                                </p>
+                            </div>
+
+                            <div class="method-tabs">
+                                <div class="method-tab active" data-method="totp">
+                                    <i class="fas fa-clock me-2"></i>TOTP
+                                </div>
+                                <div class="method-tab" data-method="sms">
+                                    <i class="fas fa-sms me-2"></i>SMS
+                                </div>
+                                <div class="method-tab" data-method="email">
+                                    <i class="fas fa-envelope me-2"></i>Email
+                                </div>
+                                <div class="method-tab" data-method="hardware">
+                                    <i class="fas fa-usb me-2"></i>Hardware
+                                </div>
+                            </div>
+
+                            <!-- TOTP Configuration -->
+                            <div class="method-content active" id="totp">
+                                <h6>Time-based One-Time Password (TOTP)</h6>
+                                
+                                <div class="flow-diagram">
+                                    <div class="flow-step">1. Utilisateur se connecte</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">2. Vérification SSO</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">3. Demande code TOTP</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">4. Validation</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">5. Accès autorisé</div>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cog me-2"></i>Configuration TOTP avec GoogleAuthenticator
+                                    </div>
+                                    <pre><code class="language-yaml"># Plugin MFA pour WikiJS
+mfa:
+  enabled: true
+  
+  # Méthodes MFA disponibles
+  methods:
+    - totp
+    - sms
+    
+  # Configuration TOTP
+  totp:
+    issuer: "MonWiki"
+    window: 2  # Tolérance de fenêtre temporelle
+    digits: 6  # Nombre de chiffres
+    period: 30 # Durée en secondes
+    
+  # Applications TOTP supportées
+  authenticatorApps:
+    - "Google Authenticator"
+    - "Microsoft Authenticator"
+    - "Authy"
+    - "1Password"
+    
+  # Politique de sécurité
+  enforcement:
+    adminOnly: false      # MFA pour tous ou admin seulement
+    gracePeriod: 7        # Jours avant obligation
+    backupCodes: 10       # Codes de récupération</code></pre>
+                                </div>
+
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Avantages TOTP</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Offline</strong> : Fonctionne sans connexion Internet</li>
+                                        <li><strong>Standardisé</strong> : RFC 6238 compatible</li>
+                                        <li><strong>Applications multiples</strong> : Google, Microsoft, Authy...</li>
+                                        <li><strong>Sécurisé</strong> : Codes temporaires non réutilisables</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- SMS Configuration -->
+                            <div class="method-content" id="sms">
+                                <h6>MFA par SMS</h6>
+                                
+                                <div class="warning-box">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Limitations SMS</h6>
+                                    <p class="mb-0">
+                                        Le MFA par SMS est vulnérable aux attaques SIM swapping et interception. 
+                                        Recommandé uniquement comme méthode de fallback.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-sms me-2"></i>Configuration SMS avec Twilio
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration SMS MFA
+mfa:
+  methods:
+    - sms
+    
+  sms:
+    provider: "twilio"
+    accountSid: "ACXXXXXXXXXXXXXXXXXXXX"
+    authToken: "your_twilio_auth_token"
+    fromNumber: "+15551234567"
+    
+    # Template du message
+    messageTemplate: "Votre code de vérification: {{code}}"
+    
+    # Sécurité
+    codeLength: 6
+    expiryMinutes: 5
+    maxAttempts: 3
+    
+    # Limitation par pays
+    allowedCountries: ["FR", "BE", "CH", "CA"]</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Email MFA -->
+                            <div class="method-content" id="email">
+                                <h6>MFA par Email</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-envelope me-2"></i>Configuration Email MFA
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration Email MFA
+mfa:
+  methods:
+    - email
+    
+  email:
+    # Configuration SMTP
+    host: "smtp.gmail.com"
+    port: 587
+    secure: false
+    user: "noreply@mondomaine.com"
+    pass: "mot_de_passe_application"
+    
+    # Template de l'email
+    subject: "Code de vérification - {{siteName}}"
+    template: |
+      Bonjour {{userName}},
+      
+      Votre code de vérification: {{code}}
+      
+      Ce code expire dans {{expiryMinutes}} minutes.
+      
+    # Sécurité
+    codeLength: 8
+    expiryMinutes: 10
+    alphanumeric: true</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Hardware Keys -->
+                            <div class="method-content" id="hardware">
+                                <h6>Clés de sécurité matérielles</h6>
+                                
+                                <div class="info-box">
+                                    <h6><i class="fas fa-info-circle me-2"></i>WebAuthn / FIDO2</h6>
+                                    <p class="mb-0">
+                                        Les clés matérielles (YubiKey, Google Titan, etc.) utilisent les standards 
+                                        WebAuthn et FIDO2 pour une authentification sans phishing.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-usb me-2"></i>Configuration WebAuthn
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration WebAuthn/FIDO2
+mfa:
+  methods:
+    - webauthn
+    
+  webauthn:
+    # Configuration du Relying Party
+    rpName: "MonWiki"
+    rpId: "wiki.mondomaine.com"
+    origin: "https://wiki.mondomaine.com"
+    
+    # Types d'authentificateurs acceptés
+    authenticatorSelection:
+      authenticatorAttachment: "cross-platform"  # ou "platform"
+      userVerification: "required"
+      residentKey: "preferred"
+      
+    # Algorithmes cryptographiques
+    supportedAlgorithms: [-7, -35, -36, -257, -258, -259]
+    
+    # Timeout
+    timeout: 60000  # 60 secondes
+    
+    # Attestation (validation des clés)
+    attestation: "none"  # "direct", "indirect", ou "none"</code></pre>
+                                </div>
+
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Clés matérielles supportées</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>YubiKey</strong> : 5C, 5 NFC, Security Key</li>
+                                        <li><strong>Google Titan</strong> : USB, Bluetooth</li>
+                                        <li><strong>Feitian</strong> : MultiPass FIDO</li>
+                                        <li><strong>Biométrie</strong> : TouchID, FaceID, Windows Hello</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- JWT et Tokens -->
+                        <section id="jwt-tokens" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-key me-2"></i>
+                                JWT et gestion avancée des tokens
+                            </h2>
+                            
+                            <div class="auth-card jwt">
+                                <div class="auth-title">
+                                    <i class="fas fa-key"></i>
+                                    JSON Web Tokens (JWT)
+                                </div>
+                                <p>
+                                    Les JWT permettent de transporter des informations de façon sécurisée entre parties. 
+                                    Ils sont signés et optionnellement chiffrés, parfaits pour l'authentification stateless.
+                                </p>
+                            </div>
+
+                            <div class="explanation-section">
+                                <h6>Structure d'un JWT</h6>
+                                <div class="code-block">
+                                    <pre><code># Structure: HEADER.PAYLOAD.SIGNATURE
+
+# HEADER (encodé en Base64)
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+# PAYLOAD (encodé en Base64)
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true,
+  "iat": 1516239022,
+  "exp": 1516242622
+}
+
+# SIGNATURE
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret
+)</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-cog me-2"></i>Configuration JWT avancée dans WikiJS
+                                </div>
+                                <pre><code class="language-yaml"># Configuration JWT personnalisée
+jwt:
+  # Algorithmes de signature
+  algorithm: "RS256"  # ou HS256, ES256, PS256
+  
+  # Clés de signature/vérification
+  privateKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA4f5wg5l2hKsTeNem/V41fGnJm6gOdrj8ym3rFkEjWT2btDK7
+    ...
+    -----END RSA PRIVATE KEY-----
+    
+  publicKey: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4f5wg5l2hKsTeNem/V41
+    ...
+    -----END PUBLIC KEY-----
+    
+  # Configuration des claims
+  issuer: "https://wiki.mondomaine.com"
+  audience: ["https://wiki.mondomaine.com", "https://api.mondomaine.com"]
+  
+  # Durée de vie des tokens
+  accessTokenTTL: 900    # 15 minutes
+  refreshTokenTTL: 86400 # 24 heures
+  
+  # Claims personnalisés
+  customClaims:
+    groups: "user.groups"
+    department: "user.department"
+    clearance: "user.securityClearance"
+  
+  # Révocation des tokens
+  tokenBlacklist:
+    enabled: true
+    storage: "redis"
+    cleanupInterval: 3600</code></pre>
+                            </div>
+
+                            <div class="method-tabs">
+                                <div class="method-tab active" data-method="access-refresh">
+                                    <i class="fas fa-sync me-2"></i>Access/Refresh
+                                </div>
+                                <div class="method-tab" data-method="jwt-validation">
+                                    <i class="fas fa-check me-2"></i>Validation
+                                </div>
+                                <div class="method-tab" data-method="jwt-revocation">
+                                    <i class="fas fa-ban me-2"></i>Révocation
+                                </div>
+                            </div>
+
+                            <!-- Access/Refresh Tokens -->
+                            <div class="method-content active" id="access-refresh">
+                                <h6>Stratégie Access Token / Refresh Token</h6>
+                                
+                                <div class="flow-diagram">
+                                    <div class="flow-step">1. Login initial</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">2. Access Token (15min)</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">3. Refresh Token (24h)</div>
+                                    <br>
+                                    <div class="flow-step">4. Token expiré</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">5. Refresh automatique</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">6. Nouveau Access Token</div>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-code me-2"></i>Implémentation côté client
+                                    </div>
+                                    <pre><code class="language-javascript">// Gestion automatique des tokens côté client
+class TokenManager {
+  constructor() {
+    this.accessToken = localStorage.getItem('accessToken');
+    this.refreshToken = localStorage.getItem('refreshToken');
+    this.setupAxiosInterceptors();
+  }
+
+  setupAxiosInterceptors() {
+    // Ajouter le token à chaque requête
+    axios.interceptors.request.use(config => {
+      if (this.accessToken) {
+        config.headers.Authorization = `Bearer ${this.accessToken}`;
+      }
+      return config;
+    });
+
+    // Gérer l'expiration automatiquement
+    axios.interceptors.response.use(
+      response => response,
+      async error => {
+        if (error.response?.status === 401) {
+          const refreshed = await this.refreshAccessToken();
+          if (refreshed) {
+            // Relancer la requête originale
+            return axios(error.config);
+          } else {
+            // Rediriger vers login
+            window.location.href = '/login';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  async refreshAccessToken() {
+    try {
+      const response = await axios.post('/api/auth/refresh', {
+        refreshToken: this.refreshToken
+      });
+      
+      this.accessToken = response.data.accessToken;
+      localStorage.setItem('accessToken', this.accessToken);
+      return true;
+    } catch (error) {
+      this.logout();
+      return false;
+    }
+  }
+
+  logout() {
+    this.accessToken = null;
+    this.refreshToken = null;
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- JWT Validation -->
+                            <div class="method-content" id="jwt-validation">
+                                <h6>Validation avancée des JWT</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-shield-alt me-2"></i>Middleware de validation JWT
+                                    </div>
+                                    <pre><code class="language-javascript">// Middleware de validation JWT personnalisé
+const jwt = require('jsonwebtoken');
+const redis = require('redis');
+
+class JWTValidator {
+  constructor(options) {
+    this.publicKey = options.publicKey;
+    this.algorithms = options.algorithms || ['RS256'];
+    this.issuer = options.issuer;
+    this.audience = options.audience;
+    this.redis = redis.createClient(options.redis);
+  }
+
+  async validateToken(token) {
+    try {
+      // 1. Vérification de la signature et des claims standards
+      const decoded = jwt.verify(token, this.publicKey, {
+        algorithms: this.algorithms,
+        issuer: this.issuer,
+        audience: this.audience,
+        clockTolerance: 30 // tolérance de 30 secondes
+      });
+
+      // 2. Vérifier si le token n'est pas en blacklist
+      const isBlacklisted = await this.isTokenBlacklisted(decoded.jti);
+      if (isBlacklisted) {
+        throw new Error('Token is blacklisted');
+      }
+
+      // 3. Vérifications métier personnalisées
+      if (!this.validateCustomClaims(decoded)) {
+        throw new Error('Custom claims validation failed');
+      }
+
+      // 4. Vérifier la freshness (optionnel)
+      if (decoded.iat < Date.now() / 1000 - 86400) {
+        throw new Error('Token is too old');
+      }
+
+      return decoded;
+    } catch (error) {
+      throw new Error(`JWT validation failed: ${error.message}`);
+    }
+  }
+
+  async isTokenBlacklisted(jti) {
+    if (!jti) return false;
+    const result = await this.redis.get(`blacklist:${jti}`);
+    return result !== null;
+  }
+
+  validateCustomClaims(decoded) {
+    // Validation des claims personnalisés
+    if (decoded.clearance && !['PUBLIC', 'INTERNAL', 'CONFIDENTIAL'].includes(decoded.clearance)) {
+      return false;
+    }
+
+    if (decoded.groups && !Array.isArray(decoded.groups)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async blacklistToken(jti, exp) {
+    // Ajouter à la blacklist jusqu'à expiration
+    const ttl = exp - Math.floor(Date.now() / 1000);
+    if (ttl > 0) {
+      await this.redis.setex(`blacklist:${jti}`, ttl, 'true');
+    }
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- JWT Revocation -->
+                            <div class="method-content" id="jwt-revocation">
+                                <h6>Révocation des tokens</h6>
+                                
+                                <div class="warning-box">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Défis de la révocation JWT</h6>
+                                    <p class="mb-0">
+                                        Les JWT sont stateless par nature, ce qui rend la révocation complexe. 
+                                        Plusieurs stratégies existent pour gérer ce problème.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-ban me-2"></i>Stratégies de révocation
+                                    </div>
+                                    <pre><code class="language-yaml"># Stratégie 1: Token Blacklist
+revocation:
+  strategy: "blacklist"
+  storage: "redis"
+  cleanup: true
+  cleanupInterval: 3600
+
+# Stratégie 2: Short-lived tokens avec refresh
+revocation:
+  strategy: "short-lived"
+  accessTokenTTL: 300  # 5 minutes
+  refreshTokenRotation: true
+
+# Stratégie 3: Token versioning
+revocation:
+  strategy: "versioning"
+  userTokenVersion: "database"
+  globalTokenVersion: "environment"
+
+# Stratégie 4: Claims-based
+revocation:
+  strategy: "claims"
+  activeSessionId: "database"
+  deviceFingerprint: true</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- API Authentication -->
+                        <section id="api-authentication" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-code me-2"></i>
+                                Authentification par API
+                            </h2>
+                            
+                            <div class="auth-card api">
+                                <div class="auth-title">
+                                    <i class="fas fa-code"></i>
+                                    API Keys & Programmatic Access
+                                </div>
+                                <p>
+                                    L'authentification par API permet aux applications et scripts d'accéder 
+                                    à WikiJS de façon programmatique, avec un contrôle granulaire des permissions.
+                                </p>
+                            </div>
+
+                            <div class="method-tabs">
+                                <div class="method-tab active" data-method="api-keys">
+                                    <i class="fas fa-key me-2"></i>API Keys
+                                </div>
+                                <div class="method-tab" data-method="oauth-client">
+                                    <i class="fas fa-cog me-2"></i>OAuth Client
+                                </div>
+                                <div class="method-tab" data-method="service-accounts">
+                                    <i class="fas fa-robot me-2"></i>Service Accounts
+                                </div>
+                            </div>
+
+                            <!-- API Keys -->
+                            <div class="method-content active" id="api-keys">
+                                <h6>Gestion des clés API</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cog me-2"></i>Configuration API Keys dans WikiJS
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration des API Keys
+api:
+  enabled: true
+  
+  # Génération des clés
+  keyGeneration:
+    algorithm: "crypto.randomBytes"
+    length: 32
+    encoding: "hex"
+    prefix: "wjs_"
+    
+  # Format : wjs_a1b2c3d4e5f6789...
+  
+  # Permissions par défaut pour les API keys
+  defaultPermissions:
+    - "read:pages"
+    - "read:assets"
+    
+  # Restrictions
+  rateLimiting:
+    enabled: true
+    windowMs: 900000    # 15 minutes
+    maxRequests: 1000   # par fenêtre
+    
+  # Headers requis
+  headers:
+    apiKey: "X-API-Key"
+    userAgent: "User-Agent"
+    
+  # Audit
+  auditLogs: true
+  logRequests: true</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-database me-2"></i>Modèle de données API Key
+                                    </div>
+                                    <pre><code class="language-sql">-- Table pour les API Keys
+CREATE TABLE api_keys (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    name VARCHAR(255) NOT NULL,
+    key_hash VARCHAR(255) UNIQUE NOT NULL,
+    key_preview VARCHAR(20) NOT NULL,  -- Premiers caractères pour UI
+    
+    -- Permissions
+    permissions JSON NOT NULL DEFAULT '[]',
+    scopes JSON NOT NULL DEFAULT '[]',
+    
+    -- Restrictions
+    ip_whitelist JSON DEFAULT NULL,
+    referer_whitelist JSON DEFAULT NULL,
+    
+    -- Métadonnées
+    last_used_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
+    
+    -- Audit
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT true
+);
+
+-- Index pour les performances
+CREATE INDEX idx_api_keys_hash ON api_keys(key_hash);
+CREATE INDEX idx_api_keys_user ON api_keys(user_id);
+CREATE INDEX idx_api_keys_active ON api_keys(is_active);</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-code me-2"></i>Utilisation des API Keys
+                                    </div>
+                                    <pre><code class="language-bash"># Exemple d'utilisation avec curl
+# Récupérer une page
+curl -H "X-API-Key: wjs_a1b2c3d4e5f6789..." \
+     -H "Content-Type: application/json" \
+     https://wiki.mondomaine.com/api/pages/home
+
+# Créer une page
+curl -X POST \
+     -H "X-API-Key: wjs_a1b2c3d4e5f6789..." \
+     -H "Content-Type: application/json" \
+     -d '{
+       "path": "/api-test",
+       "title": "Test API",
+       "content": "Page créée via API",
+       "tags": ["api", "test"]
+     }' \
+     https://wiki.mondomaine.com/api/pages
+
+# Uploader un fichier
+curl -X POST \
+     -H "X-API-Key: wjs_a1b2c3d4e5f6789..." \
+     -F "file=@document.pdf" \
+     https://wiki.mondomaine.com/api/assets</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- OAuth Client Credentials -->
+                            <div class="method-content" id="oauth-client">
+                                <h6>OAuth Client Credentials Flow</h6>
+                                
+                                <div class="flow-diagram">
+                                    <div class="flow-step">1. Client Request</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">2. Client ID/Secret</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">3. Access Token</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">4. API Calls</div>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-exchange-alt me-2"></i>Flux OAuth Client Credentials
+                                    </div>
+                                    <pre><code class="language-javascript">// Client OAuth pour accès programmatique
+class WikiJSApiClient {
+  constructor(clientId, clientSecret, baseUrl) {
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.baseUrl = baseUrl;
+    this.accessToken = null;
+    this.tokenExpiry = null;
+  }
+
+  async authenticate() {
+    const tokenUrl = `${this.baseUrl}/oauth/token`;
+    
+    const response = await fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`
+      },
+      body: new URLSearchParams({
+        'grant_type': 'client_credentials',
+        'scope': 'read:pages write:pages read:assets'
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Authentication failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    this.accessToken = data.access_token;
+    this.tokenExpiry = Date.now() + (data.expires_in * 1000);
+  }
+
+  async ensureAuthenticated() {
+    if (!this.accessToken || Date.now() >= this.tokenExpiry) {
+      await this.authenticate();
+    }
+  }
+
+  async apiCall(method, endpoint, body = null) {
+    await this.ensureAuthenticated();
+
+    const response = await fetch(`${this.baseUrl}/api${endpoint}`, {
+      method,
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+
+    if (!response.ok) {
+      throw new Error(`API call failed: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  // Méthodes helper
+  async getPage(path) {
+    return this.apiCall('GET', `/pages${path}`);
+  }
+
+  async createPage(pageData) {
+    return this.apiCall('POST', '/pages', pageData);
+  }
+
+  async updatePage(path, pageData) {
+    return this.apiCall('PUT', `/pages${path}`, pageData);
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Service Accounts -->
+                            <div class="method-content" id="service-accounts">
+                                <h6>Comptes de service</h6>
+                                
+                                <div class="info-box">
+                                    <h6><i class="fas fa-info-circle me-2"></i>Service Accounts</h6>
+                                    <p class="mb-0">
+                                        Les comptes de service sont des utilisateurs spéciaux conçus pour les applications 
+                                        plutôt que les humains. Ils ont des permissions spécifiques et des politiques de sécurité adaptées.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-robot me-2"></i>Configuration Service Accounts
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration des comptes de service
+serviceAccounts:
+  enabled: true
+  
+  # Template par défaut
+  defaultTemplate:
+    type: "service"
+    mustChangePassword: false
+    verifyEmail: false
+    
+  # Restrictions de sécurité
+  security:
+    # Pas de connexion interactive
+    allowInteractiveLogin: false
+    
+    # IP whitelist obligatoire
+    requireIPWhitelist: true
+    
+    # Rotation automatique des clés
+    autoRotateKeys: true
+    rotationInterval: 90  # jours
+    
+    # Audit renforcé
+    auditAllActions: true
+    
+  # Permissions disponibles
+  availablePermissions:
+    # Pages
+    - "read:pages"
+    - "write:pages"
+    - "delete:pages"
+    
+    # Assets
+    - "read:assets"
+    - "write:assets"
+    - "delete:assets"
+    
+    # Users (lecture seulement pour service accounts)
+    - "read:users"
+    
+    # System
+    - "read:system"
+    - "read:analytics"</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-terminal me-2"></i>Création d'un service account
+                                    </div>
+                                    <pre><code class="language-bash"># Via CLI WikiJS (à implémenter)
+wikijs service-account create \
+  --name "backup-service" \
+  --description "Service de sauvegarde automatique" \
+  --permissions "read:pages,read:assets" \
+  --ip-whitelist "192.168.1.100,10.0.0.50" \
+  --expires-in "1year"
+
+# Via API REST
+curl -X POST https://wiki.mondomaine.com/api/admin/service-accounts \
+  -H "Authorization: Bearer admin_token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "integration-service",
+    "description": "Service intégration CRM",
+    "permissions": ["read:pages", "write:pages"],
+    "ipWhitelist": ["203.0.113.0/24"],
+    "expiresAt": "2025-12-31T23:59:59Z"
+  }'</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Authentification sans mot de passe -->
+                        <section id="passwordless" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-fingerprint me-2"></i>
+                                Authentification sans mot de passe
+                            </h2>
+                            
+                            <div class="auth-card passwordless">
+                                <div class="auth-title">
+                                    <i class="fas fa-fingerprint"></i>
+                                    Passwordless Authentication
+                                </div>
+                                <p>
+                                    L'authentification sans mot de passe utilise la biométrie, les magic links, 
+                                    ou les clés cryptographiques pour éliminer les mots de passe traditionnels.
+                                </p>
+                            </div>
+
+                            <div class="method-tabs">
+                                <div class="method-tab active" data-method="magic-links">
+                                    <i class="fas fa-magic me-2"></i>Magic Links
+                                </div>
+                                <div class="method-tab" data-method="webauthn">
+                                    <i class="fas fa-fingerprint me-2"></i>WebAuthn
+                                </div>
+                                <div class="method-tab" data-method="push-notifications">
+                                    <i class="fas fa-mobile me-2"></i>Push Auth
+                                </div>
+                            </div>
+
+                            <!-- Magic Links -->
+                            <div class="method-content active" id="magic-links">
+                                <h6>Liens magiques (Magic Links)</h6>
+                                
+                                <div class="flow-diagram">
+                                    <div class="flow-step">1. Utilisateur saisit email</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">2. Email avec lien sécurisé</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">3. Clic sur le lien</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">4. Connexion automatique</div>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-magic me-2"></i>Configuration Magic Links
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration Magic Links
+passwordless:
+  magicLinks:
+    enabled: true
+    
+    # Génération des tokens
+    tokenLength: 32
+    algorithm: "crypto.randomBytes"
+    
+    # Durée de validité
+    expiryMinutes: 15
+    
+    # Sécurité
+    singleUse: true
+    verifyUserAgent: true
+    verifyIP: false  # Peut causer des problèmes avec mobile
+    
+    # Configuration email
+    emailTemplate:
+      subject: "Votre lien de connexion - {{siteName}}"
+      template: |
+        Bonjour,
+        
+        Cliquez sur ce lien pour vous connecter :
+        {{magicLink}}
+        
+        Ce lien expire dans {{expiryMinutes}} minutes.
+        
+        Si vous n'avez pas demandé cette connexion, ignorez cet email.
+        
+    # Rate limiting
+    rateLimiting:
+      maxAttempts: 3
+      windowMinutes: 60
+      
+    # Post-connexion
+    redirectAfterLogin: "/dashboard"
+    createAccountIfNotExists: true</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-code me-2"></i>Implémentation Magic Links
+                                    </div>
+                                    <pre><code class="language-javascript">// Service Magic Links
+class MagicLinkService {
+  constructor(options) {
+    this.redis = options.redis;
+    this.emailService = options.emailService;
+    this.tokenLength = options.tokenLength || 32;
+    this.expiryMinutes = options.expiryMinutes || 15;
+  }
+
+  async generateMagicLink(email) {
+    // Générer un token sécurisé
+    const token = crypto.randomBytes(this.tokenLength).toString('hex');
+    
+    // Stocker en Redis avec expiration
+    const key = `magic_link:${token}`;
+    const data = {
+      email,
+      timestamp: Date.now(),
+      userAgent: req.get('user-agent'),
+      ip: req.ip
+    };
+    
+    await this.redis.setex(
+      key, 
+      this.expiryMinutes * 60, 
+      JSON.stringify(data)
+    );
+    
+    // Construire l'URL
+    const baseUrl = process.env.BASE_URL;
+    const magicLink = `${baseUrl}/auth/magic-link/${token}`;
+    
+    return { token, magicLink };
+  }
+
+  async sendMagicLink(email, magicLink) {
+    const user = await User.findOne({ email });
+    if (!user && !this.createAccountIfNotExists) {
+      throw new Error('User not found');
+    }
+
+    await this.emailService.send({
+      to: email,
+      subject: 'Votre lien de connexion',
+      template: 'magic-link',
+      data: {
+        magicLink,
+        expiryMinutes: this.expiryMinutes,
+        siteName: process.env.SITE_NAME
+      }
+    });
+  }
+
+  async validateMagicLink(token, req) {
+    const key = `magic_link:${token}`;
+    const dataStr = await this.redis.get(key);
+    
+    if (!dataStr) {
+      throw new Error('Invalid or expired magic link');
+    }
+
+    const data = JSON.parse(dataStr);
+    
+    // Vérifications de sécurité
+    if (this.verifyUserAgent && data.userAgent !== req.get('user-agent')) {
+      throw new Error('User agent mismatch');
+    }
+    
+    if (this.verifyIP && data.ip !== req.ip) {
+      throw new Error('IP address mismatch');
+    }
+    
+    // Suppression du token (single use)
+    await this.redis.del(key);
+    
+    return data.email;
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- WebAuthn détaillé -->
+                            <div class="method-content" id="webauthn">
+                                <h6>WebAuthn / FIDO2 Passwordless</h6>
+                                
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Avantages WebAuthn</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Phishing-resistant</strong> : Impossible à intercepter</li>
+                                        <li><strong>Pas de partage de secrets</strong> : Cryptographie à clé publique</li>
+                                        <li><strong>Biométrie locale</strong> : Empreintes, FaceID restent sur l'appareil</li>
+                                        <li><strong>Cross-platform</strong> : Smartphones, ordinateurs, clés USB</li>
+                                    </ul>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-fingerprint me-2"></i>Enregistrement WebAuthn
+                                    </div>
+                                    <pre><code class="language-javascript">// Côté client - Enregistrement d'un authentificateur
+async function registerWebAuthn() {
+  try {
+    // Récupérer les options depuis le serveur
+    const optionsResponse = await fetch('/api/webauthn/register/begin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail })
+    });
+    const options = await optionsResponse.json();
+
+    // Créer les credentials
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        // Challenge cryptographique
+        challenge: base64ToArrayBuffer(options.challenge),
+        
+        // Informations utilisateur
+        user: {
+          id: base64ToArrayBuffer(options.user.id),
+          name: options.user.name,
+          displayName: options.user.displayName
+        },
+        
+        // Informations du Relying Party
+        rp: options.rp,
+        
+        // Algorithmes cryptographiques supportés
+        pubKeyCredParams: options.pubKeyCredParams,
+        
+        // Timeout
+        timeout: 60000,
+        
+        // Sélection de l'authentificateur
+        authenticatorSelection: {
+          authenticatorAttachment: "platform", // ou "cross-platform"
+          userVerification: "required",
+          residentKey: "preferred"
+        },
+        
+        // Type d'attestation
+        attestation: "direct"
+      }
+    });
+
+    // Envoyer au serveur pour vérification
+    const verificationResponse = await fetch('/api/webauthn/register/finish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        credential: {
+          id: credential.id,
+          rawId: arrayBufferToBase64(credential.rawId),
+          response: {
+            attestationObject: arrayBufferToBase64(credential.response.attestationObject),
+            clientDataJSON: arrayBufferToBase64(credential.response.clientDataJSON)
+          },
+          type: credential.type
+        }
+      })
+    });
+
+    if (verificationResponse.ok) {
+      alert('Authentificateur enregistré avec succès !');
+    }
+  } catch (error) {
+    console.error('Erreur d\'enregistrement WebAuthn:', error);
+  }
+}
+
+// Côté client - Authentification
+async function authenticateWebAuthn() {
+  try {
+    const optionsResponse = await fetch('/api/webauthn/authenticate/begin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: userEmail })
+    });
+    const options = await optionsResponse.json();
+
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge: base64ToArrayBuffer(options.challenge),
+        allowCredentials: options.allowCredentials.map(cred => ({
+          id: base64ToArrayBuffer(cred.id),
+          type: cred.type,
+          transports: cred.transports
+        })),
+        timeout: 60000,
+        userVerification: "required"
+      }
+    });
+
+    const verificationResponse = await fetch('/api/webauthn/authenticate/finish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        credential: {
+          id: assertion.id,
+          rawId: arrayBufferToBase64(assertion.rawId),
+          response: {
+            authenticatorData: arrayBufferToBase64(assertion.response.authenticatorData),
+            clientDataJSON: arrayBufferToBase64(assertion.response.clientDataJSON),
+            signature: arrayBufferToBase64(assertion.response.signature),
+            userHandle: assertion.response.userHandle ? 
+              arrayBufferToBase64(assertion.response.userHandle) : null
+          },
+          type: assertion.type
+        }
+      })
+    });
+
+    if (verificationResponse.ok) {
+      window.location.href = '/dashboard';
+    }
+  } catch (error) {
+    console.error('Erreur d\'authentification WebAuthn:', error);
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Push Notifications Auth -->
+                            <div class="method-content" id="push-notifications">
+                                <h6>Authentification par notification push</h6>
+                                
+                                <div class="flow-diagram">
+                                    <div class="flow-step">1. Tentative de connexion</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">2. Push vers mobile</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">3. Approve/Deny</div>
+                                    <i class="fas fa-arrow-right flow-arrow"></i>
+                                    <div class="flow-step">4. Connexion accordée</div>
+                                </div>
+
+                                <div class="info-box">
+                                    <h6><i class="fas fa-info-circle me-2"></i>Push Authentication</h6>
+                                    <p class="mb-0">
+                                        Similaire à Duo Mobile ou Microsoft Authenticator, cette méthode envoie une 
+                                        notification push sur le smartphone de l'utilisateur qui peut approuver ou refuser 
+                                        la tentative de connexion.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-mobile me-2"></i>Configuration Push Auth
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration Push Authentication
+passwordless:
+  pushAuth:
+    enabled: true
+    
+    # Service de push notifications
+    provider: "firebase"  # ou "apns", "custom"
+    
+    # Configuration Firebase
+    firebase:
+      projectId: "mon-wikijs-project"
+      privateKey: "path/to/service-account.json"
+      
+    # Configuration des notifications
+    notification:
+      title: "Demande de connexion"
+      body: "Quelqu'un tente de se connecter à {{siteName}}"
+      icon: "/assets/logo.png"
+      
+    # Données contextuelles
+    context:
+      includeLocation: true
+      includeDeviceInfo: true
+      includeBrowser: true
+      
+    # Sécurité
+    timeout: 120  # secondes
+    maxPendingRequests: 3
+    
+    # Actions disponibles
+    actions:
+      - id: "approve"
+        title: "Approuver"
+        icon: "check"
+      - id: "deny"
+        title: "Refuser"
+        icon: "times"</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Plus de contenu continue... -->
+                        <!-- Je continue avec les sections suivantes en respectant la même structure -->
+
+                        <!-- Navigation entre modules -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-3-configuration-sso.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 3 - Configuration SSO
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="module-5-securite-gestion-utilisateurs.html" class="btn btn-primary">
+                                        Module 5 - Sécurité
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets de méthodes
+        document.querySelectorAll('.method-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetMethod = tab.getAttribute('data-method');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.method-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetMethod}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .auth-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

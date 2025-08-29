@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5 - Sécurité et gestion des utilisateurs - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ef4444;
+            --secondary-color: #dc2626;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .security-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .security-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .security-card.users { border-left-color: #3b82f6; }
+        .security-card.roles { border-left-color: #8b5cf6; }
+        .security-card.permissions { border-left-color: #10b981; }
+        .security-card.audit { border-left-color: #f59e0b; }
+        .security-card.threats { border-left-color: #ef4444; }
+        .security-card.compliance { border-left-color: #6b7280; }
+
+        .security-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .risk-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .risk-level.low {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+
+        .risk-level.medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .risk-level.high {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .risk-level.critical {
+            background: rgba(127, 29, 29, 0.1);
+            color: #991b1b;
+        }
+
+        .permission-matrix {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .permission-matrix table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+
+        .permission-matrix th {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 0.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .permission-matrix td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .permission-matrix tr:hover {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .permission-check {
+            color: #22c55e;
+            font-size: 1.2rem;
+        }
+
+        .permission-cross {
+            color: #ef4444;
+            font-size: 1.2rem;
+        }
+
+        .security-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .security-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .security-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .security-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .security-content {
+            display: none;
+        }
+
+        .security-content.active {
+            display: block;
+        }
+
+        .threat-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+
+        .threat-indicator.blocked {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+
+        .threat-indicator.detected {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .threat-indicator.critical {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(239, 68, 68, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .security-tabs {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-user-shield me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 5 - Sécurité
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction
+                        </a>
+                        <a href="#gestion-utilisateurs" class="toc-link">
+                            <i class="fas fa-users me-2"></i>
+                            Gestion utilisateurs
+                        </a>
+                        <a href="#roles-permissions" class="toc-link">
+                            <i class="fas fa-user-cog me-2"></i>
+                            Rôles & Permissions
+                        </a>
+                        <a href="#politiques-securite" class="toc-link">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Politiques de sécurité
+                        </a>
+                        <a href="#audit-logging" class="toc-link">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            Audit & Logging
+                        </a>
+                        <a href="#protection-attaques" class="toc-link">
+                            <i class="fas fa-bug me-2"></i>
+                            Protection attaques
+                        </a>
+                        <a href="#chiffrement" class="toc-link">
+                            <i class="fas fa-lock me-2"></i>
+                            Chiffrement
+                        </a>
+                        <a href="#conformite" class="toc-link">
+                            <i class="fas fa-balance-scale me-2"></i>
+                            Conformité RGPD
+                        </a>
+                        <a href="#surveillance" class="toc-link">
+                            <i class="fas fa-eye me-2"></i>
+                            Surveillance
+                        </a>
+                        <a href="#best-practices" class="toc-link">
+                            <i class="fas fa-star me-2"></i>
+                            Bonnes pratiques
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-user-shield me-3"></i>
+                            Module 5 - Sécurité et gestion des utilisateurs
+                        </h1>
+                        <p class="lead mb-0">
+                            Maîtrisez la sécurisation complète de votre instance WikiJS et la gestion avancée des utilisateurs
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 5</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction à la sécurité WikiJS
+                            </h2>
+                            <p class="lead">
+                                La sécurité est un aspect critique de toute application web. Dans ce module, 
+                                nous explorons les mécanismes de protection de WikiJS, la gestion granulaire 
+                                des utilisateurs et les bonnes pratiques pour sécuriser votre installation.
+                            </p>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <span class="stat-number">7</span>
+                                    <div class="stat-label">Niveaux de sécurité</div>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">15+</span>
+                                    <div class="stat-label">Types de permissions</div>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">OWASP</span>
+                                    <div class="stat-label">Standards respectés</div>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="stat-number">RGPD</span>
+                                    <div class="stat-label">Conformité incluse</div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Principes de sécurité WikiJS</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Defense in Depth</strong> : Sécurité multicouche</li>
+                                            <li><strong>Principle of Least Privilege</strong> : Permissions minimales</li>
+                                            <li><strong>Zero Trust</strong> : Vérification constante</li>
+                                            <li><strong>Fail Secure</strong> : Sécurisé par défaut</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Audit Trail</strong> : Traçabilité complète</li>
+                                            <li><strong>Input Validation</strong> : Validation stricte</li>
+                                            <li><strong>Output Encoding</strong> : Échappement sécurisé</li>
+                                            <li><strong>Secure by Design</strong> : Sécurité intrinsèque</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Menaces courantes</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><span class="risk-level high"><i class="fas fa-exclamation-triangle"></i> Critique</span> - Injection SQL</li>
+                                            <li><span class="risk-level high"><i class="fas fa-exclamation-triangle"></i> Critique</span> - XSS (Cross-Site Scripting)</li>
+                                            <li><span class="risk-level medium"><i class="fas fa-exclamation-triangle"></i> Moyen</span> - CSRF</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><span class="risk-level high"><i class="fas fa-exclamation-triangle"></i> Critique</span> - Escalade de privilèges</li>
+                                            <li><span class="risk-level medium"><i class="fas fa-exclamation-triangle"></i> Moyen</span> - Brute Force</li>
+                                            <li><span class="risk-level low"><i class="fas fa-exclamation-triangle"></i> Faible</span> - Information Disclosure</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Gestion des utilisateurs -->
+                        <section id="gestion-utilisateurs" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-users me-2"></i>
+                                Gestion avancée des utilisateurs
+                            </h2>
+                            
+                            <div class="security-card users">
+                                <div class="security-title">
+                                    <i class="fas fa-users"></i>
+                                    User Management System
+                                </div>
+                                <p>
+                                    WikiJS offre un système complet de gestion des utilisateurs avec profils, 
+                                    groupes, statuts et métadonnées étendues pour un contrôle granulaire.
+                                </p>
+                            </div>
+
+                            <div class="security-tabs">
+                                <div class="security-tab active" data-security="user-creation">
+                                    <i class="fas fa-user-plus me-2"></i>Création
+                                </div>
+                                <div class="security-tab" data-security="user-lifecycle">
+                                    <i class="fas fa-cycle me-2"></i>Cycle de vie
+                                </div>
+                                <div class="security-tab" data-security="user-groups">
+                                    <i class="fas fa-users-cog me-2"></i>Groupes
+                                </div>
+                                <div class="security-tab" data-security="user-profiles">
+                                    <i class="fas fa-id-card me-2"></i>Profils
+                                </div>
+                            </div>
+
+                            <!-- Création d'utilisateurs -->
+                            <div class="security-content active" id="user-creation">
+                                <h6>Création et configuration des utilisateurs</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cog me-2"></i>Configuration utilisateurs
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration de base des utilisateurs
+users:
+  # Paramètres de création
+  registration:
+    enabled: false  # Désactiver l'auto-inscription
+    requireEmailVerification: true
+    allowDomains: ["monentreprise.com", "partenaire.com"]
+    blockDomains: ["tempmail.org", "guerrillamail.com"]
+    
+  # Validation des mots de passe
+  passwordPolicy:
+    minLength: 12
+    requireUppercase: true
+    requireLowercase: true
+    requireNumbers: true
+    requireSymbols: true
+    preventCommonPasswords: true
+    preventReuse: 5  # Derniers mots de passe
+    maxAge: 90       # Jours avant expiration
+    
+  # Paramètres de session
+  sessions:
+    maxConcurrent: 3     # Sessions simultanées max
+    timeout: 8           # Heures d'inactivité
+    rememberDuration: 30 # Jours "Se souvenir de moi"
+    
+  # Restrictions compte
+  accountLockout:
+    enabled: true
+    maxAttempts: 5
+    lockoutDuration: 30  # minutes
+    resetAfter: 24       # heures
+    
+  # Profil utilisateur requis
+  requiredFields:
+    - email
+    - displayName
+    - department
+    - manager</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-database me-2"></i>Modèle de données utilisateur étendu
+                                    </div>
+                                    <pre><code class="language-sql">-- Table utilisateurs étendue
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255),
+    display_name VARCHAR(255) NOT NULL,
+    
+    -- Informations de base
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    title VARCHAR(100),
+    department VARCHAR(100),
+    manager_id INTEGER REFERENCES users(id),
+    
+    -- Contact
+    phone VARCHAR(20),
+    mobile VARCHAR(20),
+    office_location VARCHAR(100),
+    
+    -- Sécurité
+    is_active BOOLEAN DEFAULT true,
+    is_verified BOOLEAN DEFAULT false,
+    must_change_password BOOLEAN DEFAULT false,
+    password_changed_at TIMESTAMP,
+    last_login_at TIMESTAMP,
+    last_login_ip INET,
+    failed_login_attempts INTEGER DEFAULT 0,
+    locked_until TIMESTAMP NULL,
+    
+    -- Métadonnées
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INTEGER REFERENCES users(id),
+    
+    -- RGPD
+    consent_date TIMESTAMP,
+    data_retention_until TIMESTAMP,
+    
+    -- Authentification externe
+    provider_id VARCHAR(100),
+    provider_data JSONB DEFAULT '{}'::jsonb,
+    
+    -- Préférences
+    locale VARCHAR(10) DEFAULT 'fr',
+    timezone VARCHAR(50) DEFAULT 'Europe/Paris',
+    theme VARCHAR(20) DEFAULT 'light',
+    
+    -- Attributs personnalisés
+    custom_attributes JSONB DEFAULT '{}'::jsonb
+);
+
+-- Index pour les performances et sécurité
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_active ON users(is_active);
+CREATE INDEX idx_users_department ON users(department);
+CREATE INDEX idx_users_last_login ON users(last_login_at);
+CREATE INDEX idx_users_provider ON users(provider_id);
+CREATE INDEX idx_users_locked ON users(locked_until) WHERE locked_until IS NOT NULL;</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Cycle de vie utilisateur -->
+                            <div class="security-content" id="user-lifecycle">
+                                <h6>Cycle de vie des utilisateurs</h6>
+                                
+                                <div class="explanation-section">
+                                    <h6>États du compte utilisateur</h6>
+                                    <ul>
+                                        <li><strong>Pending</strong> : Créé, en attente de vérification email</li>
+                                        <li><strong>Active</strong> : Compte actif et opérationnel</li>
+                                        <li><strong>Suspended</strong> : Suspendu temporairement</li>
+                                        <li><strong>Locked</strong> : Verrouillé (trop de tentatives)</li>
+                                        <li><strong>Disabled</strong> : Désactivé par admin</li>
+                                        <li><strong>Archived</strong> : Archivé (données conservées)</li>
+                                        <li><strong>Deleted</strong> : Supprimé (RGPD)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cogs me-2"></i>Workflow de gestion utilisateur
+                                    </div>
+                                    <pre><code class="language-javascript">// Service de gestion du cycle de vie utilisateur
+class UserLifecycleService {
+  constructor(db, auditLogger) {
+    this.db = db;
+    this.audit = auditLogger;
+  }
+
+  async createUser(userData, createdBy) {
+    const transaction = await this.db.transaction();
+    try {
+      // 1. Validation des données
+      this.validateUserData(userData);
+      
+      // 2. Vérification des doublons
+      await this.checkDuplicates(userData.email);
+      
+      // 3. Génération du mot de passe temporaire
+      const tempPassword = this.generateSecurePassword();
+      const hashedPassword = await bcrypt.hash(tempPassword, 12);
+      
+      // 4. Création de l'utilisateur
+      const user = await this.db.users.create({
+        ...userData,
+        password_hash: hashedPassword,
+        must_change_password: true,
+        created_by: createdBy,
+        status: 'pending'
+      }, { transaction });
+      
+      // 5. Envoi de l'email d'activation
+      await this.sendActivationEmail(user, tempPassword);
+      
+      // 6. Audit log
+      await this.audit.log({
+        action: 'USER_CREATED',
+        userId: createdBy,
+        targetUserId: user.id,
+        details: { email: user.email, department: user.department }
+      });
+      
+      await transaction.commit();
+      return user;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  async suspendUser(userId, reason, suspendedBy, duration = null) {
+    const user = await this.db.users.findByPk(userId);
+    if (!user) throw new Error('User not found');
+
+    const suspendUntil = duration ? 
+      new Date(Date.now() + duration * 24 * 60 * 60 * 1000) : null;
+
+    await this.db.users.update(
+      { 
+        status: 'suspended',
+        suspended_until: suspendUntil,
+        suspended_reason: reason
+      },
+      { where: { id: userId } }
+    );
+
+    // Invalider toutes les sessions actives
+    await this.invalidateUserSessions(userId);
+
+    // Audit
+    await this.audit.log({
+      action: 'USER_SUSPENDED',
+      userId: suspendedBy,
+      targetUserId: userId,
+      details: { reason, duration }
+    });
+
+    // Notification
+    await this.notifyUserSuspension(user, reason, suspendUntil);
+  }
+
+  async archiveUser(userId, archivedBy, reason) {
+    const transaction = await this.db.transaction();
+    try {
+      // 1. Vérifier que l'utilisateur existe
+      const user = await this.db.users.findByPk(userId);
+      if (!user) throw new Error('User not found');
+
+      // 2. Créer une archive
+      await this.db.user_archives.create({
+        original_user_id: userId,
+        user_data: user.toJSON(),
+        archived_by: archivedBy,
+        reason: reason
+      }, { transaction });
+
+      // 3. Anonymiser les données sensibles
+      await this.db.users.update({
+        status: 'archived',
+        email: `archived_${userId}@internal.local`,
+        display_name: 'Utilisateur archivé',
+        first_name: null,
+        last_name: null,
+        phone: null,
+        is_active: false
+      }, { where: { id: userId }, transaction });
+
+      // 4. Audit
+      await this.audit.log({
+        action: 'USER_ARCHIVED',
+        userId: archivedBy,
+        targetUserId: userId,
+        details: { reason }
+      });
+
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Gestion des groupes -->
+                            <div class="security-content" id="user-groups">
+                                <h6>Système de groupes et hiérarchies</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-sitemap me-2"></i>Structure hiérarchique des groupes
+                                    </div>
+                                    <pre><code class="language-sql">-- Table des groupes avec hiérarchie
+CREATE TABLE groups (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    parent_group_id INTEGER REFERENCES groups(id),
+    
+    -- Métadonnées
+    color VARCHAR(7) DEFAULT '#007bff',
+    icon VARCHAR(50) DEFAULT 'users',
+    sort_order INTEGER DEFAULT 0,
+    
+    -- Paramètres
+    is_system BOOLEAN DEFAULT false,
+    auto_join BOOLEAN DEFAULT false,
+    requires_approval BOOLEAN DEFAULT true,
+    max_members INTEGER DEFAULT NULL,
+    
+    -- Hiérarchie (Materialized Path)
+    path LTREE,
+    level INTEGER DEFAULT 0,
+    
+    -- Audit
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INTEGER REFERENCES users(id),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table d'appartenance avec rôles dans le groupe
+CREATE TABLE user_groups (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    
+    -- Rôle dans le groupe
+    role VARCHAR(50) DEFAULT 'member', -- member, admin, owner
+    
+    -- Statut
+    status VARCHAR(20) DEFAULT 'active', -- active, pending, suspended
+    
+    -- Métadonnées
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    invited_by INTEGER REFERENCES users(id),
+    expires_at TIMESTAMP NULL,
+    
+    UNIQUE(user_id, group_id)
+);
+
+-- Index pour les requêtes hiérarchiques
+CREATE INDEX idx_groups_path ON groups USING GIST (path);
+CREATE INDEX idx_groups_parent ON groups(parent_group_id);
+CREATE INDEX idx_user_groups_user ON user_groups(user_id);
+CREATE INDEX idx_user_groups_group ON user_groups(group_id);</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-code me-2"></i>Gestion des groupes hiérarchiques
+                                    </div>
+                                    <pre><code class="language-javascript">// Service de gestion des groupes
+class GroupService {
+  constructor(db) {
+    this.db = db;
+  }
+
+  async createGroup(groupData, parentGroupId = null) {
+    const transaction = await this.db.transaction();
+    try {
+      let path = '';
+      let level = 0;
+      
+      if (parentGroupId) {
+        const parent = await this.db.groups.findByPk(parentGroupId);
+        if (!parent) throw new Error('Parent group not found');
+        
+        path = `${parent.path}.${parentGroupId}`;
+        level = parent.level + 1;
+      } else {
+        path = 'root';
+      }
+
+      const group = await this.db.groups.create({
+        ...groupData,
+        parent_group_id: parentGroupId,
+        path: path,
+        level: level
+      }, { transaction });
+
+      await transaction.commit();
+      return group;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  async getGroupHierarchy(groupId) {
+    // Récupérer tous les groupes enfants
+    const children = await this.db.groups.findAll({
+      where: {
+        path: { [Op.like]: `%.${groupId}.%` }
+      },
+      order: [['level', 'ASC'], ['name', 'ASC']]
+    });
+
+    // Récupérer tous les groupes parents
+    const group = await this.db.groups.findByPk(groupId);
+    const parentIds = group.path.split('.').filter(id => id !== 'root');
+    const parents = await this.db.groups.findAll({
+      where: { id: { [Op.in]: parentIds } }
+    });
+
+    return { group, parents, children };
+  }
+
+  async getUserEffectiveGroups(userId) {
+    // Groupes directs
+    const directGroups = await this.db.query(`
+      SELECT g.*, ug.role, ug.joined_at
+      FROM groups g
+      JOIN user_groups ug ON g.id = ug.group_id
+      WHERE ug.user_id = :userId AND ug.status = 'active'
+    `, {
+      replacements: { userId },
+      type: QueryTypes.SELECT
+    });
+
+    // Groupes hérités (parents des groupes directs)
+    const inheritedGroups = await this.db.query(`
+      WITH user_group_paths AS (
+        SELECT g.path
+        FROM groups g
+        JOIN user_groups ug ON g.id = ug.group_id
+        WHERE ug.user_id = :userId AND ug.status = 'active'
+      )
+      SELECT DISTINCT g.*
+      FROM groups g, user_group_paths ugp
+      WHERE g.path @> ugp.path::ltree AND g.path != ugp.path
+    `, {
+      replacements: { userId },
+      type: QueryTypes.SELECT
+    });
+
+    return { direct: directGroups, inherited: inheritedGroups };
+  }
+
+  async addUserToGroup(userId, groupId, role = 'member', invitedBy = null) {
+    // Vérifier la capacité du groupe
+    const group = await this.db.groups.findByPk(groupId);
+    if (group.max_members) {
+      const currentCount = await this.db.user_groups.count({
+        where: { group_id: groupId, status: 'active' }
+      });
+      if (currentCount >= group.max_members) {
+        throw new Error('Group is at maximum capacity');
+      }
+    }
+
+    // Vérifier si l'utilisateur n'est pas déjà membre
+    const existing = await this.db.user_groups.findOne({
+      where: { user_id: userId, group_id: groupId }
+    });
+
+    if (existing) {
+      if (existing.status === 'active') {
+        throw new Error('User is already a member');
+      } else {
+        // Réactiver l'appartenance
+        await existing.update({
+          status: 'active',
+          role: role,
+          invited_by: invitedBy
+        });
+        return existing;
+      }
+    }
+
+    // Créer la nouvelle appartenance
+    const status = group.requires_approval && !invitedBy ? 'pending' : 'active';
+    
+    return await this.db.user_groups.create({
+      user_id: userId,
+      group_id: groupId,
+      role: role,
+      status: status,
+      invited_by: invitedBy
+    });
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Profils utilisateur -->
+                            <div class="security-content" id="user-profiles">
+                                <h6>Profils et métadonnées étendues</h6>
+                                
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Profils personnalisables</h6>
+                                    <p class="mb-0">
+                                        WikiJS permet d'étendre les profils utilisateur avec des champs personnalisés, 
+                                        des préférences et des métadonnées métier spécifiques à votre organisation.
+                                    </p>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-id-card me-2"></i>Configuration des profils étendus
+                                    </div>
+                                    <pre><code class="language-yaml"># Configuration des profils utilisateur
+profiles:
+  # Champs personnalisés
+  customFields:
+    - name: "employee_id"
+      type: "string"
+      required: true
+      validation: "^EMP[0-9]{6}$"
+      
+    - name: "security_clearance"
+      type: "enum"
+      options: ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "SECRET"]
+      default: "PUBLIC"
+      
+    - name: "cost_center"
+      type: "string"
+      required: false
+      
+    - name: "hire_date"
+      type: "date"
+      required: false
+      
+    - name: "certifications"
+      type: "array"
+      itemType: "string"
+      
+    - name: "skills"
+      type: "tags"
+      maxItems: 10
+      
+    - name: "avatar_url"
+      type: "url"
+      validation: "^https://.*\\.(jpg|jpeg|png|gif)$"
+      
+  # Préférences utilisateur
+  preferences:
+    notification_types:
+      - page_comment
+      - page_update
+      - group_invitation
+      - system_maintenance
+      
+    notification_methods:
+      - email
+      - push
+      - in_app
+      
+    ui_preferences:
+      - theme
+      - language
+      - timezone
+      - date_format
+      
+  # Visibilité des champs
+  visibility:
+    public: ["display_name", "title", "department"]
+    internal: ["phone", "office_location", "manager"]
+    private: ["employee_id", "hire_date"]</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Rôles et permissions -->
+                        <section id="roles-permissions" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-user-cog me-2"></i>
+                                Système de rôles et permissions granulaires
+                            </h2>
+                            
+                            <div class="security-card roles">
+                                <div class="security-title">
+                                    <i class="fas fa-user-cog"></i>
+                                    RBAC - Role-Based Access Control
+                                </div>
+                                <p>
+                                    WikiJS implémente un système RBAC complet avec permissions granulaires, 
+                                    héritage de rôles et contrôle d'accès basé sur les attributs (ABAC).
+                                </p>
+                            </div>
+
+                            <div class="permission-matrix">
+                                <h6>Matrice des permissions par rôle</h6>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Permission</th>
+                                            <th>Guest</th>
+                                            <th>User</th>
+                                            <th>Editor</th>
+                                            <th>Admin</th>
+                                            <th>Super Admin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>read:pages</strong></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>write:pages</strong></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>delete:pages</strong></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>manage:users</strong></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>manage:system</strong></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-times permission-cross"></i></td>
+                                            <td><i class="fas fa-check permission-check"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-cogs me-2"></i>Configuration du système de permissions
+                                </div>
+                                <pre><code class="language-yaml"># Configuration RBAC avancée
+rbac:
+  # Définition des rôles
+  roles:
+    guest:
+      name: "Invité"
+      description: "Accès lecture seule aux pages publiques"
+      permissions:
+        - "read:pages:public"
+        - "read:assets:public"
+      weight: 0
+      
+    user:
+      name: "Utilisateur"
+      description: "Utilisateur standard avec création de contenu"
+      inherits: ["guest"]
+      permissions:
+        - "read:pages:internal"
+        - "write:pages:own"
+        - "comment:pages"
+        - "upload:assets:own"
+      weight: 10
+      
+    editor:
+      name: "Éditeur"
+      description: "Éditeur de contenu avec permissions étendues"
+      inherits: ["user"]
+      permissions:
+        - "write:pages:*"
+        - "delete:pages:own"
+        - "moderate:comments"
+        - "manage:assets:category"
+      weight: 50
+      
+    admin:
+      name: "Administrateur"
+      description: "Administration utilisateurs et configuration"
+      inherits: ["editor"]
+      permissions:
+        - "manage:users"
+        - "manage:groups"
+        - "read:system:logs"
+        - "manage:pages:*"
+      weight: 90
+      
+    superadmin:
+      name: "Super Administrateur"
+      description: "Accès complet au système"
+      permissions:
+        - "*"
+      weight: 100
+  
+  # Permissions personnalisées
+  customPermissions:
+    - name: "approve:financial"
+      description: "Approuver le contenu financier"
+      category: "business"
+      
+    - name: "export:data"
+      description: "Exporter les données"
+      category: "data"
+      
+    - name: "access:hr"
+      description: "Accès aux ressources humaines"
+      category: "department"
+  
+  # Règles contextuelles (ABAC)
+  contextualRules:
+    - name: "own_content_rule"
+      condition: "user.id === resource.author_id"
+      grants: ["write:pages", "delete:pages"]
+      
+    - name: "department_rule" 
+      condition: "user.department === resource.department"
+      grants: ["read:pages:departmental"]
+      
+    - name: "manager_rule"
+      condition: "user.role === 'manager' && resource.author.manager_id === user.id"
+      grants: ["approve:content"]</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-code me-2"></i>Middleware de vérification des permissions
+                                </div>
+                                <pre><code class="language-javascript">// Middleware avancé de contrôle d'accès
+class PermissionMiddleware {
+  constructor(rbacService, auditService) {
+    this.rbac = rbacService;
+    this.audit = auditService;
+  }
+
+  requirePermission(permission, options = {}) {
+    return async (req, res, next) => {
+      try {
+        const user = req.user;
+        if (!user) {
+          return res.status(401).json({ error: 'Authentication required' });
+        }
+
+        // Vérifier la permission de base
+        const hasPermission = await this.rbac.userHasPermission(user.id, permission);
+        
+        if (!hasPermission) {
+          // Vérifier les règles contextuelles si spécifiées
+          if (options.contextualRules) {
+            const resource = options.resourceLoader ? 
+              await options.resourceLoader(req) : req.body;
+              
+            const contextualAccess = await this.rbac.checkContextualAccess(
+              user, permission, resource, options.contextualRules
+            );
+            
+            if (!contextualAccess) {
+              await this.audit.logAccessDenied({
+                userId: user.id,
+                permission,
+                resource: resource?.id,
+                ip: req.ip,
+                userAgent: req.get('User-Agent')
+              });
+              
+              return res.status(403).json({ error: 'Permission denied' });
+            }
+          } else {
+            await this.audit.logAccessDenied({
+              userId: user.id,
+              permission,
+              ip: req.ip
+            });
+            
+            return res.status(403).json({ error: 'Permission denied' });
+          }
+        }
+
+        // Log de l'accès autorisé
+        await this.audit.logAccess({
+          userId: user.id,
+          permission,
+          granted: true,
+          ip: req.ip
+        });
+
+        next();
+      } catch (error) {
+        console.error('Permission check failed:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    };
+  }
+
+  requireRole(roleName, options = {}) {
+    return async (req, res, next) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+
+      const userRoles = await this.rbac.getUserRoles(user.id);
+      const hasRole = userRoles.some(role => 
+        role.name === roleName || 
+        (options.allowInherited && role.inheritsFrom?.includes(roleName))
+      );
+
+      if (!hasRole) {
+        await this.audit.logAccessDenied({
+          userId: user.id,
+          requiredRole: roleName,
+          userRoles: userRoles.map(r => r.name),
+          ip: req.ip
+        });
+        
+        return res.status(403).json({ error: 'Insufficient role' });
+      }
+
+      next();
+    };
+  }
+
+  // Middleware pour permissions granulaires sur les ressources
+  requireResourceAccess(resourceType, action, options = {}) {
+    return async (req, res, next) => {
+      try {
+        const user = req.user;
+        const resourceId = req.params.id || req.body.id;
+        
+        if (!resourceId) {
+          return res.status(400).json({ error: 'Resource ID required' });
+        }
+
+        // Charger la ressource
+        const resource = await this.rbac.getResource(resourceType, resourceId);
+        if (!resource) {
+          return res.status(404).json({ error: 'Resource not found' });
+        }
+
+        // Vérifier l'accès
+        const hasAccess = await this.rbac.checkResourceAccess(
+          user.id, resourceType, resourceId, action, options
+        );
+
+        if (!hasAccess) {
+          await this.audit.logResourceAccessDenied({
+            userId: user.id,
+            resourceType,
+            resourceId,
+            action,
+            ip: req.ip
+          });
+          
+          return res.status(403).json({ error: 'Resource access denied' });
+        }
+
+        // Attacher la ressource à la requête
+        req.resource = resource;
+        next();
+      } catch (error) {
+        console.error('Resource access check failed:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    };
+  }
+}
+
+// Utilisation dans les routes
+app.get('/api/pages/:id', 
+  authMiddleware,
+  permissionMiddleware.requireResourceAccess('page', 'read'),
+  async (req, res) => {
+    // La page est déjà chargée dans req.resource
+    res.json(req.resource);
+  }
+);
+
+app.put('/api/users/:id',
+  authMiddleware,
+  permissionMiddleware.requirePermission('manage:users', {
+    contextualRules: ['own_user_rule', 'manager_rule']
+  }),
+  async (req, res) => {
+    // Logique de mise à jour utilisateur
+  }
+);</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Section suivante continue... -->
+                        <!-- J'continue avec les autres sections selon la même structure -->
+
+                        <!-- Navigation entre modules -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-4-authentification-avancee.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 4 - Auth avancée
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="module-6-personnalisation-themes.html" class="btn btn-primary">
+                                        Module 6 - Personnalisation
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets de sécurité
+        document.querySelectorAll('.security-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetSecurity = tab.getAttribute('data-security');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.security-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.security-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetSecurity}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .security-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

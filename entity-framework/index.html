@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Entity Framework - Complète</title>
+    <meta name="description" content="Formation complète Entity Framework : Database First, Code First, migrations, optimisations et projets pratiques.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --inskillflow-blue: #0ea5e9;
+            --premium-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e2e8f0 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, var(--premium-gold), #f97316);
+            color: white !important;
+            margin-left: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            color: white !important;
+        }
+
+        /* Hero Course */
+        .hero-course {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-course::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-50px) translateY(-50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .course-icon-large {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Module Cards */
+        .module-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 4px 15px rgba(81, 43, 212, 0.3);
+        }
+
+        .module-title {
+            color: var(--dark-color);
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .module-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .module-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-module {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-module:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.4);
+            color: white;
+        }
+
+        .achievement-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .back-nav {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost
+            </a>
+            
+            <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+                <a class="nav-link" href="../">
+                    <i class="fas fa-arrow-left me-1"></i>Retour Hub
+                </a>
+                <a class="nav-link btn-premium" href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=entity-framework&utm_campaign=course-premium" target="_blank">
+                    <i class="fas fa-crown me-1"></i>Version Premium
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Course -->
+    <section class="hero-course">
+        <div class="container">
+            <div class="hero-content">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="course-icon-large me-3">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>
+                                <h1 class="mb-2">Formation Entity Framework</h1>
+                                <p class="mb-0 opacity-90">Maîtrisez l'ORM .NET de A à Z</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-signal me-1"></i>Intermédiaire
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-clock me-1"></i>35h
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-list me-1"></i>11 modules
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=entity-framework-hero&utm_campaign=course-premium" 
+                           class="btn btn-warning btn-lg" target="_blank">
+                            <i class="fas fa-crown me-2"></i>Version Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Achievement Section -->
+        <div class="achievement-section">
+            <h2 style="color: var(--ef-purple); font-weight: 700; font-size: 2.5rem; margin-bottom: 2rem;">
+                <i class="fas fa-award me-3"></i>
+                Formation Entity Framework Complète
+            </h2>
+            <p class="lead mb-4">
+                <strong>11 modules progressifs</strong> couvrant tous les aspects d'Entity Framework : 
+                de l'installation aux optimisations avancées, en passant par Database First, Code First et les projets pratiques.
+            </p>
+            
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="fas fa-crown me-3 fa-2x"></i>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-1">Envie d'aller plus loin ?</h5>
+                    <p class="mb-2">Découvrez notre <strong>formation Entity Framework Premium</strong> avec projets avancés, architecture Clean et mentorat personnalisé.</p>
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=entity-framework-inline&utm_campaign=course-premium" 
+                       class="btn btn-warning" target="_blank">
+                        <i class="fas fa-external-link-alt me-2"></i>Voir la Formation Premium
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <section id="modules" class="mb-5">
+            <h2 class="text-center mb-5" style="color: var(--dark-color); font-weight: 700;">
+                <i class="fas fa-graduation-cap me-3"></i>
+                Parcours de Formation
+            </h2>
+
+            <!-- Module 1 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">1</div>
+                    <div>
+                        <h3 class="module-title">Introduction à Entity Framework</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Découvrez les concepts fondamentaux d'Entity Framework, l'ORM de Microsoft. 
+                    Comprenez les avantages de l'ORM, l'architecture d'EF et les différentes approches disponibles.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>3h</span>
+                    <span><i class="fas fa-tasks"></i>8 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Fondamental</span>
+                </div>
+                <a href="module-1-introduction-entity-framework.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">2</div>
+                    <div>
+                        <h3 class="module-title">Installation et Configuration</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Installation d'Entity Framework, configuration de l'environnement de développement, 
+                    création du premier projet et configuration des connexions aux bases de données.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>2h</span>
+                    <span><i class="fas fa-tasks"></i>6 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Configuration</span>
+                </div>
+                <a href="module-2-installation-configuration.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">3</div>
+                    <div>
+                        <h3 class="module-title">Database First Approach</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Approche Database First : génération automatique des modèles à partir d'une base de données existante. 
+                    Scaffolding, reverse engineering et bonnes pratiques.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>10 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Database First</span>
+                </div>
+                <a href="module-3-database-first.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">4</div>
+                    <div>
+                        <h3 class="module-title">Code First Approach</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Approche Code First : création de la base de données à partir du code. 
+                    Conventions, annotations et Fluent API pour configurer les modèles.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>12 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Code First</span>
+                </div>
+                <a href="module-4-code-first.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">5</div>
+                    <div>
+                        <h3 class="module-title">Migrations et Évolution du Schéma</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Système de migrations d'Entity Framework : création, application et gestion des migrations. 
+                    Évolution du schéma de base de données en production.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>10 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Migrations</span>
+                </div>
+                <a href="module-5-migrations.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 6 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">6</div>
+                    <div>
+                        <h3 class="module-title">Requêtes LINQ et Optimisations</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Maîtrise des requêtes LINQ avec Entity Framework : syntaxe, optimisations, 
+                    requêtes complexes, jointures et analyse des performances.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>15 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>LINQ & Performance</span>
+                </div>
+                <a href="module-6-linq-queries.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 7 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">7</div>
+                    <div>
+                        <h3 class="module-title">Performance et Optimisation</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Techniques d'optimisation avancées : indexation, requêtes compilées, 
+                    mise en cache et monitoring des performances.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>12 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Performance</span>
+                </div>
+                <a href="module-7-performance-optimisation.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 8 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">8</div>
+                    <div>
+                        <h3 class="module-title">Relations Avancées</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Gestion des relations complexes : many-to-many, self-referencing, 
+                    table splitting et configuration avancée des relations.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>10 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Relations</span>
+                </div>
+                <a href="module-8-relations-avancees.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 9 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">9</div>
+                    <div>
+                        <h3 class="module-title">Sécurité et Bonnes Pratiques</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Sécurisation des applications : injection SQL, validation des données, 
+                    chiffrement et audit trail avec Entity Framework.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>3h</span>
+                    <span><i class="fas fa-tasks"></i>8 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Sécurité</span>
+                </div>
+                <a href="module-9-securite-bonnes-pratiques.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 10 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">10</div>
+                    <div>
+                        <h3 class="module-title">Projet Final</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Projet complet : développement d'une application e-commerce avec Entity Framework, 
+                    intégrant toutes les notions apprises dans la formation.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>6h</span>
+                    <span><i class="fas fa-tasks"></i>1 projet complet</span>
+                    <span><i class="fas fa-layer-group"></i>Projet</span>
+                </div>
+                <a href="module-10-projet-final.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+
+            <!-- Module 11 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">11</div>
+                    <div>
+                        <h3 class="module-title">Projet Banque Moderne</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Transformation d'un projet DAO bancaire : migration d'Entity Framework 6 vers EF Core 8, 
+                    architecture Clean, API REST moderne, sécurité renforcée et bonnes pratiques.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>8h</span>
+                    <span><i class="fas fa-tasks"></i>Architecture Clean</span>
+                    <span><i class="fas fa-layer-group"></i>Projet Complet</span>
+                </div>
+                <a href="module-11-projet-banque-moderne.html" class="btn-module">
+                    <i class="fas fa-eye"></i>
+                    Consulter le module
+                </a>
+            </div>
+        </section>
+
+        <!-- Navigation vers autres cours -->
+        <div class="related-courses mt-5 p-4" style="background: #f8fafc; border-radius: 12px;">
+            <h4 class="mb-3">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Autres formations disponibles
+            </h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <a href="../scala-spark/" 
+                       class="d-flex align-items-center p-3 text-decoration-none border rounded hover-shadow"
+                       style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #dc143c; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Scala & Apache Spark</h6>
+                            <small class="text-muted">8 modules • 40h</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="../wikijs/" 
+                       class="d-flex align-items-center p-3 text-decoration-none border rounded hover-shadow"
+                       style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fab fa-wikipedia-w"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">WikiJS & SSO</h6>
+                            <small class="text-muted">8 modules • 25h</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+            transform: translateY(-2px);
+        }
+    </style>
+</body>
+</html>

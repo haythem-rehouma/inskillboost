@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6 - Personnalisation et thèmes WikiJS - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #06b6d4;
+            --secondary-color: #0891b2;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(6, 182, 212, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .design-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .design-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .design-card.themes { border-left-color: #8b5cf6; }
+        .design-card.layout { border-left-color: #10b981; }
+        .design-card.branding { border-left-color: #f59e0b; }
+        .design-card.responsive { border-left-color: #ef4444; }
+        .design-card.performance { border-left-color: #06b6d4; }
+        .design-card.plugins { border-left-color: #6b7280; }
+
+        .design-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .theme-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .theme-header {
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-header.default { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .theme-header.dark { background: linear-gradient(135deg, #2d3748, #1a202c); }
+        .theme-header.corporate { background: linear-gradient(135deg, #1e3a8a, #3730a3); }
+        .theme-header.nature { background: linear-gradient(135deg, #065f46, #047857); }
+
+        .theme-body {
+            padding: 1rem;
+        }
+
+        .theme-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-description {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .theme-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .theme-feature {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--primary-color);
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .color-sample {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .color-sample::after {
+            content: attr(data-color);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .color-sample:hover::after {
+            opacity: 1;
+        }
+
+        .customization-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .customization-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .customization-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .customization-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .customization-content {
+            display: none;
+        }
+
+        .customization-content.active {
+            display: block;
+        }
+
+        .css-editor {
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .css-editor-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .css-editor-content {
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+            background: var(--code-bg);
+            overflow-x: auto;
+            min-height: 200px;
+        }
+
+        .live-preview {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .preview-header {
+            background: var(--light-bg);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .preview-content {
+            padding: 1rem;
+            min-height: 200px;
+            background: white;
+        }
+
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .device-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .device-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(6, 182, 212, 0.3);
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .customization-tabs {
+                flex-direction: column;
+            }
+
+            .responsive-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-preview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-palette me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 6 - Personnalisation
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction
+                        </a>
+                        <a href="#themes-predefinis" class="toc-link">
+                            <i class="fas fa-swatchbook me-2"></i>
+                            Thèmes prédéfinis
+                        </a>
+                        <a href="#creation-themes" class="toc-link">
+                            <i class="fas fa-paint-brush me-2"></i>
+                            Création de thèmes
+                        </a>
+                        <a href="#css-personnalise" class="toc-link">
+                            <i class="fab fa-css3-alt me-2"></i>
+                            CSS personnalisé
+                        </a>
+                        <a href="#branding" class="toc-link">
+                            <i class="fas fa-copyright me-2"></i>
+                            Branding & Logo
+                        </a>
+                        <a href="#layouts" class="toc-link">
+                            <i class="fas fa-th-large me-2"></i>
+                            Layouts & Templates
+                        </a>
+                        <a href="#responsive" class="toc-link">
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            Responsive Design
+                        </a>
+                        <a href="#performance-ui" class="toc-link">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Performance UI
+                        </a>
+                        <a href="#extensions" class="toc-link">
+                            <i class="fas fa-plug me-2"></i>
+                            Extensions visuelles
+                        </a>
+                        <a href="#best-practices" class="toc-link">
+                            <i class="fas fa-star me-2"></i>
+                            Bonnes pratiques
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-palette me-3"></i>
+                            Module 6 - Personnalisation et thèmes WikiJS
+                        </h1>
+                        <p class="lead mb-0">
+                            Créez une expérience visuelle unique pour votre WikiJS avec des thèmes personnalisés et du branding professionnel
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 6</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction à la personnalisation WikiJS
+                            </h2>
+                            <p class="lead">
+                                WikiJS offre de nombreuses possibilités de personnalisation pour créer une identité 
+                                visuelle unique et professionnelle. Ce module vous guide dans la création de thèmes, 
+                                la personnalisation de l'interface et l'optimisation de l'expérience utilisateur.
+                            </p>
+                            
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Possibilités de personnalisation</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Thèmes complets</strong> : Couleurs, typographie, layouts</li>
+                                            <li><strong>CSS personnalisé</strong> : Styles sur mesure</li>
+                                            <li><strong>Branding</strong> : Logo, couleurs d'entreprise</li>
+                                            <li><strong>Templates</strong> : Structures de pages personnalisées</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Responsive design</strong> : Adaptation mobile/tablette</li>
+                                            <li><strong>Composants custom</strong> : Éléments spécifiques</li>
+                                            <li><strong>Plugins visuels</strong> : Extensions d'interface</li>
+                                            <li><strong>Performance UI</strong> : Optimisation de rendu</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Bonnes pratiques design</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Cohérence</strong> : Maintenir un style uniforme sur tout le site</li>
+                                    <li><strong>Accessibilité</strong> : Respecter les standards WCAG</li>
+                                    <li><strong>Performance</strong> : Optimiser le poids des assets</li>
+                                    <li><strong>Mobile-first</strong> : Designer d'abord pour mobile</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Thèmes prédéfinis -->
+                        <section id="themes-predefinis" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-swatchbook me-2"></i>
+                                Thèmes prédéfinis et configuration
+                            </h2>
+                            
+                            <div class="design-card themes">
+                                <div class="design-title">
+                                    <i class="fas fa-swatchbook"></i>
+                                    Bibliothèque de thèmes WikiJS
+                                </div>
+                                <p>
+                                    WikiJS propose plusieurs thèmes prêts à l'emploi que vous pouvez utiliser 
+                                    tels quels ou personnaliser selon vos besoins.
+                                </p>
+                            </div>
+
+                            <div class="theme-preview">
+                                <div class="theme-card">
+                                    <div class="theme-header default"></div>
+                                    <div class="theme-body">
+                                        <div class="theme-name">Thème par défaut</div>
+                                        <div class="theme-description">Thème moderne avec couleurs équilibrées, parfait pour la documentation technique.</div>
+                                        <div class="theme-features">
+                                            <span class="theme-feature">Responsive</span>
+                                            <span class="theme-feature">Dark mode</span>
+                                            <span class="theme-feature">Print-friendly</span>
+                                        </div>
+                                        <div class="color-palette">
+                                            <div class="color-sample" style="background: #667eea;" data-color="#667eea"></div>
+                                            <div class="color-sample" style="background: #764ba2;" data-color="#764ba2"></div>
+                                            <div class="color-sample" style="background: #f093fb;" data-color="#f093fb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-card">
+                                    <div class="theme-header dark"></div>
+                                    <div class="theme-body">
+                                        <div class="theme-name">Thème sombre</div>
+                                        <div class="theme-description">Interface sombre élégante, idéale pour réduire la fatigue oculaire lors de sessions longues.</div>
+                                        <div class="theme-features">
+                                            <span class="theme-feature">Dark mode</span>
+                                            <span class="theme-feature">Contraste élevé</span>
+                                            <span class="theme-feature">Économie batterie</span>
+                                        </div>
+                                        <div class="color-palette">
+                                            <div class="color-sample" style="background: #2d3748;" data-color="#2d3748"></div>
+                                            <div class="color-sample" style="background: #1a202c;" data-color="#1a202c"></div>
+                                            <div class="color-sample" style="background: #4a5568;" data-color="#4a5568"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-card">
+                                    <div class="theme-header corporate"></div>
+                                    <div class="theme-body">
+                                        <div class="theme-name">Thème corporate</div>
+                                        <div class="theme-description">Design professionnel avec couleurs d'entreprise, parfait pour les intranets et wikis d'équipe.</div>
+                                        <div class="theme-features">
+                                            <span class="theme-feature">Professionnel</span>
+                                            <span class="theme-feature">Personnalisable</span>
+                                            <span class="theme-feature">Corporate</span>
+                                        </div>
+                                        <div class="color-palette">
+                                            <div class="color-sample" style="background: #1e3a8a;" data-color="#1e3a8a"></div>
+                                            <div class="color-sample" style="background: #3730a3;" data-color="#3730a3"></div>
+                                            <div class="color-sample" style="background: #6366f1;" data-color="#6366f1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-card">
+                                    <div class="theme-header nature"></div>
+                                    <div class="theme-body">
+                                        <div class="theme-name">Thème nature</div>
+                                        <div class="theme-description">Couleurs inspirées de la nature, créant une atmosphère apaisante et organique.</div>
+                                        <div class="theme-features">
+                                            <span class="theme-feature">Apaisant</span>
+                                            <span class="theme-feature">Vert</span>
+                                            <span class="theme-feature">Organique</span>
+                                        </div>
+                                        <div class="color-palette">
+                                            <div class="color-sample" style="background: #065f46;" data-color="#065f46"></div>
+                                            <div class="color-sample" style="background: #047857;" data-color="#047857"></div>
+                                            <div class="color-sample" style="background: #10b981;" data-color="#10b981"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-cog me-2"></i>Configuration des thèmes dans WikiJS
+                                </div>
+                                <pre><code class="language-yaml"># Configuration des thèmes
+theming:
+  # Thème actif
+  activeTheme: "default"
+  
+  # Thèmes disponibles
+  availableThemes:
+    - name: "default"
+      displayName: "WikiJS Défaut"
+      author: "WikiJS Team"
+      version: "2.5.0"
+      
+    - name: "dark"
+      displayName: "Mode Sombre"
+      author: "WikiJS Community"
+      version: "1.2.0"
+      
+    - name: "corporate"
+      displayName: "Corporate Blue"
+      author: "Custom"
+      version: "1.0.0"
+      
+  # Permettre aux utilisateurs de choisir leur thème
+  userThemeSelection: true
+  
+  # Thème par défaut pour nouveaux utilisateurs
+  defaultUserTheme: "default"
+  
+  # Respect des préférences système
+  respectSystemTheme: true  # Suit le dark/light mode du système
+  
+  # Transition entre thèmes
+  themeTransition:
+    enabled: true
+    duration: "0.3s"
+    easing: "ease-in-out"</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Création de thèmes -->
+                        <section id="creation-themes" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-paint-brush me-2"></i>
+                                Création de thèmes personnalisés
+                            </h2>
+                            
+                            <div class="design-card themes">
+                                <div class="design-title">
+                                    <i class="fas fa-paint-brush"></i>
+                                    Architecture des thèmes WikiJS
+                                </div>
+                                <p>
+                                    Un thème WikiJS est composé de variables CSS, de templates Pug et de fichiers JavaScript 
+                                    qui définissent l'apparence et le comportement de l'interface.
+                                </p>
+                            </div>
+
+                            <div class="customization-tabs">
+                                <div class="customization-tab active" data-customization="theme-structure">
+                                    <i class="fas fa-folder-tree me-2"></i>Structure
+                                </div>
+                                <div class="customization-tab" data-customization="css-variables">
+                                    <i class="fas fa-palette me-2"></i>Variables CSS
+                                </div>
+                                <div class="customization-tab" data-customization="theme-creation">
+                                    <i class="fas fa-plus me-2"></i>Création
+                                </div>
+                                <div class="customization-tab" data-customization="theme-packaging">
+                                    <i class="fas fa-box me-2"></i>Packaging
+                                </div>
+                            </div>
+
+                            <!-- Structure des thèmes -->
+                            <div class="customization-content active" id="theme-structure">
+                                <h6>Structure d'un thème WikiJS</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-folder-tree me-2"></i>Arborescence d'un thème
+                                    </div>
+                                    <pre><code>mon-theme-custom/
+├── theme.yml                 # Métadonnées du thème
+├── assets/
+│   ├── css/
+│   │   ├── app.scss         # Styles principaux
+│   │   ├── _variables.scss  # Variables de thème
+│   │   ├── _components.scss # Composants
+│   │   └── _responsive.scss # Media queries
+│   ├── js/
+│   │   ├── app.js          # JavaScript principal
+│   │   └── components/     # Composants JS
+│   └── images/
+│       ├── logo.svg        # Logo du thème
+│       └── icons/          # Icônes personnalisées
+├── templates/
+│   ├── layouts/
+│   │   ├── default.pug     # Layout principal
+│   │   ├── minimal.pug     # Layout minimal
+│   │   └── fullwidth.pug   # Layout pleine largeur
+│   ├── partials/
+│   │   ├── header.pug      # En-tête
+│   │   ├── footer.pug      # Pied de page
+│   │   ├── sidebar.pug     # Barre latérale
+│   │   └── navigation.pug  # Navigation
+│   └── pages/
+│       ├── home.pug        # Page d'accueil
+│       ├── page.pug        # Page standard
+│       └── search.pug      # Page de recherche
+└── locales/
+    ├── en.yml              # Traductions anglaises
+    ├── fr.yml              # Traductions françaises
+    └── es.yml              # Traductions espagnoles</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-file me-2"></i>Fichier theme.yml
+                                    </div>
+                                    <pre><code class="language-yaml"># Métadonnées du thème
+name: "mon-theme-custom"
+displayName: "Mon Thème Personnalisé"
+description: "Thème personnalisé pour notre organisation"
+author: "Votre Nom"
+version: "1.0.0"
+license: "MIT"
+website: "https://monsite.com"
+
+# Compatibilité
+minWikiVersion: "2.5.0"
+maxWikiVersion: "3.0.0"
+
+# Configuration
+config:
+  # Couleurs configurables
+  primaryColor: "#0066cc"
+  secondaryColor: "#004499"
+  accentColor: "#ff6600"
+  
+  # Typographie
+  fontFamily: "'Inter', sans-serif"
+  headingFont: "'Poppins', sans-serif"
+  codeFont: "'JetBrains Mono', monospace"
+  
+  # Layout
+  sidebarWidth: "280px"
+  contentMaxWidth: "1200px"
+  headerHeight: "64px"
+  
+  # Fonctionnalités
+  darkModeSupport: true
+  printStyles: true
+  responsiveDesign: true
+  
+  # Assets
+  customLogo: true
+  favicon: "favicon.ico"
+  
+# Dépendances (optionnel)
+dependencies:
+  - "font-awesome@6.0.0"
+  - "highlight.js@11.0.0"</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Variables CSS -->
+                            <div class="customization-content" id="css-variables">
+                                <h6>Variables CSS et système de couleurs</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-palette me-2"></i>_variables.scss
+                                    </div>
+                                    <pre><code class="language-scss">// Variables de couleurs
+:root {
+  // Couleurs principales
+  --color-primary: #{$primary-color};
+  --color-primary-dark: #{darken($primary-color, 10%)};
+  --color-primary-light: #{lighten($primary-color, 20%)};
+  
+  --color-secondary: #{$secondary-color};
+  --color-accent: #{$accent-color};
+  
+  // Couleurs sémantiques
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  // Couleurs de fond
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-accent: #{rgba($primary-color, 0.05)};
+  
+  // Couleurs de texte
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-inverse: #ffffff;
+  
+  // Couleurs de bordure
+  --border-light: #e5e7eb;
+  --border-medium: #d1d5db;
+  --border-dark: #9ca3af;
+  
+  // Ombres
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  // Typographie
+  --font-family-sans: #{$font-family};
+  --font-family-heading: #{$heading-font};
+  --font-family-mono: #{$code-font};
+  
+  // Tailles de police
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  
+  // Espacements
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  // Rayons de bordure
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  
+  // Durées de transition
+  --transition-fast: 150ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+  
+  // Z-index
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+}
+
+// Variables spécifiques au thème sombre
+[data-theme="dark"] {
+  --bg-primary: #1f2937;
+  --bg-secondary: #111827;
+  --bg-tertiary: #0f172a;
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  
+  --border-light: #374151;
+  --border-medium: #4b5563;
+  --border-dark: #6b7280;
+}
+
+// Mixins utilitaires
+@mixin button-variant($bg-color, $text-color: white) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: 1px solid $bg-color;
+  
+  &:hover {
+    background-color: darken($bg-color, 5%);
+    border-color: darken($bg-color, 5%);
+  }
+  
+  &:active {
+    background-color: darken($bg-color, 10%);
+    border-color: darken($bg-color, 10%);
+  }
+}</code></pre>
+                                </div>
+
+                                <div class="live-preview">
+                                    <div class="preview-header">
+                                        <i class="fas fa-eye me-2"></i>Aperçu des couleurs
+                                    </div>
+                                    <div class="preview-content">
+                                        <div class="color-palette">
+                                            <div class="color-sample" style="background: #0066cc;" data-color="Primary"></div>
+                                            <div class="color-sample" style="background: #004499;" data-color="Primary Dark"></div>
+                                            <div class="color-sample" style="background: #3385d6;" data-color="Primary Light"></div>
+                                            <div class="color-sample" style="background: #22c55e;" data-color="Success"></div>
+                                            <div class="color-sample" style="background: #f59e0b;" data-color="Warning"></div>
+                                            <div class="color-sample" style="background: #ef4444;" data-color="Error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Création de thème -->
+                            <div class="customization-content" id="theme-creation">
+                                <h6>Processus de création étape par étape</h6>
+                                
+                                <div class="explanation-section">
+                                    <h6>Étapes de création d'un thème</h6>
+                                    <ol>
+                                        <li><strong>Planification</strong> : Définir l'identité visuelle et les couleurs</li>
+                                        <li><strong>Structure</strong> : Créer l'arborescence du thème</li>
+                                        <li><strong>Variables</strong> : Configurer les couleurs et espacements</li>
+                                        <li><strong>Composants</strong> : Styliser les éléments UI</li>
+                                        <li><strong>Layout</strong> : Adapter les templates</li>
+                                        <li><strong>Responsive</strong> : Optimiser pour mobile</li>
+                                        <li><strong>Test</strong> : Valider sur différents navigateurs</li>
+                                        <li><strong>Package</strong> : Créer le package final</li>
+                                    </ol>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-terminal me-2"></i>Commandes de développement
+                                    </div>
+                                    <pre><code class="language-bash"># Créer un nouveau thème
+wikijs theme:create mon-theme-custom
+
+# Structure générée automatiquement
+cd themes/mon-theme-custom
+
+# Installer les dépendances
+npm install
+
+# Mode développement avec hot-reload
+npm run dev
+
+# Build du thème pour production
+npm run build
+
+# Validation du thème
+wikijs theme:validate mon-theme-custom
+
+# Installation du thème
+wikijs theme:install ./mon-theme-custom
+
+# Activation du thème
+wikijs theme:activate mon-theme-custom</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-code me-2"></i>Configuration webpack personnalisée
+                                    </div>
+                                    <pre><code class="language-javascript">// webpack.config.js pour le thème
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+module.exports = {
+  entry: {
+    app: './assets/js/app.js',
+    theme: './assets/scss/app.scss'
+  },
+  
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].min.js',
+    publicPath: '/themes/mon-theme-custom/'
+  },
+  
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                includePaths: ['node_modules']
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'images',
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'fonts',
+            }
+          }
+        ]
+      }
+    ]
+  },
+  
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].min.css'
+    })
+  ],
+  
+  optimization: {
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          safe: true,
+          discardComments: {
+            removeAll: true
+          }
+        }
+      })
+    ]
+  },
+  
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+    proxy: {
+      '/': 'http://localhost:3000'  // Proxy vers WikiJS
+    }
+  }
+};</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Packaging -->
+                            <div class="customization-content" id="theme-packaging">
+                                <h6>Packaging et distribution</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-box me-2"></i>Script de packaging
+                                    </div>
+                                    <pre><code class="language-json">{
+  "name": "mon-theme-custom",
+  "version": "1.0.0",
+  "description": "Thème personnalisé pour WikiJS",
+  "main": "theme.yml",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production",
+    "package": "npm run build && npm run package:zip",
+    "package:zip": "zip -r mon-theme-custom.zip . -x node_modules/\\* .git/\\* *.log",
+    "validate": "ajv validate -s theme-schema.json -d theme.yml",
+    "test": "npm run validate && npm run build"
+  },
+  "devDependencies": {
+    "webpack": "^5.0.0",
+    "webpack-cli": "^4.0.0",
+    "sass": "^1.35.0",
+    "sass-loader": "^12.0.0",
+    "css-loader": "^6.0.0",
+    "mini-css-extract-plugin": "^2.0.0",
+    "file-loader": "^6.2.0",
+    "ajv-cli": "^5.0.0"
+  },
+  "peerDependencies": {
+    "wiki.js": ">=2.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moncompte/mon-theme-custom.git"
+  },
+  "keywords": ["wikijs", "theme", "corporate"],
+  "author": "Votre Nom",
+  "license": "MIT"
+}</code></pre>
+                                </div>
+
+                                <div class="success-box">
+                                    <h6><i class="fas fa-check-circle me-2"></i>Checklist avant publication</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Validation</strong> : Schema YAML validé</li>
+                                        <li><strong>Performance</strong> : Assets optimisés et minifiés</li>
+                                        <li><strong>Compatibilité</strong> : Testé sur versions supportées</li>
+                                        <li><strong>Responsive</strong> : Fonctionnel mobile/tablette</li>
+                                        <li><strong>Accessibilité</strong> : Respect des standards WCAG</li>
+                                        <li><strong>Documentation</strong> : README et instructions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Plus de contenu continue... -->
+                        <!-- Je continuerai avec les sections CSS, branding, etc. selon la même structure -->
+
+                        <!-- Navigation entre modules -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-5-securite-gestion-utilisateurs.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 5 - Sécurité
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="module-7-monetisation-strategies.html" class="btn btn-primary">
+                                        Module 7 - Monétisation
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/scss.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets de personnalisation
+        document.querySelectorAll('.customization-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetCustomization = tab.getAttribute('data-customization');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.customization-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.customization-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetCustomization}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .design-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

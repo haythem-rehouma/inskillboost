@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9 - Sécurité et Bonnes Pratiques Entity Framework</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #512BD4;
+            --secondary-color: #239B56;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --ef-purple: #512BD4;
+            --ef-green: #239B56;
+            --ef-orange: #FF6B35;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green)) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Header */
+        .module-header {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .module-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .module-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--ef-purple);
+        }
+
+        .section-title {
+            color: var(--ef-purple);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(81, 43, 212, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--ef-purple);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(32, 201, 151, 0.1));
+            border-left: 4px solid var(--info-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .exercise-title {
+            color: var(--info-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .security-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .security-critical {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .security-high {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .security-medium {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .good-practice {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(35, 155, 86, 0.1));
+            border-left: 4px solid var(--success-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .bad-practice {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 107, 53, 0.1));
+            border-left: 4px solid var(--danger-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--ef-purple), var(--ef-green));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(81, 43, 212, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .module-title {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-database me-2"></i>
+                Formation Entity Framework
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#modules">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Module Header -->
+    <div class="module-header">
+        <div class="container">
+            <div class="module-number">
+                <i class="fas fa-shield-alt me-2"></i>
+                Module 9
+            </div>
+            <h1 class="module-title">Sécurité et Bonnes Pratiques</h1>
+            <p class="module-description">
+                Sécurisez vos applications : protection contre les injections SQL, gestion des erreurs, et architecture robuste
+            </p>
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-clock me-1"></i>3 heures
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-tasks me-1"></i>8 exercices
+                </span>
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-shield-alt me-1"></i>Sécurité
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Section 1: Protection contre les Injections SQL -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-bug"></i>
+                Protection contre les Injections SQL
+                <span class="security-level security-critical">CRITIQUE</span>
+            </h2>
+
+            <h3><i class="fas fa-exclamation-triangle me-2"></i>Qu'est-ce qu'une Injection SQL ?</h3>
+
+            <div class="danger-box">
+                <h5><i class="fas fa-skull-crossbones me-2"></i>Le Danger des Injections SQL</h5>
+                <p>
+                    L'injection SQL est l'une des vulnérabilités les plus dangereuses. Un attaquant peut :
+                </p>
+                <ul>
+                    <li>🔓 Accéder à toutes vos données</li>
+                    <li>🗑️ Supprimer votre base de données</li>
+                    <li>👤 Voler les informations personnelles</li>
+                    <li>💸 Compromettre les données financières</li>
+                </ul>
+                
+                <p><strong>Exemple d'attaque :</strong></p>
+                <div class="code-block">
+                    <pre><code class="language-sql">-- L'utilisateur saisit : admin'; DROP TABLE Users; --
+-- Votre requête devient :
+SELECT * FROM Users WHERE Username = 'admin'; DROP TABLE Users; --' AND Password = '...'
+-- Résultat : Votre table Users est supprimée ! 💥</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-shield-alt me-2"></i>Entity Framework : Protection Automatique</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-check-circle me-2 text-success"></i>Bonne Nouvelle : EF Protège Automatiquement</h6>
+                <p>
+                    Entity Framework utilise automatiquement des <strong>requêtes paramétrées</strong> 
+                    qui empêchent les injections SQL. Vos requêtes LINQ sont sûres par défaut !
+                </p>
+                
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ✅ SÉCURISÉ - EF paramètre automatiquement
+string userInput = "admin'; DROP TABLE Users; --";
+var user = await context.Users
+    .Where(u => u.Username == userInput)  // Paramétré automatiquement
+    .FirstOrDefaultAsync();
+
+// SQL généré (sécurisé) :
+// SELECT * FROM Users WHERE Username = @p0
+// Paramètre @p0 = "admin'; DROP TABLE Users; --"</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-times-circle me-2 text-danger"></i>Cas Dangereux : SQL Brut</h3>
+
+            <div class="bad-practice">
+                <h6><i class="fas fa-exclamation-triangle me-2 text-danger"></i>DANGER : FromSqlRaw avec Concaténation</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ❌ VULNÉRABLE - Concaténation directe
+string userInput = "admin'; DROP TABLE Users; --";
+var users = context.Users
+    .FromSqlRaw($"SELECT * FROM Users WHERE Username = '{userInput}'")
+    .ToList();
+
+// ❌ VULNÉRABLE - Interpolation de chaîne
+var users2 = context.Users
+    .FromSqlRaw($"SELECT * FROM Users WHERE Username = '{userInput}'")
+    .ToList();</code></pre>
+                </div>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-shield-alt me-2 text-success"></i>SÉCURISÉ : Paramètres avec FromSqlRaw</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ✅ SÉCURISÉ - Paramètres explicites
+string userInput = "admin'; DROP TABLE Users; --";
+var users = context.Users
+    .FromSqlRaw("SELECT * FROM Users WHERE Username = {0}", userInput)
+    .ToList();
+
+// ✅ SÉCURISÉ - SqlParameter
+var parameter = new SqlParameter("@username", userInput);
+var users2 = context.Users
+    .FromSqlRaw("SELECT * FROM Users WHERE Username = @username", parameter)
+    .ToList();
+
+// ✅ SÉCURISÉ - FromSqlInterpolated (recommandé)
+var users3 = context.Users
+    .FromSqlInterpolated($"SELECT * FROM Users WHERE Username = {userInput}")
+    .ToList();</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-list-check me-2"></i>Checklist Sécurité SQL</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-clipboard-check me-2"></i>À Vérifier dans Votre Code</h6>
+                <ul>
+                    <li>✅ Utilisez LINQ autant que possible (protection automatique)</li>
+                    <li>✅ Si SQL brut nécessaire, utilisez <code>FromSqlInterpolated</code></li>
+                    <li>✅ Jamais de concaténation de chaînes pour SQL</li>
+                    <li>✅ Validez et nettoyez les entrées utilisateur</li>
+                    <li>✅ Utilisez des listes blanches pour les valeurs autorisées</li>
+                    <li>✅ Limitez les permissions de la base de données</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Gestion des Erreurs et Logging -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-circle"></i>
+                Gestion des Erreurs et Logging
+                <span class="security-level security-high">ÉLEVÉ</span>
+            </h2>
+
+            <h3><i class="fas fa-bug me-2"></i>Types d'Erreurs Entity Framework</h3>
+
+            <div class="warning-box">
+                <h6><i class="fas fa-list me-2"></i>Erreurs Courantes à Gérer</h6>
+                <ul>
+                    <li><strong>DbUpdateException</strong> → Erreurs de sauvegarde (contraintes, clés dupliquées)</li>
+                    <li><strong>DbUpdateConcurrencyException</strong> → Conflits de concurrence</li>
+                    <li><strong>SqlException</strong> → Erreurs de base de données (connexion, timeout)</li>
+                    <li><strong>InvalidOperationException</strong> → Erreurs de configuration ou d'usage</li>
+                </ul>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-shield-alt me-2"></i>Gestion Robuste des Erreurs</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public async Task&lt;Result&lt;User&gt;&gt; CreateUserAsync(CreateUserRequest request)
+{
+    try
+    {
+        var user = new User
+        {
+            Username = request.Username,
+            Email = request.Email,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
+        
+        logger.LogInformation("User created successfully: {UserId}", user.Id);
+        return Result.Success(user);
+    }
+    catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+    {
+        logger.LogWarning("Duplicate user creation attempt: {Username}", request.Username);
+        return Result.Failure("Un utilisateur avec ce nom existe déjà");
+    }
+    catch (DbUpdateException ex)
+    {
+        logger.LogError(ex, "Database error while creating user: {Username}", request.Username);
+        return Result.Failure("Erreur lors de la création de l'utilisateur");
+    }
+    catch (SqlException ex) when (ex.Number == -2) // Timeout
+    {
+        logger.LogError(ex, "Database timeout while creating user: {Username}", request.Username);
+        return Result.Failure("La base de données met trop de temps à répondre");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Unexpected error while creating user: {Username}", request.Username);
+        return Result.Failure("Une erreur inattendue s'est produite");
+    }
+}
+
+private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+{
+    return ex.InnerException is SqlException sqlEx && 
+           (sqlEx.Number == 2627 || sqlEx.Number == 2601);
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-file-alt me-2"></i>Logging Sécurisé</h3>
+
+            <div class="danger-box">
+                <h6><i class="fas fa-eye-slash me-2"></i>Ne Jamais Logger</h6>
+                <ul class="mb-0">
+                    <li>🚫 Mots de passe (même hashés)</li>
+                    <li>🚫 Numéros de carte de crédit</li>
+                    <li>🚫 Données personnelles sensibles</li>
+                    <li>🚫 Tokens d'authentification</li>
+                    <li>🚫 Clés d'API complètes</li>
+                </ul>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-clipboard-list me-2"></i>Configuration de Logging EF</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// Dans Program.cs ou Startup.cs
+builder.Services.AddDbContext&lt;AppDbContext&gt;(options =>
+{
+    options.UseSqlServer(connectionString);
+    
+    // Logging des requêtes SQL (développement seulement)
+    if (builder.Environment.IsDevelopment())
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Information)
+               .EnableSensitiveDataLogging()  // ⚠️ Développement SEULEMENT
+               .EnableDetailedErrors();
+    }
+});
+
+// Configuration avancée du logging
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+
+// Dans votre DbContext
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    if (!optionsBuilder.IsConfigured)
+    {
+        optionsBuilder
+            .UseSqlServer(connectionString)
+            .LogTo(
+                message => logger.LogDebug(message),
+                new[] { DbLoggerCategory.Database.Command.Name },
+                LogLevel.Information,
+                DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.UtcTime
+            );
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Validation et Sécurisation des Données -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-check-double"></i>
+                Validation et Sécurisation des Données
+                <span class="security-level security-high">ÉLEVÉ</span>
+            </h2>
+
+            <h3><i class="fas fa-filter me-2"></i>Validation Multi-Niveaux</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-layer-group me-2"></i>Stratégie de Validation</h6>
+                <ol>
+                    <li><strong>Client-side</strong> → UX, feedback immédiat</li>
+                    <li><strong>DTO/Model</strong> → Data Annotations, FluentValidation</li>
+                    <li><strong>Business Logic</strong> → Règles métier complexes</li>
+                    <li><strong>Database</strong> → Contraintes, triggers</li>
+                </ol>
+            </div>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-shield-alt me-2"></i>Validation Robuste avec FluentValidation</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// DTO avec validation
+public class CreateUserRequest
+{
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public DateTime? BirthDate { get; set; }
+}
+
+// Validateur FluentValidation
+public class CreateUserRequestValidator : AbstractValidator&lt;CreateUserRequest&gt;
+{
+    private readonly IUserRepository userRepository;
+
+    public CreateUserRequestValidator(IUserRepository userRepository)
+    {
+        this.userRepository = userRepository;
+
+        RuleFor(x => x.Username)
+            .NotEmpty().WithMessage("Le nom d'utilisateur est obligatoire")
+            .Length(3, 50).WithMessage("Le nom d'utilisateur doit contenir entre 3 et 50 caractères")
+            .Matches("^[a-zA-Z0-9_]+$").WithMessage("Le nom d'utilisateur ne peut contenir que des lettres, chiffres et _")
+            .MustAsync(BeUniqueUsername).WithMessage("Ce nom d'utilisateur existe déjà");
+
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("L'email est obligatoire")
+            .EmailAddress().WithMessage("Format d'email invalide")
+            .MustAsync(BeUniqueEmail).WithMessage("Cet email est déjà utilisé");
+
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage("Le mot de passe est obligatoire")
+            .MinimumLength(8).WithMessage("Le mot de passe doit contenir au moins 8 caractères")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]")
+            .WithMessage("Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial");
+
+        RuleFor(x => x.BirthDate)
+            .LessThan(DateTime.Today.AddYears(-13))
+            .WithMessage("L'utilisateur doit avoir au moins 13 ans")
+            .When(x => x.BirthDate.HasValue);
+    }
+
+    private async Task&lt;bool&gt; BeUniqueUsername(string username, CancellationToken cancellationToken)
+    {
+        return !await userRepository.ExistsAsync(u => u.Username == username);
+    }
+
+    private async Task&lt;bool&gt; BeUniqueEmail(string email, CancellationToken cancellationToken)
+    {
+        return !await userRepository.ExistsAsync(u => u.Email == email);
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-user-shield me-2"></i>Sécurisation des Mots de Passe</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-lock me-2"></i>Hashage Sécurisé avec BCrypt</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public class PasswordService
+{
+    public string HashPassword(string password)
+    {
+        // Générer un salt aléatoire et hasher le mot de passe
+        return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+    }
+
+    public bool VerifyPassword(string password, string hash)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, hash);
+    }
+}
+
+// Utilisation lors de la création d'utilisateur
+public async Task&lt;User&gt; CreateUserAsync(CreateUserRequest request)
+{
+    var user = new User
+    {
+        Username = request.Username,
+        Email = request.Email,
+        PasswordHash = passwordService.HashPassword(request.Password), // ✅ Jamais en clair
+        CreatedAt = DateTime.UtcNow
+    };
+
+    context.Users.Add(user);
+    await context.SaveChangesAsync();
+
+    // ⚠️ Ne pas retourner le hash du mot de passe
+    user.PasswordHash = null;
+    return user;
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-eye-slash me-2"></i>Protection des Données Sensibles</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-mask me-2"></i>Masquage et Chiffrement</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public class User
+{
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    
+    [JsonIgnore] // Ne pas sérialiser
+    public string PasswordHash { get; set; }
+    
+    // Propriété chiffrée pour données sensibles
+    [Column("EncryptedSSN")]
+    public string SocialSecurityNumber { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+}
+
+// Service de chiffrement pour données sensibles
+public class EncryptionService
+{
+    private readonly IDataProtector protector;
+
+    public EncryptionService(IDataProtectionProvider provider)
+    {
+        protector = provider.CreateProtector("UserData.SSN");
+    }
+
+    public string Encrypt(string plainText)
+    {
+        return string.IsNullOrEmpty(plainText) ? null : protector.Protect(plainText);
+    }
+
+    public string Decrypt(string cipherText)
+    {
+        return string.IsNullOrEmpty(cipherText) ? null : protector.Unprotect(cipherText);
+    }
+}
+
+// Configuration dans Program.cs
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"c:\keys"))
+    .SetApplicationName("MyApp");</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Architecture et Bonnes Pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-building"></i>
+                Architecture et Bonnes Pratiques
+                <span class="security-level security-medium">MOYEN</span>
+            </h2>
+
+            <h3><i class="fas fa-layer-group me-2"></i>Pattern Repository et Unit of Work</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-archive me-2"></i>Repository Pattern</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">// Interface générique
+public interface IRepository&lt;T&gt; where T : class
+{
+    Task&lt;T&gt; GetByIdAsync(int id);
+    Task&lt;IEnumerable&lt;T&gt;&gt; GetAllAsync();
+    Task&lt;IEnumerable&lt;T&gt;&gt; FindAsync(Expression&lt;Func&lt;T, bool&gt;&gt; predicate);
+    Task AddAsync(T entity);
+    void Update(T entity);
+    void Remove(T entity);
+}
+
+// Implémentation générique
+public class Repository&lt;T&gt; : IRepository&lt;T&gt; where T : class
+{
+    protected readonly DbContext context;
+    protected readonly DbSet&lt;T&gt; dbSet;
+
+    public Repository(DbContext context)
+    {
+        this.context = context;
+        this.dbSet = context.Set&lt;T&gt;();
+    }
+
+    public virtual async Task&lt;T&gt; GetByIdAsync(int id)
+    {
+        return await dbSet.FindAsync(id);
+    }
+
+    public virtual async Task&lt;IEnumerable&lt;T&gt;&gt; GetAllAsync()
+    {
+        return await dbSet.AsNoTracking().ToListAsync();
+    }
+
+    public virtual async Task&lt;IEnumerable&lt;T&gt;&gt; FindAsync(Expression&lt;Func&lt;T, bool&gt;&gt; predicate)
+    {
+        return await dbSet.AsNoTracking().Where(predicate).ToListAsync();
+    }
+
+    public virtual async Task AddAsync(T entity)
+    {
+        await dbSet.AddAsync(entity);
+    }
+
+    public virtual void Update(T entity)
+    {
+        dbSet.Update(entity);
+    }
+
+    public virtual void Remove(T entity)
+    {
+        dbSet.Remove(entity);
+    }
+}
+
+// Repository spécialisé
+public interface IUserRepository : IRepository&lt;User&gt;
+{
+    Task&lt;User&gt; GetByUsernameAsync(string username);
+    Task&lt;bool&gt; ExistsAsync(Expression&lt;Func&lt;User, bool&gt;&gt; predicate);
+}
+
+public class UserRepository : Repository&lt;User&gt;, IUserRepository
+{
+    public UserRepository(AppDbContext context) : base(context) { }
+
+    public async Task&lt;User&gt; GetByUsernameAsync(string username)
+    {
+        return await dbSet.AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == username);
+    }
+
+    public async Task&lt;bool&gt; ExistsAsync(Expression&lt;Func&lt;User, bool&gt;&gt; predicate)
+    {
+        return await dbSet.AsNoTracking().AnyAsync(predicate);
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-cogs me-2"></i>Unit of Work Pattern</h3>
+
+            <div class="good-practice">
+                <h6><i class="fas fa-tasks me-2"></i>Gestion Transactionnelle</h6>
+                <div class="code-block">
+                    <pre><code class="language-csharp">public interface IUnitOfWork : IDisposable
+{
+    IUserRepository Users { get; }
+    IProductRepository Products { get; }
+    IOrderRepository Orders { get; }
+    
+    Task&lt;int&gt; SaveChangesAsync();
+    Task BeginTransactionAsync();
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
+}
+
+public class UnitOfWork : IUnitOfWork
+{
+    private readonly AppDbContext context;
+    private IDbContextTransaction transaction;
+
+    public UnitOfWork(AppDbContext context)
+    {
+        this.context = context;
+        Users = new UserRepository(context);
+        Products = new ProductRepository(context);
+        Orders = new OrderRepository(context);
+    }
+
+    public IUserRepository Users { get; }
+    public IProductRepository Products { get; }
+    public IOrderRepository Orders { get; }
+
+    public async Task&lt;int&gt; SaveChangesAsync()
+    {
+        return await context.SaveChangesAsync();
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        transaction = await context.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitTransactionAsync()
+    {
+        try
+        {
+            await SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await RollbackTransactionAsync();
+            throw;
+        }
+        finally
+        {
+            transaction?.Dispose();
+            transaction = null;
+        }
+    }
+
+    public async Task RollbackTransactionAsync()
+    {
+        if (transaction != null)
+        {
+            await transaction.RollbackAsync();
+            transaction.Dispose();
+            transaction = null;
+        }
+    }
+
+    public void Dispose()
+    {
+        transaction?.Dispose();
+        context?.Dispose();
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-list-check me-2"></i>Checklist des Bonnes Pratiques</h3>
+
+            <div class="highlight-box">
+                <h6><i class="fas fa-clipboard-check me-2"></i>Checklist Complète</h6>
+                
+                <h6>🔒 Sécurité</h6>
+                <ul>
+                    <li>✅ Validation des entrées utilisateur</li>
+                    <li>✅ Paramètres SQL (pas de concaténation)</li>
+                    <li>✅ Hashage des mots de passe</li>
+                    <li>✅ Chiffrement des données sensibles</li>
+                    <li>✅ Gestion sécurisée des erreurs</li>
+                </ul>
+
+                <h6>⚡ Performance</h6>
+                <ul>
+                    <li>✅ AsNoTracking pour lecture seule</li>
+                    <li>✅ Projections avec Select</li>
+                    <li>✅ Pagination sur les listes</li>
+                    <li>✅ Index sur les colonnes recherchées</li>
+                    <li>✅ Requêtes asynchrones</li>
+                </ul>
+
+                <h6>🏗️ Architecture</h6>
+                <ul>
+                    <li>✅ Séparation des responsabilités</li>
+                    <li>✅ Injection de dépendances</li>
+                    <li>✅ Repository pattern si nécessaire</li>
+                    <li>✅ Gestion transactionnelle</li>
+                    <li>✅ Configuration centralisée</li>
+                </ul>
+
+                <h6>📝 Maintenance</h6>
+                <ul>
+                    <li>✅ Logging approprié</li>
+                    <li>✅ Tests unitaires et d'intégration</li>
+                    <li>✅ Documentation du code</li>
+                    <li>✅ Migrations versionnées</li>
+                    <li>✅ Monitoring des performances</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Exercices Pratiques -->
+        <div class="content-section">
+            <h2 class="section-title">
+                <i class="fas fa-dumbbell"></i>
+                Exercices Pratiques : Sécurité et Bonnes Pratiques
+            </h2>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 1 : Audit de Sécurité
+                </h5>
+                <p><strong>Objectif :</strong> Identifier et corriger les vulnérabilités dans du code existant</p>
+                
+                <div class="code-block">
+                    <pre><code class="language-csharp">// ❌ CODE VULNÉRABLE - Trouvez les problèmes !
+public class UserController : ControllerBase
+{
+    [HttpPost("login")]
+    public async Task&lt;IActionResult&gt; Login(string username, string password)
+    {
+        var user = await context.Users
+            .FromSqlRaw($"SELECT * FROM Users WHERE Username = '{username}' AND Password = '{password}'")
+            .FirstOrDefaultAsync();
+            
+        if (user != null)
+        {
+            logger.LogInformation($"User {username} logged in with password {password}");
+            return Ok(user);
+        }
+        
+        return Unauthorized("Invalid credentials");
+    }
+}</code></pre>
+                </div>
+
+                <h6>🎯 Problèmes à identifier et corriger :</h6>
+                <ul>
+                    <li>Injection SQL</li>
+                    <li>Mot de passe en clair</li>
+                    <li>Logging de données sensibles</li>
+                    <li>Retour d'informations sensibles</li>
+                    <li>Gestion d'erreurs inadéquate</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 2 : Système d'Authentification Sécurisé
+                </h5>
+                <p><strong>Objectif :</strong> Implémenter un système d'authentification robuste</p>
+                
+                <h6>🔐 Fonctionnalités à implémenter :</h6>
+                <ul>
+                    <li>Inscription avec validation complète</li>
+                    <li>Hashage sécurisé des mots de passe</li>
+                    <li>Authentification avec JWT</li>
+                    <li>Limitation des tentatives de connexion</li>
+                    <li>Réinitialisation de mot de passe</li>
+                    <li>Logging sécurisé des événements</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 3 : Architecture Repository + UoW
+                </h5>
+                <p><strong>Objectif :</strong> Refactorer une application vers une architecture propre</p>
+                
+                <h6>🏗️ Transformations à effectuer :</h6>
+                <ul>
+                    <li>Extraire la logique métier des contrôleurs</li>
+                    <li>Implémenter le pattern Repository</li>
+                    <li>Ajouter Unit of Work pour les transactions</li>
+                    <li>Configurer l'injection de dépendances</li>
+                    <li>Ajouter la validation avec FluentValidation</li>
+                    <li>Implémenter la gestion d'erreurs globale</li>
+                </ul>
+            </div>
+
+            <div class="exercise-box">
+                <h5 class="exercise-title">
+                    <i class="fas fa-pencil-alt me-2"></i>
+                    Exercice 4 : Application GDPR-Compliant
+                </h5>
+                <p><strong>Objectif :</strong> Créer une application respectant le RGPD</p>
+                
+                <h6>📋 Exigences RGPD :</h6>
+                <ul>
+                    <li>Consentement explicite pour la collecte de données</li>
+                    <li>Chiffrement des données personnelles</li>
+                    <li>Droit à l'oubli (suppression de données)</li>
+                    <li>Portabilité des données (export)</li>
+                    <li>Audit trail de toutes les opérations</li>
+                    <li>Minimisation des données collectées</li>
+                    <li>Anonymisation des données anciennes</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h6><i class="fas fa-gavel me-2"></i>Contraintes Légales</h6>
+                    <p class="mb-0">
+                        Implémentez les fonctionnalités permettant à un utilisateur de :
+                        consulter ses données, les modifier, les exporter, et les supprimer
+                        définitivement de votre système.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-buttons">
+            <a href="module-8-relations-avancees.html" class="btn-nav">
+                <i class="fas fa-arrow-left me-2"></i>
+                Module précédent
+            </a>
+            <a href="module-10-projet-final.html" class="btn-nav">
+                Module suivant
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

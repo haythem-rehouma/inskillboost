@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InSkillBoost - Formations Gratuites | Hub Multi-Cours</title>
+    <meta name="description" content="Accédez gratuitement à nos formations : Entity Framework, Scala & Spark, WikiJS et plus. Découvrez aussi nos formations premium sur InSkillFlow.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="formations gratuites, Entity Framework, Scala, Apache Spark, WikiJS, programmation, développement, InSkillFlow">
+    <meta name="author" content="InSkillFlow Academy">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="French">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="InSkillBoost - Formations Gratuites | Hub Multi-Cours">
+    <meta property="og:description" content="Accédez gratuitement à nos formations techniques de qualité. Maîtrisez Entity Framework, Scala & Spark, WikiJS et découvrez nos formations premium.">
+    <meta property="og:image" content="https://inskillboost.com/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://inskillboost.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="InSkillBoost">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="InSkillBoost - Formations Gratuites">
+    <meta name="twitter:description" content="Formations techniques gratuites de qualité. Découvrez nos cours et formations premium sur InSkillFlow.">
+    <meta name="twitter:image" content="https://inskillboost.com/assets/images/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://inskillboost.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "InSkillBoost",
+        "url": "https://inskillboost.com",
+        "logo": "https://inskillboost.com/assets/images/logo.png",
+        "description": "Hub de formations gratuites en programmation et développement",
+        "sameAs": [
+            "https://www.inskillflow.com/"
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Formations Gratuites",
+            "itemListElement": [
+                {
+                    "@type": "Course",
+                    "name": "Formation Entity Framework",
+                    "description": "Formation complète pour maîtriser l'ORM .NET",
+                    "provider": {
+                        "@type": "Organization",
+                        "name": "InSkillBoost"
+                    }
+                },
+                {
+                    "@type": "Course", 
+                    "name": "Formation Scala & Apache Spark",
+                    "description": "Maîtrisez le Big Data avec Scala et Apache Spark",
+                    "provider": {
+                        "@type": "Organization",
+                        "name": "InSkillBoost"
+                    }
+                },
+                {
+                    "@type": "Course",
+                    "name": "Formation WikiJS & SSO", 
+                    "description": "Créez une plateforme wiki moderne avec authentification SSO",
+                    "provider": {
+                        "@type": "Organization",
+                        "name": "InSkillBoost"
+                    }
+                }
+            ]
+        }
+    }
+    </script>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0ea5e9;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --inskillflow-blue: #0ea5e9;
+            --premium-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e2e8f0 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--inskillflow-blue), var(--secondary-color));
+            color: white;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-50px) translateY(-50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .course-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-right: 1.5rem;
+        }
+
+        .btn-course {
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-course:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .premium-cta {
+            background: linear-gradient(135deg, var(--premium-gold), #f97316);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 15s infinite linear;
+        }
+
+        .premium-cta .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-premium {
+            background: white;
+            color: var(--premium-gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            color: var(--premium-gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(31, 41, 55, 0.98) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 0.2rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .navbar-nav .nav-link.btn-premium {
+            background: linear-gradient(135deg, var(--premium-gold), #f97316);
+            color: white !important;
+            margin-left: 1rem;
+            font-weight: 600;
+        }
+
+        .navbar-nav .nav-link.btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .dropdown-menu {
+            background: rgba(31, 41, 55, 0.95) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown-item {
+            color: rgba(255,255,255,0.9) !important;
+            padding: 0.75rem 1.5rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(255,255,255,0.15) !important;
+            color: white !important;
+        }
+
+        body {
+            padding-top: 80px;
+        }
+
+        section[id] {
+            scroll-margin-top: 80px;
+        }
+
+        /* Search Bar */
+        .search-section {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-wrapper {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95));
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--inskillflow-blue);
+            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--inskillflow-blue);
+            font-size: 1.2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding-left: 3rem;
+            padding-right: 3rem;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .search-clear:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            margin-top: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
+            z-index: 10;
+        }
+
+        .suggestions-header {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .suggestion-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .suggestion-pill {
+            background: linear-gradient(135deg, var(--light-bg), #e2e8f0);
+            color: var(--dark-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .suggestion-pill:hover {
+            background: linear-gradient(135deg, var(--inskillflow-blue), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .results-counter {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Filters */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: var(--dark-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--inskillflow-blue);
+            border-color: var(--inskillflow-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--inskillflow-blue), var(--secondary-color));
+        }
+
+        /* Course Cards Extended */
+        .course-card[data-category] {
+            transition: all 0.3s ease;
+        }
+
+        .course-card.hidden {
+            display: none !important;
+        }
+
+        /* Coming Soon Cards */
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .coming-soon-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.9));
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .coming-soon-card:hover {
+            border-color: var(--inskillflow-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.1);
+        }
+
+        .coming-soon-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--inskillflow-blue), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            body { padding-top: 70px; }
+            section[id] { scroll-margin-top: 70px; }
+            .filter-container { gap: 0.3rem; }
+            .filter-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+            .coming-soon-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#courses">
+                            <i class="fas fa-book me-1"></i>Formations
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-list me-1"></i>Cours
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/entity-framework/"><i class="fas fa-database me-2"></i>Entity Framework</a></li>
+                            <li><a class="dropdown-item" href="/scala-spark/"><i class="fas fa-fire me-2"></i>Scala & Spark</a></li>
+                            <li><a class="dropdown-item" href="/wikijs/"><i class="fab fa-wikipedia-w me-2"></i>WikiJS & SSO</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/privacy-policy.html">
+                            <i class="fas fa-shield-alt me-1"></i>Confidentialité
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-premium" href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=navbar&utm_campaign=nav-cta" target="_blank">
+                            <i class="fas fa-crown me-1"></i>Formations Premium
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1 class="hero-title">
+                    InSkillBoost
+                    <span class="d-block" style="font-size: 0.6em; margin-top: 0.5rem;">
+                        Formations Gratuites de Qualité
+                    </span>
+                </h1>
+                <p class="hero-subtitle">
+                    Accédez gratuitement à nos formations techniques. Maîtrisez les technologies modernes 
+                    et découvrez nos <strong>formations premium</strong> sur InSkillFlow.
+                </p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">50+</span>
+                        <span>Formations</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">800+</span>
+                        <span>Heures</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">14</span>
+                        <span>Catégories</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">100%</span>
+                        <span>Gratuit</span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="#courses" class="btn btn-light btn-lg">
+                        <i class="fas fa-play me-2"></i>Voir les Formations
+                    </a>
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=hero&utm_campaign=free-to-premium" 
+                       class="btn btn-outline-light btn-lg" target="_blank">
+                        <i class="fas fa-crown me-2"></i>Formations Premium
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4" style="font-weight: 700;">
+                <i class="fas fa-graduation-cap me-3"></i>
+                Nos 30+ Formations Gratuites
+            </h2>
+            
+            <!-- Search Bar -->
+            <div class="search-section mb-5">
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="courseSearch" class="search-input" placeholder="Rechercher dans toutes les formations..." autocomplete="off">
+                        <button class="search-clear" id="searchClear" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Search Suggestions -->
+                    <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                        <div class="suggestions-header">Suggestions populaires:</div>
+                        <div class="suggestion-pills">
+                            <span class="suggestion-pill" data-search="java">Java</span>
+                            <span class="suggestion-pill" data-search="python">Python</span>
+                            <span class="suggestion-pill" data-search="react">React</span>
+                            <span class="suggestion-pill" data-search="docker">Docker</span>
+                            <span class="suggestion-pill" data-search="machine learning">Machine Learning</span>
+                            <span class="suggestion-pill" data-search="cybersécurité">Cybersécurité</span>
+                            <span class="suggestion-pill" data-search="aws">AWS</span>
+                            <span class="suggestion-pill" data-search="kubernetes">Kubernetes</span>
+                            <span class="suggestion-pill" data-search="angular">Angular</span>
+                            <span class="suggestion-pill" data-search="vue">Vue.js</span>
+                            <span class="suggestion-pill" data-search="flutter">Flutter</span>
+                            <span class="suggestion-pill" data-search="blockchain">Blockchain</span>
+                            <span class="suggestion-pill" data-search="unity">Unity</span>
+                            <span class="suggestion-pill" data-search="figma">Figma</span>
+                            <span class="suggestion-pill" data-search="postgresql">PostgreSQL</span>
+                            <span class="suggestion-pill" data-search="testing">Testing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="text-center mb-5">
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-th me-1"></i>Toutes (50+)
+                    </button>
+                    <button class="filter-btn" data-filter="backend">
+                        <i class="fas fa-server me-1"></i>Backend
+                    </button>
+                    <button class="filter-btn" data-filter="frontend">
+                        <i class="fas fa-code me-1"></i>Frontend
+                    </button>
+                    <button class="filter-btn" data-filter="mobile">
+                        <i class="fas fa-mobile-alt me-1"></i>Mobile
+                    </button>
+                    <button class="filter-btn" data-filter="data">
+                        <i class="fas fa-chart-line me-1"></i>Data & Analytics
+                    </button>
+                    <button class="filter-btn" data-filter="ai">
+                        <i class="fas fa-robot me-1"></i>IA & ML
+                    </button>
+                    <button class="filter-btn" data-filter="devops">
+                        <i class="fas fa-cogs me-1"></i>DevOps
+                    </button>
+                    <button class="filter-btn" data-filter="cloud">
+                        <i class="fas fa-cloud me-1"></i>Cloud
+                    </button>
+                    <button class="filter-btn" data-filter="cyber">
+                        <i class="fas fa-shield-alt me-1"></i>Cybersécurité
+                    </button>
+                    <button class="filter-btn" data-filter="blockchain">
+                        <i class="fab fa-bitcoin me-1"></i>Blockchain
+                    </button>
+                    <button class="filter-btn" data-filter="game">
+                        <i class="fas fa-gamepad me-1"></i>Game Dev
+                    </button>
+                    <button class="filter-btn" data-filter="design">
+                        <i class="fas fa-paint-brush me-1"></i>Design
+                    </button>
+                    <button class="filter-btn" data-filter="database">
+                        <i class="fas fa-database me-1"></i>Bases de Données
+                    </button>
+                    <button class="filter-btn" data-filter="testing">
+                        <i class="fas fa-bug me-1"></i>Testing & QA
+                    </button>
+                </div>
+                
+                <!-- Results Counter -->
+                <div class="results-counter mt-3" id="resultsCounter">
+                    <span class="text-muted">30+ formations disponibles</span>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Entity Framework -->
+                <div class="col-lg-6 mb-4">
+                    <div class="course-card" data-category="backend" style="--course-color: #512BD4;">
+                        <div class="course-card::before" style="background: #512BD4;"></div>
+                        <div class="course-header">
+                            <div class="course-icon" style="background: #512BD4;">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-weight: 700; margin-bottom: 0.5rem;">Entity Framework</h3>
+                                <span class="badge" style="background-color: #512BD4; color: white;">Intermédiaire</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Formation complète pour maîtriser l'ORM .NET : Database First, Code First, migrations et optimisations.
+                        </p>
+                        <div class="d-flex gap-2 mb-3" style="font-size: 0.9rem; color: var(--text-muted);">
+                            <span><i class="fas fa-clock me-1"></i>35h</span>
+                            <span><i class="fas fa-list me-1"></i>11 modules</span>
+                            <span><i class="fas fa-tag me-1"></i>Backend</span>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="entity-framework/" class="btn-course" style="background: linear-gradient(135deg, #512BD4, #8b5cf6); color: white;">
+                                <i class="fas fa-play"></i>Commencer
+                            </a>
+                            <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=course-card&utm_campaign=entity-framework-premium" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-crown me-1"></i>Version Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scala & Spark -->
+                <div class="col-lg-6 mb-4">
+                    <div class="course-card" data-category="data" style="--course-color: #dc143c;">
+                        <div class="course-card::before" style="background: #dc143c;"></div>
+                        <div class="course-header">
+                            <div class="course-icon" style="background: #dc143c;">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-weight: 700; margin-bottom: 0.5rem;">Scala & Apache Spark</h3>
+                                <span class="badge" style="background-color: #dc143c; color: white;">Avancé</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Maîtrisez le Big Data avec Scala et Apache Spark : programmation fonctionnelle et traitement massif de données.
+                        </p>
+                        <div class="d-flex gap-2 mb-3" style="font-size: 0.9rem; color: var(--text-muted);">
+                            <span><i class="fas fa-clock me-1"></i>40h</span>
+                            <span><i class="fas fa-list me-1"></i>8 modules</span>
+                            <span><i class="fas fa-tag me-1"></i>Big Data & ML</span>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="scala-spark/" class="btn-course" style="background: linear-gradient(135deg, #dc143c, #2563eb); color: white;">
+                                <i class="fas fa-play"></i>Commencer
+                            </a>
+                            <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=course-card&utm_campaign=scala-spark-premium" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-crown me-1"></i>Version Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WikiJS -->
+                <div class="col-lg-6 mb-4">
+                    <div class="course-card" data-category="devops" style="--course-color: #2563eb;">
+                        <div class="course-card::before" style="background: #2563eb;"></div>
+                        <div class="course-header">
+                            <div class="course-icon" style="background: #2563eb;">
+                                <i class="fab fa-wikipedia-w"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-weight: 700; margin-bottom: 0.5rem;">WikiJS & SSO</h3>
+                                <span class="badge" style="background-color: #2563eb; color: white;">Débutant</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Créez une plateforme wiki moderne avec authentification SSO, personnalisation et déploiement professionnel.
+                        </p>
+                        <div class="d-flex gap-2 mb-3" style="font-size: 0.9rem; color: var(--text-muted);">
+                            <span><i class="fas fa-clock me-1"></i>25h</span>
+                            <span><i class="fas fa-list me-1"></i>8 modules</span>
+                            <span><i class="fas fa-tag me-1"></i>DevOps</span>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="wikijs/" class="btn-course" style="background: linear-gradient(135deg, #2563eb, #8b5cf6); color: white;">
+                                <i class="fas fa-play"></i>Commencer
+                            </a>
+                            <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=course-card&utm_campaign=wikijs-premium" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-crown me-1"></i>Version Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Section -->
+            <div class="text-center mt-5 mb-4">
+                <h3 style="color: var(--dark-color); font-weight: 700;">
+                    <i class="fas fa-rocket me-2"></i>
+                    Formations À Venir (47+ en préparation)
+                </h3>
+                <p class="text-muted">Nos experts préparent activement ces nouvelles formations</p>
+            </div>
+            
+            <div class="coming-soon-grid">
+                <!-- Backend -->
+                <div class="coming-soon-card" data-category="backend">
+                    <div class="coming-soon-icon"><i class="fab fa-java"></i></div>
+                    <h5>Java Complet</h5>
+                    <p class="small text-muted mb-2">POO, Spring Boot, Microservices</p>
+                    <span class="badge bg-warning text-dark">Backend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="backend">
+                    <div class="coming-soon-icon"><i class="fab fa-python"></i></div>
+                    <h5>Python Avancé</h5>
+                    <p class="small text-muted mb-2">Django, FastAPI, Data Science</p>
+                    <span class="badge bg-success">Backend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="backend">
+                    <div class="coming-soon-icon"><i class="fab fa-php"></i></div>
+                    <h5>PHP & Laravel</h5>
+                    <p class="small text-muted mb-2">Laravel, Symfony, API REST</p>
+                    <span class="badge bg-primary">Backend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="backend">
+                    <div class="coming-soon-icon"><i class="fab fa-node-js"></i></div>
+                    <h5>Node.js & Express</h5>
+                    <p class="small text-muted mb-2">API, Microservices, MongoDB</p>
+                    <span class="badge bg-success">Backend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="backend">
+                    <div class="coming-soon-icon"><i class="fas fa-code"></i></div>
+                    <h5>Go (Golang)</h5>
+                    <p class="small text-muted mb-2">Concurrence, Performance, API</p>
+                    <span class="badge bg-info">Backend</span>
+                </div>
+
+                <!-- Frontend -->
+                <div class="coming-soon-card" data-category="frontend">
+                    <div class="coming-soon-icon"><i class="fab fa-react"></i></div>
+                    <h5>React & Next.js</h5>
+                    <p class="small text-muted mb-2">Hooks, Context, SSR, TypeScript</p>
+                    <span class="badge bg-info">Frontend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="frontend">
+                    <div class="coming-soon-icon"><i class="fab fa-vuejs"></i></div>
+                    <h5>Vue.js & Nuxt</h5>
+                    <p class="small text-muted mb-2">Vue 3, Composition API, SSG</p>
+                    <span class="badge bg-success">Frontend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="frontend">
+                    <div class="coming-soon-icon"><i class="fab fa-angular"></i></div>
+                    <h5>Angular Moderne</h5>
+                    <p class="small text-muted mb-2">Angular 17+, RxJS, Material</p>
+                    <span class="badge bg-danger">Frontend</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="frontend">
+                    <div class="coming-soon-icon"><i class="fab fa-js"></i></div>
+                    <h5>JavaScript Avancé</h5>
+                    <p class="small text-muted mb-2">ES6+, Async/Await, Modules</p>
+                    <span class="badge bg-warning text-dark">Frontend</span>
+                </div>
+
+                <!-- Mobile -->
+                <div class="coming-soon-card" data-category="mobile">
+                    <div class="coming-soon-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h5>Flutter & Dart</h5>
+                    <p class="small text-muted mb-2">Apps multiplateformes natives</p>
+                    <span class="badge bg-info">Mobile</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="mobile">
+                    <div class="coming-soon-icon"><i class="fab fa-react"></i></div>
+                    <h5>React Native</h5>
+                    <p class="small text-muted mb-2">iOS, Android, Expo</p>
+                    <span class="badge bg-primary">Mobile</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="mobile">
+                    <div class="coming-soon-icon"><i class="fab fa-swift"></i></div>
+                    <h5>iOS Swift</h5>
+                    <p class="small text-muted mb-2">SwiftUI, Xcode, App Store</p>
+                    <span class="badge bg-secondary">Mobile</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="mobile">
+                    <div class="coming-soon-icon"><i class="fab fa-android"></i></div>
+                    <h5>Android Kotlin</h5>
+                    <p class="small text-muted mb-2">Jetpack Compose, Play Store</p>
+                    <span class="badge bg-success">Mobile</span>
+                </div>
+
+                <!-- Data & Analytics -->
+                <div class="coming-soon-card" data-category="data">
+                    <div class="coming-soon-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h5>Data Science Python</h5>
+                    <p class="small text-muted mb-2">Pandas, NumPy, Matplotlib</p>
+                    <span class="badge bg-primary">Data</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="data">
+                    <div class="coming-soon-icon"><i class="fas fa-chart-line"></i></div>
+                    <h5>Power BI & Tableau</h5>
+                    <p class="small text-muted mb-2">Visualisation, Dashboards, KPI</p>
+                    <span class="badge bg-warning text-dark">Data</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="data">
+                    <div class="coming-soon-icon"><i class="fas fa-search"></i></div>
+                    <h5>Elasticsearch</h5>
+                    <p class="small text-muted mb-2">Search, Analytics, Kibana</p>
+                    <span class="badge bg-dark text-white">Data</span>
+                </div>
+
+                <!-- IA & ML -->
+                <div class="coming-soon-card" data-category="ai">
+                    <div class="coming-soon-icon"><i class="fas fa-brain"></i></div>
+                    <h5>Machine Learning</h5>
+                    <p class="small text-muted mb-2">TensorFlow, PyTorch, Scikit-learn</p>
+                    <span class="badge bg-secondary">IA & ML</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="ai">
+                    <div class="coming-soon-icon"><i class="fas fa-robot"></i></div>
+                    <h5>Deep Learning</h5>
+                    <p class="small text-muted mb-2">CNN, RNN, Transformers</p>
+                    <span class="badge bg-dark text-white">IA & ML</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="ai">
+                    <div class="coming-soon-icon"><i class="fas fa-comments"></i></div>
+                    <h5>LLMs & ChatGPT</h5>
+                    <p class="small text-muted mb-2">OpenAI API, Prompt Engineering</p>
+                    <span class="badge bg-success">IA & ML</span>
+                </div>
+
+                <!-- DevOps -->
+                <div class="coming-soon-card" data-category="devops">
+                    <div class="coming-soon-icon"><i class="fab fa-docker"></i></div>
+                    <h5>Docker & Kubernetes</h5>
+                    <p class="small text-muted mb-2">Conteneurisation, Orchestration</p>
+                    <span class="badge bg-primary">DevOps</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="devops">
+                    <div class="coming-soon-icon"><i class="fab fa-jenkins"></i></div>
+                    <h5>CI/CD & Jenkins</h5>
+                    <p class="small text-muted mb-2">Pipeline, Automation, Testing</p>
+                    <span class="badge bg-warning text-dark">DevOps</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="devops">
+                    <div class="coming-soon-icon"><i class="fas fa-server"></i></div>
+                    <h5>Infrastructure as Code</h5>
+                    <p class="small text-muted mb-2">Terraform, Ansible, Puppet</p>
+                    <span class="badge bg-secondary">DevOps</span>
+                </div>
+
+                <!-- Cloud -->
+                <div class="coming-soon-card" data-category="cloud">
+                    <div class="coming-soon-icon"><i class="fab fa-aws"></i></div>
+                    <h5>AWS Architect</h5>
+                    <p class="small text-muted mb-2">EC2, S3, Lambda, Certification</p>
+                    <span class="badge bg-warning text-dark">Cloud</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="cloud">
+                    <div class="coming-soon-icon"><i class="fab fa-microsoft"></i></div>
+                    <h5>Azure Fundamentals</h5>
+                    <p class="small text-muted mb-2">VM, Storage, Functions, AD</p>
+                    <span class="badge bg-primary">Cloud</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="cloud">
+                    <div class="coming-soon-icon"><i class="fab fa-google"></i></div>
+                    <h5>Google Cloud Platform</h5>
+                    <p class="small text-muted mb-2">Compute Engine, BigQuery, ML</p>
+                    <span class="badge bg-success">Cloud</span>
+                </div>
+
+                <!-- Cybersécurité -->
+                <div class="coming-soon-card" data-category="cyber">
+                    <div class="coming-soon-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h5>Ethical Hacking</h5>
+                    <p class="small text-muted mb-2">Pentesting, OWASP, Kali Linux</p>
+                    <span class="badge bg-danger">Cyber</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="cyber">
+                    <div class="coming-soon-icon"><i class="fas fa-lock"></i></div>
+                    <h5>Cryptographie</h5>
+                    <p class="small text-muted mb-2">Chiffrement, PKI, Blockchain</p>
+                    <span class="badge bg-dark text-white">Cyber</span>
+                </div>
+
+                <!-- Blockchain -->
+                <div class="coming-soon-card" data-category="blockchain">
+                    <div class="coming-soon-icon"><i class="fab fa-bitcoin"></i></div>
+                    <h5>Blockchain & Crypto</h5>
+                    <p class="small text-muted mb-2">Bitcoin, Ethereum, Smart Contracts</p>
+                    <span class="badge bg-warning text-dark">Blockchain</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="blockchain">
+                    <div class="coming-soon-icon"><i class="fab fa-ethereum"></i></div>
+                    <h5>Solidity & DApps</h5>
+                    <p class="small text-muted mb-2">Smart Contracts, Web3, NFT</p>
+                    <span class="badge bg-secondary">Blockchain</span>
+                </div>
+
+                <!-- Game Dev -->
+                <div class="coming-soon-card" data-category="game">
+                    <div class="coming-soon-icon"><i class="fab fa-unity"></i></div>
+                    <h5>Unity 3D</h5>
+                    <p class="small text-muted mb-2">C#, Physics, Mobile Games</p>
+                    <span class="badge bg-dark text-white">Game Dev</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="game">
+                    <div class="coming-soon-icon"><i class="fas fa-gamepad"></i></div>
+                    <h5>Unreal Engine</h5>
+                    <p class="small text-muted mb-2">Blueprint, C++, VR/AR</p>
+                    <span class="badge bg-primary">Game Dev</span>
+                </div>
+
+                <!-- Design -->
+                <div class="coming-soon-card" data-category="design">
+                    <div class="coming-soon-icon"><i class="fab fa-figma"></i></div>
+                    <h5>UI/UX Design</h5>
+                    <p class="small text-muted mb-2">Figma, Prototypage, User Research</p>
+                    <span class="badge bg-success">Design</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="design">
+                    <div class="coming-soon-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h5>Design System</h5>
+                    <p class="small text-muted mb-2">Atomic Design, Storybook, Tokens</p>
+                    <span class="badge bg-info">Design</span>
+                </div>
+
+                <!-- Bases de Données -->
+                <div class="coming-soon-card" data-category="database">
+                    <div class="coming-soon-icon"><i class="fas fa-database"></i></div>
+                    <h5>PostgreSQL Avancé</h5>
+                    <p class="small text-muted mb-2">Performance, Réplication, PL/pgSQL</p>
+                    <span class="badge bg-primary">Database</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="database">
+                    <div class="coming-soon-icon"><i class="fas fa-leaf"></i></div>
+                    <h5>MongoDB & NoSQL</h5>
+                    <p class="small text-muted mb-2">Aggregation, Sharding, Atlas</p>
+                    <span class="badge bg-success">Database</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="database">
+                    <div class="coming-soon-icon"><i class="fas fa-memory"></i></div>
+                    <h5>Redis & Cache</h5>
+                    <p class="small text-muted mb-2">In-memory, Pub/Sub, Sessions</p>
+                    <span class="badge bg-danger">Database</span>
+                </div>
+
+                <!-- Testing & QA -->
+                <div class="coming-soon-card" data-category="testing">
+                    <div class="coming-soon-icon"><i class="fas fa-bug"></i></div>
+                    <h5>Testing Automatisé</h5>
+                    <p class="small text-muted mb-2">Jest, Cypress, Selenium</p>
+                    <span class="badge bg-warning text-dark">Testing</span>
+                </div>
+                
+                <div class="coming-soon-card" data-category="testing">
+                    <div class="coming-soon-icon"><i class="fas fa-check-circle"></i></div>
+                    <h5>QA & Performance</h5>
+                    <p class="small text-muted mb-2">Load Testing, Monitoring, Metrics</p>
+                    <span class="badge bg-secondary">Testing</span>
+                </div>
+
+                <!-- Et plus... -->
+                <div class="coming-soon-card" data-category="all">
+                    <div class="coming-soon-icon"><i class="fas fa-plus-circle"></i></div>
+                    <h5>Et bien d'autres...</h5>
+                    <p class="small text-muted mb-2">Rust, WebAssembly, GraphQL, Microservices...</p>
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=coming-soon-all&utm_campaign=notify-all" 
+                       class="btn btn-sm btn-outline-primary" target="_blank">
+                        <i class="fas fa-bell me-1"></i>Me notifier de tout
+                    </a>
+                </div>
+            </div>
+            
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h4>Aucune formation trouvée</h4>
+                <p>Essayez d'autres mots-clés ou explorez nos différentes catégories.</p>
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary" onclick="document.getElementById('courseSearch').value=''; document.getElementById('courseSearch').dispatchEvent(new Event('input')); document.querySelector('.filter-btn[data-filter=all]').click();">
+                        <i class="fas fa-refresh me-2"></i>Voir toutes les formations
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium CTA -->
+    <section class="premium-cta">
+        <div class="container">
+            <div class="content">
+                <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fas fa-crown me-3"></i>
+                    Prêt pour le niveau supérieur ?
+                </h2>
+                <p class="lead mb-0">
+                    Ces formations gratuites ne sont qu'un <strong>aperçu</strong> de notre expertise. 
+                    Découvrez nos <strong>formations premium</strong> avec projets avancés, mentorat personnalisé 
+                    et certificats reconnus par l'industrie.
+                </p>
+                <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=main-cta&utm_campaign=free-to-premium-conversion" 
+                   class="btn-premium" target="_blank">
+                    <i class="fas fa-rocket me-2"></i>
+                    Découvrir InSkillFlow
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, var(--dark-color), #374151); color: white; padding: 3rem 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h4 style="color: var(--success-color); font-weight: 700; margin-bottom: 1rem;">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        InSkillBoost
+                    </h4>
+                    <p class="mb-3">
+                        Votre passerelle vers l'excellence technique. Formations gratuites de qualité 
+                        et accès privilégié aux formations premium InSkillFlow.
+                    </p>
+                    <div class="d-flex gap-2 flex-wrap mb-3">
+                        <span class="badge" style="background-color: #512BD4;">Entity Framework</span>
+                        <span class="badge" style="background-color: #dc143c;">Scala & Spark</span>
+                        <span class="badge" style="background-color: #2563eb;">WikiJS</span>
+                        <span class="badge" style="background-color: #10b981;">Et plus...</span>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h5 style="color: var(--success-color);">Liens</h5>
+                    <ul style="list-style: none; padding: 0;">
+                        <li class="mb-2"><a href="https://www.inskillflow.com/" target="_blank" style="color: rgba(255,255,255,0.8); text-decoration: none;"><i class="fas fa-external-link-alt me-2"></i>InSkillFlow</a></li>
+                        <li class="mb-2"><a href="https://www.inskillflow.com/contact" target="_blank" style="color: rgba(255,255,255,0.8); text-decoration: none;"><i class="fas fa-envelope me-2"></i>Contact</a></li>
+                        <li class="mb-2"><a href="/privacy-policy.html" style="color: rgba(255,255,255,0.8); text-decoration: none;"><i class="fas fa-shield-alt me-2"></i>Confidentialité</a></li>
+                        <li class="mb-2"><a href="/terms-of-service.html" style="color: rgba(255,255,255,0.8); text-decoration: none;"><i class="fas fa-file-contract me-2"></i>Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 2rem 0;">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0" style="color: rgba(255,255,255,0.7);">
+                        © 2024 InSkillBoost - Une initiative InSkillFlow
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=footer&utm_campaign=footer-cta" 
+                       class="btn btn-sm" style="background: var(--premium-gold); color: white;" target="_blank">
+                        <i class="fas fa-star me-2"></i>Formations Premium
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Google Analytics (Required for AdSense) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- Google AdSense (Add your AdSense code here) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+            crossorigin="anonymous"></script>
+    
+    <!-- Navigation JavaScript -->
+    <script>
+        // Navbar scroll effect
+        function initNavbarScrollEffect() {
+            const navbar = document.querySelector('.navbar');
+            
+            function updateNavbar() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+            
+            window.addEventListener('scroll', updateNavbar);
+            updateNavbar();
+        }
+
+        // Smooth scroll for anchor links
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                    
+                    // Close mobile menu if open
+                    const navbarCollapse = document.querySelector('#navbarNav');
+                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                        const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                        bsCollapse.hide();
+                    }
+                });
+            });
+        }
+
+        // Search and Filter Functionality
+        function initSearchAndFilters() {
+            const searchInput = document.getElementById('courseSearch');
+            const searchClear = document.getElementById('searchClear');
+            const searchSuggestions = document.getElementById('searchSuggestions');
+            const resultsCounter = document.getElementById('resultsCounter');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const courseCards = document.querySelectorAll('.course-card');
+            const comingSoonCards = document.querySelectorAll('.coming-soon-card');
+            const suggestionPills = document.querySelectorAll('.suggestion-pill');
+            
+            let currentFilter = 'all';
+            let currentSearch = '';
+
+            // All courses data for search
+            const coursesData = [
+                { element: courseCards[0], title: 'Entity Framework', description: 'ORM .NET Database First Code First migrations optimisations', category: 'backend', keywords: ['entity', 'framework', 'orm', '.net', 'database', 'sql', 'backend'] },
+                { element: courseCards[1], title: 'Scala & Apache Spark', description: 'Big Data programmation fonctionnelle traitement massif données', category: 'data', keywords: ['scala', 'spark', 'apache', 'big data', 'functional', 'data'] },
+                { element: courseCards[2], title: 'WikiJS & SSO', description: 'plateforme wiki moderne authentification SSO personnalisation déploiement', category: 'devops', keywords: ['wiki', 'wikijs', 'sso', 'authentification', 'devops'] }
+            ];
+
+            const comingSoonData = [
+                // Backend
+                { element: comingSoonCards[0], title: 'Java Complet', description: 'POO Spring Boot Microservices', category: 'backend', keywords: ['java', 'spring', 'boot', 'microservices', 'poo', 'backend'] },
+                { element: comingSoonCards[1], title: 'Python Avancé', description: 'Django FastAPI Data Science', category: 'backend', keywords: ['python', 'django', 'fastapi', 'data science', 'backend'] },
+                { element: comingSoonCards[2], title: 'PHP & Laravel', description: 'Laravel Symfony API REST', category: 'backend', keywords: ['php', 'laravel', 'symfony', 'api', 'rest', 'backend'] },
+                { element: comingSoonCards[3], title: 'Node.js & Express', description: 'API Microservices MongoDB', category: 'backend', keywords: ['nodejs', 'node', 'express', 'api', 'microservices', 'mongodb', 'backend'] },
+                { element: comingSoonCards[4], title: 'Go (Golang)', description: 'Concurrence Performance API', category: 'backend', keywords: ['go', 'golang', 'concurrence', 'performance', 'api', 'backend'] },
+                
+                // Frontend
+                { element: comingSoonCards[5], title: 'React & Next.js', description: 'Hooks Context SSR TypeScript', category: 'frontend', keywords: ['react', 'nextjs', 'next', 'hooks', 'typescript', 'frontend'] },
+                { element: comingSoonCards[6], title: 'Vue.js & Nuxt', description: 'Vue 3 Composition API SSG', category: 'frontend', keywords: ['vue', 'vuejs', 'nuxt', 'composition', 'api', 'ssg', 'frontend'] },
+                { element: comingSoonCards[7], title: 'Angular Moderne', description: 'Angular 17+ RxJS Material', category: 'frontend', keywords: ['angular', 'rxjs', 'material', 'typescript', 'frontend'] },
+                { element: comingSoonCards[8], title: 'JavaScript Avancé', description: 'ES6+ Async/Await Modules', category: 'frontend', keywords: ['javascript', 'js', 'es6', 'async', 'await', 'modules', 'frontend'] },
+                
+                // Mobile
+                { element: comingSoonCards[9], title: 'Flutter & Dart', description: 'Apps multiplateformes natives', category: 'mobile', keywords: ['flutter', 'dart', 'mobile', 'android', 'ios', 'multiplateforme'] },
+                { element: comingSoonCards[10], title: 'React Native', description: 'iOS Android Expo', category: 'mobile', keywords: ['react native', 'ios', 'android', 'expo', 'mobile'] },
+                { element: comingSoonCards[11], title: 'iOS Swift', description: 'SwiftUI Xcode App Store', category: 'mobile', keywords: ['ios', 'swift', 'swiftui', 'xcode', 'app store', 'mobile'] },
+                { element: comingSoonCards[12], title: 'Android Kotlin', description: 'Jetpack Compose Play Store', category: 'mobile', keywords: ['android', 'kotlin', 'jetpack', 'compose', 'play store', 'mobile'] },
+                
+                // Data & Analytics
+                { element: comingSoonCards[13], title: 'Data Science Python', description: 'Pandas NumPy Matplotlib', category: 'data', keywords: ['data science', 'python', 'pandas', 'numpy', 'matplotlib', 'data'] },
+                { element: comingSoonCards[14], title: 'Power BI & Tableau', description: 'Visualisation Dashboards KPI', category: 'data', keywords: ['power bi', 'tableau', 'visualisation', 'dashboard', 'kpi', 'data'] },
+                { element: comingSoonCards[15], title: 'Elasticsearch', description: 'Search Analytics Kibana', category: 'data', keywords: ['elasticsearch', 'search', 'analytics', 'kibana', 'data'] },
+                
+                // IA & ML
+                { element: comingSoonCards[16], title: 'Machine Learning', description: 'TensorFlow PyTorch Scikit-learn', category: 'ai', keywords: ['machine learning', 'ml', 'tensorflow', 'pytorch', 'scikit-learn', 'ai'] },
+                { element: comingSoonCards[17], title: 'Deep Learning', description: 'CNN RNN Transformers', category: 'ai', keywords: ['deep learning', 'cnn', 'rnn', 'transformers', 'neural networks', 'ai'] },
+                { element: comingSoonCards[18], title: 'LLMs & ChatGPT', description: 'OpenAI API Prompt Engineering', category: 'ai', keywords: ['llm', 'chatgpt', 'openai', 'api', 'prompt engineering', 'ai'] },
+                
+                // DevOps
+                { element: comingSoonCards[19], title: 'Docker & Kubernetes', description: 'Conteneurisation Orchestration', category: 'devops', keywords: ['docker', 'kubernetes', 'k8s', 'containers', 'orchestration', 'devops'] },
+                { element: comingSoonCards[20], title: 'CI/CD & Jenkins', description: 'Pipeline Automation Testing', category: 'devops', keywords: ['ci/cd', 'jenkins', 'pipeline', 'automation', 'testing', 'devops'] },
+                { element: comingSoonCards[21], title: 'Infrastructure as Code', description: 'Terraform Ansible Puppet', category: 'devops', keywords: ['infrastructure', 'terraform', 'ansible', 'puppet', 'iac', 'devops'] },
+                
+                // Cloud
+                { element: comingSoonCards[22], title: 'AWS Architect', description: 'EC2 S3 Lambda Certification', category: 'cloud', keywords: ['aws', 'amazon', 'ec2', 's3', 'lambda', 'certification', 'cloud'] },
+                { element: comingSoonCards[23], title: 'Azure Fundamentals', description: 'VM Storage Functions AD', category: 'cloud', keywords: ['azure', 'microsoft', 'vm', 'storage', 'functions', 'ad', 'cloud'] },
+                { element: comingSoonCards[24], title: 'Google Cloud Platform', description: 'Compute Engine BigQuery ML', category: 'cloud', keywords: ['gcp', 'google', 'compute engine', 'bigquery', 'ml', 'cloud'] },
+                
+                // Cybersécurité
+                { element: comingSoonCards[25], title: 'Ethical Hacking', description: 'Pentesting OWASP Kali Linux', category: 'cyber', keywords: ['ethical hacking', 'pentesting', 'owasp', 'kali', 'linux', 'cybersécurité'] },
+                { element: comingSoonCards[26], title: 'Cryptographie', description: 'Chiffrement PKI Blockchain', category: 'cyber', keywords: ['cryptographie', 'chiffrement', 'pki', 'blockchain', 'sécurité', 'cybersécurité'] },
+                
+                // Blockchain
+                { element: comingSoonCards[27], title: 'Blockchain & Crypto', description: 'Bitcoin Ethereum Smart Contracts', category: 'blockchain', keywords: ['blockchain', 'bitcoin', 'ethereum', 'smart contracts', 'crypto'] },
+                { element: comingSoonCards[28], title: 'Solidity & DApps', description: 'Smart Contracts Web3 NFT', category: 'blockchain', keywords: ['solidity', 'dapps', 'smart contracts', 'web3', 'nft', 'blockchain'] },
+                
+                // Game Dev
+                { element: comingSoonCards[29], title: 'Unity 3D', description: 'C# Physics Mobile Games', category: 'game', keywords: ['unity', '3d', 'csharp', 'physics', 'mobile games', 'game dev'] },
+                { element: comingSoonCards[30], title: 'Unreal Engine', description: 'Blueprint C++ VR/AR', category: 'game', keywords: ['unreal engine', 'blueprint', 'cpp', 'vr', 'ar', 'game dev'] },
+                
+                // Design
+                { element: comingSoonCards[31], title: 'UI/UX Design', description: 'Figma Prototypage User Research', category: 'design', keywords: ['ui', 'ux', 'design', 'figma', 'prototypage', 'user research'] },
+                { element: comingSoonCards[32], title: 'Design System', description: 'Atomic Design Storybook Tokens', category: 'design', keywords: ['design system', 'atomic design', 'storybook', 'tokens', 'design'] },
+                
+                // Bases de Données
+                { element: comingSoonCards[33], title: 'PostgreSQL Avancé', description: 'Performance Réplication PL/pgSQL', category: 'database', keywords: ['postgresql', 'postgres', 'performance', 'réplication', 'plpgsql', 'database'] },
+                { element: comingSoonCards[34], title: 'MongoDB & NoSQL', description: 'Aggregation Sharding Atlas', category: 'database', keywords: ['mongodb', 'nosql', 'aggregation', 'sharding', 'atlas', 'database'] },
+                { element: comingSoonCards[35], title: 'Redis & Cache', description: 'In-memory Pub/Sub Sessions', category: 'database', keywords: ['redis', 'cache', 'in-memory', 'pubsub', 'sessions', 'database'] },
+                
+                // Testing & QA
+                { element: comingSoonCards[36], title: 'Testing Automatisé', description: 'Jest Cypress Selenium', category: 'testing', keywords: ['testing', 'jest', 'cypress', 'selenium', 'automation', 'qa'] },
+                { element: comingSoonCards[37], title: 'QA & Performance', description: 'Load Testing Monitoring Metrics', category: 'testing', keywords: ['qa', 'performance', 'load testing', 'monitoring', 'metrics', 'testing'] }
+            ];
+
+            // Search functionality
+            function performSearch() {
+                const query = searchInput.value.toLowerCase().trim();
+                currentSearch = query;
+                
+                if (query) {
+                    searchClear.style.display = 'block';
+                    searchSuggestions.style.display = 'none';
+                } else {
+                    searchClear.style.display = 'none';
+                }
+                
+                filterAndSearch();
+            }
+
+            // Filter and search combined
+            function filterAndSearch() {
+                let visibleCount = 0;
+                const allData = [...coursesData, ...comingSoonData];
+                const noResults = document.getElementById('noResults');
+                
+                allData.forEach(item => {
+                    const matchesFilter = currentFilter === 'all' || item.category === currentFilter;
+                    const matchesSearch = !currentSearch || 
+                        item.title.toLowerCase().includes(currentSearch) ||
+                        item.description.toLowerCase().includes(currentSearch) ||
+                        item.keywords.some(keyword => keyword.toLowerCase().includes(currentSearch));
+                    
+                    if (matchesFilter && matchesSearch) {
+                        item.element.style.display = 'block';
+                        item.element.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.element.style.display = 'none';
+                        item.element.classList.add('hidden');
+                    }
+                });
+                
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+                
+                // Update results counter
+                updateResultsCounter(visibleCount);
+            }
+
+            function updateResultsCounter(count) {
+                let text = '';
+                if (currentSearch && currentFilter !== 'all') {
+                    text = `${count} formation${count > 1 ? 's' : ''} trouvée${count > 1 ? 's' : ''} pour "${currentSearch}" dans ${getFilterName(currentFilter)}`;
+                } else if (currentSearch) {
+                    text = `${count} formation${count > 1 ? 's' : ''} trouvée${count > 1 ? 's' : ''} pour "${currentSearch}"`;
+                } else if (currentFilter !== 'all') {
+                    text = `${count} formation${count > 1 ? 's' : ''} en ${getFilterName(currentFilter)}`;
+                } else {
+                    text = '30+ formations disponibles';
+                }
+                
+                resultsCounter.innerHTML = `<span class="text-muted">${text}</span>`;
+            }
+
+            function getFilterName(filter) {
+                const names = {
+                    'backend': 'Backend',
+                    'frontend': 'Frontend', 
+                    'mobile': 'Mobile',
+                    'data': 'Data & Analytics',
+                    'ai': 'IA & ML',
+                    'devops': 'DevOps',
+                    'cloud': 'Cloud',
+                    'cyber': 'Cybersécurité',
+                    'blockchain': 'Blockchain',
+                    'game': 'Game Dev',
+                    'design': 'Design',
+                    'database': 'Bases de Données',
+                    'testing': 'Testing & QA'
+                };
+                return names[filter] || filter;
+            }
+
+            // Event listeners
+            searchInput.addEventListener('input', performSearch);
+            searchInput.addEventListener('focus', () => {
+                if (!searchInput.value) {
+                    searchSuggestions.style.display = 'block';
+                }
+            });
+
+            searchClear.addEventListener('click', () => {
+                searchInput.value = '';
+                currentSearch = '';
+                searchClear.style.display = 'none';
+                searchSuggestions.style.display = 'none';
+                filterAndSearch();
+                searchInput.focus();
+            });
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    searchSuggestions.style.display = 'none';
+                }
+            });
+
+            // Suggestion pills
+            suggestionPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    searchInput.value = pill.getAttribute('data-search');
+                    searchSuggestions.style.display = 'none';
+                    performSearch();
+                });
+            });
+
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-filter');
+                    filterAndSearch();
+                });
+            });
+
+            // Keyboard navigation
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    searchSuggestions.style.display = 'none';
+                    searchInput.blur();
+                }
+            });
+        }
+
+        // Track clicks on premium links
+        function initAnalytics() {
+            document.querySelectorAll('a[href*="inskillflow.com"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    console.log('Premium link clicked:', this.href);
+                    // Google Analytics event tracking
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'click', {
+                            'event_category': 'external_link',
+                            'event_label': this.href,
+                            'value': 1
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavbarScrollEffect();
+            initSmoothScroll();
+            initSearchAndFilters();
+            initAnalytics();
+        });
+    </script>
+</body>
+</html>

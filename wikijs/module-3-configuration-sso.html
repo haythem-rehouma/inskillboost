@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 - Configuration du SSO (Single Sign-On) - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #10b981;
+            --secondary-color: #059669;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sso-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .sso-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sso-card.google { border-left-color: #ea4335; }
+        .sso-card.microsoft { border-left-color: #00a1f1; }
+        .sso-card.github { border-left-color: #333; }
+        .sso-card.ldap { border-left-color: #10b981; }
+        .sso-card.saml { border-left-color: #8b5cf6; }
+        .sso-card.oidc { border-left-color: #f59e0b; }
+
+        .sso-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .provider-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+
+        .provider-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .provider-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .provider-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .provider-content {
+            display: none;
+        }
+
+        .provider-content.active {
+            display: block;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .config-example {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .provider-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 3 - Configuration SSO
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction au SSO
+                        </a>
+                        <a href="#concepts-sso" class="toc-link">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Concepts de base
+                        </a>
+                        <a href="#oauth-configuration" class="toc-link">
+                            <i class="fab fa-google me-2"></i>
+                            OAuth (Google, GitHub)
+                        </a>
+                        <a href="#microsoft-sso" class="toc-link">
+                            <i class="fab fa-microsoft me-2"></i>
+                            Microsoft Azure AD
+                        </a>
+                        <a href="#ldap-configuration" class="toc-link">
+                            <i class="fas fa-network-wired me-2"></i>
+                            LDAP / Active Directory
+                        </a>
+                        <a href="#saml-configuration" class="toc-link">
+                            <i class="fas fa-certificate me-2"></i>
+                            SAML 2.0
+                        </a>
+                        <a href="#oidc-configuration" class="toc-link">
+                            <i class="fas fa-id-card me-2"></i>
+                            OpenID Connect
+                        </a>
+                        <a href="#mapping-utilisateurs" class="toc-link">
+                            <i class="fas fa-users me-2"></i>
+                            Mapping utilisateurs
+                        </a>
+                        <a href="#tests-validation" class="toc-link">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Tests et validation
+                        </a>
+                        <a href="#depannage" class="toc-link">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Dépannage SSO
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-shield-alt me-3"></i>
+                            Module 3 - Configuration du SSO (Single Sign-On)
+                        </h1>
+                        <p class="lead mb-0">
+                            Maîtrisez la configuration des systèmes d'authentification unique pour WikiJS
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 3</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction au SSO
+                            </h2>
+                            <p class="lead">
+                                Le Single Sign-On (SSO) permet aux utilisateurs de se connecter à WikiJS 
+                                avec leurs comptes existants (Google, Microsoft, LDAP, etc.). Dans ce module, 
+                                nous configurerons plusieurs méthodes d'authentification.
+                            </p>
+                            
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Méthodes SSO supportées par WikiJS</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>OAuth 2.0</strong> : Google, GitHub, Facebook</li>
+                                            <li><strong>Microsoft</strong> : Azure AD, Office 365</li>
+                                            <li><strong>LDAP</strong> : Active Directory, OpenLDAP</li>
+                                            <li><strong>SAML 2.0</strong> : Okta, Auth0, ADFS</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>OpenID Connect</strong> : Standards modernes</li>
+                                            <li><strong>CAS</strong> : Central Authentication Service</li>
+                                            <li><strong>Discord</strong> : Authentification Discord</li>
+                                            <li><strong>Slack</strong> : Intégration workspace</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Prérequis</h6>
+                                <p class="mb-0">
+                                    Pour suivre ce module, vous devez avoir <strong>WikiJS installé et fonctionnel</strong> 
+                                    (Module 2 complété). Vous devrez également créer des applications/comptes développeur 
+                                    chez les fournisseurs SSO choisis.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- Concepts SSO -->
+                        <section id="concepts-sso" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                Concepts fondamentaux du SSO
+                            </h2>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="sso-card">
+                                        <div class="sso-title">
+                                            <i class="fas fa-key"></i>
+                                            Authentification
+                                        </div>
+                                        <p class="mb-0">
+                                            Vérification de l'identité de l'utilisateur par un service externe. 
+                                            L'utilisateur s'authentifie une seule fois.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="sso-card">
+                                        <div class="sso-title">
+                                            <i class="fas fa-shield-alt"></i>
+                                            Autorisation
+                                        </div>
+                                        <p class="mb-0">
+                                            Définition des permissions et rôles de l'utilisateur authentifié 
+                                            dans WikiJS.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="explanation-section">
+                                <h6>Flux SSO typique</h6>
+                                <div class="step-indicator">
+                                    <div class="step-number">1</div>
+                                    <div>Utilisateur accède à WikiJS</div>
+                                </div>
+                                <div class="step-indicator">
+                                    <div class="step-number">2</div>
+                                    <div>WikiJS redirige vers le fournisseur SSO</div>
+                                </div>
+                                <div class="step-indicator">
+                                    <div class="step-number">3</div>
+                                    <div>Utilisateur s'authentifie chez le fournisseur</div>
+                                </div>
+                                <div class="step-indicator">
+                                    <div class="step-number">4</div>
+                                    <div>Fournisseur retourne un token d'authentification</div>
+                                </div>
+                                <div class="step-indicator">
+                                    <div class="step-number">5</div>
+                                    <div>WikiJS valide le token et connecte l'utilisateur</div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Avantages du SSO</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Expérience utilisateur</strong> : Un seul mot de passe à retenir</li>
+                                    <li><strong>Sécurité</strong> : Centralisation des politiques de sécurité</li>
+                                    <li><strong>Administration</strong> : Gestion centralisée des utilisateurs</li>
+                                    <li><strong>Audit</strong> : Traçabilité des connexions</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Configuration OAuth -->
+                        <section id="oauth-configuration" class="section">
+                            <h2 class="section-title">
+                                <i class="fab fa-google me-2"></i>
+                                Configuration OAuth (Google, GitHub)
+                            </h2>
+                            
+                            <div class="sso-card oauth">
+                                <div class="sso-title">
+                                    <i class="fas fa-plug"></i>
+                                    OAuth 2.0 - Authentification déléguée
+                                </div>
+                                <p>
+                                    OAuth permet à WikiJS d'authentifier les utilisateurs via Google, GitHub, 
+                                    Facebook, etc. sans avoir accès à leurs mots de passe.
+                                </p>
+                            </div>
+
+                            <div class="provider-tabs">
+                                <div class="provider-tab active" data-provider="google">
+                                    <i class="fab fa-google me-2"></i>Google
+                                </div>
+                                <div class="provider-tab" data-provider="github">
+                                    <i class="fab fa-github me-2"></i>GitHub
+                                </div>
+                                <div class="provider-tab" data-provider="facebook">
+                                    <i class="fab fa-facebook me-2"></i>Facebook
+                                </div>
+                            </div>
+
+                            <!-- Configuration Google OAuth -->
+                            <div class="provider-content active" id="google">
+                                <h6>Configuration Google OAuth</h6>
+                                
+                                <div class="step-indicator">
+                                    <div class="step-number">1</div>
+                                    <div><strong>Créer un projet Google Cloud</strong></div>
+                                </div>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-google me-2"></i>Étapes Google Cloud Console
+                                    </div>
+                                    <pre><code># 1. Aller sur https://console.cloud.google.com/
+# 2. Créer un nouveau projet ou sélectionner un existant
+# 3. Activer l'API Google+ 
+# 4. Aller dans "Identifiants" → "Créer des identifiants" → "ID client OAuth 2.0"
+# 5. Type d'application : "Application Web"
+# 6. Origines JavaScript autorisées : http://localhost:3000
+# 7. URI de redirection : http://localhost:3000/login/google/callback</code></pre>
+                                </div>
+
+                                <div class="step-indicator">
+                                    <div class="step-number">2</div>
+                                    <div><strong>Configuration dans WikiJS</strong></div>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cog me-2"></i>Interface d'administration WikiJS
+                                    </div>
+                                    <pre><code># 1. Se connecter en tant qu'admin sur WikiJS
+# 2. Aller dans Administration → Authentification
+# 3. Cliquer sur "+ Ajouter une stratégie"
+# 4. Sélectionner "Google"
+# 5. Remplir les champs :
+#    - Client ID : [votre client ID Google]
+#    - Client Secret : [votre client secret Google]
+# 6. Activer la stratégie
+# 7. Sauvegarder</code></pre>
+                                </div>
+
+                                <div class="config-example">
+                                    <h6>Exemple de configuration Google OAuth</h6>
+                                    <div class="code-block">
+                                        <pre><code class="language-yaml"># Configuration Google OAuth dans WikiJS
+google:
+  enabled: true
+  clientId: "123456789-abcdefghijk.apps.googleusercontent.com"
+  clientSecret: "GOCSPX-votre_client_secret_ici"
+  domain: ""  # Optionnel : restreindre à un domaine
+  
+  # Mapping automatique des utilisateurs
+  autoRegister: true
+  autoAssignGroups: ["users"]
+  
+  # Champs utilisateur mappés
+  mapProfile:
+    id: "id"
+    displayName: "displayName"  
+    email: "email"
+    avatar: "picture"</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configuration GitHub OAuth -->
+                            <div class="provider-content" id="github">
+                                <h6>Configuration GitHub OAuth</h6>
+                                
+                                <div class="step-indicator">
+                                    <div class="step-number">1</div>
+                                    <div><strong>Créer une GitHub App</strong></div>
+                                </div>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-github me-2"></i>GitHub Developer Settings
+                                    </div>
+                                    <pre><code># 1. Aller sur https://github.com/settings/developers
+# 2. "OAuth Apps" → "New OAuth App"
+# 3. Application name : "MonWiki"
+# 4. Homepage URL : http://localhost:3000
+# 5. Authorization callback URL : http://localhost:3000/login/github/callback
+# 6. Cliquer "Register application"
+# 7. Noter le Client ID et Client Secret</code></pre>
+                                </div>
+
+                                <div class="config-example">
+                                    <h6>Configuration GitHub dans WikiJS</h6>
+                                    <div class="code-block">
+                                        <pre><code class="language-yaml"># Configuration GitHub OAuth
+github:
+  enabled: true
+  clientId: "votre_github_client_id"
+  clientSecret: "votre_github_client_secret"
+  
+  # Options avancées
+  autoRegister: true
+  autoAssignGroups: ["developers"]
+  
+  # Restriction par organisation (optionnel)
+  organizations: ["mon-entreprise"]
+  
+  # Mapping des champs
+  mapProfile:
+    id: "id"
+    displayName: "login"
+    email: "email"
+    avatar: "avatar_url"</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configuration Facebook OAuth -->
+                            <div class="provider-content" id="facebook">
+                                <h6>Configuration Facebook OAuth</h6>
+                                
+                                <div class="info-box">
+                                    <h6><i class="fas fa-info-circle me-2"></i>Facebook for Developers</h6>
+                                    <p class="mb-0">
+                                        Créez une application sur <a href="https://developers.facebook.com" target="_blank">Facebook for Developers</a> 
+                                        et configurez Facebook Login avec l'URI de redirection appropriée.
+                                    </p>
+                                </div>
+
+                                <div class="config-example">
+                                    <h6>Configuration Facebook dans WikiJS</h6>
+                                    <div class="code-block">
+                                        <pre><code class="language-yaml"># Configuration Facebook OAuth
+facebook:
+  enabled: true
+  appId: "votre_facebook_app_id"
+  appSecret: "votre_facebook_app_secret"
+  
+  # Permissions demandées
+  scope: "public_profile,email"
+  
+  # Configuration utilisateur
+  autoRegister: true
+  autoAssignGroups: ["users"]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Configuration Microsoft -->
+                        <section id="microsoft-sso" class="section">
+                            <h2 class="section-title">
+                                <i class="fab fa-microsoft me-2"></i>
+                                Configuration Microsoft Azure AD
+                            </h2>
+                            
+                            <div class="sso-card microsoft">
+                                <div class="sso-title">
+                                    <i class="fab fa-microsoft"></i>
+                                    Azure Active Directory
+                                </div>
+                                <p>
+                                    Intégration avec Azure AD pour les environnements d'entreprise utilisant 
+                                    Microsoft 365, Office 365 ou Azure AD.
+                                </p>
+                            </div>
+
+                            <div class="step-indicator">
+                                <div class="step-number">1</div>
+                                <div><strong>Enregistrer l'application dans Azure AD</strong></div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-cloud me-2"></i>Azure Portal - App Registration
+                                </div>
+                                <pre><code># 1. Aller sur https://portal.azure.com
+# 2. Azure Active Directory → App registrations
+# 3. "New registration"
+#    - Name: WikiJS-SSO
+#    - Supported account types: selon vos besoins
+#    - Redirect URI: Web - http://localhost:3000/login/microsoft/callback
+# 4. Créer l'application
+# 5. Noter l'Application (client) ID et Directory (tenant) ID</code></pre>
+                            </div>
+
+                            <div class="step-indicator">
+                                <div class="step-number">2</div>
+                                <div><strong>Créer un client secret</strong></div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-key me-2"></i>Génération du secret client
+                                </div>
+                                <pre><code># Dans votre app registration :
+# 1. "Certificates & secrets"
+# 2. "New client secret"
+# 3. Description: WikiJS Secret
+# 4. Expires: 24 months (recommandé)
+# 5. Ajouter et noter immédiatement la "Value"</code></pre>
+                            </div>
+
+                            <div class="step-indicator">
+                                <div class="step-number">3</div>
+                                <div><strong>Configuration des permissions API</strong></div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-shield-alt me-2"></i>API Permissions
+                                </div>
+                                <pre><code># Permissions requises :
+# 1. "API permissions" → "Add a permission"
+# 2. Microsoft Graph → Delegated permissions
+# 3. Ajouter :
+#    - openid
+#    - profile  
+#    - email
+#    - User.Read
+# 4. "Grant admin consent" si vous êtes admin</code></pre>
+                            </div>
+
+                            <div class="config-example">
+                                <h6>Configuration Microsoft Azure AD dans WikiJS</h6>
+                                <div class="code-block">
+                                    <pre><code class="language-yaml"># Configuration Microsoft Azure AD
+microsoft:
+  enabled: true
+  clientId: "votre-application-client-id"
+  clientSecret: "votre-client-secret"
+  tenantId: "votre-tenant-id"  # ou "common" pour multi-tenant
+  
+  # Configuration avancée
+  resource: "https://graph.microsoft.com/"
+  autoRegister: true
+  autoAssignGroups: ["employees"]
+  
+  # Restriction par domaine
+  allowedDomains: ["monentreprise.com"]
+  
+  # Mapping utilisateur
+  mapProfile:
+    id: "id"
+    displayName: "displayName"
+    email: "mail" 
+    avatar: "photo"
+    
+  # Synchronisation des groupes Azure AD
+  syncGroups: true
+  groupAttribute: "groups"</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Configuration LDAP -->
+                        <section id="ldap-configuration" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-network-wired me-2"></i>
+                                Configuration LDAP / Active Directory
+                            </h2>
+                            
+                            <div class="sso-card ldap">
+                                <div class="sso-title">
+                                    <i class="fas fa-network-wired"></i>
+                                    LDAP - Lightweight Directory Access Protocol
+                                </div>
+                                <p>
+                                    Authentification contre un serveur LDAP ou Active Directory d'entreprise. 
+                                    Idéal pour les environnements corporate existants.
+                                </p>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Prérequis LDAP</h6>
+                                <ul class="mb-0">
+                                    <li>Accès réseau au serveur LDAP/AD</li>
+                                    <li>Compte de service avec permissions de lecture</li>
+                                    <li>Connaissance de la structure de l'annuaire</li>
+                                    <li>Certificats SSL si LDAPS est utilisé</li>
+                                </ul>
+                            </div>
+
+                            <div class="provider-tabs">
+                                <div class="provider-tab active" data-provider="activedirectory">
+                                    <i class="fab fa-windows me-2"></i>Active Directory
+                                </div>
+                                <div class="provider-tab" data-provider="openldap">
+                                    <i class="fas fa-server me-2"></i>OpenLDAP
+                                </div>
+                            </div>
+
+                            <!-- Configuration Active Directory -->
+                            <div class="provider-content active" id="activedirectory">
+                                <h6>Configuration Active Directory</h6>
+                                
+                                <div class="config-example">
+                                    <h6>Configuration AD typique</h6>
+                                    <div class="code-block">
+                                        <pre><code class="language-yaml"># Configuration Active Directory dans WikiJS
+ldap:
+  enabled: true
+  
+  # Connexion au serveur
+  url: "ldap://dc.monentreprise.local:389"
+  # ou pour LDAPS : "ldaps://dc.monentreprise.local:636"
+  
+  # Compte de service
+  bindDN: "CN=wikijs-service,OU=Service Accounts,DC=monentreprise,DC=local"
+  bindCredentials: "MotDePasseService123!"
+  
+  # Base de recherche
+  searchBase: "DC=monentreprise,DC=local"
+  searchFilter: "(&(objectCategory=person)(objectClass=user)(sAMAccountName={{username}}))"
+  
+  # Attributs utilisateur
+  attributes:
+    id: "objectGUID"
+    displayName: "displayName"
+    email: "mail" 
+    avatar: "thumbnailPhoto"
+    
+  # Options de sécurité
+  tls:
+    enabled: false  # true pour LDAPS
+    rejectUnauthorized: true
+    
+  # Groupes 
+  groupSearchBase: "DC=monentreprise,DC=local"
+  groupSearchFilter: "(&(objectClass=group)(member={{dn}}))"
+  groupAttribute: "cn"</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="info-box">
+                                    <h6><i class="fas fa-lightbulb me-2"></i>Conseils Active Directory</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>sAMAccountName</strong> : Nom de connexion Windows classique</li>
+                                        <li><strong>userPrincipalName</strong> : Format email (user@domain.com)</li>
+                                        <li><strong>objectGUID</strong> : Identifiant unique immuable</li>
+                                        <li><strong>LDAPS</strong> : Fortement recommandé en production</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Configuration OpenLDAP -->
+                            <div class="provider-content" id="openldap">
+                                <h6>Configuration OpenLDAP</h6>
+                                
+                                <div class="config-example">
+                                    <h6>Configuration OpenLDAP typique</h6>
+                                    <div class="code-block">
+                                        <pre><code class="language-yaml"># Configuration OpenLDAP dans WikiJS
+ldap:
+  enabled: true
+  
+  # Serveur OpenLDAP
+  url: "ldap://ldap.monentreprise.com:389"
+  
+  # Authentification simple
+  bindDN: "cn=wikijs,ou=services,dc=monentreprise,dc=com"
+  bindCredentials: "secretPassword"
+  
+  # Recherche utilisateurs
+  searchBase: "ou=users,dc=monentreprise,dc=com"
+  searchFilter: "(&(objectClass=inetOrgPerson)(uid={{username}}))"
+  
+  # Attributs OpenLDAP standards
+  attributes:
+    id: "entryUUID"
+    displayName: "cn"
+    email: "mail"
+    avatar: "jpegPhoto"
+    
+  # Groupes POSIX
+  groupSearchBase: "ou=groups,dc=monentreprise,dc=com"
+  groupSearchFilter: "(&(objectClass=posixGroup)(memberUid={{username}}))"
+  groupAttribute: "cn"
+  
+  # Sécurité
+  tls:
+    enabled: true
+    rejectUnauthorized: true</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-terminal me-2"></i>Test de connexion LDAP
+                                </div>
+                                <pre><code class="language-bash"># Test manuel de connexion LDAP
+ldapsearch -H ldap://votre-serveur:389 \
+           -D "cn=service-account,dc=example,dc=com" \
+           -W \
+           -b "dc=example,dc=com" \
+           "(sAMAccountName=testuser)"
+
+# Test avec LDAPS
+ldapsearch -H ldaps://votre-serveur:636 \
+           -D "cn=service-account,dc=example,dc=com" \
+           -W \
+           -b "dc=example,dc=com" \
+           "(uid=testuser)"</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Configuration SAML -->
+                        <section id="saml-configuration" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-certificate me-2"></i>
+                                Configuration SAML 2.0
+                            </h2>
+                            
+                            <div class="sso-card saml">
+                                <div class="sso-title">
+                                    <i class="fas fa-certificate"></i>
+                                    SAML 2.0 - Security Assertion Markup Language
+                                </div>
+                                <p>
+                                    SAML est un standard d'échange d'informations d'authentification et d'autorisation. 
+                                    Compatible avec Okta, Auth0, ADFS, et autres fournisseurs d'identité.
+                                </p>
+                            </div>
+
+                            <div class="step-indicator">
+                                <div class="step-number">1</div>
+                                <div><strong>Configurer WikiJS comme Service Provider (SP)</strong></div>
+                            </div>
+
+                            <div class="config-example">
+                                <h6>Configuration SAML dans WikiJS</h6>
+                                <div class="code-block">
+                                    <pre><code class="language-yaml"># Configuration SAML 2.0 dans WikiJS
+saml:
+  enabled: true
+  
+  # Métadonnées du Service Provider (WikiJS)
+  entryPoint: "https://votre-idp.com/saml/sso"
+  issuer: "https://wiki.mondomaine.com"
+  callbackUrl: "https://wiki.mondomaine.com/login/saml/callback"
+  
+  # Certificat du fournisseur d'identité
+  cert: |
+    -----BEGIN CERTIFICATE-----
+    MIIDXTCCAkWgAwIBAgIJAKoK/heBjcOuMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
+    ... certificat complet ici ...
+    -----END CERTIFICATE-----
+    
+  # Options de mapping
+  attributes:
+    id: "NameID"
+    displayName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+    email: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+    
+  # Options de sécurité
+  wantAssertionsSigned: true
+  wantAuthnResponseSigned: true
+  signatureAlgorithm: "sha256"</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="step-indicator">
+                                <div class="step-number">2</div>
+                                <div><strong>Configurer le fournisseur d'identité</strong></div>
+                            </div>
+
+                            <div class="provider-tabs">
+                                <div class="provider-tab active" data-provider="okta-saml">
+                                    <i class="fas fa-cloud me-2"></i>Okta
+                                </div>
+                                <div class="provider-tab" data-provider="auth0-saml">
+                                    <i class="fas fa-shield-alt me-2"></i>Auth0
+                                </div>
+                                <div class="provider-tab" data-provider="adfs-saml">
+                                    <i class="fab fa-windows me-2"></i>ADFS
+                                </div>
+                            </div>
+
+                            <!-- Configuration Okta -->
+                            <div class="provider-content active" id="okta-saml">
+                                <h6>Configuration Okta SAML</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-cloud me-2"></i>Étapes dans Okta Admin Console
+                                    </div>
+                                    <pre><code># 1. Applications → Create App Integration
+# 2. Sign-in method: SAML 2.0
+# 3. General Settings:
+#    - App name: WikiJS
+# 4. SAML Settings:
+#    - Single sign on URL: https://wiki.mondomaine.com/login/saml/callback
+#    - Audience URI: https://wiki.mondomaine.com
+#    - Name ID format: EmailAddress
+# 5. Attribute Statements:
+#    - Name: displayName, Value: user.displayName
+#    - Name: email, Value: user.email
+# 6. Finish et assigner aux utilisateurs</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Configuration Auth0 -->
+                            <div class="provider-content" id="auth0-saml">
+                                <h6>Configuration Auth0 SAML</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-shield-alt me-2"></i>Auth0 Dashboard
+                                    </div>
+                                    <pre><code># 1. Applications → Create Application
+# 2. Type: Regular Web Applications
+# 3. Settings → Advanced Settings → Endpoints
+# 4. SAML Protocol URLs:
+#    - SAML 2.0 Endpoint: noter l'URL
+# 5. Addons → SAML2 WEB APP
+#    - Application Callback URL: https://wiki.mondomaine.com/login/saml/callback
+#    - Settings JSON:
+{
+  "audience": "https://wiki.mondomaine.com",
+  "mappings": {
+    "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+    "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+  }
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Configuration ADFS -->
+                            <div class="provider-content" id="adfs-saml">
+                                <h6>Configuration ADFS SAML</h6>
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-windows me-2"></i>ADFS Management Console
+                                    </div>
+                                    <pre><code># 1. Add Relying Party Trust
+# 2. Select Data Source: Enter data about the relying party manually
+# 3. Display Name: WikiJS
+# 4. Configure URL: Enable SAML 2.0 WebSSO protocol
+#    - URL: https://wiki.mondomaine.com/login/saml/callback
+# 5. Relying Party Trust Identifier: https://wiki.mondomaine.com
+# 6. Access Control Policy: Permit everyone (ou selon vos règles)
+# 7. Finish
+# 8. Edit Claim Rules:
+#    - Send LDAP Attributes as Claims:
+#      - Display-Name → Name
+#      - E-Mail-Addresses → E-Mail Address</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- OpenID Connect -->
+                        <section id="oidc-configuration" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-id-card me-2"></i>
+                                Configuration OpenID Connect (OIDC)
+                            </h2>
+                            
+                            <div class="sso-card oidc">
+                                <div class="sso-title">
+                                    <i class="fas fa-id-card"></i>
+                                    OpenID Connect - Standard moderne
+                                </div>
+                                <p>
+                                    OIDC est une couche d'identité au-dessus d'OAuth 2.0. Standard moderne 
+                                    pour l'authentification, supporté par de nombreux fournisseurs.
+                                </p>
+                            </div>
+
+                            <div class="config-example">
+                                <h6>Configuration OpenID Connect générique</h6>
+                                <div class="code-block">
+                                    <pre><code class="language-yaml"># Configuration OIDC générique dans WikiJS
+oidc:
+  enabled: true
+  
+  # URLs du fournisseur OIDC
+  issuer: "https://accounts.google.com"  # exemple Google
+  authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth"
+  tokenURL: "https://oauth2.googleapis.com/token"
+  userInfoURL: "https://openidconnect.googleapis.com/v1/userinfo"
+  
+  # Application credentials
+  clientId: "votre-client-id"
+  clientSecret: "votre-client-secret"
+  
+  # Scopes demandés
+  scope: "openid profile email"
+  
+  # Configuration utilisateur
+  autoRegister: true
+  autoAssignGroups: ["users"]
+  
+  # Mapping des claims
+  claims:
+    id: "sub"
+    displayName: "name"
+    email: "email"
+    avatar: "picture"</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-lightbulb me-2"></i>Découverte automatique OIDC</h6>
+                                <p class="mb-0">
+                                    De nombreux fournisseurs OIDC supportent la découverte automatique. 
+                                    WikiJS peut récupérer automatiquement les endpoints à partir de l'URL 
+                                    <code>https://fournisseur.com/.well-known/openid_configuration</code>
+                                </p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-search me-2"></i>Configuration avec découverte automatique
+                                </div>
+                                <pre><code class="language-yaml"># Configuration OIDC avec découverte automatique
+oidc:
+  enabled: true
+  
+  # URL de découverte (la plupart des fournisseurs)
+  issuer: "https://login.microsoftonline.com/tenant-id/v2.0"
+  # WikiJS récupérera automatiquement les endpoints
+  
+  clientId: "votre-client-id"
+  clientSecret: "votre-client-secret"
+  scope: "openid profile email"
+  
+  # Options avancées
+  responseType: "code"
+  responseMode: "query"
+  
+  # Validation du token
+  clockTolerance: 60  # secondes
+  maxTokenAge: 3600   # secondes</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Mapping utilisateurs -->
+                        <section id="mapping-utilisateurs" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-users me-2"></i>
+                                Mapping et gestion des utilisateurs
+                            </h2>
+                            
+                            <div class="explanation-section">
+                                <h6>Concepts de mapping</h6>
+                                <p>
+                                    Le mapping définit comment les informations du fournisseur SSO sont 
+                                    transformées en profil utilisateur WikiJS. Cela inclut les attributs 
+                                    de base et l'assignation automatique aux groupes.
+                                </p>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="sso-card">
+                                        <div class="sso-title">
+                                            <i class="fas fa-user"></i>
+                                            Attributs utilisateur
+                                        </div>
+                                        <ul class="mb-0">
+                                            <li><strong>id</strong> : Identifiant unique immuable</li>
+                                            <li><strong>displayName</strong> : Nom d'affichage</li>
+                                            <li><strong>email</strong> : Adresse email</li>
+                                            <li><strong>avatar</strong> : Photo de profil</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="sso-card">
+                                        <div class="sso-title">
+                                            <i class="fas fa-users-cog"></i>
+                                            Groupes et rôles
+                                        </div>
+                                        <ul class="mb-0">
+                                            <li><strong>autoAssignGroups</strong> : Groupes par défaut</li>
+                                            <li><strong>syncGroups</strong> : Synchronisation automatique</li>
+                                            <li><strong>groupAttribute</strong> : Attribut des groupes</li>
+                                            <li><strong>roleMapping</strong> : Mapping des rôles</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-example">
+                                <h6>Configuration avancée de mapping</h6>
+                                <div class="code-block">
+                                    <pre><code class="language-yaml"># Mapping avancé pour OAuth/OIDC
+oauth_provider:
+  enabled: true
+  # ... configuration de base ...
+  
+  # Enregistrement automatique
+  autoRegister: true
+  
+  # Groupes assignés automatiquement
+  autoAssignGroups: 
+    - "users"
+    - "external-users"
+  
+  # Synchronisation des groupes depuis le fournisseur
+  syncGroups: true
+  groupAttribute: "groups"  # ou "roles", "memberOf", etc.
+  
+  # Mapping conditionnel basé sur les attributs
+  conditionalMapping:
+    - condition: "email.endsWith('@admin.com')"
+      groups: ["administrators"]
+    - condition: "department === 'IT'"
+      groups: ["it-team"]
+    - condition: "country === 'FR'"
+      groups: ["france-users"]
+  
+  # Transformation des attributs
+  attributeTransforms:
+    displayName: "firstName + ' ' + lastName"
+    email: "email.toLowerCase()"
+    
+  # Règles de validation
+  validation:
+    requiredFields: ["email", "displayName"]
+    emailDomains: ["monentreprise.com", "partenaire.com"]</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-network-wired me-2"></i>Mapping LDAP avancé
+                                </div>
+                                <pre><code class="language-yaml"># Mapping LDAP avec groupes Active Directory
+ldap:
+  enabled: true
+  # ... configuration de connexion ...
+  
+  # Mapping des attributs utilisateur
+  attributes:
+    id: "objectGUID"
+    displayName: "displayName"
+    email: "mail"
+    avatar: "thumbnailPhoto"
+    
+  # Attributs personnalisés
+  customAttributes:
+    department: "department"
+    title: "title"
+    phone: "telephoneNumber"
+    manager: "manager"
+  
+  # Configuration des groupes
+  groupSearchBase: "DC=monentreprise,DC=local"
+  groupSearchFilter: "(&(objectClass=group)(member={{dn}}))"
+  groupAttribute: "cn"
+  
+  # Mapping des groupes AD vers groupes WikiJS
+  groupMapping:
+    "Domain Admins": ["administrators"]
+    "IT Department": ["it-team", "power-users"]
+    "All Users": ["users"]
+    "Managers": ["managers"]
+  
+  # Groupes par défaut pour tous les utilisateurs LDAP
+  autoAssignGroups: ["ldap-users"]</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="success-box">
+                                <h6><i class="fas fa-check-circle me-2"></i>Bonnes pratiques de mapping</h6>
+                                <ul class="mb-0">
+                                    <li><strong>ID immutable</strong> : Utilisez un identifiant qui ne change jamais</li>
+                                    <li><strong>Validation email</strong> : Assurez-vous que l'email est valide</li>
+                                    <li><strong>Groupes par défaut</strong> : Définissez des groupes de base pour tous</li>
+                                    <li><strong>Test mapping</strong> : Testez avec plusieurs profils utilisateur</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Tests et validation -->
+                        <section id="tests-validation" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Tests et validation SSO
+                            </h2>
+                            
+                            <div class="checklist">
+                                <h6><i class="fas fa-list-check me-2"></i>Tests de validation SSO</h6>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test1">
+                                    <label for="sso-test1"><strong>Configuration</strong> : Paramètres SSO sauvegardés et actifs</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test2">
+                                    <label for="sso-test2"><strong>Redirection</strong> : Page de login affiche le bouton SSO</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test3">
+                                    <label for="sso-test3"><strong>Authentification</strong> : Connexion via SSO réussie</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test4">
+                                    <label for="sso-test4"><strong>Mapping</strong> : Informations utilisateur correctement récupérées</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test5">
+                                    <label for="sso-test5"><strong>Groupes</strong> : Groupes automatiquement assignés</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="sso-test6">
+                                    <label for="sso-test6"><strong>Déconnexion</strong> : Logout fonctionne correctement</label>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-bug me-2"></i>Activation des logs de debug SSO
+                                </div>
+                                <pre><code class="language-yaml"># Dans config.yml de WikiJS
+logLevel: debug
+
+# Ou via variables d'environnement
+DEBUG=wiki:auth,wiki:passport
+
+# Logs spécifiques aux stratégies
+DEBUG=passport:*</code></pre>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Procédure de test complète</h6>
+                                <ol class="mb-0">
+                                    <li><strong>Test admin</strong> : Vérifier la configuration dans l'admin</li>
+                                    <li><strong>Navigation privée</strong> : Tester en mode incognito</li>
+                                    <li><strong>Plusieurs utilisateurs</strong> : Tester différents profils</li>
+                                    <li><strong>Vérifier les logs</strong> : Analyser les messages d'erreur</li>
+                                    <li><strong>Test de déconnexion</strong> : Vérifier la déconnexion complète</li>
+                                    <li><strong>Re-connexion</strong> : Tester la reconnexion automatique</li>
+                                </ol>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-terminal me-2"></i>Commandes de diagnostic SSO
+                                </div>
+                                <pre><code class="language-bash"># Vérifier la connectivité réseau
+ping votre-serveur-sso.com
+nslookup votre-serveur-sso.com
+
+# Test de certificat SSL
+openssl s_client -connect votre-serveur:443 -verify_return_error
+
+# Pour LDAP/AD
+ldapsearch -H ldap://serveur:389 -x -D "cn=test,dc=example,dc=com" -W
+
+# Analyser les logs WikiJS en temps réel
+tail -f logs/wiki.log | grep -i auth</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Dépannage -->
+                        <section id="depannage" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-question-circle me-2"></i>
+                                Guide de dépannage SSO
+                            </h2>
+                            
+                            <div class="accordion question-accordion" id="troubleshootingAccordion">
+                                
+                                <!-- Problème 1 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sso-trouble1">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            "Invalid redirect_uri" ou erreur de callback
+                                        </button>
+                                    </h3>
+                                    <div id="sso-trouble1" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-wrench me-2"></i>Solutions</h5>
+                                                <ol>
+                                                    <li><strong>Vérifier l'URL de callback</strong> : Doit être exacte dans le fournisseur SSO</li>
+                                                    <li><strong>HTTP vs HTTPS</strong> : Assurer la cohérence des protocoles</li>
+                                                    <li><strong>Port inclus</strong> : Vérifier si le port doit être spécifié</li>
+                                                    <li><strong>Trailing slash</strong> : Avec ou sans slash final selon le fournisseur</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="code-block">
+                                                <div class="code-header">URLs de callback courantes</div>
+                                                <pre><code># OAuth providers
+https://wiki.mondomaine.com/login/google/callback
+https://wiki.mondomaine.com/login/github/callback
+https://wiki.mondomaine.com/login/microsoft/callback
+
+# SAML
+https://wiki.mondomaine.com/login/saml/callback
+
+# OpenID Connect
+https://wiki.mondomaine.com/login/oidc/callback</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 2 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sso-trouble2">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Erreur LDAP/AD "Cannot connect to server"
+                                        </button>
+                                    </h3>
+                                    <div id="sso-trouble2" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-network-wired me-2"></i>Diagnostics réseau</h5>
+                                                <ol>
+                                                    <li><strong>Connectivité</strong> : Ping et telnet vers le serveur</li>
+                                                    <li><strong>Port correct</strong> : 389 (LDAP), 636 (LDAPS), 3268 (Global Catalog)</li>
+                                                    <li><strong>Firewall</strong> : Vérifier les règles de pare-feu</li>
+                                                    <li><strong>DNS</strong> : Résolution du nom de serveur</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="code-block">
+                                                <div class="code-header">Tests de connectivité</div>
+                                                <pre><code class="language-bash"># Test de connectivité basique
+ping dc.monentreprise.local
+
+# Test du port LDAP
+telnet dc.monentreprise.local 389
+
+# Test LDAPS
+openssl s_client -connect dc.monentreprise.local:636
+
+# Test de recherche LDAP manuelle
+ldapsearch -H ldap://dc.monentreprise.local:389 \
+           -x -D "cn=test,dc=example,dc=com" -W \
+           -b "dc=example,dc=com" "(sAMAccountName=testuser)"</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 3 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sso-trouble3">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Utilisateur authentifié mais pas de permissions
+                                        </button>
+                                    </h3>
+                                    <div id="sso-trouble3" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-users-cog me-2"></i>Problèmes de mapping</h5>
+                                                <ol>
+                                                    <li><strong>Groupes par défaut</strong> : Vérifier autoAssignGroups</li>
+                                                    <li><strong>Synchronisation</strong> : Activer syncGroups si nécessaire</li>
+                                                    <li><strong>Mapping manuel</strong> : Assigner manuellement dans l'admin</li>
+                                                    <li><strong>Attributs manquants</strong> : Vérifier les claims/attributs retournés</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="warning-box">
+                                                <h6>Configuration minimale requise</h6>
+                                                <div class="code-block">
+                                                    <pre><code class="language-yaml"># Assigner au minimum le groupe "users"
+autoAssignGroups: ["users"]
+
+# Ou créer un groupe spécifique pour les utilisateurs SSO
+autoAssignGroups: ["sso-users"]</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 4 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sso-trouble4">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Erreur "SAML assertion validation failed"
+                                        </button>
+                                    </h3>
+                                    <div id="sso-trouble4" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-certificate me-2"></i>Problèmes SAML</h5>
+                                                <ol>
+                                                    <li><strong>Certificat</strong> : Vérifier le certificat du fournisseur</li>
+                                                    <li><strong>Horloge</strong> : Synchroniser l'heure entre serveurs</li>
+                                                    <li><strong>Audience</strong> : Vérifier l'URL audience/issuer</li>
+                                                    <li><strong>Signature</strong> : Paramètres de signature corrects</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="info-box">
+                                                <h6>Validation des paramètres SAML</h6>
+                                                <ul class="mb-0">
+                                                    <li>Certificat X.509 valide et non expiré</li>
+                                                    <li>URL Issuer identique côté IdP et SP</li>
+                                                    <li>URL de callback exacte</li>
+                                                    <li>Algorithmes de signature compatibles</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                        
+                        <!-- Navigation entre modules -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-2-installation-configuration-wikijs.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 2 - Installation WikiJS
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="module-4-authentification-avancee.html" class="btn btn-primary">
+                                        Module 4 - Authentification avancée
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets de fournisseurs
+        document.querySelectorAll('.provider-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetProvider = tab.getAttribute('data-provider');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.provider-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.provider-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetProvider}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .sso-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

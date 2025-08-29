@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2 - Installation et configuration de WikiJS - Formation WikiJS & SSO</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --info-color: #0ea5e9;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .toc-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header .lead {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .install-card {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+
+        .install-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .install-card.nodejs { border-left-color: #68cc02; }
+        .install-card.wikijs { border-left-color: #3b82f6; }
+        .install-card.database { border-left-color: #10b981; }
+        .install-card.docker { border-left-color: #2563eb; }
+        .install-card.ssl { border-left-color: #f59e0b; }
+
+        .install-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .os-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .os-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .os-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .os-tab:hover:not(.active) {
+            background: var(--light-bg);
+        }
+
+        .os-content {
+            display: none;
+        }
+
+        .os-content.active {
+            display: block;
+        }
+
+        .checklist {
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: rgba(14, 165, 233, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .question-accordion .accordion-item {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: var(--question-bg);
+            border: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .question-header:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-header::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .question-header:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+        }
+
+        .answer-section {
+            background: var(--answer-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation-section {
+            background: var(--explanation-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .badge-concept {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .navigation-buttons {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+                height: auto;
+            }
+            
+            .content-header {
+                padding: 1.5rem;
+            }
+            
+            .content-body {
+                padding: 1.5rem;
+            }
+
+            .os-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-book me-2"></i>
+                Formation WikiJS & SSO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-1"></i>Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book me-1"></i>Modules
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="module-1-introduction-wikijs-concepts-base.html">Module 1 - Introduction WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-2-installation-configuration-wikijs.html">Module 2 - Installation WikiJS</a></li>
+                            <li><a class="dropdown-item" href="module-3-configuration-sso.html">Module 3 - Configuration SSO</a></li>
+                            <li><a class="dropdown-item" href="module-4-authentification-avancee.html">Module 4 - Authentification avancée</a></li>
+                            <li><a class="dropdown-item" href="module-5-securite-gestion-utilisateurs.html">Module 5 - Sécurité</a></li>
+                            <li><a class="dropdown-item" href="module-6-personnalisation-themes.html">Module 6 - Personnalisation</a></li>
+                            <li><a class="dropdown-item" href="module-7-monetisation-strategies.html">Module 7 - Monétisation</a></li>
+                            <li><a class="dropdown-item" href="module-8-deploiement-maintenance.html">Module 8 - Déploiement</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar avec table des matières -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="toc-title">
+                        <i class="fas fa-list me-2"></i>
+                        Module 2 - Installation WikiJS
+                    </h5>
+                    <div class="toc-content">
+                        <a href="#introduction" class="toc-link">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Introduction
+                        </a>
+                        <a href="#prerequis" class="toc-link">
+                            <i class="fas fa-clipboard-check me-2"></i>
+                            Prérequis système
+                        </a>
+                        <a href="#nodejs-installation" class="toc-link">
+                            <i class="fab fa-node-js me-2"></i>
+                            Installation Node.js
+                        </a>
+                        <a href="#database-setup" class="toc-link">
+                            <i class="fas fa-database me-2"></i>
+                            Base de données
+                        </a>
+                        <a href="#wikijs-installation" class="toc-link">
+                            <i class="fas fa-book me-2"></i>
+                            Installation WikiJS
+                        </a>
+                        <a href="#premier-demarrage" class="toc-link">
+                            <i class="fas fa-rocket me-2"></i>
+                            Premier démarrage
+                        </a>
+                        <a href="#configuration-initiale" class="toc-link">
+                            <i class="fas fa-cogs me-2"></i>
+                            Configuration initiale
+                        </a>
+                        <a href="#docker-installation" class="toc-link">
+                            <i class="fab fa-docker me-2"></i>
+                            Installation Docker
+                        </a>
+                        <a href="#verification" class="toc-link">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Vérification
+                        </a>
+                        <a href="#depannage" class="toc-link">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Dépannage
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <!-- En-tête -->
+                    <div class="content-header">
+                        <h1>
+                            <i class="fas fa-download me-3"></i>
+                            Module 2 - Installation et configuration de WikiJS
+                        </h1>
+                        <p class="lead mb-0">
+                            Apprenez à installer et configurer WikiJS sur votre environnement de développement et production
+                        </p>
+                        <span class="badge badge-concept mt-2">Module 2</span>
+                    </div>
+
+                    <!-- Corps du contenu -->
+                    <div class="content-body">
+                        
+                        <!-- Introduction -->
+                        <section id="introduction" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-play-circle me-2"></i>
+                                Introduction
+                            </h2>
+                            <p class="lead">
+                                Dans ce module, nous allons installer WikiJS de A à Z. WikiJS est une solution moderne 
+                                de wiki qui nécessite Node.js et une base de données. Nous verrons plusieurs méthodes d'installation 
+                                pour répondre à tous les besoins.
+                            </p>
+                            
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Ce que vous allez installer</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Node.js</strong> : Runtime JavaScript pour WikiJS</li>
+                                            <li><strong>Base de données</strong> : PostgreSQL ou MySQL</li>
+                                            <li><strong>WikiJS</strong> : L'application wiki principale</li>
+                                            <li><strong>PM2</strong> : Gestionnaire de processus (optionnel)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li><strong>Docker</strong> : Conteneurisation (alternative)</li>
+                                            <li><strong>Nginx</strong> : Serveur proxy (production)</li>
+                                            <li><strong>SSL/TLS</strong> : Certificats de sécurité</li>
+                                            <li><strong>Git</strong> : Intégration du contrôle de version</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Méthodes d'installation</h6>
+                                <p class="mb-0">
+                                    Nous couvrirons <strong>3 méthodes</strong> : installation manuelle (développement), 
+                                    Docker (recommandée), et installation production. Choisissez celle qui correspond 
+                                    à votre environnement et vos besoins.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- Prérequis -->
+                        <section id="prerequis" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-clipboard-check me-2"></i>
+                                Prérequis système
+                            </h2>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="install-card">
+                                        <div class="install-title">
+                                            <i class="fab fa-windows"></i>
+                                            Windows
+                                        </div>
+                                        <ul class="mb-0">
+                                            <li>Windows 10/11</li>
+                                            <li>4 GB RAM minimum</li>
+                                            <li>2 GB espace disque</li>
+                                            <li>Droits administrateur</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="install-card">
+                                        <div class="install-title">
+                                            <i class="fab fa-apple"></i>
+                                            macOS
+                                        </div>
+                                        <ul class="mb-0">
+                                            <li>macOS 10.15+</li>
+                                            <li>4 GB RAM minimum</li>
+                                            <li>2 GB espace disque</li>
+                                            <li>Homebrew recommandé</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="install-card">
+                                        <div class="install-title">
+                                            <i class="fab fa-linux"></i>
+                                            Linux
+                                        </div>
+                                        <ul class="mb-0">
+                                            <li>Ubuntu 18.04+</li>
+                                            <li>4 GB RAM minimum</li>
+                                            <li>2 GB espace disque</li>
+                                            <li>Curl et wget installés</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checklist">
+                                <h6><i class="fas fa-list-check me-2"></i>Checklist avant installation</h6>
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check1">
+                                    <label for="check1">Connexion Internet stable</label>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check2">
+                                    <label for="check2">Espace disque suffisant (minimum 2 GB libres)</label>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check3">
+                                    <label for="check3">Droits administrateur/sudo</label>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check4">
+                                    <label for="check4">Ports 3000 et 5432/3306 disponibles</label>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check5">
+                                    <label for="check5">Navigateur moderne (Chrome, Firefox, Edge)</label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Installation Node.js -->
+                        <section id="nodejs-installation" class="section">
+                            <h2 class="section-title">
+                                <i class="fab fa-node-js me-2"></i>
+                                Installation Node.js
+                            </h2>
+                            
+                            <div class="install-card nodejs">
+                                <div class="install-title">
+                                    <i class="fab fa-node-js"></i>
+                                    Node.js 18 LTS ou 20 LTS (Recommandé)
+                                </div>
+                                <p>
+                                    WikiJS nécessite Node.js version 18 ou supérieure. Nous recommandons la version LTS 
+                                    pour une stabilité optimale. Node.js inclut npm (gestionnaire de paquets).
+                                </p>
+                            </div>
+
+                            <div class="os-tabs">
+                                <div class="os-tab active" data-os="windows">
+                                    <i class="fab fa-windows me-2"></i>Windows
+                                </div>
+                                <div class="os-tab" data-os="macos">
+                                    <i class="fab fa-apple me-2"></i>macOS
+                                </div>
+                                <div class="os-tab" data-os="linux">
+                                    <i class="fab fa-linux me-2"></i>Linux
+                                </div>
+                            </div>
+
+                            <!-- Windows -->
+                            <div class="os-content active" id="windows">
+                                <h6>Installation sur Windows</h6>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-download me-2"></i>Option 1: Téléchargement direct
+                                    </div>
+                                    <pre><code># 1. Aller sur https://nodejs.org/
+# 2. Télécharger "LTS" (version recommandée)
+# 3. Exécuter le fichier .msi téléchargé
+# 4. Suivre l'assistant d'installation
+# 5. Redémarrer votre terminal</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-terminal me-2"></i>Option 2: Avec Chocolatey
+                                    </div>
+                                    <pre><code class="language-powershell"># Installer Node.js via Chocolatey
+choco install nodejs-lts
+
+# Vérifier l'installation
+node --version
+npm --version</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-tools me-2"></i>Option 3: Avec Winget
+                                    </div>
+                                    <pre><code class="language-powershell"># Installer avec Winget (Windows 10/11)
+winget install OpenJS.NodeJS.LTS</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- macOS -->
+                            <div class="os-content" id="macos">
+                                <h6>Installation sur macOS</h6>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-terminal me-2"></i>Avec Homebrew (Recommandé)
+                                    </div>
+                                    <pre><code class="language-bash"># Installer Node.js LTS
+brew install node@18
+
+# Ou la version courante
+brew install node
+
+# Vérifier l'installation
+node --version
+npm --version</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-download me-2"></i>Installation manuelle
+                                    </div>
+                                    <pre><code># 1. Télécharger depuis https://nodejs.org/
+# 2. Ouvrir le fichier .pkg téléchargé
+# 3. Suivre l'assistant d'installation
+# 4. Redémarrer le terminal</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Linux -->
+                            <div class="os-content" id="linux">
+                                <h6>Installation sur Linux (Ubuntu/Debian)</h6>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-terminal me-2"></i>Avec NodeSource (Recommandé)
+                                    </div>
+                                    <pre><code class="language-bash"># Ajouter le dépôt NodeSource
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+
+# Installer Node.js
+sudo apt-get install -y nodejs
+
+# Vérifier l'installation
+node --version
+npm --version</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-tools me-2"></i>Avec Snap (Alternative)
+                                    </div>
+                                    <pre><code class="language-bash"># Installer avec Snap
+sudo snap install node --classic</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="success-box">
+                                <h6><i class="fas fa-check-circle me-2"></i>Vérification de Node.js</h6>
+                                <div class="code-block">
+                                    <div class="code-header">Test de l'installation</div>
+                                    <pre><code class="language-bash"># Vérifier les versions
+node --version    # Devrait afficher v18.x.x ou v20.x.x
+npm --version     # Devrait afficher 9.x.x ou plus
+
+# Test rapide
+node -e "console.log('Node.js fonctionne !')"</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Configuration base de données -->
+                        <section id="database-setup" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-database me-2"></i>
+                                Configuration de la base de données
+                            </h2>
+                            
+                            <div class="install-card database">
+                                <div class="install-title">
+                                    <i class="fas fa-database"></i>
+                                    Base de données pour WikiJS
+                                </div>
+                                <p>
+                                    WikiJS supporte PostgreSQL, MySQL, MariaDB et SQLite. PostgreSQL est recommandé 
+                                    pour la production, SQLite pour les tests locaux.
+                                </p>
+                            </div>
+
+                            <div class="os-tabs">
+                                <div class="os-tab active" data-os="postgresql">
+                                    <i class="fas fa-elephant me-2"></i>PostgreSQL
+                                </div>
+                                <div class="os-tab" data-os="mysql">
+                                    <i class="fas fa-database me-2"></i>MySQL
+                                </div>
+                                <div class="os-tab" data-os="sqlite">
+                                    <i class="fas fa-file-code me-2"></i>SQLite
+                                </div>
+                            </div>
+
+                            <!-- PostgreSQL -->
+                            <div class="os-content active" id="postgresql">
+                                <h6>Installation PostgreSQL</h6>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-ubuntu me-2"></i>Ubuntu/Debian
+                                    </div>
+                                    <pre><code class="language-bash"># Installer PostgreSQL
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+# Démarrer le service
+sudo systemctl start postgresql
+sudo systemctl enable postgresql</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-windows me-2"></i>Windows
+                                    </div>
+                                    <pre><code class="language-powershell"># Avec Chocolatey
+choco install postgresql
+
+# Ou télécharger depuis https://www.postgresql.org/download/windows/</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-apple me-2"></i>macOS
+                                    </div>
+                                    <pre><code class="language-bash"># Avec Homebrew
+brew install postgresql
+brew services start postgresql</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-user me-2"></i>Configuration PostgreSQL
+                                    </div>
+                                    <pre><code class="language-bash"># Créer utilisateur et base de données
+sudo -u postgres psql
+
+# Dans le shell PostgreSQL :
+CREATE DATABASE wikijs;
+CREATE USER wikijsuser WITH ENCRYPTED PASSWORD 'wikijs123';
+GRANT ALL PRIVILEGES ON DATABASE wikijs TO wikijsuser;
+\q</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- MySQL -->
+                            <div class="os-content" id="mysql">
+                                <h6>Installation MySQL</h6>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fab fa-ubuntu me-2"></i>Ubuntu/Debian
+                                    </div>
+                                    <pre><code class="language-bash"># Installer MySQL
+sudo apt update
+sudo apt install mysql-server
+
+# Sécuriser l'installation
+sudo mysql_secure_installation</code></pre>
+                                </div>
+
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-user me-2"></i>Configuration MySQL
+                                    </div>
+                                    <pre><code class="language-bash"># Se connecter à MySQL
+sudo mysql -u root -p
+
+# Créer base et utilisateur
+CREATE DATABASE wikijs CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'wikijsuser'@'localhost' IDENTIFIED BY 'wikijs123';
+GRANT ALL PRIVILEGES ON wikijs.* TO 'wikijsuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- SQLite -->
+                            <div class="os-content" id="sqlite">
+                                <h6>Configuration SQLite</h6>
+                                <div class="info-box">
+                                    <h6>SQLite pour le développement</h6>
+                                    <p class="mb-0">
+                                        SQLite ne nécessite pas d'installation séparée. WikiJS créera automatiquement 
+                                        le fichier de base de données. Parfait pour les tests et le développement.
+                                    </p>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <i class="fas fa-info me-2"></i>Configuration SQLite
+                                    </div>
+                                    <pre><code># SQLite sera configuré automatiquement lors de l'installation WikiJS
+# Le fichier db.sqlite sera créé dans le dossier WikiJS</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Installation WikiJS -->
+                        <section id="wikijs-installation" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-book me-2"></i>
+                                Installation WikiJS
+                            </h2>
+                            
+                            <div class="install-card wikijs">
+                                <div class="install-title">
+                                    <i class="fas fa-book"></i>
+                                    WikiJS - Installation manuelle
+                                </div>
+                                <p>
+                                    Téléchargement et installation de la dernière version stable de WikiJS 
+                                    avec configuration personnalisée.
+                                </p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-download me-2"></i>Téléchargement et extraction
+                                </div>
+                                <pre><code class="language-bash"># Créer le dossier d'installation
+mkdir wikijs
+cd wikijs
+
+# Télécharger la dernière version
+curl -sSo- https://wiki.js.org/install.sh | bash
+
+# Ou téléchargement manuel :
+# wget https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz
+# tar xzf wiki-js.tar.gz</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-cog me-2"></i>Configuration initiale
+                                </div>
+                                <pre><code class="language-bash"># Copier le fichier de configuration
+cp config.sample.yml config.yml
+
+# Éditer la configuration (voir section suivante)
+nano config.yml</code></pre>
+                            </div>
+
+                            <div class="explanation-section">
+                                <h6>Structure des fichiers WikiJS</h6>
+                                <div class="code-block">
+                                    <pre><code>wikijs/
+├── config.yml         # Configuration principale
+├── server/            # Application serveur
+├── assets/           # Ressources statiques  
+├── data/             # Données utilisateur
+├── db.sqlite         # Base SQLite (si utilisée)
+├── logs/            # Fichiers de log
+└── node_modules/    # Dépendances Node.js</code></pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Premier démarrage -->
+                        <section id="premier-demarrage" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-rocket me-2"></i>
+                                Premier démarrage
+                            </h2>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-play me-2"></i>Démarrage de WikiJS
+                                </div>
+                                <pre><code class="language-bash"># Dans le dossier wikijs
+node server
+
+# Ou avec npm (si package.json existe)
+npm start</code></pre>
+                            </div>
+
+                            <div class="success-box">
+                                <h6><i class="fas fa-globe me-2"></i>Accès à WikiJS</h6>
+                                <p>Une fois démarré, WikiJS sera accessible à :</p>
+                                <ul class="mb-0">
+                                    <li><strong>Local :</strong> <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></li>
+                                    <li><strong>Réseau :</strong> http://votre-ip:3000</li>
+                                    <li><strong>Setup :</strong> Assistant de configuration automatique au premier accès</li>
+                                </ul>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-info-circle me-2"></i>Premier accès - Assistant de configuration</h6>
+                                <ol class="mb-0">
+                                    <li>Ouvrir http://localhost:3000 dans votre navigateur</li>
+                                    <li>Suivre l'assistant de configuration</li>
+                                    <li>Choisir votre base de données</li>
+                                    <li>Créer le compte administrateur</li>
+                                    <li>Configurer le nom et l'URL du site</li>
+                                </ol>
+                            </div>
+
+                            <div class="warning-box">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Problèmes courants</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Port occupé :</strong> Modifier le port dans config.yml</li>
+                                    <li><strong>Connexion DB :</strong> Vérifier les paramètres de connexion</li>
+                                    <li><strong>Permissions :</strong> S'assurer des droits sur le dossier</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Configuration initiale -->
+                        <section id="configuration-initiale" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-cogs me-2"></i>
+                                Configuration initiale
+                            </h2>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-file-alt me-2"></i>Fichier config.yml - Configuration de base
+                                </div>
+                                <pre><code class="language-yaml"># Configuration WikiJS
+title: "Mon Wiki"
+host: http://localhost
+port: 3000
+
+# Base de données PostgreSQL
+db:
+  type: postgres
+  host: localhost
+  port: 5432
+  user: wikijsuser
+  pass: wikijs123
+  db: wikijs
+  ssl: false
+
+# Base de données SQLite (alternative)
+# db:
+#   type: sqlite
+#   storage: ./db.sqlite
+
+# Configuration des logs  
+logLevel: info
+logFormat: default
+logFilePath: ./logs/wiki.log
+
+# Répertoires
+dataPath: ./data
+sessionSecret: changeme123456789
+
+# Pool de connexions
+pool:
+  min: 2
+  max: 10</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-shield-alt me-2"></i>Configuration sécurisée pour la production
+                                </div>
+                                <pre><code class="language-yaml"># Configuration production
+title: "Documentation Entreprise"
+host: https://wiki.mondomaine.com
+port: 3000
+
+# Base de données sécurisée
+db:
+  type: postgres
+  host: localhost
+  port: 5432
+  user: wikijs_prod
+  pass: SuperSecurePassword2024!
+  db: wikijs_production
+  ssl: true
+  
+# Session sécurisée
+sessionSecret: UneLongueCleSecrete123456789!@#
+
+# Logs détaillés
+logLevel: warn
+logFormat: json
+logFilePath: ./logs/wiki-production.log
+
+# Configuration SSL
+ssl:
+  enabled: true
+  port: 3443
+  provider: letsencrypt</code></pre>
+                            </div>
+
+                            <div class="explanation-section">
+                                <h6>Options de configuration importantes</h6>
+                                <ul>
+                                    <li><strong>title :</strong> Nom affiché de votre wiki</li>
+                                    <li><strong>host :</strong> URL publique du wiki (important pour les liens)</li>
+                                    <li><strong>sessionSecret :</strong> Clé de chiffrement des sessions (OBLIGATOIRE à changer)</li>
+                                    <li><strong>logLevel :</strong> Niveau de détail des logs (error, warn, info, debug)</li>
+                                    <li><strong>pool :</strong> Gestion des connexions à la base de données</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Installation Docker -->
+                        <section id="docker-installation" class="section">
+                            <h2 class="section-title">
+                                <i class="fab fa-docker me-2"></i>
+                                Installation avec Docker (Recommandée)
+                            </h2>
+                            
+                            <div class="install-card docker">
+                                <div class="install-title">
+                                    <i class="fab fa-docker"></i>
+                                    Docker - Installation simplifiée
+                                </div>
+                                <p>
+                                    Docker simplifie considérablement l'installation et la gestion de WikiJS. 
+                                    Parfait pour la production et les environnements isolés.
+                                </p>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-file-alt me-2"></i>docker-compose.yml - Stack complète
+                                </div>
+                                <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: wikijs
+      POSTGRES_USER: wikijsuser
+      POSTGRES_PASSWORD: wikijs123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wikijs-network
+    restart: unless-stopped
+
+  # Application WikiJS
+  wikijs:
+    image: requarks/wiki:2
+    depends_on:
+      - postgres
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: wikijsuser
+      DB_PASS: wikijs123
+      DB_NAME: wikijs
+    ports:
+      - "3000:3000"
+    networks:
+      - wikijs-network
+    restart: unless-stopped
+    volumes:
+      - wikijs_data:/wiki/data
+
+volumes:
+  postgres_data:
+  wikijs_data:
+
+networks:
+  wikijs-network:
+    driver: bridge</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-rocket me-2"></i>Démarrage avec Docker
+                                </div>
+                                <pre><code class="language-bash"># Créer le fichier docker-compose.yml (copier le contenu ci-dessus)
+nano docker-compose.yml
+
+# Démarrer les services
+docker-compose up -d
+
+# Vérifier l'état
+docker-compose ps
+
+# Voir les logs
+docker-compose logs wikijs</code></pre>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-shield-alt me-2"></i>Configuration avec reverse proxy (Production)
+                                </div>
+                                <pre><code class="language-yaml"># docker-compose-production.yml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: wikijs
+      POSTGRES_USER: wikijsuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    restart: unless-stopped
+
+  wikijs:
+    image: requarks/wiki:2
+    depends_on:
+      - postgres
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: wikijsuser
+      DB_PASS: ${DB_PASSWORD}
+      DB_NAME: wikijs
+    networks:
+      - internal
+      - traefik
+    restart: unless-stopped
+    volumes:
+      - wikijs_data:/wiki/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wikijs.rule=Host(`wiki.mondomaine.com`)"
+      - "traefik.http.routers.wikijs.tls.certresolver=letsencrypt"
+
+volumes:
+  postgres_data:
+  wikijs_data:
+
+networks:
+  internal:
+  traefik:
+    external: true</code></pre>
+                            </div>
+
+                            <div class="success-box">
+                                <h6><i class="fas fa-check-circle me-2"></i>Avantages Docker</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Isolation :</strong> Environnement complètement isolé</li>
+                                    <li><strong>Simplicité :</strong> Un seul fichier de configuration</li>
+                                    <li><strong>Sauvegarde :</strong> Volumes persistants pour les données</li>
+                                    <li><strong>Mise à jour :</strong> Simple avec <code>docker-compose pull</code></li>
+                                    <li><strong>Scalabilité :</strong> Facile de dupliquer l'installation</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Vérification -->
+                        <section id="verification" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Vérification de l'installation
+                            </h2>
+                            
+                            <div class="checklist">
+                                <h6><i class="fas fa-list-check me-2"></i>Tests de validation</h6>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify1">
+                                    <label for="verify1"><strong>Node.js :</strong> <code>node --version</code> affiche v18+ ou v20+</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify2">
+                                    <label for="verify2"><strong>Base de données :</strong> Connexion établie et base créée</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify3">
+                                    <label for="verify3"><strong>WikiJS :</strong> http://localhost:3000 accessible</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify4">
+                                    <label for="verify4"><strong>Configuration :</strong> Assistant de configuration complété</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify5">
+                                    <label for="verify5"><strong>Admin :</strong> Connexion au compte administrateur possible</label>
+                                </div>
+                                
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="verify6">
+                                    <label for="verify6"><strong>Première page :</strong> Création d'une page de test réussie</label>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <i class="fas fa-terminal me-2"></i>Tests de fonctionnement
+                                </div>
+                                <pre><code class="language-bash"># Test complet de WikiJS
+echo "=== Tests WikiJS ==="
+
+# 1. Vérifier Node.js
+echo "Node.js version:"
+node --version
+
+# 2. Vérifier les ports
+echo "Vérification port 3000:"
+netstat -an | grep :3000 || ss -tuln | grep :3000
+
+# 3. Test de connexion HTTP
+echo "Test HTTP:"
+curl -I http://localhost:3000
+
+# 4. Vérifier les processus
+echo "Processus WikiJS:"
+ps aux | grep node | grep -v grep
+
+# 5. Vérifier les logs
+echo "Dernières lignes de log:"
+tail -n 10 ./logs/wiki.log</code></pre>
+                            </div>
+
+                            <div class="info-box">
+                                <h6><i class="fas fa-lightbulb me-2"></i>Test fonctionnel complet</h6>
+                                <ol class="mb-0">
+                                    <li>Accéder à http://localhost:3000</li>
+                                    <li>Se connecter avec le compte admin</li>
+                                    <li>Créer une nouvelle page</li>
+                                    <li>Ajouter du contenu Markdown</li>
+                                    <li>Publier et visualiser la page</li>
+                                    <li>Tester la recherche</li>
+                                </ol>
+                            </div>
+                        </section>
+
+                        <!-- Dépannage -->
+                        <section id="depannage" class="section">
+                            <h2 class="section-title">
+                                <i class="fas fa-question-circle me-2"></i>
+                                Guide de dépannage
+                            </h2>
+                            
+                            <div class="accordion question-accordion" id="troubleshootingAccordion">
+                                
+                                <!-- Problème 1 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble1">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            "Port 3000 already in use"
+                                        </button>
+                                    </h3>
+                                    <div id="trouble1" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-wrench me-2"></i>Solutions</h5>
+                                                <ol>
+                                                    <li><strong>Changer le port :</strong> Modifier <code>port: 3001</code> dans config.yml</li>
+                                                    <li><strong>Identifier le processus :</strong> <code>lsof -i :3000</code> (Unix) ou <code>netstat -ano | findstr :3000</code> (Windows)</li>
+                                                    <li><strong>Tuer le processus :</strong> <code>kill PID</code> ou Task Manager</li>
+                                                    <li><strong>Redémarrer :</strong> Relancer WikiJS après libération du port</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="code-block">
+                                                <div class="code-header">Diagnostic du port</div>
+                                                <pre><code class="language-bash"># Unix/Linux/macOS
+lsof -i :3000
+netstat -tlnp | grep :3000
+
+# Windows  
+netstat -ano | findstr :3000
+tasklist | findstr "PID"</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 2 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble2">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Erreur de connexion à la base de données
+                                        </button>
+                                    </h3>
+                                    <div id="trouble2" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-database me-2"></i>Diagnostics base de données</h5>
+                                                <ol>
+                                                    <li><strong>Service actif :</strong> Vérifier que PostgreSQL/MySQL est démarré</li>
+                                                    <li><strong>Paramètres de connexion :</strong> Host, port, user, password corrects</li>
+                                                    <li><strong>Base existante :</strong> Vérifier que la base de données existe</li>
+                                                    <li><strong>Permissions :</strong> L'utilisateur a-t-il les droits sur la base ?</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="code-block">
+                                                <div class="code-header">Tests de connexion</div>
+                                                <pre><code class="language-bash"># Test PostgreSQL
+psql -h localhost -U wikijsuser -d wikijs
+
+# Test MySQL
+mysql -h localhost -u wikijsuser -p wikijs
+
+# Vérifier le service
+systemctl status postgresql  # Linux
+brew services list | grep postgres  # macOS</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 3 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble3">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            WikiJS ne démarre pas
+                                        </button>
+                                    </h3>
+                                    <div id="trouble3" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-bug me-2"></i>Étapes de diagnostic</h5>
+                                                <ol>
+                                                    <li><strong>Logs détaillés :</strong> Examiner les messages d'erreur</li>
+                                                    <li><strong>Configuration :</strong> Valider le format YAML</li>
+                                                    <li><strong>Permissions :</strong> Vérifier les droits sur les dossiers</li>
+                                                    <li><strong>Dépendances :</strong> <code>npm install</code> si nécessaire</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="code-block">
+                                                <div class="code-header">Mode debug</div>
+                                                <pre><code class="language-bash"># Lancer en mode debug
+DEBUG=wiki:* node server
+
+# Ou avec plus de détails
+NODE_ENV=development node server
+
+# Vérifier la syntaxe YAML
+python -c "import yaml; yaml.safe_load(open('config.yml'))"</code></pre>
+                                            </div>
+
+                                            <div class="warning-box">
+                                                <h6>Erreurs communes</h6>
+                                                <ul class="mb-0">
+                                                    <li>Fichier config.yml mal formaté (indentation YAML)</li>
+                                                    <li>sessionSecret non défini ou trop court</li>
+                                                    <li>Dossier data/ non accessible</li>
+                                                    <li>Version Node.js incompatible</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Problème 4 -->
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <button class="accordion-button question-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble4">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Erreur 404 ou pages blanches
+                                        </button>
+                                    </h3>
+                                    <div id="trouble4" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div class="answer-section">
+                                                <h5><i class="fas fa-globe me-2"></i>Problèmes d'affichage</h5>
+                                                <ol>
+                                                    <li><strong>Cache navigateur :</strong> Vider le cache (Ctrl+F5)</li>
+                                                    <li><strong>URL de base :</strong> Vérifier le paramètre <code>host</code> dans config.yml</li>
+                                                    <li><strong>Ressources statiques :</strong> Problème avec les CSS/JS</li>
+                                                    <li><strong>Proxy/Reverse proxy :</strong> Configuration incorrecte</li>
+                                                </ol>
+                                            </div>
+
+                                            <div class="info-box">
+                                                <h6>Configuration host correcte</h6>
+                                                <div class="code-block">
+                                                    <pre><code class="language-yaml"># Pour accès local
+host: http://localhost
+
+# Pour accès réseau  
+host: http://192.168.1.100
+
+# Pour production
+host: https://wiki.mondomaine.com</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                        
+                        <!-- Navigation entre modules -->
+                        <div class="navigation-buttons">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="module-1-introduction-wikijs-concepts-base.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        Module 1 - Introduction WikiJS
+                                    </a>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="module-3-configuration-sso.html" class="btn btn-primary">
+                                        Module 3 - Configuration SSO
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de retour en haut -->
+    <button class="scroll-to-top btn" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
+    
+    <script>
+        // Initialisation de Highlight.js
+        hljs.highlightAll();
+        
+        // Gestion des onglets OS
+        document.querySelectorAll('.os-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetOs = tab.getAttribute('data-os');
+                const tabContainer = tab.closest('.section');
+                
+                // Désactiver tous les onglets du même conteneur
+                tabContainer.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+                tabContainer.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+                
+                // Activer l'onglet cliqué
+                tab.classList.add('active');
+                const targetContent = tabContainer.querySelector(`#${targetOs}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+        
+        // Gestion du bouton de retour en haut
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll pour les liens de la table des matières
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mettre en évidence le lien actif dans la table des matières
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let activeSection = null;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    activeSection = section;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Appel initial
+        
+        // Animation d'entrée pour les éléments
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observer les sections pour l'animation
+        document.querySelectorAll('.section, .install-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        // Sauvegarder l'état des checkboxes dans localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+            
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>

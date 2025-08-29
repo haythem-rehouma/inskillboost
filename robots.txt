@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://inskillboost.com/sitemap.xml
+
+# Optimisations pour les moteurs de recherche
+Crawl-delay: 1
+
+# Permettre l'indexation de toutes les pages importantes
+Allow: /entity-framework/
+Allow: /scala-spark/
+Allow: /wikijs/
+Allow: /privacy-policy.html
+Allow: /terms-of-service.html
+
+# Pages à ne pas indexer (si vous en avez)
+# Disallow: /admin/
+# Disallow: /private/
