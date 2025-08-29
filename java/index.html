@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Java Complète - Programmation Orientée Objet</title>
+    <meta name="description" content="Formation Java complète : POO, concepts avancés, Spring Boot, exercices pratiques et projets concrets.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --java-red: #ed8b00;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --premium-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e2e8f0 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, var(--premium-gold), #f97316);
+            color: white !important;
+            margin-left: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            color: white !important;
+        }
+
+        .hero-course {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-course::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-50px) translateY(-50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .course-icon-large {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 4px 15px rgba(248, 152, 32, 0.3);
+        }
+
+        .module-title {
+            color: var(--dark-color);
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .module-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .module-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-module {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-module:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(248, 152, 32, 0.4);
+            color: white;
+        }
+
+        .achievement-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stats-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 5px solid var(--java-orange);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .concept-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--java-orange);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .concept-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .concept-item h6 {
+            color: var(--java-orange);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost
+            </a>
+            
+            <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+                <a class="nav-link" href="../">
+                    <i class="fas fa-arrow-left me-1"></i>Retour Hub
+                </a>
+                <a class="nav-link btn-premium" href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=java&utm_campaign=course-premium" target="_blank">
+                    <i class="fas fa-crown me-1"></i>Version Premium
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Course -->
+    <section class="hero-course">
+        <div class="container">
+            <div class="hero-content">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="course-icon-large me-3">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div>
+                                <h1 class="mb-2">Formation Java Complète</h1>
+                                <p class="mb-0 opacity-90">Maîtrisez la Programmation Orientée Objet</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-signal me-1"></i>Débutant à Avancé
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-clock me-1"></i>60h
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-list me-1"></i>12 modules
+                            </span>
+                            <span class="badge bg-light text-dark px-3 py-2">
+                                <i class="fas fa-code me-1"></i>200+ exercices
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=java-hero&utm_campaign=course-premium" 
+                           class="btn btn-warning btn-lg" target="_blank">
+                            <i class="fas fa-crown me-2"></i>Version Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Achievement Section -->
+        <div class="achievement-section">
+            <h2 style="color: var(--java-orange); font-weight: 700; font-size: 2.5rem; margin-bottom: 2rem;">
+                <i class="fab fa-java me-3"></i>
+                Formation Java Exhaustive
+            </h2>
+            <p class="lead mb-4">
+                <strong>12 modules progressifs</strong> couvrant tous les aspects de Java : 
+                des bases de la POO aux frameworks modernes comme Spring Boot, avec plus de 200 exercices pratiques.
+            </p>
+            
+            <div class="stats-highlight">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <h4 class="text-primary mb-1">200+</h4>
+                        <small class="text-muted">Exercices Pratiques</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <h4 class="text-success mb-1">15</h4>
+                        <small class="text-muted">Projets Complets</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <h4 class="text-warning mb-1">50+</h4>
+                        <small class="text-muted">Concepts POO</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <h4 class="text-info mb-1">Java 21</h4>
+                        <small class="text-muted">Version LTS</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-item">
+                    <h6>Fondamentaux Java</h6>
+                    <p class="small mb-0">Variables, types, opérateurs, structures de contrôle</p>
+                </div>
+                <div class="concept-item">
+                    <h6>Programmation Orientée Objet</h6>
+                    <p class="small mb-0">Classes, objets, héritage, polymorphisme, encapsulation</p>
+                </div>
+                <div class="concept-item">
+                    <h6>Concepts Avancés</h6>
+                    <p class="small mb-0">Interfaces, abstractions, génériques, collections</p>
+                </div>
+                <div class="concept-item">
+                    <h6>Gestion d'Erreurs</h6>
+                    <p class="small mb-0">Exceptions, try-catch, gestion des ressources</p>
+                </div>
+                <div class="concept-item">
+                    <h6>Programmation Fonctionnelle</h6>
+                    <p class="small mb-0">Lambda, streams, méthodes de référence</p>
+                </div>
+                <div class="concept-item">
+                    <h6>Frameworks Modernes</h6>
+                    <p class="small mb-0">Spring Boot, JPA, REST APIs</p>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="fas fa-crown me-3 fa-2x"></i>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-1">Envie d'aller plus loin ?</h5>
+                    <p class="mb-2">Découvrez notre <strong>formation Java Premium</strong> avec projets d'entreprise, architecture microservices et mentorat personnalisé.</p>
+                    <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=java-inline&utm_campaign=course-premium" 
+                       class="btn btn-warning" target="_blank">
+                        <i class="fas fa-external-link-alt me-2"></i>Voir la Formation Premium
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <section id="modules" class="mb-5">
+            <h2 class="text-center mb-5" style="color: var(--dark-color); font-weight: 700;">
+                <i class="fas fa-graduation-cap me-3"></i>
+                Parcours de Formation Java
+            </h2>
+
+            <!-- Module 1 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">1</div>
+                    <div>
+                        <h3 class="module-title">Introduction à Java et Environnement</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Découverte de Java, installation du JDK, configuration de l'IDE, premier programme "Hello World" et concepts fondamentaux de la plateforme Java.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>15 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Fondamental</span>
+                </div>
+                <a href="module-1-introduction-java-environnement.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">2</div>
+                    <div>
+                        <h3 class="module-title">Variables, Types et Opérateurs</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Types primitifs et références, déclaration de variables, opérateurs arithmétiques, logiques et de comparaison. Conversion de types et bonnes pratiques.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>20 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Fondamental</span>
+                </div>
+                <a href="module-2-variables-types-operateurs.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">3</div>
+                    <div>
+                        <h3 class="module-title">Structures de Contrôle</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Conditions (if, else, switch), boucles (for, while, do-while), instructions de contrôle (break, continue). Exercices pratiques et algorithmes de base.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>25 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Fondamental</span>
+                </div>
+                <a href="module-3-structures-controle.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">4</div>
+                    <div>
+                        <h3 class="module-title">Tableaux et Chaînes de Caractères</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Tableaux unidimensionnels et multidimensionnels, manipulation de chaînes avec String et StringBuilder. Algorithmes de tri et de recherche.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>6h</span>
+                    <span><i class="fas fa-tasks"></i>20 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Intermédiaire</span>
+                </div>
+                <a href="module-4-tableaux-chaines.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">5</div>
+                    <div>
+                        <h3 class="module-title">Classes et Objets - Fondamentaux POO</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Création de classes, constructeurs, méthodes, attributs. Encapsulation avec getters/setters, modificateurs d'accès. Premier projet orienté objet.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>7h</span>
+                    <span><i class="fas fa-tasks"></i>18 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>POO</span>
+                </div>
+                <a href="module-5-classes-objets-poo.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 6 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">6</div>
+                    <div>
+                        <h3 class="module-title">Héritage et Polymorphisme</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Héritage de classes, méthode super(), redéfinition de méthodes, polymorphisme et liaison dynamique. Classes abstraites et méthodes abstraites.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>6h</span>
+                    <span><i class="fas fa-tasks"></i>16 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>POO Avancé</span>
+                </div>
+                <a href="module-6-heritage-polymorphisme.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 7 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">7</div>
+                    <div>
+                        <h3 class="module-title">Interfaces et Abstractions</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Interfaces Java, implémentation multiple, méthodes par défaut et statiques. Design patterns avec interfaces. Abstraction vs Interface.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>14 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Design</span>
+                </div>
+                <a href="module-7-interfaces-abstractions.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 8 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">8</div>
+                    <div>
+                        <h3 class="module-title">Gestion des Exceptions</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Try-catch-finally, types d'exceptions, création d'exceptions personnalisées, bonnes pratiques de gestion d'erreurs et debugging.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>12 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Robustesse</span>
+                </div>
+                <a href="module-8-gestion-exceptions.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 9 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">9</div>
+                    <div>
+                        <h3 class="module-title">Collections et Génériques</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Framework Collections (List, Set, Map), génériques, itérateurs. ArrayList, HashMap, TreeSet et leurs cas d'usage. Performance et complexité.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>6h</span>
+                    <span><i class="fas fa-tasks"></i>22 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Structures de Données</span>
+                </div>
+                <a href="module-9-collections-generiques.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 10 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">10</div>
+                    <div>
+                        <h3 class="module-title">Programmation Fonctionnelle et Streams</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Expressions lambda, interfaces fonctionnelles, Stream API, méthodes de référence. Programmation fonctionnelle vs impérative en Java.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>5h</span>
+                    <span><i class="fas fa-tasks"></i>18 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>Moderne</span>
+                </div>
+                <a href="module-10-programmation-fonctionnelle-streams.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 11 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">11</div>
+                    <div>
+                        <h3 class="module-title">Entrées/Sorties et Fichiers</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Gestion des fichiers, lecture/écriture, sérialisation, NIO.2, manipulation de chemins. Projet de gestion de fichiers et parsing de données.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>4h</span>
+                    <span><i class="fas fa-tasks"></i>15 exercices</span>
+                    <span><i class="fas fa-layer-group"></i>I/O</span>
+                </div>
+                <a href="module-11-entrees-sorties-fichiers.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+
+            <!-- Module 12 -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-number">12</div>
+                    <div>
+                        <h3 class="module-title">Introduction à Spring Boot et Projets</h3>
+                    </div>
+                </div>
+                <p class="module-description">
+                    Découverte de Spring Boot, création d'API REST, injection de dépendances, JPA/Hibernate. Projet final : application web complète.
+                </p>
+                <div class="module-meta">
+                    <span><i class="fas fa-clock"></i>8h</span>
+                    <span><i class="fas fa-tasks"></i>5 projets</span>
+                    <span><i class="fas fa-layer-group"></i>Framework</span>
+                </div>
+                <a href="module-12-spring-boot-projets.html" class="btn-module">
+                    <i class="fas fa-play"></i>
+                    Commencer le module
+                </a>
+            </div>
+        </section>
+
+        <!-- Navigation vers autres cours -->
+        <div class="related-courses mt-5 p-4" style="background: #f8fafc; border-radius: 12px;">
+            <h4 class="mb-3">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Autres formations disponibles
+            </h4>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <a href="../entity-framework/" 
+                       class="d-flex align-items-center p-3 text-decoration-none border rounded hover-shadow"
+                       style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #512BD4; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Entity Framework</h6>
+                            <small class="text-muted">11 modules • 35h</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="../scala-spark/" 
+                       class="d-flex align-items-center p-3 text-decoration-none border rounded hover-shadow"
+                       style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #dc143c; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Scala & Apache Spark</h6>
+                            <small class="text-muted">8 modules • 40h</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="../wikijs/" 
+                       class="d-flex align-items-center p-3 text-decoration-none border rounded hover-shadow"
+                       style="background: white; transition: all 0.3s ease;">
+                        <div class="me-3" style="width: 50px; height: 50px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fab fa-wikipedia-w"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">WikiJS & SSO</h6>
+                            <small class="text-muted">8 modules • 25h</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+            transform: translateY(-2px);
+        }
+    </style>
+</body>
+</html>

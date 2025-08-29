@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5 - Classes et Objets POO - Formation Java Complète</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --java-orange: #f89820;
+            --java-blue: #5382a1;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --info-color: #0284c7;
+            --dark-color: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --question-bg: #f1f5f9;
+            --answer-bg: #dcfce7;
+            --explanation-bg: #fef3c7;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, var(--java-orange), var(--java-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--java-orange);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+        }
+
+        .exercise-card {
+            background: var(--question-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .solution-card {
+            background: var(--answer-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .concept-highlight {
+            background: linear-gradient(135deg, rgba(248, 152, 32, 0.1), rgba(83, 130, 161, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--java-orange);
+        }
+
+        .poo-principle {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--info-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../">
+                <i class="fas fa-graduation-cap me-2"></i>
+                InSkillBoost - Java
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="../">Retour Hub</a>
+                <a class="nav-link" href="./">Modules Java</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div style="color: var(--java-orange); font-weight: 600; margin-bottom: 1rem;">
+                        Module 5 - Classes et Objets POO
+                    </div>
+                    
+                    <div style="background: var(--border-color); height: 4px; border-radius: 2px; margin: 1rem 0;">
+                        <div style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); height: 100%; width: 41.67%; border-radius: 2px;"></div>
+                    </div>
+                    <small class="text-muted d-block mb-3">Module 5 sur 12</small>
+                    
+                    <a href="#introduction-poo" style="display: block; padding: 0.5rem 0; color: var(--java-orange); text-decoration: none;">Introduction POO</a>
+                    <a href="#classes" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Définition de Classes</a>
+                    <a href="#constructeurs" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Constructeurs</a>
+                    <a href="#encapsulation" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Encapsulation</a>
+                    <a href="#methodes" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Méthodes</a>
+                    <a href="#exercices" style="display: block; padding: 0.5rem 0; color: var(--text-muted); text-decoration: none;">Exercices POO</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="main-content">
+                    <div class="content-header">
+                        <h1>Module 5 - Classes et Objets POO</h1>
+                        <p class="lead mb-0">Fondamentaux de la Programmation Orientée Objet</p>
+                    </div>
+
+                    <div style="padding: 2rem;">
+                        <!-- Introduction POO -->
+                        <section id="introduction-poo" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Introduction à la Programmation Orientée Objet</h2>
+                            
+                            <p>La Programmation Orientée Objet (POO) est un paradigme de programmation qui organise le code autour d'<strong>objets</strong> plutôt que de fonctions et de logique.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="poo-principle">
+                                        <h5>Encapsulation</h5>
+                                        <p>Regrouper les données (attributs) et les comportements (méthodes) dans une même entité (classe).</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="poo-principle">
+                                        <h5>Héritage</h5>
+                                        <p>Capacité d'une classe à hériter des propriétés et méthodes d'une autre classe.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="poo-principle">
+                                        <h5>Polymorphisme</h5>
+                                        <p>Capacité d'un objet à prendre plusieurs formes selon le contexte.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="poo-principle">
+                                        <h5>Abstraction</h5>
+                                        <p>Masquer la complexité interne et ne montrer que l'interface nécessaire.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Classes -->
+                        <section id="classes" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Définition de Classes</h2>
+                            
+                            <p>Une <strong>classe</strong> est un modèle ou un plan pour créer des objets. Elle définit les attributs (données) et les méthodes (comportements) que les objets de cette classe auront.</p>
+
+                            <h4>Syntaxe de Base d'une Classe</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class Personne {
+    // Attributs (variables d'instance)
+    private String nom;
+    private String prenom;
+    private int age;
+    private String email;
+    
+    // Constructeur
+    public Personne(String nom, String prenom, int age, String email) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.email = email;
+    }
+    
+    // Méthodes (comportements)
+    public void sePresenter() {
+        System.out.println("Bonjour, je suis " + prenom + " " + nom);
+        System.out.println("J'ai " + age + " ans");
+    }
+    
+    public boolean estMajeur() {
+        return age >= 18;
+    }
+    
+    // Getters et Setters (Encapsulation)
+    public String getNom() {
+        return nom;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        if (age >= 0 && age <= 120) {
+            this.age = age;
+        } else {
+            System.out.println("Age invalide !");
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <div class="concept-highlight">
+                                <h5>Éléments Clés d'une Classe :</h5>
+                                <ul>
+                                    <li><strong>Modificateurs d'accès :</strong> public, private, protected</li>
+                                    <li><strong>Attributs :</strong> Variables qui stockent l'état de l'objet</li>
+                                    <li><strong>Constructeurs :</strong> Méthodes spéciales pour initialiser les objets</li>
+                                    <li><strong>Méthodes :</strong> Fonctions qui définissent les comportements</li>
+                                    <li><strong>this :</strong> Référence à l'objet courant</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <!-- Constructeurs -->
+                        <section id="constructeurs" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Constructeurs</h2>
+                            
+                            <p>Les constructeurs sont des méthodes spéciales utilisées pour initialiser les objets lors de leur création.</p>
+
+                            <h4>Types de Constructeurs</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class Voiture {
+    private String marque;
+    private String modele;
+    private int annee;
+    private double prix;
+    
+    // 1. Constructeur par défaut (sans paramètres)
+    public Voiture() {
+        this.marque = "Inconnue";
+        this.modele = "Inconnu";
+        this.annee = 2024;
+        this.prix = 0.0;
+    }
+    
+    // 2. Constructeur avec paramètres
+    public Voiture(String marque, String modele, int annee, double prix) {
+        this.marque = marque;
+        this.modele = modele;
+        this.annee = annee;
+        this.prix = prix;
+    }
+    
+    // 3. Constructeur avec validation
+    public Voiture(String marque, String modele, int annee) {
+        this(marque, modele, annee, 0.0); // Appel du constructeur principal
+        
+        // Validation de l'année
+        if (annee < 1886 || annee > 2024) {
+            System.out.println("Année invalide, définition par défaut à 2024");
+            this.annee = 2024;
+        }
+    }
+    
+    // Méthode pour afficher les informations
+    public void afficherInfos() {
+        System.out.println("Voiture: " + marque + " " + modele + 
+                          " (" + annee + ") - " + prix + "€");
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Encapsulation -->
+                        <section id="encapsulation" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Encapsulation et Modificateurs d'Accès</h2>
+                            
+                            <p>L'encapsulation consiste à cacher les détails internes d'une classe et à contrôler l'accès aux données via des méthodes publiques.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Modificateurs d'Accès</h4>
+                                    <ul>
+                                        <li><strong>private :</strong> Accessible uniquement dans la classe</li>
+                                        <li><strong>protected :</strong> Accessible dans le package et les sous-classes</li>
+                                        <li><strong>public :</strong> Accessible partout</li>
+                                        <li><strong>(default) :</strong> Accessible dans le package</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="concept-highlight">
+                                        <h5>Bonnes Pratiques</h5>
+                                        <ul class="mb-0">
+                                            <li>Attributs <strong>private</strong></li>
+                                            <li>Méthodes <strong>public</strong> pour l'interface</li>
+                                            <li>Getters/Setters pour l'accès contrôlé</li>
+                                            <li>Validation dans les setters</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Exemple Complet avec Encapsulation</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class CompteBancaire {
+    // Attributs privés (encapsulation)
+    private String numeroCompte;
+    private String titulaire;
+    private double solde;
+    private static int compteurComptes = 0;
+    
+    // Constructeur
+    public CompteBancaire(String titulaire, double soldeInitial) {
+        this.numeroCompte = "CPT" + String.format("%06d", ++compteurComptes);
+        this.titulaire = titulaire;
+        this.solde = soldeInitial >= 0 ? soldeInitial : 0;
+    }
+    
+    // Méthodes métier
+    public boolean deposer(double montant) {
+        if (montant > 0) {
+            solde += montant;
+            System.out.println("Dépôt de " + montant + "€ effectué");
+            return true;
+        }
+        System.out.println("Montant invalide");
+        return false;
+    }
+    
+    public boolean retirer(double montant) {
+        if (montant > 0 && montant <= solde) {
+            solde -= montant;
+            System.out.println("Retrait de " + montant + "€ effectué");
+            return true;
+        }
+        System.out.println("Retrait impossible");
+        return false;
+    }
+    
+    // Getters (lecture seule pour certains attributs)
+    public String getNumeroCompte() {
+        return numeroCompte;
+    }
+    
+    public String getTitulaire() {
+        return titulaire;
+    }
+    
+    public double getSolde() {
+        return solde;
+    }
+    
+    // Setter avec validation
+    public void setTitulaire(String titulaire) {
+        if (titulaire != null && !titulaire.trim().isEmpty()) {
+            this.titulaire = titulaire;
+        } else {
+            System.out.println("Nom du titulaire invalide");
+        }
+    }
+    
+    // Méthode toString pour affichage
+    @Override
+    public String toString() {
+        return "Compte " + numeroCompte + " - " + titulaire + " : " + solde + "€";
+    }
+}</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Exercices -->
+                        <section id="exercices" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Exercices Pratiques POO</h2>
+
+                            <!-- Exercice 1 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-code"></i> Exercice 1 : Classe Étudiant
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer une classe Étudiant complète avec encapsulation.</p>
+                                <p><strong>Spécifications :</strong></p>
+                                <ul>
+                                    <li>Attributs privés : nom, prenom, numeroEtudiant, notes (tableau)</li>
+                                    <li>Constructeur avec validation</li>
+                                    <li>Méthodes : ajouterNote(), calculerMoyenne(), afficherBulletin()</li>
+                                    <li>Getters/Setters appropriés</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution1">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution1">
+                                    <div class="solution-card">
+                                        <div class="code-block">
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+public class Etudiant {
+    private String nom;
+    private String prenom;
+    private String numeroEtudiant;
+    private List<Double> notes;
+    private static int compteurEtudiants = 0;
+    
+    public Etudiant(String nom, String prenom) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.numeroEtudiant = "ETU" + String.format("%05d", ++compteurEtudiants);
+        this.notes = new ArrayList<>();
+    }
+    
+    public void ajouterNote(double note) {
+        if (note >= 0 && note <= 20) {
+            notes.add(note);
+            System.out.println("Note " + note + " ajoutée pour " + prenom + " " + nom);
+        } else {
+            System.out.println("Note invalide (doit être entre 0 et 20)");
+        }
+    }
+    
+    public double calculerMoyenne() {
+        if (notes.isEmpty()) {
+            return 0;
+        }
+        
+        double somme = 0;
+        for (double note : notes) {
+            somme += note;
+        }
+        return somme / notes.size();
+    }
+    
+    public void afficherBulletin() {
+        System.out.println("=== BULLETIN DE " + prenom.toUpperCase() + " " + nom.toUpperCase() + " ===");
+        System.out.println("Numéro étudiant : " + numeroEtudiant);
+        System.out.println("Notes : " + notes);
+        System.out.println("Moyenne : " + String.format("%.2f", calculerMoyenne()) + "/20");
+        System.out.println("Mention : " + obtenirMention());
+        System.out.println("=====================================");
+    }
+    
+    private String obtenirMention() {
+        double moyenne = calculerMoyenne();
+        if (moyenne >= 16) return "Très Bien";
+        if (moyenne >= 14) return "Bien";
+        if (moyenne >= 12) return "Assez Bien";
+        if (moyenne >= 10) return "Passable";
+        return "Insuffisant";
+    }
+    
+    // Getters
+    public String getNom() { return nom; }
+    public String getPrenom() { return prenom; }
+    public String getNumeroEtudiant() { return numeroEtudiant; }
+    public List<Double> getNotes() { return new ArrayList<>(notes); }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 2 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-car"></i> Exercice 2 : Système de Gestion de Véhicules
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un système de gestion pour un garage.</p>
+                                <p><strong>Classes à créer :</strong></p>
+                                <ul>
+                                    <li><strong>Vehicule :</strong> Classe de base avec marque, modèle, année, kilométrage</li>
+                                    <li><strong>Garage :</strong> Classe pour gérer une collection de véhicules</li>
+                                    <li><strong>TestGarage :</strong> Classe principale pour tester le système</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution2">
+                                    Voir la solution
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution2">
+                                    <div class="solution-card">
+                                        <h6>Classe Vehicule :</h6>
+                                        <div class="code-block">
+<pre><code class="language-java">public class Vehicule {
+    private String marque;
+    private String modele;
+    private int annee;
+    private double kilometrage;
+    private boolean disponible;
+    
+    public Vehicule(String marque, String modele, int annee) {
+        this.marque = marque;
+        this.modele = modele;
+        this.annee = annee;
+        this.kilometrage = 0.0;
+        this.disponible = true;
+    }
+    
+    public void rouler(double km) {
+        if (km > 0) {
+            this.kilometrage += km;
+            System.out.println(marque + " " + modele + " a roulé " + km + " km");
+        }
+    }
+    
+    public void louer() {
+        if (disponible) {
+            disponible = false;
+            System.out.println(marque + " " + modele + " loué avec succès");
+        } else {
+            System.out.println("Véhicule non disponible");
+        }
+    }
+    
+    public void retourner() {
+        disponible = true;
+        System.out.println(marque + " " + modele + " retourné");
+    }
+    
+    public void afficherInfos() {
+        String statut = disponible ? "Disponible" : "Loué";
+        System.out.println(marque + " " + modele + " (" + annee + ") - " + 
+                          kilometrage + " km - " + statut);
+    }
+    
+    // Getters et Setters
+    public String getMarque() { return marque; }
+    public String getModele() { return modele; }
+    public int getAnnee() { return annee; }
+    public double getKilometrage() { return kilometrage; }
+    public boolean isDisponible() { return disponible; }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exercice 3 -->
+                            <div class="exercise-card">
+                                <h4 style="color: var(--java-orange); margin-bottom: 1rem;">
+                                    <i class="fas fa-building"></i> Exercice 3 : Projet Complet - Système de Bibliothèque
+                                </h4>
+                                <p><strong>Objectif :</strong> Créer un système de gestion de bibliothèque avec plusieurs classes.</p>
+                                <p><strong>Fonctionnalités :</strong></p>
+                                <ul>
+                                    <li>Classe <strong>Livre</strong> : titre, auteur, ISBN, disponibilité</li>
+                                    <li>Classe <strong>Membre</strong> : nom, numéro de membre, livres empruntés</li>
+                                    <li>Classe <strong>Bibliotheque</strong> : gestion des livres et des emprunts</li>
+                                    <li>Menu interactif pour gérer la bibliothèque</li>
+                                </ul>
+                                
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#solution3">
+                                    Voir le projet complet
+                                </button>
+                                
+                                <div class="collapse mt-3" id="solution3">
+                                    <div class="solution-card">
+                                        <h6>Architecture du Projet :</h6>
+                                        <p>Ce projet démontre l'utilisation de classes multiples, l'encapsulation, et la gestion d'état.</p>
+                                        
+                                        <div class="concept-highlight">
+                                            <h6>Structure des Fichiers :</h6>
+                                            <ul class="mb-0">
+                                                <li><code>Livre.java</code> - Représente un livre</li>
+                                                <li><code>Membre.java</code> - Représente un membre de la bibliothèque</li>
+                                                <li><code>Bibliotheque.java</code> - Gère la collection et les opérations</li>
+                                                <li><code>GestionnaireBibliotheque.java</code> - Interface utilisateur</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <p class="mt-3"><strong>Note :</strong> Le code complet de ce projet sera fourni dans les exercices suivants pour illustrer les concepts d'héritage et de polymorphisme.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Navigation -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <a href="module-4-tableaux-chaines.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Module 4 : Tableaux
+                            </a>
+                            <a href="module-6-heritage-polymorphisme.html" style="background: linear-gradient(135deg, var(--java-orange), var(--java-blue)); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;">
+                                Module 6 : Héritage
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Highlight.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    
+    <script>
+        hljs.highlightAll();
+        
+        // Smooth scroll for sidebar links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

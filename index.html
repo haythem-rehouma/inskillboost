@@ -638,6 +638,7 @@
                             <i class="fas fa-list me-1"></i>Cours
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/java/"><i class="fab fa-java me-2"></i>Java Complet</a></li>
                             <li><a class="dropdown-item" href="/entity-framework/"><i class="fas fa-database me-2"></i>Entity Framework</a></li>
                             <li><a class="dropdown-item" href="/scala-spark/"><i class="fas fa-fire me-2"></i>Scala & Spark</a></li>
                             <li><a class="dropdown-item" href="/wikijs/"><i class="fab fa-wikipedia-w me-2"></i>WikiJS & SSO</a></li>
@@ -803,6 +804,39 @@
             </div>
             
             <div class="row">
+                <!-- Java -->
+                <div class="col-lg-6 mb-4">
+                    <div class="course-card" data-category="backend" style="--course-color: #f89820;">
+                        <div class="course-card::before" style="background: #f89820;"></div>
+                        <div class="course-header">
+                            <div class="course-icon" style="background: #f89820;">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-weight: 700; margin-bottom: 0.5rem;">Java Complet</h3>
+                                <span class="badge" style="background-color: #f89820; color: white;">Débutant à Avancé</span>
+                            </div>
+                        </div>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            Formation exhaustive Java : POO complète, concepts avancés, Spring Boot et 200+ exercices pratiques.
+                        </p>
+                        <div class="d-flex gap-2 mb-3" style="font-size: 0.9rem; color: var(--text-muted);">
+                            <span><i class="fas fa-clock me-1"></i>60h</span>
+                            <span><i class="fas fa-list me-1"></i>12 modules</span>
+                            <span><i class="fas fa-code me-1"></i>200+ exercices</span>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="java/" class="btn-course" style="background: linear-gradient(135deg, #f89820, #5382a1); color: white;">
+                                <i class="fas fa-play"></i>Commencer
+                            </a>
+                            <a href="https://www.inskillflow.com/?utm_source=inskillboost&utm_medium=course-card&utm_campaign=java-premium" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-crown me-1"></i>Version Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Entity Framework -->
                 <div class="col-lg-6 mb-4">
                     <div class="course-card" data-category="backend" style="--course-color: #512BD4;">
@@ -914,12 +948,6 @@
             
             <div class="coming-soon-grid">
                 <!-- Backend -->
-                <div class="coming-soon-card" data-category="backend">
-                    <div class="coming-soon-icon"><i class="fab fa-java"></i></div>
-                    <h5>Java Complet</h5>
-                    <p class="small text-muted mb-2">POO, Spring Boot, Microservices</p>
-                    <span class="badge bg-warning text-dark">Backend</span>
-                </div>
                 
                 <div class="coming-soon-card" data-category="backend">
                     <div class="coming-soon-icon"><i class="fab fa-python"></i></div>
@@ -1363,9 +1391,10 @@
 
             // All courses data for search
             const coursesData = [
-                { element: courseCards[0], title: 'Entity Framework', description: 'ORM .NET Database First Code First migrations optimisations', category: 'backend', keywords: ['entity', 'framework', 'orm', '.net', 'database', 'sql', 'backend'] },
-                { element: courseCards[1], title: 'Scala & Apache Spark', description: 'Big Data programmation fonctionnelle traitement massif données', category: 'data', keywords: ['scala', 'spark', 'apache', 'big data', 'functional', 'data'] },
-                { element: courseCards[2], title: 'WikiJS & SSO', description: 'plateforme wiki moderne authentification SSO personnalisation déploiement', category: 'devops', keywords: ['wiki', 'wikijs', 'sso', 'authentification', 'devops'] }
+                { element: courseCards[0], title: 'Java Complet', description: 'Formation exhaustive Java POO complète concepts avancés Spring Boot exercices pratiques', category: 'backend', keywords: ['java', 'poo', 'spring', 'boot', 'backend', 'orienté objet', 'jvm'] },
+                { element: courseCards[1], title: 'Entity Framework', description: 'ORM .NET Database First Code First migrations optimisations', category: 'backend', keywords: ['entity', 'framework', 'orm', '.net', 'database', 'sql', 'backend'] },
+                { element: courseCards[2], title: 'Scala & Apache Spark', description: 'Big Data programmation fonctionnelle traitement massif données', category: 'data', keywords: ['scala', 'spark', 'apache', 'big data', 'functional', 'data'] },
+                { element: courseCards[3], title: 'WikiJS & SSO', description: 'plateforme wiki moderne authentification SSO personnalisation déploiement', category: 'devops', keywords: ['wiki', 'wikijs', 'sso', 'authentification', 'devops'] }
             ];
 
             const comingSoonData = [
