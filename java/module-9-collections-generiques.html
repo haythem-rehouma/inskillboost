@@ -202,10 +202,167 @@
                         <section id="introduction-collections" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-boxes"></i>
-                                Framework Collections Java
+                                Qu'est-ce qu'une Collection en Java ?
                             </h2>
                             
-                            <p>Le Framework Collections de Java fournit une architecture unifiée pour représenter et manipuler des collections d'objets. Il remplace les tableaux pour la plupart des cas d'usage.</p>
+                            <p>Une <strong>collection</strong> en Java est un objet qui regroupe plusieurs éléments en une seule unité. Imaginez une collection comme un conteneur intelligent qui peut stocker, organiser et manipuler des groupes d'objets de manière efficace.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Pourquoi utiliser des Collections plutôt que des tableaux ?</h5>
+                                <p><strong>Problèmes des tableaux :</strong></p>
+                                <ul>
+                                    <li><strong>Taille fixe :</strong> Une fois créé, impossible de changer la taille</li>
+                                    <li><strong>Pas de méthodes utiles :</strong> Pas de méthode pour ajouter, supprimer, rechercher</li>
+                                    <li><strong>Type primitif uniquement :</strong> Difficile de mélanger avec des objets</li>
+                                    <li><strong>Gestion manuelle :</strong> Vous devez tout coder vous-même</li>
+                                </ul>
+                                
+                                <p><strong>Avantages des Collections :</strong></p>
+                                <ul>
+                                    <li><strong>Taille dynamique :</strong> Grandit et rétrécit automatiquement</li>
+                                    <li><strong>Méthodes riches :</strong> add(), remove(), contains(), sort(), etc.</li>
+                                    <li><strong>Type sécurisé :</strong> Avec les génériques, erreurs détectées à la compilation</li>
+                                    <li><strong>Algorithmes optimisés :</strong> Tri, recherche, etc. déjà implémentés</li>
+                                    <li><strong>Interopérabilité :</strong> Toutes les collections partagent des interfaces communes</li>
+                                </ul>
+                            </div>
+
+                            <h4>Exemple Concret : Gestion d'une Liste de Courses</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class ExempleListeCourses {
+    public static void main(String[] args) {
+        // PROBLÈME AVEC TABLEAU : taille fixe
+        String[] coursesTableau = new String[3]; // Limité à 3 éléments !
+        coursesTableau[0] = "Pain";
+        coursesTableau[1] = "Lait";
+        coursesTableau[2] = "Œufs";
+        // coursesTableau[3] = "Fromage"; // ERREUR ! ArrayIndexOutOfBoundsException
+        
+        System.out.println("=== AVEC TABLEAU (RIGIDE) ===");
+        System.out.println("Courses (tableau): " + Arrays.toString(coursesTableau));
+        System.out.println("Impossible d'ajouter plus de 3 éléments !");
+        
+        // SOLUTION AVEC COLLECTION : taille dynamique
+        ArrayList<String> coursesListe = new ArrayList<>();
+        coursesListe.add("Pain");
+        coursesListe.add("Lait");
+        coursesListe.add("Œufs");
+        coursesListe.add("Fromage");  // ✅ Pas de problème !
+        coursesListe.add("Beurre");   // ✅ Continue à grandir
+        coursesListe.add("Confiture"); // ✅ Autant qu'on veut
+        
+        System.out.println("\n=== AVEC COLLECTION (FLEXIBLE) ===");
+        System.out.println("Courses (collection): " + coursesListe);
+        System.out.println("Taille actuelle: " + coursesListe.size());
+        
+        // Méthodes utiles disponibles
+        System.out.println("Contient 'Pain' ? " + coursesListe.contains("Pain"));
+        System.out.println("Position du 'Lait' : " + coursesListe.indexOf("Lait"));
+        
+        // Ajout conditionnel
+        if (!coursesListe.contains("Chocolat")) {
+            coursesListe.add("Chocolat");
+            System.out.println("Chocolat ajouté ! Nouvelle liste: " + coursesListe);
+        }
+        
+        // Suppression facile
+        coursesListe.remove("Œufs"); // Supprime par valeur
+        System.out.println("Œufs supprimés: " + coursesListe);
+        
+        // Tri automatique
+        Collections.sort(coursesListe);
+        System.out.println("Liste triée alphabétiquement: " + coursesListe);
+        
+        // Parcours facile
+        System.out.println("\nMa liste de courses finale:");
+        for (int i = 0; i < coursesListe.size(); i++) {
+            System.out.println((i + 1) + ". " + coursesListe.get(i));
+        }
+    }
+}
+
+/*
+RÉSULTAT D'EXÉCUTION :
+=== AVEC TABLEAU (RIGIDE) ===
+Courses (tableau): [Pain, Lait, Œufs]
+Impossible d'ajouter plus de 3 éléments !
+
+=== AVEC COLLECTION (FLEXIBLE) ===
+Courses (collection): [Pain, Lait, Œufs, Fromage, Beurre, Confiture]
+Taille actuelle: 6
+Contient 'Pain' ? true
+Position du 'Lait' : 1
+Chocolat ajouté ! Nouvelle liste: [Pain, Lait, Œufs, Fromage, Beurre, Confiture, Chocolat]
+Œufs supprimés: [Pain, Lait, Fromage, Beurre, Confiture, Chocolat]
+Liste triée alphabétiquement: [Beurre, Chocolat, Confiture, Fromage, Lait, Pain]
+
+Ma liste de courses finale:
+1. Beurre
+2. Chocolat
+3. Confiture
+4. Fromage
+5. Lait
+6. Pain
+*/</code></pre>
+                            </div>
+
+                            <h4>Les Différents Types de Collections - Analogies du Monde Réel</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="concept-highlight">
+                                        <h6><i class="fas fa-list me-2"></i>List (Liste ordonnée)</h6>
+                                        <p><strong>Analogie :</strong> Une file d'attente au cinéma</p>
+                                        <ul>
+                                            <li>Les gens ont une position précise (index)</li>
+                                            <li>On peut insérer quelqu'un à n'importe quelle position</li>
+                                            <li>Les doublons sont autorisés (même personne peut faire la queue 2 fois)</li>
+                                            <li>L'ordre d'arrivée est important et préservé</li>
+                                        </ul>
+                                        <p><strong>Exemples :</strong> ArrayList, LinkedList, Vector</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="concept-highlight">
+                                        <h6><i class="fas fa-users me-2"></i>Set (Ensemble unique)</h6>
+                                        <p><strong>Analogie :</strong> Une liste d'invités à un mariage</p>
+                                        <ul>
+                                            <li>Chaque personne ne peut être invitée qu'une seule fois</li>
+                                            <li>Pas de doublons autorisés</li>
+                                            <li>L'ordre peut ou peut ne pas être important</li>
+                                            <li>Vérification rapide si quelqu'un est invité</li>
+                                        </ul>
+                                        <p><strong>Exemples :</strong> HashSet, TreeSet, LinkedHashSet</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="concept-highlight">
+                                        <h6><i class="fas fa-key me-2"></i>Map (Dictionnaire clé-valeur)</h6>
+                                        <p><strong>Analogie :</strong> Un annuaire téléphonique</p>
+                                        <ul>
+                                            <li>Chaque nom (clé) correspond à un numéro (valeur)</li>
+                                            <li>Recherche ultra-rapide par nom</li>
+                                            <li>Pas de doublons de noms (clés uniques)</li>
+                                            <li>Mais plusieurs personnes peuvent avoir le même numéro</li>
+                                        </ul>
+                                        <p><strong>Exemples :</strong> HashMap, TreeMap, LinkedHashMap</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="concept-highlight">
+                                        <h6><i class="fas fa-stream me-2"></i>Queue (File d'attente)</h6>
+                                        <p><strong>Analogie :</strong> Une file d'attente à la boulangerie</p>
+                                        <ul>
+                                            <li>Premier arrivé, premier servi (FIFO)</li>
+                                            <li>On ajoute à la fin, on retire du début</li>
+                                            <li>Ordre strict de traitement</li>
+                                            <li>Idéal pour les tâches à traiter séquentiellement</li>
+                                        </ul>
+                                        <p><strong>Exemples :</strong> LinkedList, PriorityQueue, ArrayDeque</p>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="collections-hierarchy">
                                 <h6>Hiérarchie des Collections :</h6>
@@ -301,10 +458,161 @@
                         <section id="generiques" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-puzzle-piece"></i>
-                                Génériques (Generics)
+                                Qu'est-ce que les Génériques (Generics) ?
                             </h2>
                             
-                            <p>Les génériques permettent de créer des classes, interfaces et méthodes qui fonctionnent avec différents types tout en conservant la sécurité de type à la compilation.</p>
+                            <p>Les <strong>génériques</strong> sont un mécanisme qui permet de créer des classes, interfaces et méthodes qui peuvent travailler avec différents types de données, tout en gardant la sécurité de type. C'est comme créer un moule réutilisable qui peut s'adapter à différentes formes.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Problème AVANT les Génériques (Java &lt; 5)</h5>
+                                <p>Avant Java 5 (2004), les collections stockaient des Object, ce qui causait des problèmes :</p>
+                                <div class="code-block">
+<pre><code class="language-java">// Code AVANT Java 5 (problématique)
+ArrayList liste = new ArrayList(); // Pas de type spécifié !
+liste.add("Hello");                 // String
+liste.add(42);                      // Integer  
+liste.add(3.14);                    // Double
+
+// Problème : on ne sait pas quel type on va récupérer !
+String texte = (String) liste.get(0); // Cast obligatoire et risqué
+Integer nombre = (Integer) liste.get(1); // OK
+String erreur = (String) liste.get(2); // ERREUR ! ClassCastException à l'exécution !</code></pre>
+                                </div>
+                                <p><strong>Problèmes :</strong></p>
+                                <ul>
+                                    <li>Cast obligatoire et risqué</li>
+                                    <li>Erreurs seulement à l'exécution (pas à la compilation)</li>
+                                    <li>Code difficile à maintenir</li>
+                                    <li>Pas d'aide de l'IDE (autocomplétion limitée)</li>
+                                </ul>
+                            </div>
+
+                            <div class="concept-highlight">
+                                <h5>Solution AVEC les Génériques (Java 5+)</h5>
+                                <div class="code-block">
+<pre><code class="language-java">// Code AVEC génériques (sécurisé)
+ArrayList&lt;String&gt; listeTextes = new ArrayList&lt;&gt;(); // Type spécifié !
+listeTextes.add("Hello");          // ✅ OK
+listeTextes.add("World");          // ✅ OK
+// listeTextes.add(42);            // ❌ ERREUR de compilation (détectée immédiatement)
+
+// Récupération sans cast
+String texte = listeTextes.get(0); // ✅ Pas de cast nécessaire !
+String autre = listeTextes.get(1); // ✅ Type garanti</code></pre>
+                                </div>
+                                <p><strong>Avantages :</strong></p>
+                                <ul>
+                                    <li><strong>Sécurité de type :</strong> Erreurs détectées à la compilation</li>
+                                    <li><strong>Pas de cast :</strong> Le type est garanti</li>
+                                    <li><strong>Code plus lisible :</strong> L'intention est claire</li>
+                                    <li><strong>Aide de l'IDE :</strong> Autocomplétion parfaite</li>
+                                    <li><strong>Performance :</strong> Pas de boxing/unboxing inutile</li>
+                                </ul>
+                            </div>
+
+                            <h4>Comprendre la Syntaxe des Génériques</h4>
+                            <div class="code-block">
+<pre><code class="language-java">// Syntaxe générale : NomClasse&lt;TypeParametre&gt;
+ArrayList&lt;String&gt; textes = new ArrayList&lt;&gt;();
+//         ↑                              ↑
+//    Type paramètre              Diamond operator (Java 7+)
+//    (ce que la liste           (type inféré automatiquement)
+//     va contenir)
+
+HashMap&lt;String, Integer&gt; ages = new HashMap&lt;&gt;();
+//      ↑       ↑
+//    Type clé  Type valeur
+
+// Génériques imbriqués
+ArrayList&lt;HashMap&lt;String, List&lt;Integer&gt;&gt;&gt; structure = new ArrayList&lt;&gt;();
+//                    ↑           ↑
+//                  Clé      Liste d'entiers comme valeur</code></pre>
+                            </div>
+
+                            <h4>Exemple Détaillé : Boîte Générique</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * Classe Boite générique - peut contenir n'importe quel type d'objet
+ * Le type T est un "paramètre de type" qui sera remplacé par un type concret
+ */
+public class Boite&lt;T&gt; {
+    private T contenu;        // T sera remplacé par le type réel (String, Integer, etc.)
+    private String etiquette;
+    
+    // Constructeur générique
+    public Boite(T contenu, String etiquette) {
+        this.contenu = contenu;
+        this.etiquette = etiquette;
+        System.out.println("Boîte créée avec contenu de type: " + contenu.getClass().getSimpleName());
+    }
+    
+    // Méthode générique pour récupérer le contenu
+    public T getContenu() {
+        return contenu; // Retourne le type T (pas Object !)
+    }
+    
+    // Méthode générique pour changer le contenu
+    public void setContenu(T nouveauContenu) {
+        T ancienContenu = this.contenu;
+        this.contenu = nouveauContenu;
+        System.out.println("Contenu changé: " + ancienContenu + " → " + nouveauContenu);
+    }
+    
+    // Méthode générique avec paramètre de type différent
+    public &lt;U&gt; boolean estDuMemeType(U autreObjet) {
+        return contenu.getClass().equals(autreObjet.getClass());
+    }
+    
+    // Méthode pour afficher les informations
+    public void afficherInfos() {
+        System.out.println("=== BOÎTE " + etiquette.toUpperCase() + " ===");
+        System.out.println("Type de contenu: " + contenu.getClass().getSimpleName());
+        System.out.println("Contenu: " + contenu);
+        System.out.println("Étiquette: " + etiquette);
+    }
+}
+
+public class DemonstrationBoiteGenerique {
+    public static void main(String[] args) {
+        System.out.println("=== DÉMONSTRATION BOÎTES GÉNÉRIQUES ===");
+        
+        // Boîte pour String
+        Boite&lt;String&gt; boiteTexte = new Boite&lt;&gt;("Formation Java", "Cours");
+        boiteTexte.afficherInfos();
+        
+        String texteRecupere = boiteTexte.getContenu(); // Pas de cast !
+        System.out.println("Texte récupéré: " + texteRecupere.toUpperCase()); // Méthodes String disponibles
+        
+        // Boîte pour Integer
+        Boite&lt;Integer&gt; boiteNombre = new Boite&lt;&gt;(42, "Réponse");
+        boiteNombre.afficherInfos();
+        
+        Integer nombreRecupere = boiteNombre.getContenu(); // Pas de cast !
+        System.out.println("Nombre au carré: " + (nombreRecupere * nombreRecupere)); // Opérations Integer
+        
+        // Boîte pour List (générique imbriqué)
+        List&lt;String&gt; langages = Arrays.asList("Java", "Python", "JavaScript");
+        Boite&lt;List&lt;String&gt;&gt; boiteListe = new Boite&lt;&gt;(langages, "Langages");
+        boiteListe.afficherInfos();
+        
+        List&lt;String&gt; langagesRecuperes = boiteListe.getContenu();
+        System.out.println("Nombre de langages: " + langagesRecuperes.size());
+        
+        // Test de comparaison de types
+        System.out.println("\n=== COMPARAISON DE TYPES ===");
+        System.out.println("Boîte texte et nombre même type ? " + 
+                          boiteTexte.estDuMemeType(boiteNombre.getContenu()));
+        System.out.println("Deux strings même type ? " + 
+                          boiteTexte.estDuMemeType("Autre string"));
+        
+        // Démonstration de la sécurité de type
+        // boiteTexte.setContenu(123); // ❌ ERREUR de compilation !
+        // boiteNombre.setContenu("texte"); // ❌ ERREUR de compilation !
+        
+        System.out.println("\n✅ Aucune erreur de cast possible grâce aux génériques !");
+    }
+}</code></pre>
+                            </div>
 
                             <div class="code-block">
 <pre><code class="language-java">import java.util.*;
@@ -471,8 +779,342 @@ public class DemonstrationGeneriques {
                         <section id="arraylist" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-list"></i>
-                                ArrayList - Liste Dynamique
+                                ArrayList - Qu'est-ce que c'est et Comment ça Marche ?
                             </h2>
+                            
+                            <p><strong>ArrayList</strong> est l'implémentation la plus utilisée de l'interface List. C'est essentiellement un tableau dynamique qui peut grandir et rétrécir automatiquement selon vos besoins.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Comment ArrayList fonctionne Internement ?</h5>
+                                <p>ArrayList utilise un <strong>tableau interne</strong> pour stocker les éléments :</p>
+                                <ul>
+                                    <li><strong>Capacité initiale :</strong> 10 éléments par défaut</li>
+                                    <li><strong>Redimensionnement :</strong> Quand le tableau est plein, il crée un nouveau tableau 1.5x plus grand</li>
+                                    <li><strong>Copie des données :</strong> Tous les éléments sont copiés dans le nouveau tableau</li>
+                                    <li><strong>Ancien tableau :</strong> Supprimé par le Garbage Collector</li>
+                                </ul>
+                            </div>
+
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * DÉMONSTRATION DÉTAILLÉE : Comment ArrayList grandit automatiquement
+ */
+public class ArrayListInterne {
+    public static void main(String[] args) {
+        System.out.println("=== FONCTIONNEMENT INTERNE ARRAYLIST ===");
+        
+        // Création avec capacité par défaut (10)
+        ArrayList&lt;String&gt; liste = new ArrayList&lt;&gt;();
+        System.out.println("ArrayList créée - Capacité initiale: probablement 10");
+        
+        // Ajout des premiers éléments
+        System.out.println("\n--- Ajout des 5 premiers éléments ---");
+        for (int i = 1; i &lt;= 5; i++) {
+            liste.add("Élément " + i);
+            System.out.println("Ajouté: Élément " + i + " | Taille: " + liste.size());
+        }
+        
+        System.out.println("État actuel: " + liste);
+        System.out.println("Le tableau interne a encore de la place (5/10 utilisés)");
+        
+        // Ajout pour atteindre la capacité
+        System.out.println("\n--- Ajout jusqu'à la capacité maximale ---");
+        for (int i = 6; i &lt;= 10; i++) {
+            liste.add("Élément " + i);
+            System.out.println("Ajouté: Élément " + i + " | Taille: " + liste.size());
+        }
+        
+        System.out.println("État: " + liste);
+        System.out.println("Tableau interne probablement plein (10/10)");
+        
+        // Ajout qui force le redimensionnement
+        System.out.println("\n--- Ajout qui force le redimensionnement ---");
+        liste.add("Élément 11");
+        System.out.println("✨ REDIMENSIONNEMENT AUTOMATIQUE !");
+        System.out.println("Nouveau tableau créé (capacité ~15)");
+        System.out.println("Tous les éléments copiés dans le nouveau tableau");
+        System.out.println("Ancien tableau supprimé par le Garbage Collector");
+        System.out.println("Taille finale: " + liste.size());
+        
+        // Démonstration avec capacité initiale personnalisée
+        System.out.println("\n--- ArrayList avec capacité initiale ---");
+        ArrayList&lt;Integer&gt; nombres = new ArrayList&lt;>(100); // Capacité 100 dès le départ
+        System.out.println("ArrayList créée avec capacité 100");
+        System.out.println("Avantage: Pas de redimensionnement si on sait qu'on aura ~100 éléments");
+        
+        // Remplissage rapide
+        for (int i = 1; i &lt;= 50; i++) {
+            nombres.add(i);
+        }
+        System.out.println("50 nombres ajoutés sans redimensionnement");
+        System.out.println("Premiers éléments: " + nombres.subList(0, 10));
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Création et Initialisation - Toutes les Méthodes</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class ArrayListCreation {
+    public static void main(String[] args) {
+        System.out.println("=== TOUTES LES FAÇONS DE CRÉER UNE ARRAYLIST ===");
+        
+        // 1. Création vide (capacité par défaut = 10)
+        ArrayList&lt;String&gt; liste1 = new ArrayList&lt;&gt;();
+        System.out.println("1. Liste vide: " + liste1 + " (taille: " + liste1.size() + ")");
+        
+        // 2. Création avec capacité initiale spécifiée
+        ArrayList&lt;String&gt; liste2 = new ArrayList&lt;&gt;(50);
+        System.out.println("2. Liste avec capacité 50: " + liste2 + " (taille: " + liste2.size() + ")");
+        
+        // 3. Création à partir d'une autre collection
+        List&lt;String&gt; autreCollection = Arrays.asList("A", "B", "C");
+        ArrayList&lt;String&gt; liste3 = new ArrayList&lt;&gt;(autreCollection);
+        System.out.println("3. À partir d'une collection: " + liste3);
+        
+        // 4. Initialisation directe avec Arrays.asList (ATTENTION: taille fixe !)
+        List&lt;String&gt; liste4 = Arrays.asList("X", "Y", "Z");
+        System.out.println("4. Arrays.asList: " + liste4);
+        // liste4.add("W"); // ❌ ERREUR ! UnsupportedOperationException
+        
+        // 5. Conversion Arrays.asList vers ArrayList (modifiable)
+        ArrayList&lt;String&gt; liste5 = new ArrayList&lt;&gt;(Arrays.asList("X", "Y", "Z"));
+        liste5.add("W"); // ✅ OK maintenant !
+        System.out.println("5. ArrayList depuis Arrays.asList: " + liste5);
+        
+        // 6. Initialisation avec Collections.nCopies
+        ArrayList&lt;String&gt; liste6 = new ArrayList&lt;&gt;(Collections.nCopies(5, "Défaut"));
+        System.out.println("6. Avec valeurs par défaut: " + liste6);
+        
+        // 7. Création et remplissage en une ligne (Java 9+)
+        ArrayList&lt;Integer&gt; liste7 = new ArrayList&lt;&gt;(List.of(1, 2, 3, 4, 5));
+        System.out.println("7. Avec List.of (Java 9+): " + liste7);
+        
+        // 8. Création avec Stream (Java 8+)
+        ArrayList&lt;Integer&gt; liste8 = new ArrayList&lt;&gt;();
+        IntStream.range(1, 6).forEach(liste8::add);
+        System.out.println("8. Avec Stream: " + liste8);
+        
+        System.out.println("\n=== RECOMMANDATIONS ===");
+        System.out.println("✅ Utilisez ArrayList&lt;&gt;() pour usage général");
+        System.out.println("✅ Spécifiez la capacité si vous connaissez la taille approximative");
+        System.out.println("✅ Utilisez new ArrayList&lt;&gt;(Arrays.asList(...)) pour initialisation avec valeurs");
+        System.out.println("❌ Évitez Arrays.asList() directement si vous voulez modifier la liste");
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Toutes les Méthodes ArrayList Expliquées</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.*;
+
+public class ArrayListMethodesCompletes {
+    public static void main(String[] args) {
+        System.out.println("=== TOUTES LES MÉTHODES ARRAYLIST ===");
+        
+        ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+        
+        // === MÉTHODES D'AJOUT ===
+        System.out.println("\n1. MÉTHODES D'AJOUT");
+        
+        // add(element) - Ajoute à la fin
+        fruits.add("Pomme");
+        fruits.add("Banane");
+        fruits.add("Orange");
+        System.out.println("Après add(): " + fruits);
+        
+        // add(index, element) - Ajoute à une position spécifique
+        fruits.add(1, "Mangue"); // Insère à l'index 1
+        System.out.println("Après add(1, 'Mangue'): " + fruits);
+        System.out.println("Explication: 'Mangue' est inséré à l'index 1, 'Banane' se décale vers la droite");
+        
+        // addAll(collection) - Ajoute tous les éléments d'une autre collection
+        List&lt;String&gt; autresFruits = Arrays.asList("Kiwi", "Ananas");
+        fruits.addAll(autresFruits);
+        System.out.println("Après addAll(): " + fruits);
+        
+        // addAll(index, collection) - Ajoute à une position spécifique
+        fruits.addAll(2, Arrays.asList("Fraise", "Cerise"));
+        System.out.println("Après addAll(2, ...): " + fruits);
+        
+        // === MÉTHODES D'ACCÈS ===
+        System.out.println("\n2. MÉTHODES D'ACCÈS");
+        
+        // get(index) - Récupère l'élément à un index
+        String premierFruit = fruits.get(0);
+        String dernierFruit = fruits.get(fruits.size() - 1);
+        System.out.println("Premier fruit (index 0): " + premierFruit);
+        System.out.println("Dernier fruit (index " + (fruits.size()-1) + "): " + dernierFruit);
+        
+        // indexOf(element) - Trouve l'index de la première occurrence
+        int indexOrange = fruits.indexOf("Orange");
+        System.out.println("Index de 'Orange': " + indexOrange);
+        
+        // lastIndexOf(element) - Trouve l'index de la dernière occurrence
+        fruits.add("Orange"); // Ajouter un doublon pour tester
+        int dernierIndexOrange = fruits.lastIndexOf("Orange");
+        System.out.println("Dernier index de 'Orange': " + dernierIndexOrange);
+        
+        // === MÉTHODES DE VÉRIFICATION ===
+        System.out.println("\n3. MÉTHODES DE VÉRIFICATION");
+        
+        // contains(element) - Vérifie si l'élément existe
+        boolean contientPomme = fruits.contains("Pomme");
+        System.out.println("Contient 'Pomme' ? " + contientPomme);
+        
+        // containsAll(collection) - Vérifie si tous les éléments existent
+        boolean contientTous = fruits.containsAll(Arrays.asList("Pomme", "Banane"));
+        System.out.println("Contient 'Pomme' ET 'Banane' ? " + contientTous);
+        
+        // isEmpty() - Vérifie si la liste est vide
+        System.out.println("Liste vide ? " + fruits.isEmpty());
+        
+        // size() - Retourne le nombre d'éléments
+        System.out.println("Nombre d'éléments: " + fruits.size());
+        
+        // === MÉTHODES DE MODIFICATION ===
+        System.out.println("\n4. MÉTHODES DE MODIFICATION");
+        System.out.println("État avant modifications: " + fruits);
+        
+        // set(index, element) - Remplace l'élément à un index
+        String ancienneValeur = fruits.set(0, "Pomme Verte");
+        System.out.println("set(0, 'Pomme Verte') - Ancienne valeur: " + ancienneValeur);
+        System.out.println("État après set(): " + fruits);
+        
+        // === MÉTHODES DE SUPPRESSION ===
+        System.out.println("\n5. MÉTHODES DE SUPPRESSION");
+        
+        // remove(index) - Supprime par index
+        String fruitSupprime = fruits.remove(1);
+        System.out.println("remove(1) - Fruit supprimé: " + fruitSupprime);
+        System.out.println("État après remove(1): " + fruits);
+        
+        // remove(object) - Supprime par valeur (première occurrence)
+        boolean supprime = fruits.remove("Orange");
+        System.out.println("remove('Orange') - Succès: " + supprime);
+        System.out.println("État après remove('Orange'): " + fruits);
+        
+        // removeAll(collection) - Supprime tous les éléments de la collection
+        fruits.removeAll(Arrays.asList("Fraise", "Cerise"));
+        System.out.println("Après removeAll(['Fraise', 'Cerise']): " + fruits);
+        
+        // retainAll(collection) - Garde seulement les éléments de la collection
+        ArrayList&lt;String&gt; copie = new ArrayList&lt;&gt;(fruits);
+        copie.retainAll(Arrays.asList("Banane", "Kiwi", "Ananas"));
+        System.out.println("retainAll(['Banane', 'Kiwi', 'Ananas']): " + copie);
+        
+        // clear() - Supprime tous les éléments
+        copie.clear();
+        System.out.println("Après clear(): " + copie + " (taille: " + copie.size() + ")");
+        
+        // === MÉTHODES DE PARCOURS ===
+        System.out.println("\n6. MÉTHODES DE PARCOURS");
+        System.out.println("Liste actuelle: " + fruits);
+        
+        // Parcours avec index (accès à l'index)
+        System.out.println("Parcours avec index:");
+        for (int i = 0; i &lt; fruits.size(); i++) {
+            System.out.println("  Index " + i + ": " + fruits.get(i));
+        }
+        
+        // Parcours avec for-each (plus simple, pas d'accès à l'index)
+        System.out.println("Parcours avec for-each:");
+        for (String fruit : fruits) {
+            System.out.println("  Fruit: " + fruit);
+        }
+        
+        // Parcours avec Iterator (permet suppression sécurisée pendant parcours)
+        System.out.println("Parcours avec Iterator:");
+        Iterator&lt;String&gt; iterator = fruits.iterator();
+        while (iterator.hasNext()) {
+            String fruit = iterator.next();
+            System.out.println("  Via Iterator: " + fruit);
+            
+            // Suppression sécurisée pendant le parcours
+            if (fruit.equals("Banane")) {
+                iterator.remove(); // ✅ Sécurisé avec Iterator
+                System.out.println("    → Banane supprimée via Iterator");
+            }
+        }
+        
+        System.out.println("État après suppression via Iterator: " + fruits);
+        
+        // === MÉTHODES UTILITAIRES ===
+        System.out.println("\n7. MÉTHODES UTILITAIRES");
+        
+        // toArray() - Conversion en tableau
+        String[] tableauFruits = fruits.toArray(new String[0]);
+        System.out.println("Converti en tableau: " + Arrays.toString(tableauFruits));
+        
+        // subList(from, to) - Sous-liste (vue, pas copie !)
+        List&lt;String&gt; sousListe = fruits.subList(0, 2);
+        System.out.println("Sous-liste [0-2): " + sousListe);
+        System.out.println("ATTENTION: subList() retourne une VUE, pas une copie !");
+        
+        // clone() - Copie superficielle
+        ArrayList&lt;String&gt; clone = (ArrayList&lt;String&gt;) fruits.clone();
+        clone.add("Fruit cloné");
+        System.out.println("Original: " + fruits);
+        System.out.println("Clone modifié: " + clone);
+        
+        // === PERFORMANCES ===
+        System.out.println("\n8. ANALYSE DES PERFORMANCES");
+        demonstrerPerformances();
+    }
+    
+    public static void demonstrerPerformances() {
+        int taille = 100000;
+        
+        // Test 1: Ajout en fin (très rapide - O(1) amorti)
+        long debut = System.nanoTime();
+        ArrayList&lt;Integer&gt; liste = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; taille; i++) {
+            liste.add(i); // Ajout en fin
+        }
+        long dureeAjoutFin = System.nanoTime() - debut;
+        
+        // Test 2: Ajout au début (lent - O(n) car décalage)
+        debut = System.nanoTime();
+        ArrayList&lt;Integer&gt; liste2 = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; 1000; i++) { // Moins d'éléments car très lent
+            liste2.add(0, i); // Ajout au début = décalage de tous les éléments
+        }
+        long dureeAjoutDebut = System.nanoTime() - debut;
+        
+        // Test 3: Accès par index (très rapide - O(1))
+        Random random = new Random();
+        debut = System.nanoTime();
+        for (int i = 0; i &lt; 10000; i++) {
+            int index = random.nextInt(liste.size());
+            int valeur = liste.get(index); // Accès direct par index
+        }
+        long dureeAcces = System.nanoTime() - debut;
+        
+        // Test 4: Recherche linéaire (lent - O(n))
+        debut = System.nanoTime();
+        for (int i = 0; i &lt; 1000; i++) {
+            boolean trouve = liste.contains(i); // Recherche linéaire
+        }
+        long dureeRecherche = System.nanoTime() - debut;
+        
+        System.out.printf("Ajout en fin (%d éléments): %.2f ms ⚡ RAPIDE%n", 
+                         taille, dureeAjoutFin / 1_000_000.0);
+        System.out.printf("Ajout au début (1000 éléments): %.2f ms 🐌 LENT%n", 
+                         dureeAjoutDebut / 1_000_000.0);
+        System.out.printf("Accès aléatoire (10000 accès): %.2f ms ⚡ RAPIDE%n", 
+                         dureeAcces / 1_000_000.0);
+        System.out.printf("Recherche (1000 recherches): %.2f ms 🐌 LENT%n", 
+                         dureeRecherche / 1_000_000.0);
+        
+        System.out.println("\n💡 CONCLUSIONS:");
+        System.out.println("✅ ArrayList excellent pour: accès par index, ajout en fin");
+        System.out.println("❌ ArrayList moins bon pour: ajout au début/milieu, recherche");
+        System.out.println("💡 Pour recherche rapide → utilisez HashMap");
+        System.out.println("💡 Pour ajout/suppression fréquents → utilisez LinkedList");
+    }
+}</code></pre>
+                            </div>
                             
                             <div class="code-block">
 <pre><code class="language-java">import java.util.*;

@@ -228,34 +228,151 @@
                         <section id="introduction-tableaux" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-th-large"></i>
-                                Introduction aux Tableaux
+                                Qu'est-ce qu'un Tableau en Java ?
                             </h2>
                             
-                            <p>Un tableau est une structure de données qui stocke plusieurs éléments du même type dans des emplacements mémoire contigus. En Java, les tableaux sont des objets.</p>
+                            <p>Un <strong>tableau</strong> est comme un <strong>casier avec plusieurs compartiments numérotés</strong>. Chaque compartiment peut contenir une valeur du même type. C'est la structure de données la plus basique pour stocker plusieurs éléments ensemble.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Pourquoi utiliser des Tableaux ?</h5>
+                                <p><strong>Sans tableau, pour stocker 5 notes :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Code répétitif et difficile à maintenir
+double note1 = 15.5;
+double note2 = 18.0;
+double note3 = 12.5;
+double note4 = 16.0;
+double note5 = 14.5;
+
+// Pour calculer la moyenne, il faut tout écrire manuellement
+double moyenne = (note1 + note2 + note3 + note4 + note5) / 5;
+
+// Et si on veut 100 notes ? 100 variables ?!</code></pre>
+                                </div>
+                                
+                                <p><strong>Avec un tableau, c'est simple :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Code élégant et extensible
+double[] notes = {15.5, 18.0, 12.5, 16.0, 14.5};
+
+// Calcul de moyenne avec une boucle
+double somme = 0;
+for (double note : notes) {
+    somme += note;
+}
+double moyenne = somme / notes.length;
+
+// Fonctionne pour 5 notes, 100 notes, ou 1000 notes !</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Analogie : Le Tableau comme un Immeuble</h4>
+                            <div class="memory-visual">
+                                <h6>Imaginez un tableau comme un immeuble avec des appartements :</h6>
+                                <pre>
+IMMEUBLE "notes" (5 appartements)
+┌─────────────────────────────────────────────────┐
+│ Apt 0 │ Apt 1 │ Apt 2 │ Apt 3 │ Apt 4 │
+│ 15.5  │ 18.0  │ 12.5  │ 16.0  │ 14.5  │
+└─────────────────────────────────────────────────┘
+  ↑       ↑       ↑       ↑       ↑
+Index 0   Index 1 Index 2 Index 3 Index 4
+
+notes[0] = 15.5  ← "Habitant de l'appartement 0"
+notes[1] = 18.0  ← "Habitant de l'appartement 1"
+notes[4] = 14.5  ← "Habitant du dernier appartement"
+notes.length = 5 ← "Nombre total d'appartements"
+                </pre>
+                            </div>
 
                             <div class="concept-highlight">
                                 <h5>Caractéristiques des Tableaux Java :</h5>
                                 <ul>
-                                    <li><strong>Taille fixe :</strong> Définie à la création, ne peut pas changer</li>
-                                    <li><strong>Type homogène :</strong> Tous les éléments sont du même type</li>
-                                    <li><strong>Indexation :</strong> Commence à 0, va jusqu'à length-1</li>
-                                    <li><strong>Référence :</strong> Le nom du tableau est une référence vers l'objet</li>
-                                    <li><strong>Initialisation :</strong> Valeurs par défaut automatiques</li>
+                                    <li><strong>Taille fixe :</strong> Une fois créé, impossible de changer le nombre d'éléments</li>
+                                    <li><strong>Type homogène :</strong> Tous les éléments doivent être du même type (int, String, etc.)</li>
+                                    <li><strong>Indexation à partir de 0 :</strong> Premier élément = index 0, dernier = length-1</li>
+                                    <li><strong>Accès direct :</strong> Accès instantané à n'importe quel élément par son index</li>
+                                    <li><strong>Référence :</strong> Le nom du tableau pointe vers l'objet en mémoire</li>
+                                    <li><strong>Initialisation automatique :</strong> Valeurs par défaut (0, false, null)</li>
                                 </ul>
                             </div>
 
-                            <div class="memory-visual">
-                                <h6>Représentation Mémoire d'un Tableau :</h6>
-                                <pre>
-int[] nombres = {10, 20, 30, 40, 50};
+                            <h4>Exemple Très Simple pour Comprendre</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class PremierTableau {
+    public static void main(String[] args) {
+        // Créer un tableau de 3 prénoms
+        String[] prenoms = {"Alice", "Bob", "Charlie"};
+        
+        System.out.println("=== MON PREMIER TABLEAU ===");
+        System.out.println("Tableau créé avec 3 prénoms");
+        
+        // Accès aux éléments par index
+        System.out.println("Premier prénom (index 0): " + prenoms[0]);
+        System.out.println("Deuxième prénom (index 1): " + prenoms[1]);
+        System.out.println("Troisième prénom (index 2): " + prenoms[2]);
+        
+        // Propriété length
+        System.out.println("Nombre total de prénoms: " + prenoms.length);
+        
+        // Modification d'un élément
+        prenoms[1] = "Robert"; // Changer "Bob" en "Robert"
+        System.out.println("Après modification du prénom 2: " + prenoms[1]);
+        
+        // Parcours complet
+        System.out.println("\nTous les prénoms:");
+        for (int i = 0; i < prenoms.length; i++) {
+            System.out.println("Position " + i + ": " + prenoms[i]);
+        }
+    }
+}
 
-STACK (Pile)           HEAP (Tas)
-┌─────────────┐       ┌─────┬─────┬─────┬─────┬─────┐
-│ nombres ────────────▶│ 10  │ 20  │ 30  │ 40  │ 50  │
-└─────────────┘       └─────┴─────┴─────┴─────┴─────┘
-                       Index: 0     1     2     3     4
-                       Length: 5
-                                </pre>
+/*
+RÉSULTAT D'EXÉCUTION :
+=== MON PREMIER TABLEAU ===
+Tableau créé avec 3 prénoms
+Premier prénom (index 0): Alice
+Deuxième prénom (index 1): Bob
+Troisième prénom (index 2): Charlie
+Nombre total de prénoms: 3
+Après modification du prénom 2: Robert
+
+Tous les prénoms:
+Position 0: Alice
+Position 1: Robert
+Position 2: Charlie
+
+EXPLICATION :
+- prenoms[0] accède au premier élément (Alice)
+- prenoms[1] accède au deuxième élément (Bob → Robert)
+- prenoms[2] accède au troisième élément (Charlie)
+- prenoms.length donne la taille (3)
+*/</code></pre>
+                            </div>
+
+                            <div class="memory-visual">
+                                <h6>Représentation Mémoire Détaillée :</h6>
+                                <pre>
+String[] prenoms = {"Alice", "Bob", "Charlie"};
+
+STACK (Pile des Variables)     HEAP (Tas des Objets)
+┌─────────────────────┐       ┌─────────────────────────────────┐
+│ prenoms (référence) ├──────▶│ Tableau String[3]               │
+└─────────────────────┘       │ ┌─────┬─────┬─────────┐         │
+                              │ │  0  │  1  │    2    │         │
+                              │ └──┬──┴──┬──┴────┬────┘         │
+                              └────┼─────┼───────┼──────────────┘
+                                   ▼     ▼       ▼
+                              ┌─────────┐ ┌─────┐ ┌─────────┐
+                              │ "Alice" │ │"Bob"│ │"Charlie"│
+                              └─────────┘ └─────┘ └─────────┘
+
+EXPLICATION :
+- prenoms est une RÉFÉRENCE qui pointe vers le tableau
+- Le tableau contient des RÉFÉRENCES vers les objets String
+- Chaque String est un objet séparé dans le heap
+- Si on fait prenoms = null, on perd la référence au tableau
+</pre>
                             </div>
                         </section>
 
@@ -649,10 +766,131 @@ STACK (Pile)           HEAP (Tas)
                         <section id="chaines-caracteres" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-font"></i>
-                                Chaînes de Caractères (String)
+                                Qu'est-ce qu'une Chaîne de Caractères (String) ?
                             </h2>
                             
-                            <p>En Java, les chaînes de caractères sont des objets immuables de la classe String. Une fois créée, une String ne peut pas être modifiée.</p>
+                            <p>Une <strong>chaîne de caractères</strong> (String) est une séquence de caractères, comme un mot, une phrase, ou un texte. En Java, les String sont des <strong>objets spéciaux et immuables</strong> - une fois créée, une String ne peut jamais être modifiée.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Pourquoi les String sont-elles Immuables ?</h5>
+                                <p><strong>Immuable</strong> signifie "qui ne peut pas changer". Voici pourquoi :</p>
+                                <ul>
+                                    <li><strong>Sécurité :</strong> Impossible de modifier accidentellement</li>
+                                    <li><strong>Thread-safety :</strong> Utilisable sans problème dans des programmes multi-thread</li>
+                                    <li><strong>Optimisation :</strong> Java peut réutiliser les mêmes objets (String pool)</li>
+                                    <li><strong>Hash codes :</strong> Valeur de hash constante pour les HashMap</li>
+                                </ul>
+                            </div>
+
+                            <h4>Démonstration de l'Immuabilité</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class StringImmuable {
+    public static void main(String[] args) {
+        String texte = "Java";
+        System.out.println("String originale: " + texte);
+        System.out.println("Adresse mémoire: " + System.identityHashCode(texte));
+        
+        // "Modification" de la String
+        String texteModifie = texte.toUpperCase();
+        System.out.println("Après toUpperCase():");
+        System.out.println("String originale: " + texte);           // Inchangée !
+        System.out.println("Nouvelle String: " + texteModifie);     // Nouvel objet
+        System.out.println("Adresse originale: " + System.identityHashCode(texte));
+        System.out.println("Adresse modifiée: " + System.identityHashCode(texteModifie));
+        
+        // Concaténation
+        String texteConcat = texte + " Programming";
+        System.out.println("\nAprès concaténation:");
+        System.out.println("String originale: " + texte);           // Toujours "Java"
+        System.out.println("String concaténée: " + texteConcat);    // Nouvel objet
+        System.out.println("Adresse originale: " + System.identityHashCode(texte));
+        System.out.println("Adresse concaténée: " + System.identityHashCode(texteConcat));
+        
+        System.out.println("\n💡 CONCLUSION: Chaque 'modification' crée un NOUVEL objet !");
+        System.out.println("L'objet String original n'est JAMAIS modifié !");
+    }
+}
+
+/*
+RÉSULTAT TYPIQUE :
+String originale: Java
+Adresse mémoire: 123456789
+
+Après toUpperCase():
+String originale: Java
+Nouvelle String: JAVA
+Adresse originale: 123456789
+Adresse modifiée: 987654321    ← DIFFÉRENTE !
+
+Après concaténation:
+String originale: Java
+String concaténée: Java Programming
+Adresse originale: 123456789
+Adresse concaténée: 456789123  ← ENCORE DIFFÉRENTE !
+
+EXPLICATION :
+- texte.toUpperCase() ne modifie PAS texte
+- Il crée un NOUVEL objet String avec le contenu en majuscules
+- L'objet original "Java" reste intact en mémoire
+*/</code></pre>
+                            </div>
+
+                            <h4>String Pool - Optimisation de Java</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class StringPool {
+    public static void main(String[] args) {
+        System.out.println("=== DÉMONSTRATION STRING POOL ===");
+        
+        // Création avec littéraux (utilise le String pool)
+        String str1 = "Hello";
+        String str2 = "Hello";
+        String str3 = "Hello";
+        
+        // Création avec new (force un nouvel objet)
+        String str4 = new String("Hello");
+        String str5 = new String("Hello");
+        
+        System.out.println("=== COMPARAISON D'ADRESSES (==) ===");
+        System.out.println("str1 == str2: " + (str1 == str2)); // true (même objet)
+        System.out.println("str1 == str3: " + (str1 == str3)); // true (même objet)
+        System.out.println("str1 == str4: " + (str1 == str4)); // false (objets différents)
+        System.out.println("str4 == str5: " + (str4 == str5)); // false (objets différents)
+        
+        System.out.println("\n=== COMPARAISON DE CONTENU (.equals()) ===");
+        System.out.println("str1.equals(str2): " + str1.equals(str2)); // true
+        System.out.println("str1.equals(str4): " + str1.equals(str4)); // true
+        System.out.println("str4.equals(str5): " + str4.equals(str5)); // true
+        
+        System.out.println("\n=== ADRESSES MÉMOIRE ===");
+        System.out.println("str1 (littéral): " + System.identityHashCode(str1));
+        System.out.println("str2 (littéral): " + System.identityHashCode(str2));
+        System.out.println("str3 (littéral): " + System.identityHashCode(str3));
+        System.out.println("str4 (new): " + System.identityHashCode(str4));
+        System.out.println("str5 (new): " + System.identityHashCode(str5));
+        
+        System.out.println("\n💡 EXPLICATION :");
+        System.out.println("✅ str1, str2, str3 partagent le MÊME objet (String pool)");
+        System.out.println("❌ str4, str5 sont des objets DIFFÉRENTS (new force la création)");
+        System.out.println("🎯 Utilisez toujours les littéraux (\"\") sauf cas spécial !");
+    }
+}
+
+/*
+SCHÉMA DU STRING POOL :
+
+STRING POOL (Zone spéciale du heap)    HEAP NORMAL
+┌─────────────────────────────────┐   ┌─────────────┐
+│ "Hello" ←─ str1, str2, str3     │   │ "Hello" ←─ str4 │
+│ "World"                         │   │ "Hello" ←─ str5 │
+│ "Java"                          │   └─────────────┘
+└─────────────────────────────────┘
+
+AVANTAGES DU STRING POOL :
+- Économie de mémoire (réutilisation)
+- Comparaison rapide avec ==
+- Optimisation automatique par Java
+*/</code></pre>
+                            </div>
 
                             <h4>Création et Propriétés des String</h4>
                             <div class="code-block">

@@ -170,105 +170,402 @@
                     <div style="padding: 2rem;">
                         <!-- Introduction POO -->
                         <section id="introduction-poo" style="margin-bottom: 3rem;">
-                            <h2 class="section-title">Introduction à la Programmation Orientée Objet</h2>
+                            <h2 class="section-title">Qu'est-ce que la Programmation Orientée Objet ?</h2>
                             
-                            <p>La Programmation Orientée Objet (POO) est un paradigme de programmation qui organise le code autour d'<strong>objets</strong> plutôt que de fonctions et de logique.</p>
+                            <p>La <strong>Programmation Orientée Objet (POO)</strong> est une façon de programmer qui imite le monde réel. Au lieu d'écrire une suite d'instructions, on crée des <strong>"objets"</strong> qui représentent des choses concrètes et qui peuvent interagir entre eux.</p>
 
+                            <div class="concept-highlight">
+                                <h5>Analogie : Programmation Traditionnelle vs POO</h5>
+                                <p><strong>Programmation Traditionnelle (Procédurale) :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Approche procédurale : tout dans des fonctions séparées
+String nomVoiture = "Toyota Camry";
+String couleurVoiture = "Rouge";
+boolean voitureDemarree = false;
+
+void demarrerVoiture() {
+    voitureDemarree = true;
+    System.out.println(nomVoiture + " démarrée");
+}
+
+void arreterVoiture() {
+    voitureDemarree = false;
+    System.out.println(nomVoiture + " arrêtée");
+}
+
+// Problème : données et comportements séparés
+// Difficile à maintenir si on a plusieurs voitures !</code></pre>
+                                </div>
+                                
+                                <p><strong>Programmation Orientée Objet :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Approche POO : tout regroupé dans une classe
+public class Voiture {
+    // DONNÉES (attributs)
+    private String nom;
+    private String couleur;
+    private boolean demarree;
+    
+    // COMPORTEMENTS (méthodes)
+    public void demarrer() {
+        demarree = true;
+        System.out.println(nom + " démarrée");
+    }
+    
+    public void arreter() {
+        demarree = false;
+        System.out.println(nom + " arrêtée");
+    }
+}
+
+// Avantage : données et comportements unis
+// Facile de créer plusieurs voitures !</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Les 4 Piliers de la POO Expliqués Simplement</h4>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="poo-principle">
-                                        <h5>Encapsulation</h5>
-                                        <p>Regrouper les données (attributs) et les comportements (méthodes) dans une même entité (classe).</p>
+                                        <h5><i class="fas fa-box me-2"></i>1. Encapsulation</h5>
+                                        <p><strong>Définition :</strong> Regrouper les données et les comportements dans une même "boîte" (classe)</p>
+                                        <p><strong>Analogie :</strong> Une télécommande TV</p>
+                                        <ul>
+                                            <li>Circuits internes cachés (attributs privés)</li>
+                                            <li>Boutons visibles (méthodes publiques)</li>
+                                            <li>On utilise les boutons sans connaître l'électronique</li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="poo-principle">
-                                        <h5>Héritage</h5>
-                                        <p>Capacité d'une classe à hériter des propriétés et méthodes d'une autre classe.</p>
+                                        <h5><i class="fas fa-sitemap me-2"></i>2. Héritage</h5>
+                                        <p><strong>Définition :</strong> Une classe peut hériter des propriétés d'une autre classe</p>
+                                        <p><strong>Analogie :</strong> Famille génétique</p>
+                                        <ul>
+                                            <li>Enfant hérite des traits des parents</li>
+                                            <li>Peut avoir ses propres traits uniques</li>
+                                            <li>Évite de redéfinir ce qui existe déjà</li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="poo-principle">
-                                        <h5>Polymorphisme</h5>
-                                        <p>Capacité d'un objet à prendre plusieurs formes selon le contexte.</p>
+                                        <h5><i class="fas fa-shapes me-2"></i>3. Polymorphisme</h5>
+                                        <p><strong>Définition :</strong> Un objet peut prendre plusieurs formes selon le contexte</p>
+                                        <p><strong>Analogie :</strong> Une personne multi-rôles</p>
+                                        <ul>
+                                            <li>Même personne = mère, employée, conductrice</li>
+                                            <li>Comportement différent selon le contexte</li>
+                                            <li>Interface commune, implémentation différente</li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="poo-principle">
-                                        <h5>Abstraction</h5>
-                                        <p>Masquer la complexité interne et ne montrer que l'interface nécessaire.</p>
+                                        <h5><i class="fas fa-eye-slash me-2"></i>4. Abstraction</h5>
+                                        <p><strong>Définition :</strong> Masquer la complexité et ne montrer que l'essentiel</p>
+                                        <p><strong>Analogie :</strong> Conduire une voiture</p>
+                                        <ul>
+                                            <li>Volant, pédales, levier = interface simple</li>
+                                            <li>Moteur, transmission = complexité cachée</li>
+                                            <li>On conduit sans connaître la mécanique</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </section>
 
-                        <!-- Classes -->
-                        <section id="classes" style="margin-bottom: 3rem;">
-                            <h2 class="section-title">Définition de Classes</h2>
-                            
-                            <p>Une <strong>classe</strong> est un modèle ou un plan pour créer des objets. Elle définit les attributs (données) et les méthodes (comportements) que les objets de cette classe auront.</p>
-
-                            <h4>Syntaxe de Base d'une Classe</h4>
+                            <h4>Exemple Concret : Modéliser une Personne</h4>
                             <div class="code-block">
-<pre><code class="language-java">public class Personne {
-    // Attributs (variables d'instance)
+<pre><code class="language-java">/**
+ * AVANT la POO : Comment on pourrait mal s'y prendre
+ */
+public class SansPoO {
+    public static void main(String[] args) {
+        // Variables séparées pour chaque personne
+        String nomPersonne1 = "Alice";
+        int agePersonne1 = 25;
+        String emailPersonne1 = "alice@email.com";
+        
+        String nomPersonne2 = "Bob";
+        int agePersonne2 = 30;
+        String emailPersonne2 = "bob@email.com";
+        
+        // Fonctions séparées (pas liées aux données)
+        sePresenter(nomPersonne1, agePersonne1);
+        sePresenter(nomPersonne2, agePersonne2);
+        
+        // Problèmes :
+        // 1. Données éparpillées
+        // 2. Pas de lien logique entre nom, âge, email d'une même personne
+        // 3. Fonctions séparées des données
+        // 4. Difficile à maintenir et étendre
+    }
+    
+    public static void sePresenter(String nom, int age) {
+        System.out.println("Je suis " + nom + " et j'ai " + age + " ans");
+    }
+}
+
+/**
+ * AVEC la POO : Approche élégante et organisée
+ */
+public class AvecPoO {
+    public static void main(String[] args) {
+        // Création d'objets qui représentent des personnes réelles
+        Personne alice = new Personne("Alice", 25, "alice@email.com");
+        Personne bob = new Personne("Bob", 30, "bob@email.com");
+        
+        // Chaque objet a ses propres données ET comportements
+        alice.sePresenter(); // Alice se présente elle-même
+        bob.sePresenter();   // Bob se présente lui-même
+        
+        // Avantages :
+        // 1. Données et comportements unis
+        // 2. Chaque personne est une entité complète
+        // 3. Code réutilisable et extensible
+        // 4. Modélisation naturelle du monde réel
+    }
+}
+
+// La classe Personne encapsule TOUT ce qui concerne une personne
+class Personne {
+    // DONNÉES (attributs) - ce qu'une personne "a"
     private String nom;
-    private String prenom;
     private int age;
     private String email;
     
-    // Constructeur
-    public Personne(String nom, String prenom, int age, String email) {
+    // CONSTRUCTEUR - comment créer une personne
+    public Personne(String nom, int age, String email) {
         this.nom = nom;
-        this.prenom = prenom;
         this.age = age;
         this.email = email;
     }
     
-    // Méthodes (comportements)
+    // COMPORTEMENTS (méthodes) - ce qu'une personne "fait"
     public void sePresenter() {
-        System.out.println("Bonjour, je suis " + prenom + " " + nom);
-        System.out.println("J'ai " + age + " ans");
+        System.out.println("Bonjour, je suis " + nom + " et j'ai " + age + " ans");
+    }
+    
+    public void vieillir() {
+        age++;
+        System.out.println(nom + " a maintenant " + age + " ans");
     }
     
     public boolean estMajeur() {
         return age >= 18;
     }
+}
+
+/*
+RÉSULTAT :
+Bonjour, je suis Alice et j'ai 25 ans
+Bonjour, je suis Bob et j'ai 30 ans
+
+AVANTAGES POO :
+✅ Code organisé et logique
+✅ Réutilisabilité (créer autant de personnes qu'on veut)
+✅ Maintenance facile (tout est au même endroit)
+✅ Modélisation naturelle du monde réel
+*/</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Classes -->
+                        <section id="classes" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">Qu'est-ce qu'une Classe ? Qu'est-ce qu'un Objet ?</h2>
+                            
+                            <p>Une <strong>classe</strong> est comme un <strong>plan architectural</strong> ou un <strong>moule à gâteau</strong>. Elle décrit comment quelque chose doit être construit, mais ce n'est pas la chose elle-même. Un <strong>objet</strong> est une <strong>instance concrète</strong> créée à partir de ce plan.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Analogie : Plan de Maison vs Maisons Réelles</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>🏗️ Classe = Plan Architectural</h6>
+                                        <ul>
+                                            <li>Décrit COMMENT construire une maison</li>
+                                            <li>Spécifie : 3 chambres, 2 salles de bain, cuisine</li>
+                                            <li>Définit les comportements : ouvrir porte, allumer lumière</li>
+                                            <li>UN SEUL plan peut servir pour plusieurs maisons</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>🏠 Objet = Maison Réelle</h6>
+                                        <ul>
+                                            <li>Maison CONCRÈTE construite selon le plan</li>
+                                            <li>A une adresse spécifique (123 rue Java)</li>
+                                            <li>Couleurs et meubles personnalisés</li>
+                                            <li>PLUSIEURS maisons peuvent être construites avec le même plan</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Exemple Concret : Classe Voiture</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * CLASSE Voiture = Plan pour créer des voitures
+ */
+public class Voiture {
+    // ATTRIBUTS (données) - Ce qu'une voiture "a"
+    private String marque;      // Toyota, Renault, etc.
+    private String modele;      // Camry, Clio, etc.
+    private String couleur;     // Rouge, Bleu, etc.
+    private int annee;          // 2020, 2021, etc.
+    private boolean demarree;   // true/false
+    private double kilometrage; // Nombre de km parcourus
     
-    // Getters et Setters (Encapsulation)
-    public String getNom() {
-        return nom;
+    // CONSTRUCTEUR - Comment créer une voiture
+    public Voiture(String marque, String modele, String couleur, int annee) {
+        this.marque = marque;
+        this.modele = modele;
+        this.couleur = couleur;
+        this.annee = annee;
+        this.demarree = false;    // Voiture arrêtée par défaut
+        this.kilometrage = 0.0;   // Neuve par défaut
+        
+        System.out.println("🚗 Nouvelle voiture créée: " + marque + " " + modele + " " + couleur);
     }
     
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-    
-    public int getAge() {
-        return age;
-    }
-    
-    public void setAge(int age) {
-        if (age >= 0 && age <= 120) {
-            this.age = age;
+    // MÉTHODES (comportements) - Ce qu'une voiture "fait"
+    public void demarrer() {
+        if (!demarree) {
+            demarree = true;
+            System.out.println("🔥 " + marque + " " + modele + " démarre !");
         } else {
-            System.out.println("Age invalide !");
+            System.out.println("⚠️  La voiture est déjà démarrée");
         }
     }
-}</code></pre>
+    
+    public void arreter() {
+        if (demarree) {
+            demarree = false;
+            System.out.println("🛑 " + marque + " " + modele + " s'arrête");
+        } else {
+            System.out.println("⚠️  La voiture est déjà arrêtée");
+        }
+    }
+    
+    public void rouler(double distance) {
+        if (demarree && distance > 0) {
+            kilometrage += distance;
+            System.out.printf("🛣️  %s %s roule %.1f km (Total: %.1f km)%n", 
+                            marque, modele, distance, kilometrage);
+        } else if (!demarree) {
+            System.out.println("❌ Impossible de rouler : voiture arrêtée");
+        } else {
+            System.out.println("❌ Distance invalide");
+        }
+    }
+    
+    public void afficherInfos() {
+        System.out.println("=== INFORMATIONS VOITURE ===");
+        System.out.println("Marque: " + marque);
+        System.out.println("Modèle: " + modele);
+        System.out.println("Couleur: " + couleur);
+        System.out.println("Année: " + annee);
+        System.out.println("Kilométrage: " + kilometrage + " km");
+        System.out.println("État: " + (demarree ? "Démarrée" : "Arrêtée"));
+    }
+    
+    // GETTERS - Pour lire les attributs privés
+    public String getMarque() { return marque; }
+    public String getModele() { return modele; }
+    public String getCouleur() { return couleur; }
+    public int getAnnee() { return annee; }
+    public boolean estDemarree() { return demarree; }
+    public double getKilometrage() { return kilometrage; }
+}
+
+/**
+ * UTILISATION de la classe Voiture
+ */
+public class TestVoiture {
+    public static void main(String[] args) {
+        System.out.println("=== CRÉATION D'OBJETS VOITURE ===");
+        
+        // Créer plusieurs objets (instances) de la classe Voiture
+        Voiture voiture1 = new Voiture("Toyota", "Camry", "Rouge", 2022);
+        Voiture voiture2 = new Voiture("Renault", "Clio", "Bleue", 2021);
+        Voiture voiture3 = new Voiture("BMW", "X3", "Noire", 2023);
+        
+        System.out.println("\n=== TEST DES COMPORTEMENTS ===");
+        
+        // Chaque objet a ses propres données et peut faire ses propres actions
+        voiture1.demarrer();
+        voiture1.rouler(50.5);
+        voiture1.afficherInfos();
+        
+        System.out.println();
+        
+        voiture2.demarrer();
+        voiture2.rouler(25.0);
+        voiture2.arreter();
+        voiture2.rouler(10.0); // Tentative de rouler arrêtée
+        voiture2.afficherInfos();
+        
+        System.out.println();
+        
+        // voiture3 reste arrêtée
+        voiture3.afficherInfos();
+        
+        System.out.println("\n💡 OBSERVATIONS :");
+        System.out.println("- Chaque voiture a ses propres valeurs d'attributs");
+        System.out.println("- Les actions sur voiture1 n'affectent pas voiture2");
+        System.out.println("- Même classe, mais objets indépendants !");
+    }
+}
+
+/*
+RÉSULTAT D'EXÉCUTION :
+=== CRÉATION D'OBJETS VOITURE ===
+🚗 Nouvelle voiture créée: Toyota Camry Rouge
+🚗 Nouvelle voiture créée: Renault Clio Bleue
+🚗 Nouvelle voiture créée: BMW X3 Noire
+
+=== TEST DES COMPORTEMENTS ===
+🔥 Toyota Camry démarre !
+🛣️  Toyota Camry roule 50.5 km (Total: 50.5 km)
+=== INFORMATIONS VOITURE ===
+Marque: Toyota
+Modèle: Camry
+Couleur: Rouge
+Année: 2022
+Kilométrage: 50.5 km
+État: Démarrée
+
+🔥 Renault Clio démarre !
+🛣️  Renault Clio roule 25.0 km (Total: 25.0 km)
+🛑 Renault Clio s'arrête
+❌ Impossible de rouler : voiture arrêtée
+=== INFORMATIONS VOITURE ===
+Marque: Renault
+Modèle: Clio
+Couleur: Bleue
+Année: 2021
+Kilométrage: 25.0 km
+État: Arrêtée
+
+=== INFORMATIONS VOITURE ===
+Marque: BMW
+Modèle: X3
+Couleur: Noire
+Année: 2023
+Kilométrage: 0.0 km
+État: Arrêtée
+*/</code></pre>
                             </div>
 
                             <div class="concept-highlight">
-                                <h5>Éléments Clés d'une Classe :</h5>
+                                <h5>Relation Classe ↔ Objet :</h5>
                                 <ul>
-                                    <li><strong>Modificateurs d'accès :</strong> public, private, protected</li>
-                                    <li><strong>Attributs :</strong> Variables qui stockent l'état de l'objet</li>
-                                    <li><strong>Constructeurs :</strong> Méthodes spéciales pour initialiser les objets</li>
-                                    <li><strong>Méthodes :</strong> Fonctions qui définissent les comportements</li>
-                                    <li><strong>this :</strong> Référence à l'objet courant</li>
+                                    <li><strong>1 classe</strong> → peut créer <strong>plusieurs objets</strong></li>
+                                    <li><strong>Classe :</strong> modèle, template, blueprint</li>
+                                    <li><strong>Objet :</strong> instance concrète, entité réelle</li>
+                                    <li><strong>Chaque objet</strong> a ses propres valeurs d'attributs</li>
+                                    <li><strong>Tous les objets</strong> partagent les mêmes méthodes</li>
                                 </ul>
                             </div>
-                        </section>
 
                         <!-- Constructeurs -->
                         <section id="constructeurs" style="margin-bottom: 3rem;">

@@ -321,47 +321,171 @@
                         <section id="introduction-controle" class="section">
                             <h2 class="section-title">
                                 <i class="fas fa-play-circle"></i>
-                                Introduction aux Structures de Contrôle
+                                Qu'est-ce que les Structures de Contrôle ?
                             </h2>
                             
-                            <p>Les structures de contrôle permettent de modifier l'ordre d'exécution des instructions dans un programme. Par défaut, les instructions s'exécutent séquentiellement, mais nous pouvons :</p>
+                            <p>Les <strong>structures de contrôle</strong> sont des instructions spéciales qui permettent de contrôler l'ordre dans lequel les instructions de votre programme s'exécutent. Sans elles, votre programme ne ferait qu'exécuter les lignes une par une, de haut en bas, comme un robot qui suit une recette à la lettre.</p>
 
+                            <div class="concept-highlight">
+                                <h5>Pourquoi avons-nous besoin des Structures de Contrôle ?</h5>
+                                <p><strong>Imaginez un programme sans structures de contrôle :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Programme "robot" sans intelligence
+System.out.println("Bonjour");
+System.out.println("Il fait beau");
+System.out.println("Il pleut");
+System.out.println("Prenez un parapluie");
+System.out.println("Prenez des lunettes de soleil");
+// ↑ Le programme dit TOUT, même des contradictions !</code></pre>
+                                </div>
+                                
+                                <p><strong>Avec les structures de contrôle, on peut créer de l'intelligence :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// Programme "intelligent" avec logique
+System.out.println("Bonjour");
+
+if (ilFaitBeau) {
+    System.out.println("Il fait beau");
+    System.out.println("Prenez des lunettes de soleil");
+} else {
+    System.out.println("Il pleut");
+    System.out.println("Prenez un parapluie");
+}
+// ↑ Le programme s'adapte à la situation !</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Les 3 Familles de Structures de Contrôle</h4>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="concept-highlight text-center">
-                                        <h5>Structures Conditionnelles</h5>
-                                        <p>Exécuter du code selon des conditions</p>
+                                        <h5><i class="fas fa-code-branch me-2"></i>Structures Conditionnelles</h5>
+                                        <p><strong>Question :</strong> "Si... alors... sinon..."</p>
+                                        <p>Exécuter du code seulement dans certaines conditions</p>
                                         <ul class="text-start">
-                                            <li>if / else</li>
-                                            <li>switch / case</li>
-                                            <li>Opérateur ternaire</li>
+                                            <li><strong>if / else :</strong> Conditions simples</li>
+                                            <li><strong>switch / case :</strong> Choix multiples</li>
+                                            <li><strong>Opérateur ternaire :</strong> Condition en une ligne</li>
                                         </ul>
+                                        <p><em>Exemple :</em> "Si il pleut, prendre un parapluie"</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="concept-highlight text-center">
-                                        <h5>Structures Répétitives</h5>
-                                        <p>Répéter du code plusieurs fois</p>
+                                        <h5><i class="fas fa-sync me-2"></i>Structures Répétitives</h5>
+                                        <p><strong>Question :</strong> "Répéter tant que..."</p>
+                                        <p>Répéter du code plusieurs fois automatiquement</p>
                                         <ul class="text-start">
-                                            <li>for</li>
-                                            <li>while</li>
-                                            <li>do-while</li>
-                                            <li>for-each</li>
+                                            <li><strong>for :</strong> Nombre d'itérations connu</li>
+                                            <li><strong>while :</strong> Condition testée avant</li>
+                                            <li><strong>do-while :</strong> Condition testée après</li>
+                                            <li><strong>for-each :</strong> Parcours de collections</li>
                                         </ul>
+                                        <p><em>Exemple :</em> "Compter de 1 à 10"</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="concept-highlight text-center">
-                                        <h5>Instructions de Saut</h5>
-                                        <p>Modifier le flux d'exécution</p>
+                                        <h5><i class="fas fa-directions me-2"></i>Instructions de Saut</h5>
+                                        <p><strong>Question :</strong> "Sortir ou passer..."</p>
+                                        <p>Modifier le flux normal d'exécution</p>
                                         <ul class="text-start">
-                                            <li>break</li>
-                                            <li>continue</li>
-                                            <li>return</li>
-                                            <li>Labels</li>
+                                            <li><strong>break :</strong> Sortir complètement</li>
+                                            <li><strong>continue :</strong> Passer à l'itération suivante</li>
+                                            <li><strong>return :</strong> Sortir de la méthode</li>
+                                            <li><strong>Labels :</strong> Contrôle précis des boucles</li>
                                         </ul>
+                                        <p><em>Exemple :</em> "Arrêter la boucle si erreur"</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            <h4>Analogie Complète : Organiser une Soirée</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * ANALOGIE : Organiser une soirée avec des structures de contrôle
+ */
+public class OrganisationSoiree {
+    public static void main(String[] args) {
+        int nombreInvites = 8;
+        boolean ilPleut = false;
+        String[] invites = {"Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry"};
+        
+        System.out.println("=== ORGANISATION DE SOIRÉE ===");
+        
+        // 1. STRUCTURE CONDITIONNELLE : Décider du lieu
+        if (nombreInvites > 10) {
+            System.out.println("🏠 Soirée dans le salon (beaucoup d'invités)");
+        } else if (ilPleut) {
+            System.out.println("🏠 Soirée à l'intérieur (il pleut)");
+        } else {
+            System.out.println("🌳 Soirée dans le jardin (temps parfait)");
+        }
+        
+        // 2. STRUCTURE RÉPÉTITIVE : Appeler tous les invités
+        System.out.println("\n📞 Appel des invités:");
+        for (int i = 0; i < invites.length; i++) {
+            System.out.println("Appel " + (i + 1) + ": " + invites[i]);
+            
+            // STRUCTURE CONDITIONNELLE dans la boucle
+            if (invites[i].equals("Charlie")) {
+                System.out.println("   → Charlie ne peut pas venir (déjà occupé)");
+                continue; // INSTRUCTION DE SAUT : passer au suivant
+            }
+            
+            System.out.println("   → " + invites[i] + " confirmé(e) !");
+        }
+        
+        // 3. STRUCTURE RÉPÉTITIVE : Préparer les activités
+        String[] activites = {"Musique", "Jeux", "Buffet", "Photos"};
+        System.out.println("\n🎉 Préparation des activités:");
+        
+        for (String activite : activites) { // For-each pour parcourir
+            System.out.println("Préparation: " + activite);
+            
+            if (activite.equals("Buffet")) {
+                System.out.println("   → Préparation spéciale du buffet...");
+                
+                // Boucle imbriquée pour les plats
+                String[] plats = {"Entrées", "Plats", "Desserts"};
+                for (String plat : plats) {
+                    System.out.println("     • " + plat + " préparé");
+                }
+            }
+        }
+        
+        System.out.println("\n🎊 Soirée prête ! Tous les invités peuvent venir.");
+    }
+}
+
+/*
+RÉSULTAT :
+=== ORGANISATION DE SOIRÉE ===
+🌳 Soirée dans le jardin (temps parfait)
+
+📞 Appel des invités:
+Appel 1: Alice
+   → Alice confirmé(e) !
+Appel 2: Bob
+   → Bob confirmé(e) !
+Appel 3: Charlie
+   → Charlie ne peut pas venir (déjà occupé)
+Appel 4: Diana
+   → Diana confirmé(e) !
+...
+
+🎉 Préparation des activités:
+Préparation: Musique
+Préparation: Jeux
+Préparation: Buffet
+   → Préparation spéciale du buffet...
+     • Entrées préparé
+     • Plats préparé
+     • Desserts préparé
+Préparation: Photos
+
+🎊 Soirée prête ! Tous les invités peuvent venir.
+*/</code></pre>
                             </div>
                         </section>
 
@@ -369,42 +493,417 @@
                         <section id="conditions-if" class="section">
                             <h2 class="section-title">
                                 <i class="fas fa-code-branch"></i>
-                                Conditions if/else
+                                Conditions if/else - Prendre des Décisions
                             </h2>
                             
-                            <p>La structure <code>if</code> permet d'exécuter du code seulement si une condition est vraie.</p>
+                            <p>La structure <code>if</code> est le moyen de faire prendre des <strong>décisions</strong> à votre programme. C'est comme dire à votre programme : "Si cette situation se présente, alors fais ceci, sinon fais cela".</p>
 
-                            <h4>Syntaxes Possibles</h4>
+                            <div class="concept-highlight">
+                                <h5>Comment fonctionne une condition if ?</h5>
+                                <ol>
+                                    <li><strong>Évaluation :</strong> Java évalue l'expression dans les parenthèses</li>
+                                    <li><strong>Test booléen :</strong> Le résultat doit être true ou false</li>
+                                    <li><strong>Exécution conditionnelle :</strong> Si true → exécute le bloc, si false → ignore</li>
+                                    <li><strong>Continuation :</strong> Le programme continue après le bloc if</li>
+                                </ol>
+                            </div>
+
+                            <h4>Exemple Très Simple pour Comprendre</h4>
                             <div class="code-block">
-<pre><code class="language-java">// 1. if simple
-if (condition) {
-    // Code exécuté si condition vraie
-}
-
-// 2. if/else
-if (condition) {
-    // Code si condition vraie
-} else {
-    // Code si condition fausse
-}
-
-// 3. if/else if/else
-if (condition1) {
-    // Code si condition1 vraie
-} else if (condition2) {
-    // Code si condition2 vraie
-} else if (condition3) {
-    // Code si condition3 vraie
-} else {
-    // Code si aucune condition vraie
-}
-
-// 4. if imbriqués
-if (condition1) {
-    if (condition2) {
-        // Code si condition1 ET condition2 vraies
+<pre><code class="language-java">public class PremierIf {
+    public static void main(String[] args) {
+        int age = 17;
+        
+        System.out.println("Vous avez " + age + " ans");
+        
+        // Condition simple
+        if (age >= 18) {
+            System.out.println("Vous êtes majeur !");
+            System.out.println("Vous pouvez voter");
+        }
+        
+        System.out.println("Fin du programme");
     }
-}</code></pre>
+}
+
+/*
+EXÉCUTION ÉTAPE PAR ÉTAPE :
+1. age = 17
+2. Affiche "Vous avez 17 ans"
+3. Teste la condition : 17 >= 18 ?
+4. 17 >= 18 = false
+5. IGNORE le bloc if (ne l'exécute pas)
+6. Affiche "Fin du programme"
+
+RÉSULTAT :
+Vous avez 17 ans
+Fin du programme
+*/</code></pre>
+                            </div>
+
+                            <h4>Toutes les Syntaxes if Expliquées en Détail</h4>
+                            
+                            <h5>1. if Simple (Une Seule Condition)</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class IfSimple {
+    public static void main(String[] args) {
+        double temperature = 25.5;
+        
+        System.out.println("Température actuelle: " + temperature + "°C");
+        
+        // if simple : exécute le code seulement si condition vraie
+        if (temperature > 20) {
+            System.out.println("Il fait bon !");
+            System.out.println("Parfait pour une promenade");
+        }
+        // Si température <= 20, ces lignes ne s'exécutent PAS
+        
+        System.out.println("Bonne journée !");
+    }
+}
+
+/*
+AVEC temperature = 25.5 :
+Température actuelle: 25.5°C
+Il fait bon !
+Parfait pour une promenade
+Bonne journée !
+
+AVEC temperature = 15.0 :
+Température actuelle: 15.0°C
+Bonne journée !
+(Les lignes du if sont ignorées)
+*/</code></pre>
+                            </div>
+
+                            <h5>2. if/else (Deux Choix Possibles)</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class IfElse {
+    public static void main(String[] args) {
+        int score = 75;
+        
+        System.out.println("Votre score: " + score + "/100");
+        
+        // if/else : TOUJOURS une des deux branches s'exécute
+        if (score >= 60) {
+            System.out.println("✅ RÉUSSI !");
+            System.out.println("Félicitations, vous avez la moyenne");
+        } else {
+            System.out.println("❌ ÉCHEC !");
+            System.out.println("Il faut retravailler pour avoir 60/100");
+        }
+        
+        System.out.println("Fin de l'évaluation");
+    }
+}
+
+/*
+LOGIQUE if/else :
+- Si condition vraie → exécute le premier bloc
+- Si condition fausse → exécute le bloc else
+- UNE SEULE des deux branches s'exécute, jamais les deux
+
+AVEC score = 75 :
+Votre score: 75/100
+✅ RÉUSSI !
+Félicitations, vous avez la moyenne
+Fin de l'évaluation
+
+AVEC score = 45 :
+Votre score: 45/100
+❌ ÉCHEC !
+Il faut retravailler pour avoir 60/100
+Fin de l'évaluation
+*/</code></pre>
+                            </div>
+
+                            <h5>3. if/else if/else (Choix Multiples)</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class IfElseIfElse {
+    public static void main(String[] args) {
+        double note = 14.5;
+        
+        System.out.println("Note obtenue: " + note + "/20");
+        
+        // Chaîne de conditions : testées dans l'ordre, première vraie s'exécute
+        if (note >= 16) {
+            System.out.println("🏆 Mention: Très Bien");
+            System.out.println("Excellent travail ! Vous maîtrisez parfaitement");
+        } else if (note >= 14) {
+            System.out.println("🥈 Mention: Bien");
+            System.out.println("Bon travail ! Quelques petites améliorations possibles");
+        } else if (note >= 12) {
+            System.out.println("🥉 Mention: Assez Bien");
+            System.out.println("C'est correct, mais vous pouvez mieux faire");
+        } else if (note >= 10) {
+            System.out.println("✅ Mention: Passable");
+            System.out.println("Juste la moyenne, il faut travailler davantage");
+        } else {
+            System.out.println("❌ Mention: Insuffisant");
+            System.out.println("En dessous de la moyenne, reprenez les bases");
+        }
+        
+        System.out.println("Fin de l'évaluation");
+    }
+}
+
+/*
+LOGIQUE if/else if/else :
+1. Teste note >= 16 → false (14.5 < 16)
+2. Teste note >= 14 → true (14.5 >= 14) ✅
+3. EXÉCUTE ce bloc et IGNORE tous les suivants
+4. Continue après toute la chaîne
+
+RÉSULTAT avec note = 14.5 :
+Note obtenue: 14.5/20
+🥈 Mention: Bien
+Bon travail ! Quelques petites améliorations possibles
+Fin de l'évaluation
+
+IMPORTANT : Même si note >= 12 et note >= 10 sont aussi vraies,
+elles ne sont PAS testées car une condition précédente était vraie !
+*/</code></pre>
+                            </div>
+
+                            <h5>4. if Imbriqués (Conditions dans des Conditions)</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class IfImbriques {
+    public static void main(String[] args) {
+        int age = 20;
+        boolean aPermis = true;
+        boolean aVoiture = false;
+        double soldeCompte = 50.0;
+        
+        System.out.println("=== VÉRIFICATION SORTIE EN VOITURE ===");
+        System.out.println("Âge: " + age + ", Permis: " + aPermis + 
+                          ", Voiture: " + aVoiture + ", Solde: " + soldeCompte + "€");
+        
+        // if imbriqués : conditions dans des conditions
+        if (age >= 18) {
+            System.out.println("✅ Vous êtes majeur");
+            
+            if (aPermis) {
+                System.out.println("✅ Vous avez le permis");
+                
+                if (aVoiture) {
+                    System.out.println("✅ Vous avez une voiture");
+                    
+                    if (soldeCompte >= 20) {
+                        System.out.println("✅ Vous avez assez d'argent pour l'essence");
+                        System.out.println("🚗 VOUS POUVEZ SORTIR EN VOITURE !");
+                    } else {
+                        System.out.println("❌ Pas assez d'argent pour l'essence");
+                        System.out.println("🚶 Sortie à pied recommandée");
+                    }
+                } else {
+                    System.out.println("❌ Pas de voiture disponible");
+                    System.out.println("🚌 Utilisez les transports en commun");
+                }
+            } else {
+                System.out.println("❌ Pas de permis de conduire");
+                System.out.println("📚 Inscrivez-vous à l'auto-école");
+            }
+        } else {
+            System.out.println("❌ Vous êtes mineur");
+            System.out.println("⏳ Attendez d'avoir 18 ans");
+        }
+    }
+}
+
+/*
+LOGIQUE if imbriqués :
+Chaque if est testé seulement si le if parent est vrai
+
+AVEC age=20, aPermis=true, aVoiture=false, solde=50 :
+✅ Vous êtes majeur
+✅ Vous avez le permis  
+❌ Pas de voiture disponible
+🚌 Utilisez les transports en commun
+
+Le test du solde n'est même PAS effectué car aVoiture=false !
+*/</code></pre>
+                            </div>
+
+                            <h4>Conditions Composées avec Opérateurs Logiques</h4>
+                            <div class="code-block">
+<pre><code class="language-java">public class ConditionsComposees {
+    public static void main(String[] args) {
+        int age = 25;
+        double salaire = 2500;
+        int experienceAnnees = 3;
+        boolean aDiplome = true;
+        
+        System.out.println("=== ÉVALUATION CANDIDAT EMPLOI ===");
+        System.out.printf("Âge: %d, Salaire souhaité: %.0f€, Expérience: %d ans, Diplôme: %s%n",
+                         age, salaire, experienceAnnees, aDiplome);
+        
+        // Condition composée avec AND (&&)
+        if (age >= 21 && age <= 35) {
+            System.out.println("✅ Âge dans la tranche cible (21-35 ans)");
+        } else {
+            System.out.println("❌ Âge hors tranche cible");
+        }
+        
+        // Condition composée avec OR (||)
+        if (experienceAnnees >= 5 || aDiplome) {
+            System.out.println("✅ Profil qualifié (expérience OU diplôme)");
+        } else {
+            System.out.println("❌ Profil insuffisant (pas d'expérience ET pas de diplôme)");
+        }
+        
+        // Condition complexe avec parenthèses
+        if ((experienceAnnees >= 2 && aDiplome) || (experienceAnnees >= 5)) {
+            System.out.println("✅ Critères techniques remplis");
+            
+            // Condition imbriquée pour le salaire
+            if (salaire <= 3000) {
+                System.out.println("✅ Prétentions salariales acceptables");
+                System.out.println("🎉 CANDIDAT RETENU !");
+            } else {
+                System.out.println("❌ Prétentions salariales trop élevées");
+                System.out.println("💰 Négociation nécessaire");
+            }
+        } else {
+            System.out.println("❌ Critères techniques non remplis");
+            System.out.println("📚 Formation recommandée");
+        }
+        
+        // Condition avec NOT (!)
+        if (!aDiplome && experienceAnnees < 2) {
+            System.out.println("⚠️  Profil débutant détecté");
+            System.out.println("🎓 Stage ou formation en alternance recommandé");
+        }
+    }
+}
+
+/*
+EXPLICATION DES OPÉRATEURS LOGIQUES :
+
+&& (AND) : Les DEUX conditions doivent être vraies
+age >= 21 && age <= 35
+↑           ↑
+true    ET  true  = true
+true    ET  false = false
+false   ET  true  = false
+false   ET  false = false
+
+|| (OR) : AU MOINS UNE condition doit être vraie
+experienceAnnees >= 5 || aDiplome
+↑                        ↑
+true     OU  true  = true
+true     OU  false = true
+false    OU  true  = true
+false    OU  false = false
+
+! (NOT) : Inverse le résultat
+!aDiplome
+↑
+Si aDiplome = true  → !aDiplome = false
+Si aDiplome = false → !aDiplome = true
+*/</code></pre>
+                            </div>
+
+                            <h4>Exemple Concret : Système de Connexion</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class SystemeConnexion {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Données "en dur" pour la démonstration
+        String utilisateurCorrect = "admin";
+        String motDePasseCorrect = "java123";
+        int tentativesMax = 3;
+        int tentatives = 0;
+        
+        System.out.println("=== SYSTÈME DE CONNEXION ===");
+        
+        boolean connecte = false;
+        
+        // Boucle pour les tentatives de connexion
+        while (tentatives < tentativesMax && !connecte) {
+            tentatives++;
+            System.out.println("\n--- Tentative " + tentatives + "/" + tentativesMax + " ---");
+            
+            System.out.print("Nom d'utilisateur: ");
+            String utilisateur = scanner.nextLine();
+            
+            System.out.print("Mot de passe: ");
+            String motDePasse = scanner.nextLine();
+            
+            // Vérification des identifiants avec conditions composées
+            if (utilisateur.equals(utilisateurCorrect) && motDePasse.equals(motDePasseCorrect)) {
+                System.out.println("✅ CONNEXION RÉUSSIE !");
+                System.out.println("Bienvenue, " + utilisateur + " !");
+                connecte = true;
+                
+                // Menu après connexion
+                afficherMenuPrincipal();
+                
+            } else if (utilisateur.equals(utilisateurCorrect)) {
+                System.out.println("❌ Nom d'utilisateur correct, mais mot de passe incorrect");
+                System.out.println("💡 Vérifiez les majuscules/minuscules");
+                
+            } else if (motDePasse.equals(motDePasseCorrect)) {
+                System.out.println("❌ Mot de passe correct, mais nom d'utilisateur incorrect");
+                System.out.println("💡 Vérifiez l'orthographe du nom d'utilisateur");
+                
+            } else {
+                System.out.println("❌ Nom d'utilisateur ET mot de passe incorrects");
+                System.out.println("💡 Vérifiez vos identifiants");
+            }
+            
+            // Avertissement selon le nombre de tentatives restantes
+            if (!connecte && tentatives < tentativesMax) {
+                int restantes = tentativesMax - tentatives;
+                if (restantes == 1) {
+                    System.out.println("⚠️  ATTENTION : Dernière tentative !");
+                } else {
+                    System.out.println("Il vous reste " + restantes + " tentative(s)");
+                }
+            }
+        }
+        
+        // Vérification finale
+        if (!connecte) {
+            System.out.println("\n🚫 COMPTE BLOQUÉ !");
+            System.out.println("Trop de tentatives échouées");
+            System.out.println("Contactez l'administrateur");
+        }
+        
+        scanner.close();
+    }
+    
+    public static void afficherMenuPrincipal() {
+        System.out.println("\n=== MENU PRINCIPAL ===");
+        System.out.println("1. Consulter le profil");
+        System.out.println("2. Modifier les paramètres");
+        System.out.println("3. Se déconnecter");
+        System.out.println("Vous êtes maintenant connecté au système !");
+    }
+}
+
+/*
+ANALYSE DU CODE :
+
+1. BOUCLE while avec condition composée :
+   while (tentatives < tentativesMax && !connecte)
+   Continue TANT QUE : pas trop de tentatives ET pas encore connecté
+
+2. CONDITIONS IMBRIQUÉES pour analyser les erreurs :
+   - if (user OK && password OK) → succès
+   - else if (user OK) → password incorrect
+   - else if (password OK) → user incorrect  
+   - else → tout incorrect
+
+3. LOGIQUE MÉTIER avec conditions :
+   - Compteur de tentatives
+   - Messages d'aide selon l'erreur
+   - Blocage après trop de tentatives
+
+C'est un exemple RÉEL d'utilisation des structures de contrôle !
+*/</code></pre>
                             </div>
 
                             <h4>Exemple Pratique - Système de Notes</h4>
@@ -577,106 +1076,542 @@ if (condition1) {
                         <section id="boucle-for" class="section">
                             <h2 class="section-title">
                                 <i class="fas fa-sync"></i>
-                                Boucle for
+                                Boucle for - Répéter un Nombre Précis de Fois
                             </h2>
                             
-                            <p>La boucle <code>for</code> est idéale quand on connaît à l'avance le nombre d'itérations.</p>
+                            <p>La boucle <code>for</code> est parfaite quand vous savez <strong>exactement combien de fois</strong> vous voulez répéter quelque chose. C'est comme dire : "Fais cette action 10 fois" ou "Parcours tous les éléments de cette liste".</p>
 
-                            <h4>Syntaxe et Variantes</h4>
+                            <div class="concept-highlight">
+                                <h5>Quand utiliser une boucle for ?</h5>
+                                <ul>
+                                    <li><strong>Comptage :</strong> "Compter de 1 à 100"</li>
+                                    <li><strong>Parcours de tableau :</strong> "Afficher tous les éléments"</li>
+                                    <li><strong>Répétition précise :</strong> "Demander 5 notes à l'utilisateur"</li>
+                                    <li><strong>Calculs itératifs :</strong> "Calculer la factorielle de 10"</li>
+                                    <li><strong>Génération de données :</strong> "Créer 50 nombres aléatoires"</li>
+                                </ul>
+                            </div>
+
+                            <h4>Anatomie d'une Boucle for</h4>
                             <div class="code-block">
-<pre><code class="language-java">// Syntaxe standard
-for (initialisation; condition; incrémentation) {
-    // Code à répéter
+<pre><code class="language-java">// Syntaxe détaillée avec explications
+for (int i = 1; i <= 5; i++) {
+//   ↑       ↑      ↑
+//   │       │      └── 3. INCRÉMENTATION : Exécutée APRÈS chaque tour
+//   │       └────────── 2. CONDITION : Testée AVANT chaque tour
+//   └────────────────── 1. INITIALISATION : Exécutée UNE SEULE FOIS au début
+    
+    System.out.println("Tour numéro: " + i);
 }
 
-// Exemples concrets
-public class BouclesFor {
+/*
+EXÉCUTION ÉTAPE PAR ÉTAPE :
+
+DÉBUT:
+1. Initialisation : i = 1
+
+TOUR 1:
+2. Test condition : 1 <= 5 ? → true
+3. Exécute le corps : "Tour numéro: 1"
+4. Incrémentation : i++ → i = 2
+
+TOUR 2:
+2. Test condition : 2 <= 5 ? → true
+3. Exécute le corps : "Tour numéro: 2"
+4. Incrémentation : i++ → i = 3
+
+TOUR 3:
+2. Test condition : 3 <= 5 ? → true
+3. Exécute le corps : "Tour numéro: 3"
+4. Incrémentation : i++ → i = 4
+
+TOUR 4:
+2. Test condition : 4 <= 5 ? → true
+3. Exécute le corps : "Tour numéro: 4"
+4. Incrémentation : i++ → i = 5
+
+TOUR 5:
+2. Test condition : 5 <= 5 ? → true
+3. Exécute le corps : "Tour numéro: 5"
+4. Incrémentation : i++ → i = 6
+
+TOUR 6:
+2. Test condition : 6 <= 5 ? → false
+3. SORT DE LA BOUCLE
+
+RÉSULTAT :
+Tour numéro: 1
+Tour numéro: 2
+Tour numéro: 3
+Tour numéro: 4
+Tour numéro: 5
+*/</code></pre>
+                            </div>
+
+                            <h4>Exemples Concrets de Boucles for</h4>
+                            
+                            <h5>1. Comptage Simple</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class ComptageSimple {
     public static void main(String[] args) {
-        // 1. Boucle for classique
-        System.out.println("=== COMPTAGE DE 1 À 10 ===");
-        for (int i = 1; i <= 10; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
+        System.out.println("=== DIFFÉRENTS TYPES DE COMPTAGE ===");
         
-        // 2. Boucle for décroissante
-        System.out.println("\n=== COMPTE À REBOURS ===");
-        for (int i = 10; i >= 1; i--) {
-            System.out.print(i + " ");
-        }
-        System.out.println("Décollage !");
-        
-        // 3. Boucle for avec pas personnalisé
-        System.out.println("\n=== NOMBRES PAIRS DE 0 À 20 ===");
-        for (int i = 0; i <= 20; i += 2) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        
-        // 4. Boucles for imbriquées
-        System.out.println("\n=== TABLE DE MULTIPLICATION ===");
+        // Comptage croissant
+        System.out.println("Comptage de 1 à 5:");
         for (int i = 1; i <= 5; i++) {
-            for (int j = 1; j <= 5; j++) {
-                System.out.printf("%2d ", i * j);
-            }
-            System.out.println(); // Nouvelle ligne
+            System.out.print(i + " ");
         }
+        System.out.println();
         
-        // 5. For avec plusieurs variables
-        System.out.println("\n=== DOUBLE COMPTEUR ===");
-        for (int i = 0, j = 10; i <= j; i++, j--) {
-            System.out.println("i=" + i + ", j=" + j);
+        // Comptage décroissant
+        System.out.println("Compte à rebours de 5 à 1:");
+        for (int i = 5; i >= 1; i--) {
+            System.out.print(i + " ");
         }
+        System.out.println("🚀 Décollage !");
+        
+        // Comptage avec pas personnalisé
+        System.out.println("Nombres pairs de 0 à 10:");
+        for (int i = 0; i <= 10; i += 2) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        
+        // Comptage par 5
+        System.out.println("Comptage par 5 de 0 à 50:");
+        for (int i = 0; i <= 50; i += 5) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        
+        // Comptage avec calcul
+        System.out.println("Puissances de 2 (2^0 à 2^10):");
+        for (int i = 0; i <= 10; i++) {
+            int puissance = (int) Math.pow(2, i);
+            System.out.print("2^" + i + "=" + puissance + " ");
+        }
+        System.out.println();
     }
 }</code></pre>
                             </div>
 
-                            <div class="algorithm-box">
-                                <h5>Algorithme de la Boucle for :</h5>
-                                <ol>
-                                    <li><strong>Initialisation :</strong> Exécutée une seule fois au début</li>
-                                    <li><strong>Test de condition :</strong> Évaluée avant chaque itération</li>
-                                    <li><strong>Exécution du corps :</strong> Si condition vraie</li>
-                                    <li><strong>Incrémentation :</strong> Exécutée après chaque itération</li>
-                                    <li><strong>Retour à l'étape 2</strong></li>
-                                </ol>
+                            <h5>2. Parcours de Tableaux</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class ParcoursTableaux {
+    public static void main(String[] args) {
+        String[] prenoms = {"Alice", "Bob", "Charlie", "Diana", "Eve"};
+        int[] notes = {15, 18, 12, 16, 14};
+        
+        System.out.println("=== PARCOURS DE TABLEAUX ===");
+        
+        // Parcours simple avec index
+        System.out.println("Liste des prénoms:");
+        for (int i = 0; i < prenoms.length; i++) {
+            System.out.println((i + 1) + ". " + prenoms[i]);
+        }
+        
+        // Parcours avec calculs
+        System.out.println("\nNotes et appréciations:");
+        for (int i = 0; i < notes.length; i++) {
+            String appreciation;
+            
+            if (notes[i] >= 16) {
+                appreciation = "Excellent";
+            } else if (notes[i] >= 14) {
+                appreciation = "Bien";
+            } else if (notes[i] >= 12) {
+                appreciation = "Assez bien";
+            } else {
+                appreciation = "Peut mieux faire";
+            }
+            
+            System.out.println(prenoms[i] + ": " + notes[i] + "/20 (" + appreciation + ")");
+        }
+        
+        // Calcul de statistiques avec boucle
+        int somme = 0;
+        int noteMax = notes[0];
+        int noteMin = notes[0];
+        
+        for (int i = 0; i < notes.length; i++) {
+            somme += notes[i];
+            
+            if (notes[i] > noteMax) {
+                noteMax = notes[i];
+            }
+            
+            if (notes[i] < noteMin) {
+                noteMin = notes[i];
+            }
+        }
+        
+        double moyenne = (double) somme / notes.length;
+        
+        System.out.println("\n=== STATISTIQUES ===");
+        System.out.println("Nombre d'étudiants: " + notes.length);
+        System.out.printf("Moyenne de la classe: %.2f/20%n", moyenne);
+        System.out.println("Note la plus haute: " + noteMax + "/20");
+        System.out.println("Note la plus basse: " + noteMin + "/20");
+    }
+}</code></pre>
                             </div>
-                        </section>
+
+                            <h5>3. Boucles Imbriquées (Boucles dans des Boucles)</h5>
+                            <div class="code-block">
+<pre><code class="language-java">public class BouclesImbriquees {
+    public static void main(String[] args) {
+        System.out.println("=== BOUCLES IMBRIQUÉES ===");
+        
+        // Table de multiplication
+        System.out.println("Table de multiplication 5x5:");
+        System.out.print("   "); // Espacement pour l'en-tête
+        
+        // En-tête des colonnes
+        for (int j = 1; j <= 5; j++) {
+            System.out.printf("%4d", j);
+        }
+        System.out.println();
+        
+        // Lignes de la table
+        for (int i = 1; i <= 5; i++) {
+            System.out.printf("%2d ", i); // Numéro de ligne
+            
+            for (int j = 1; j <= 5; j++) {
+                int produit = i * j;
+                System.out.printf("%4d", produit);
+            }
+            System.out.println(); // Nouvelle ligne après chaque rangée
+        }
+        
+        // Motif en étoiles
+        System.out.println("\nMotif triangle:");
+        for (int ligne = 1; ligne <= 5; ligne++) {
+            // Boucle interne pour les étoiles de chaque ligne
+            for (int etoile = 1; etoile <= ligne; etoile++) {
+                System.out.print("* ");
+            }
+            System.out.println(); // Nouvelle ligne après chaque rangée
+        }
+        
+        // Recherche dans une matrice
+        System.out.println("\nRecherche dans une matrice 3x4:");
+        int[][] matrice = {
+            {10, 20, 30, 40},
+            {50, 60, 70, 80},
+            {90, 100, 110, 120}
+        };
+        
+        int recherche = 70;
+        boolean trouve = false;
+        
+        // Boucles imbriquées pour parcourir la matrice
+        for (int ligne = 0; ligne < matrice.length; ligne++) {
+            for (int colonne = 0; colonne < matrice[ligne].length; colonne++) {
+                System.out.print("Vérification [" + ligne + "][" + colonne + "] = " + matrice[ligne][colonne]);
+                
+                if (matrice[ligne][colonne] == recherche) {
+                    System.out.println(" → TROUVÉ !");
+                    System.out.println("Élément " + recherche + " trouvé à la position [" + ligne + "][" + colonne + "]");
+                    trouve = true;
+                    break; // Sort de la boucle interne
+                } else {
+                    System.out.println();
+                }
+            }
+            
+            if (trouve) {
+                break; // Sort de la boucle externe
+            }
+        }
+        
+        if (!trouve) {
+            System.out.println("Élément " + recherche + " non trouvé dans la matrice");
+        }
+    }
+}
+
+/*
+EXPLICATION BOUCLES IMBRIQUÉES :
+
+Table de multiplication :
+- Boucle EXTERNE (i) : parcourt les lignes (1 à 5)
+- Boucle INTERNE (j) : parcourt les colonnes (1 à 5)
+- Pour chaque ligne i, on fait un tour complet des colonnes j
+
+AVEC i=1 : j=1,2,3,4,5 → produits 1,2,3,4,5
+AVEC i=2 : j=1,2,3,4,5 → produits 2,4,6,8,10
+AVEC i=3 : j=1,2,3,4,5 → produits 3,6,9,12,15
+etc.
+
+Triangle d'étoiles :
+- Ligne 1 : 1 étoile
+- Ligne 2 : 2 étoiles  
+- Ligne 3 : 3 étoiles
+- etc.
+
+La boucle interne s'exécute un nombre différent de fois selon la ligne !
+*/</code></pre>
+                            </div>
 
                         <!-- Boucle while -->
                         <section id="boucle-while" class="section">
                             <h2 class="section-title">
                                 <i class="fas fa-redo"></i>
-                                Boucles while et do-while
+                                Boucles while et do-while - Répéter Tant Que...
                             </h2>
                             
-                            <p>Les boucles <code>while</code> et <code>do-while</code> répètent du code tant qu'une condition est vraie.</p>
+                            <p>Les boucles <code>while</code> et <code>do-while</code> répètent du code <strong>tant qu'une condition reste vraie</strong>. Contrairement à <code>for</code>, vous ne savez pas à l'avance combien de fois la boucle va s'exécuter.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Différence Fondamentale : for vs while</h5>
+                                <ul>
+                                    <li><strong>for :</strong> "Répète exactement 10 fois" (nombre connu)</li>
+                                    <li><strong>while :</strong> "Répète jusqu'à ce que l'utilisateur tape 'stop'" (nombre inconnu)</li>
+                                    <li><strong>for :</strong> Idéal pour parcours, comptages</li>
+                                    <li><strong>while :</strong> Idéal pour interactions utilisateur, conditions complexes</li>
+                                </ul>
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4>Boucle while</h4>
-                                    <p>Test de condition <strong>avant</strong> l'exécution</p>
+                                    <h4>Boucle while (Test AVANT)</h4>
+                                    <p>La condition est testée <strong>avant</strong> chaque exécution</p>
                                     <div class="code-block">
 <pre><code class="language-java">int compteur = 1;
+
 while (compteur <= 5) {
     System.out.println("Compteur: " + compteur);
-    compteur++;
+    compteur++; // IMPORTANT : modifier la variable de condition !
 }
-// Peut ne jamais s'exécuter si condition fausse</code></pre>
+
+/*
+ÉTAPES :
+1. Test : 1 <= 5 ? → true → exécute
+2. Test : 2 <= 5 ? → true → exécute  
+3. Test : 3 <= 5 ? → true → exécute
+4. Test : 4 <= 5 ? → true → exécute
+5. Test : 5 <= 5 ? → true → exécute
+6. Test : 6 <= 5 ? → false → STOP
+
+⚠️  DANGER : Si vous oubliez compteur++, 
+boucle infinie car compteur reste toujours 1 !
+*/</code></pre>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <h4>Boucle do-while</h4>
-                                    <p>Test de condition <strong>après</strong> l'exécution</p>
+                                    <h4>Boucle do-while (Test APRÈS)</h4>
+                                    <p>La condition est testée <strong>après</strong> chaque exécution</p>
                                     <div class="code-block">
 <pre><code class="language-java">int compteur = 1;
+
 do {
     System.out.println("Compteur: " + compteur);
     compteur++;
 } while (compteur <= 5);
-// S'exécute au moins une fois</code></pre>
+
+/*
+ÉTAPES :
+1. Exécute → puis test : 2 <= 5 ? → true
+2. Exécute → puis test : 3 <= 5 ? → true
+3. Exécute → puis test : 4 <= 5 ? → true
+4. Exécute → puis test : 5 <= 5 ? → true
+5. Exécute → puis test : 6 <= 5 ? → false → STOP
+
+✅ GARANTIE : S'exécute AU MOINS une fois,
+même si la condition est fausse dès le début
+*/</code></pre>
                                     </div>
                                 </div>
+                            </div>
+
+                            <h4>Exemple Concret : Jeu de Devinette</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.Random;
+
+public class JeuDevinette {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        
+        System.out.println("=== JEU DE DEVINETTE ===");
+        System.out.println("Je pense à un nombre entre 1 et 100");
+        System.out.println("Vous devez le deviner !");
+        
+        int nombreSecret = random.nextInt(100) + 1; // 1 à 100
+        int tentatives = 0;
+        boolean trouve = false;
+        
+        // BOUCLE WHILE : on ne sait pas combien de tentatives il faudra
+        while (!trouve) {
+            tentatives++;
+            System.out.print("\nTentative " + tentatives + " - Votre proposition: ");
+            
+            try {
+                int proposition = scanner.nextInt();
+                
+                // Validation de l'entrée
+                if (proposition < 1 || proposition > 100) {
+                    System.out.println("❌ Le nombre doit être entre 1 et 100 !");
+                    continue; // Retour au début de la boucle sans compter cette tentative
+                }
+                
+                // Comparaison avec le nombre secret
+                if (proposition == nombreSecret) {
+                    System.out.println("🎉 BRAVO ! Vous avez trouvé " + nombreSecret + " !");
+                    System.out.println("Nombre de tentatives: " + tentatives);
+                    trouve = true; // Condition pour sortir de la boucle
+                    
+                    // Évaluation de la performance
+                    if (tentatives == 1) {
+                        System.out.println("🏆 INCROYABLE ! Du premier coup !");
+                    } else if (tentatives <= 5) {
+                        System.out.println("⭐ Excellent ! Très peu de tentatives");
+                    } else if (tentatives <= 10) {
+                        System.out.println("👍 Bien joué !");
+                    } else {
+                        System.out.println("💪 Persévérance récompensée !");
+                    }
+                    
+                } else if (proposition < nombreSecret) {
+                    System.out.println("📈 Trop petit ! Le nombre est plus grand");
+                    
+                    // Indices selon la proximité
+                    int difference = nombreSecret - proposition;
+                    if (difference <= 5) {
+                        System.out.println("🔥 Vous êtes très proche !");
+                    } else if (difference <= 15) {
+                        System.out.println("🎯 Vous vous rapprochez...");
+                    }
+                    
+                } else {
+                    System.out.println("📉 Trop grand ! Le nombre est plus petit");
+                    
+                    // Indices selon la proximité
+                    int difference = proposition - nombreSecret;
+                    if (difference <= 5) {
+                        System.out.println("🔥 Vous êtes très proche !");
+                    } else if (difference <= 15) {
+                        System.out.println("🎯 Vous vous rapprochez...");
+                    }
+                }
+                
+                // Encouragements selon le nombre de tentatives
+                if (!trouve && tentatives == 10) {
+                    System.out.println("💡 Indice: Le nombre est " + (nombreSecret % 2 == 0 ? "pair" : "impair"));
+                } else if (!trouve && tentatives == 15) {
+                    System.out.println("💡 Indice: Le nombre est " + (nombreSecret > 50 ? "supérieur" : "inférieur ou égal") + " à 50");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("❌ Veuillez entrer un nombre entier valide !");
+                scanner.nextLine(); // Vider le buffer
+                tentatives--; // Ne pas compter cette tentative invalide
+            }
+        }
+        
+        scanner.close();
+    }
+}
+
+/*
+POURQUOI while ET PAS for ?
+
+Avec for, il faudrait écrire :
+for (int tentatives = 1; tentatives <= ???; tentatives++) {
+                                        ↑
+                                   On ne sait pas !
+
+Avec while :
+while (!trouve) {
+    // Continue tant que pas trouvé
+    // Peut être 1 tentative ou 100 tentatives !
+}
+
+La boucle while s'adapte automatiquement selon l'utilisateur.
+*/</code></pre>
+                            </div>
+
+                            <h4>do-while : Garantie d'Exécution</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.util.Scanner;
+
+public class MenuInteractifDoWhile {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choix;
+        
+        System.out.println("=== MENU INTERACTIF ===");
+        
+        // do-while : PARFAIT pour les menus car on veut afficher au moins une fois
+        do {
+            // Ce code s'exécute TOUJOURS au moins une fois
+            System.out.println("\n--- MENU PRINCIPAL ---");
+            System.out.println("1. Dire bonjour");
+            System.out.println("2. Calculer une addition");
+            System.out.println("3. Afficher l'heure");
+            System.out.println("4. Quitter");
+            System.out.print("Votre choix (1-4): ");
+            
+            try {
+                choix = scanner.nextInt();
+                
+                switch (choix) {
+                    case 1:
+                        System.out.println("👋 Bonjour ! Comment allez-vous ?");
+                        break;
+                    case 2:
+                        System.out.print("Premier nombre: ");
+                        int a = scanner.nextInt();
+                        System.out.print("Deuxième nombre: ");
+                        int b = scanner.nextInt();
+                        System.out.println("Résultat: " + a + " + " + b + " = " + (a + b));
+                        break;
+                    case 3:
+                        System.out.println("🕐 Heure actuelle: " + java.time.LocalTime.now());
+                        break;
+                    case 4:
+                        System.out.println("👋 Au revoir ! Merci d'avoir utilisé le programme");
+                        break;
+                    default:
+                        System.out.println("❌ Choix invalide ! Choisissez entre 1 et 4");
+                        choix = 0; // Force à continuer la boucle
+                }
+                
+            } catch (Exception e) {
+                System.out.println("❌ Erreur de saisie ! Entrez un nombre entre 1 et 4");
+                scanner.nextLine(); // Vider le buffer
+                choix = 0; // Force à continuer la boucle
+            }
+            
+        } while (choix != 4); // Continue tant que l'utilisateur ne choisit pas "Quitter"
+        
+        scanner.close();
+    }
+}
+
+/*
+POURQUOI do-while POUR UN MENU ?
+
+1. GARANTIE D'AFFICHAGE : Le menu s'affiche toujours au moins une fois
+2. LOGIQUE NATURELLE : On affiche le menu, puis on teste si on continue
+3. ÉVITE LA DUPLICATION : Pas besoin d'afficher le menu avant la boucle
+
+COMPARAISON :
+
+❌ AVEC while (problématique) :
+afficherMenu(); // Duplication nécessaire
+while (choix != 4) {
+    // traiter le choix
+    afficherMenu(); // Duplication nécessaire
+}
+
+✅ AVEC do-while (élégant) :
+do {
+    afficherMenu(); // Une seule fois dans le code
+    // traiter le choix
+} while (choix != 4);
+*/</code></pre>
                             </div>
 
                             <h4>Exemple Pratique - Menu Interactif</h4>
