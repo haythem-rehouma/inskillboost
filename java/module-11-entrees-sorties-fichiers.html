@@ -175,7 +175,778 @@
                         <section id="introduction-io" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-exchange-alt"></i>
-                                Introduction aux Entrées/Sorties
+                                Qu'est-ce que les Entrées/Sorties (I/O) ? Votre Pont vers le Monde Extérieur !
+                            </h2>
+                            
+                            <p>Les <strong>Entrées/Sorties (I/O)</strong> sont le moyen pour votre programme Java de <strong>communiquer avec le monde extérieur</strong> ! C'est comme les sens d'un être humain : les yeux pour voir (lire), la bouche pour parler (écrire), les mains pour toucher (manipuler des fichiers).</p>
+
+                            <div class="concept-highlight">
+                                <h5>Analogie : I/O comme les Sens Humains</h5>
+                                <ul>
+                                    <li>👁️ <strong>Entrées (Input) :</strong> Lire des fichiers, saisies clavier, données réseau</li>
+                                    <li>👄 <strong>Sorties (Output) :</strong> Écrire des fichiers, afficher à l'écran, envoyer sur réseau</li>
+                                    <li>🧠 <strong>Traitement :</strong> Votre programme Java qui analyse et transforme</li>
+                                    <li>💾 <strong>Mémoire :</strong> Stockage temporaire pendant le traitement</li>
+                                </ul>
+                            </div>
+
+                            <h4>Pourquoi les I/O sont VITALES ?</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * PROGRAMME SANS I/O : Inutile et isolé
+ */
+public class SansIO {
+    public static void main(String[] args) {
+        // Programme qui ne peut rien faire d'utile
+        int resultat = 2 + 2;
+        String message = "Hello World";
+        
+        // Ces données restent PRISONNIÈRES du programme !
+        // Impossible de :
+        // - Sauvegarder le résultat
+        // - Lire des données externes
+        // - Communiquer avec l'utilisateur
+        // - Partager avec d'autres programmes
+        
+        System.out.println("Programme isolé et inutile...");
+    }
+}
+
+/**
+ * PROGRAMME AVEC I/O : Puissant et utile !
+ */
+public class AvecIO {
+    public static void main(String[] args) {
+        try {
+            // ENTRÉES : Lire des données
+            System.out.println("=== PROGRAMME INTERACTIF ===");
+            
+            // Lire configuration depuis un fichier
+            Properties config = new Properties();
+            config.load(new FileInputStream("config.properties"));
+            
+            // Lire données utilisateur
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Votre nom : ");
+            String nom = scanner.nextLine();
+            
+            // TRAITEMENT : Analyser et transformer
+            String message = "Bonjour " + nom + "! Bienvenue dans " + config.getProperty("app.name");
+            String timestamp = new Date().toString();
+            
+            // SORTIES : Sauvegarder et afficher
+            // Afficher à l'écran
+            System.out.println(message);
+            
+            // Sauvegarder dans un fichier log
+            PrintWriter log = new PrintWriter(new FileWriter("app.log", true));
+            log.println(timestamp + " - Connexion de " + nom);
+            log.close();
+            
+            // Sauvegarder données utilisateur
+            PrintWriter userData = new PrintWriter(new FileWriter("users.txt", true));
+            userData.println(nom + "," + timestamp);
+            userData.close();
+            
+            System.out.println("✅ Données sauvegardées !");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur I/O: " + e.getMessage());
+        }
+    }
+}
+
+/*
+AVANTAGES DES I/O :
+✅ Communication avec l'utilisateur
+✅ Persistance des données (survit à l'arrêt du programme)
+✅ Partage de données entre programmes
+✅ Configuration externe
+✅ Logs et traçabilité
+✅ Intégration avec d'autres systèmes
+*/</code></pre>
+                            </div>
+
+                            <h4>Les 3 Générations d'I/O en Java</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>📁 Java I/O (Java 1.0)</h6>
+                                        <p><strong>Classes de base</strong></p>
+                                        <ul>
+                                            <li>InputStream/OutputStream</li>
+                                            <li>FileReader/FileWriter</li>
+                                            <li>BufferedReader/BufferedWriter</li>
+                                            <li>Basé sur les streams</li>
+                                            <li>Gestion d'erreurs verbose</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>🚀 NIO (Java 1.4)</h6>
+                                        <p><strong>New I/O</strong></p>
+                                        <ul>
+                                            <li>Channels et Buffers</li>
+                                            <li>Non-blocking I/O</li>
+                                            <li>Sélecteurs pour performance</li>
+                                            <li>Mémoire mappée</li>
+                                            <li>Plus complexe mais plus rapide</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>⚡ NIO.2 (Java 7+)</h6>
+                                        <p><strong>Moderne et Simple</strong></p>
+                                        <ul>
+                                            <li>Path et Files</li>
+                                            <li>Try-with-resources</li>
+                                            <li>API simple et puissante</li>
+                                            <li>Gestion d'erreurs élégante</li>
+                                            <li>Recommandé pour nouveaux projets</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </section>
+
+                        <!-- Fichiers Texte -->
+                        <section id="fichiers-texte" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-file-alt"></i>
+                                Fichiers Texte : Votre Premier Contact avec la Persistance !
+                            </h2>
+                            
+                            <p>Les <strong>fichiers texte</strong> sont le moyen le plus simple de sauvegarder des données ! C'est comme écrire dans un carnet : vous pouvez l'ouvrir avec n'importe quel éditeur de texte et voir exactement ce qui est écrit.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Analogie : Fichier Texte comme un Carnet</h5>
+                                <ul>
+                                    <li>📝 <strong>Écriture :</strong> Ajouter des notes dans le carnet</li>
+                                    <li>👀 <strong>Lecture :</strong> Relire ce qui a été écrit</li>
+                                    <li>📄 <strong>Lisible :</strong> N'importe qui peut ouvrir et comprendre</li>
+                                    <li>🔄 <strong>Modifiable :</strong> Peut être édité avec n'importe quel éditeur</li>
+                                    <li>💾 <strong>Permanent :</strong> Survit à l'arrêt du programme</li>
+                                </ul>
+                            </div>
+
+                            <h4>Méthodes Modernes (NIO.2) vs Anciennes (I/O)</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+
+/**
+ * COMPARAISON : Ancienne vs Nouvelle API
+ */
+public class ComparisonIO {
+    public static void main(String[] args) {
+        String nomFichier = "test.txt";
+        String contenu = "Formation Java Complète\nModule 11 - I/O\nC'est fantastique !";
+        
+        // === ANCIENNE MÉTHODE (Java I/O) ===
+        System.out.println("=== ANCIENNE MÉTHODE (VERBEUSE) ===");
+        ecrireAncienneMethode(nomFichier, contenu);
+        lireAncienneMethode(nomFichier);
+        
+        // === NOUVELLE MÉTHODE (NIO.2) ===
+        System.out.println("\n=== NOUVELLE MÉTHODE (ÉLÉGANTE) ===");
+        ecrireNouvelleMethode(nomFichier, contenu);
+        lireNouvelleMethode(nomFichier);
+    }
+    
+    // ANCIENNE MÉTHODE : Verbose et complexe
+    public static void ecrireAncienneMethode(String nomFichier, String contenu) {
+        FileWriter writer = null;
+        BufferedWriter bufferedWriter = null;
+        
+        try {
+            writer = new FileWriter(nomFichier);
+            bufferedWriter = new BufferedWriter(writer);
+            
+            String[] lignes = contenu.split("\n");
+            for (String ligne : lignes) {
+                bufferedWriter.write(ligne);
+                bufferedWriter.newLine();
+            }
+            
+            System.out.println("✅ Écriture ancienne méthode réussie");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur écriture: " + e.getMessage());
+            
+        } finally {
+            // Fermeture manuelle (risque d'oubli !)
+            try {
+                if (bufferedWriter != null) bufferedWriter.close();
+                if (writer != null) writer.close();
+            } catch (IOException e) {
+                System.out.println("❌ Erreur fermeture: " + e.getMessage());
+            }
+        }
+    }
+    
+    public static void lireAncienneMethode(String nomFichier) {
+        FileReader reader = null;
+        BufferedReader bufferedReader = null;
+        
+        try {
+            reader = new FileReader(nomFichier);
+            bufferedReader = new BufferedReader(reader);
+            
+            String ligne;
+            int numeroLigne = 1;
+            System.out.println("Contenu (ancienne méthode):");
+            
+            while ((ligne = bufferedReader.readLine()) != null) {
+                System.out.println(numeroLigne + ": " + ligne);
+                numeroLigne++;
+            }
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture: " + e.getMessage());
+            
+        } finally {
+            // Fermeture manuelle (encore !)
+            try {
+                if (bufferedReader != null) bufferedReader.close();
+                if (reader != null) reader.close();
+            } catch (IOException e) {
+                System.out.println("❌ Erreur fermeture: " + e.getMessage());
+            }
+        }
+    }
+    
+    // NOUVELLE MÉTHODE : Simple et élégante
+    public static void ecrireNouvelleMethode(String nomFichier, String contenu) {
+        try {
+            // UNE SEULE LIGNE pour écrire !
+            Files.write(Paths.get(nomFichier), contenu.getBytes());
+            System.out.println("✅ Écriture nouvelle méthode réussie");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur écriture: " + e.getMessage());
+        }
+    }
+    
+    public static void lireNouvelleMethode(String nomFichier) {
+        try {
+            // UNE SEULE LIGNE pour lire !
+            List<String> lignes = Files.readAllLines(Paths.get(nomFichier));
+            
+            System.out.println("Contenu (nouvelle méthode):");
+            for (int i = 0; i < lignes.size(); i++) {
+                System.out.println((i + 1) + ": " + lignes.get(i));
+            }
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture: " + e.getMessage());
+        }
+    }
+}
+
+/*
+COMPARAISON CHOC :
+
+ANCIENNE MÉTHODE :
+❌ 40+ lignes de code
+❌ Gestion manuelle des ressources
+❌ Try-finally complexe
+❌ Risque d'oubli de fermeture
+❌ Code répétitif et verbeux
+
+NOUVELLE MÉTHODE :
+✅ 2 lignes de code seulement !
+✅ Gestion automatique des ressources
+✅ Code lisible et maintenable
+✅ Fermeture automatique garantie
+✅ API moderne et intuitive
+
+CONCLUSION : Utilisez TOUJOURS NIO.2 pour les nouveaux projets !
+*/</code></pre>
+                            </div>
+
+                            <h4>Toutes les Façons de Lire et Écrire des Fichiers</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.*;
+
+public class FichiersTexteMasterClass {
+    public static void main(String[] args) {
+        String nomFichier = "demo.txt";
+        demonstrerEcritureFichiers(nomFichier);
+        demonstrerLectureFichiers(nomFichier);
+        demonstrerManipulationAvancee(nomFichier);
+    }
+    
+    public static void demonstrerEcritureFichiers(String nomFichier) {
+        System.out.println("=== TOUTES LES MÉTHODES D'ÉCRITURE ===");
+        
+        // 1. Écriture simple (remplace le contenu)
+        try {
+            String contenu = "Ligne 1\nLigne 2\nLigne 3";
+            Files.write(Paths.get(nomFichier), contenu.getBytes());
+            System.out.println("✅ 1. Écriture simple réussie");
+        } catch (IOException e) {
+            System.out.println("❌ Erreur écriture simple: " + e.getMessage());
+        }
+        
+        // 2. Écriture avec liste de lignes
+        try {
+            List<String> lignes = Arrays.asList(
+                "=== NOUVEAU CONTENU ===",
+                "Ligne A",
+                "Ligne B", 
+                "Ligne C avec caractères spéciaux: éàç"
+            );
+            Files.write(Paths.get(nomFichier), lignes, StandardCharsets.UTF_8);
+            System.out.println("✅ 2. Écriture avec liste réussie");
+        } catch (IOException e) {
+            System.out.println("❌ Erreur écriture liste: " + e.getMessage());
+        }
+        
+        // 3. Écriture en mode APPEND (ajout à la fin)
+        try {
+            String ligneSupplementaire = "\n=== LIGNE AJOUTÉE ===\nCette ligne est ajoutée à la fin";
+            Files.write(Paths.get(nomFichier), ligneSupplementaire.getBytes(), 
+                       StandardOpenOption.APPEND);
+            System.out.println("✅ 3. Ajout en fin de fichier réussi");
+        } catch (IOException e) {
+            System.out.println("❌ Erreur ajout: " + e.getMessage());
+        }
+        
+        // 4. Écriture avec BufferedWriter (pour gros volumes)
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("gros_fichier.txt"))) {
+            System.out.println("✅ 4. Création gros fichier...");
+            
+            for (int i = 1; i <= 1000; i++) {
+                writer.write("Ligne " + i + " - Données importantes");
+                writer.newLine();
+                
+                if (i % 100 == 0) {
+                    System.out.println("   " + i + " lignes écrites...");
+                }
+            }
+            
+            System.out.println("✅ Gros fichier (1000 lignes) créé avec BufferedWriter");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur gros fichier: " + e.getMessage());
+        }
+        
+        // 5. Écriture avec PrintWriter (formatage facile)
+        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get("rapport.txt")))) {
+            writer.println("=== RAPPORT AUTOMATIQUE ===");
+            writer.printf("Date: %s%n", new Date());
+            writer.printf("Utilisateur: %s%n", System.getProperty("user.name"));
+            writer.printf("Système: %s%n", System.getProperty("os.name"));
+            
+            // Tableau formaté
+            writer.println("\nStatistiques:");
+            writer.printf("%-15s | %-10s | %-10s%n", "Produit", "Quantité", "Prix");
+            writer.println("--------------------------------------------");
+            writer.printf("%-15s | %-10d | %-10.2f€%n", "Laptop", 5, 999.99);
+            writer.printf("%-15s | %-10d | %-10.2f€%n", "Souris", 20, 29.99);
+            writer.printf("%-15s | %-10d | %-10.2f€%n", "Clavier", 10, 79.99);
+            
+            System.out.println("✅ 5. Rapport formaté créé avec PrintWriter");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur rapport: " + e.getMessage());
+        }
+    }
+    
+    public static void demonstrerLectureFichiers(String nomFichier) {
+        System.out.println("\n=== TOUTES LES MÉTHODES DE LECTURE ===");
+        
+        // 1. Lecture complète en String
+        try {
+            String contenuComplet = Files.readString(Paths.get(nomFichier));
+            System.out.println("✅ 1. Lecture complète en String:");
+            System.out.println("Taille: " + contenuComplet.length() + " caractères");
+            System.out.println("Premières 50 chars: " + contenuComplet.substring(0, Math.min(50, contenuComplet.length())) + "...");
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture String: " + e.getMessage());
+        }
+        
+        // 2. Lecture ligne par ligne en List
+        try {
+            List<String> lignes = Files.readAllLines(Paths.get(nomFichier));
+            System.out.println("\n✅ 2. Lecture ligne par ligne:");
+            System.out.println("Nombre de lignes: " + lignes.size());
+            
+            for (int i = 0; i < Math.min(5, lignes.size()); i++) {
+                System.out.printf("Ligne %d: %s%n", (i + 1), lignes.get(i));
+            }
+            
+            if (lignes.size() > 5) {
+                System.out.println("... (" + (lignes.size() - 5) + " lignes supplémentaires)");
+            }
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture lignes: " + e.getMessage());
+        }
+        
+        // 3. Lecture avec Stream (Java 8+) - Efficace pour gros fichiers
+        try (Stream<String> lignes = Files.lines(Paths.get(nomFichier))) {
+            System.out.println("\n✅ 3. Lecture avec Stream:");
+            
+            // Compter les lignes non vides
+            long lignesNonVides = lignes
+                .filter(ligne -> !ligne.trim().isEmpty())
+                .count();
+            
+            System.out.println("Lignes non vides: " + lignesNonVides);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lecture Stream: " + e.getMessage());
+        }
+        
+        // 4. Lecture avec BufferedReader (contrôle total)
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomFichier))) {
+            System.out.println("\n✅ 4. Lecture avec BufferedReader:");
+            
+            String ligne;
+            int numeroLigne = 1;
+            int caractereTotal = 0;
+            
+            while ((ligne = reader.readLine()) != null) {
+                caractereTotal += ligne.length();
+                
+                if (numeroLigne <= 3) { // Afficher seulement les 3 premières
+                    System.out.printf("Ligne %d (%d chars): %s%n", numeroLigne, ligne.length(), ligne);
+                }
+                numeroLigne++;
+            }
+            
+            System.out.printf("Total: %d lignes, %d caractères%n", numeroLigne - 1, caractereTotal);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur BufferedReader: " + e.getMessage());
+        }
+        
+        // 5. Lecture avec analyse en temps réel
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(nomFichier))) {
+            System.out.println("\n✅ 5. Analyse en temps réel:");
+            
+            String ligne;
+            Map<String, Integer> motsCles = new HashMap<>();
+            motsCles.put("java", 0);
+            motsCles.put("formation", 0);
+            motsCles.put("module", 0);
+            
+            while ((ligne = reader.readLine()) != null) {
+                String ligneLower = ligne.toLowerCase();
+                
+                for (String motCle : motsCles.keySet()) {
+                    if (ligneLower.contains(motCle)) {
+                        motsCles.put(motCle, motsCles.get(motCle) + 1);
+                    }
+                }
+            }
+            
+            System.out.println("Mots-clés trouvés:");
+            motsCles.forEach((mot, count) -> 
+                System.out.printf("  '%s': %d occurrence(s)%n", mot, count));
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur analyse: " + e.getMessage());
+        }
+    }
+}</code></pre>
+                            </div>
+
+                            <h4>Gestion Avancée des Fichiers avec NIO.2</h4>
+                            <div class="code-block">
+<pre><code class="language-java">import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+import java.time.*;
+import java.util.*;
+
+public class GestionFichiersAvancee {
+    public static void main(String[] args) {
+        demonstrerOperationsFichiers();
+        demonstrerAttributsFichiers();
+        demonstrerGestionRepertoires();
+    }
+    
+    public static void demonstrerOperationsFichiers() {
+        System.out.println("=== OPÉRATIONS SUR FICHIERS ===");
+        
+        Path fichier = Paths.get("test_operations.txt");
+        Path copie = Paths.get("test_copie.txt");
+        Path renomme = Paths.get("test_renomme.txt");
+        
+        try {
+            // Création
+            Files.write(fichier, "Contenu de test pour opérations".getBytes());
+            System.out.println("✅ Fichier créé: " + fichier.getFileName());
+            
+            // Vérifications d'existence
+            System.out.println("Fichier existe ? " + Files.exists(fichier));
+            System.out.println("Est un fichier ? " + Files.isRegularFile(fichier));
+            System.out.println("Est un répertoire ? " + Files.isDirectory(fichier));
+            System.out.println("Est lisible ? " + Files.isReadable(fichier));
+            System.out.println("Est modifiable ? " + Files.isWritable(fichier));
+            System.out.println("Est exécutable ? " + Files.isExecutable(fichier));
+            
+            // Taille
+            long taille = Files.size(fichier);
+            System.out.println("Taille: " + taille + " octets");
+            
+            // Copie
+            Files.copy(fichier, copie, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("✅ Fichier copié vers: " + copie.getFileName());
+            
+            // Déplacement/Renommage
+            Files.move(copie, renomme, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("✅ Fichier renommé en: " + renomme.getFileName());
+            
+            // Suppression
+            Files.delete(renomme);
+            System.out.println("✅ Fichier supprimé: " + renomme.getFileName());
+            
+            // Suppression sécurisée (pas d'erreur si n'existe pas)
+            boolean supprime = Files.deleteIfExists(fichier);
+            System.out.println("Fichier original supprimé: " + supprime);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur opération: " + e.getMessage());
+        }
+    }
+    
+    public static void demonstrerAttributsFichiers() {
+        System.out.println("\n=== ATTRIBUTS DE FICHIERS ===");
+        
+        Path fichier = Paths.get("fichier_attributs.txt");
+        
+        try {
+            // Créer un fichier avec du contenu
+            Files.write(fichier, Arrays.asList(
+                "Fichier de démonstration",
+                "Créé le " + new Date(),
+                "Pour tester les attributs"
+            ));
+            
+            // Attributs de base
+            BasicFileAttributes attrs = Files.readAttributes(fichier, BasicFileAttributes.class);
+            
+            System.out.println("=== INFORMATIONS FICHIER ===");
+            System.out.println("Nom: " + fichier.getFileName());
+            System.out.println("Chemin absolu: " + fichier.toAbsolutePath());
+            System.out.println("Taille: " + attrs.size() + " octets");
+            
+            // Dates et heures
+            FileTime creation = attrs.creationTime();
+            FileTime modification = attrs.lastModifiedTime();
+            FileTime acces = attrs.lastAccessTime();
+            
+            System.out.println("Créé le: " + Instant.ofEpochMilli(creation.toMillis()));
+            System.out.println("Modifié le: " + Instant.ofEpochMilli(modification.toMillis()));
+            System.out.println("Accédé le: " + Instant.ofEpochMilli(acces.toMillis()));
+            
+            // Type de fichier
+            System.out.println("Est un fichier régulier: " + attrs.isRegularFile());
+            System.out.println("Est un répertoire: " + attrs.isDirectory());
+            System.out.println("Est un lien symbolique: " + attrs.isSymbolicLink());
+            
+            // Modification des attributs
+            FileTime nouveauTemps = FileTime.fromMillis(System.currentTimeMillis());
+            Files.setLastModifiedTime(fichier, nouveauTemps);
+            System.out.println("✅ Heure de modification mise à jour");
+            
+            // Nettoyage
+            Files.deleteIfExists(fichier);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur attributs: " + e.getMessage());
+        }
+    }
+    
+    public static void demonstrerGestionRepertoires() {
+        System.out.println("\n=== GESTION DES RÉPERTOIRES ===");
+        
+        Path dossier = Paths.get("test_dossier");
+        Path sousDossier = dossier.resolve("sous_dossier");
+        
+        try {
+            // Création de répertoires
+            Files.createDirectories(sousDossier); // Crée tous les dossiers parents nécessaires
+            System.out.println("✅ Répertoires créés: " + sousDossier);
+            
+            // Créer quelques fichiers de test
+            for (int i = 1; i <= 3; i++) {
+                Path fichier = dossier.resolve("fichier" + i + ".txt");
+                Files.write(fichier, ("Contenu du fichier " + i).getBytes());
+            }
+            
+            Path fichierSous = sousDossier.resolve("fichier_sous.txt");
+            Files.write(fichierSous, "Fichier dans sous-dossier".getBytes());
+            
+            System.out.println("✅ Fichiers de test créés");
+            
+            // Lister le contenu d'un répertoire
+            System.out.println("\nContenu du répertoire principal:");
+            try (Stream<Path> fichiers = Files.list(dossier)) {
+                fichiers.forEach(path -> {
+                    try {
+                        String type = Files.isDirectory(path) ? "[DIR]" : "[FILE]";
+                        long taille = Files.isDirectory(path) ? 0 : Files.size(path);
+                        System.out.printf("  %s %-20s (%d octets)%n", 
+                                        type, path.getFileName(), taille);
+                    } catch (IOException e) {
+                        System.out.println("  Erreur lecture: " + path.getFileName());
+                    }
+                });
+            }
+            
+            // Parcours récursif (tous les fichiers et sous-dossiers)
+            System.out.println("\nParcours récursif complet:");
+            try (Stream<Path> tousLesFichiers = Files.walk(dossier)) {
+                tousLesFichiers
+                    .filter(Files::isRegularFile) // Seulement les fichiers (pas les dossiers)
+                    .forEach(path -> {
+                        try {
+                            long taille = Files.size(path);
+                            String cheminRelatif = dossier.relativize(path).toString();
+                            System.out.printf("  📄 %-25s (%d octets)%n", cheminRelatif, taille);
+                        } catch (IOException e) {
+                            System.out.println("  Erreur: " + path);
+                        }
+                    });
+            }
+            
+            // Nettoyage récursif
+            System.out.println("\n🧹 Nettoyage...");
+            supprimerRecursivement(dossier);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur répertoires: " + e.getMessage());
+        }
+    }
+    
+    // Méthode utilitaire pour supprimer récursivement
+    public static void supprimerRecursivement(Path dossier) throws IOException {
+        if (Files.exists(dossier)) {
+            try (Stream<Path> fichiers = Files.walk(dossier)) {
+                fichiers
+                    .sorted(Comparator.reverseOrder()) // Supprimer enfants avant parents
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                            System.out.println("  Supprimé: " + path.getFileName());
+                        } catch (IOException e) {
+                            System.out.println("  Erreur suppression: " + path.getFileName());
+                        }
+                    });
+            }
+        }
+    }
+    
+    public static void demonstrerManipulationAvancee(String nomFichier) {
+        System.out.println("\n=== MANIPULATION AVANCÉE ===");
+        
+        // Créer un fichier de test avec des données variées
+        Path fichier = Paths.get("donnees_avancees.txt");
+        
+        try {
+            List<String> contenu = Arrays.asList(
+                "# Configuration Application",
+                "nom=MonApp",
+                "version=1.2.3",
+                "debug=true",
+                "",
+                "# Utilisateurs",
+                "user1=admin:password123",
+                "user2=guest:guest123",
+                "",
+                "# Statistiques",
+                "connexions=1524",
+                "erreurs=12",
+                "uptime=99.7%"
+            );
+            
+            Files.write(fichier, contenu);
+            System.out.println("✅ Fichier de données créé");
+            
+            // Analyse avec Stream API
+            try (Stream<String> lignes = Files.lines(fichier)) {
+                System.out.println("\nAnalyse du fichier:");
+                
+                Map<String, Long> statistiques = lignes
+                    .collect(Collectors.groupingBy(ligne -> {
+                        if (ligne.trim().isEmpty()) return "Lignes vides";
+                        if (ligne.startsWith("#")) return "Commentaires";
+                        if (ligne.contains("=")) return "Configurations";
+                        return "Autres";
+                    }, Collectors.counting()));
+                
+                statistiques.forEach((type, count) -> 
+                    System.out.printf("  %s: %d%n", type, count));
+            }
+            
+            // Extraction des configurations
+            try (Stream<String> lignes = Files.lines(fichier)) {
+                System.out.println("\nConfigurations extraites:");
+                
+                Map<String, String> configs = lignes
+                    .filter(ligne -> ligne.contains("=") && !ligne.startsWith("#"))
+                    .collect(Collectors.toMap(
+                        ligne -> ligne.split("=")[0],
+                        ligne -> ligne.split("=")[1]
+                    ));
+                
+                configs.forEach((cle, valeur) -> 
+                    System.out.printf("  %s → %s%n", cle, valeur));
+            }
+            
+            // Nettoyage
+            Files.deleteIfExists(fichier);
+            
+        } catch (IOException e) {
+            System.out.println("❌ Erreur manipulation avancée: " + e.getMessage());
+        }
+    }
+}
+
+/*
+RÉSUMÉ DES MÉTHODES I/O :
+
+ÉCRITURE :
+✅ Files.write() → Simple et rapide
+✅ Files.write() + APPEND → Ajouter à la fin
+✅ BufferedWriter → Gros volumes
+✅ PrintWriter → Formatage facile
+
+LECTURE :
+✅ Files.readString() → Tout en une String
+✅ Files.readAllLines() → Liste de lignes
+✅ Files.lines() → Stream (économe en mémoire)
+✅ BufferedReader → Contrôle total
+
+OPÉRATIONS :
+✅ Files.copy() → Copier
+✅ Files.move() → Déplacer/Renommer
+✅ Files.delete() → Supprimer
+✅ Files.exists() → Vérifier existence
+
+RECOMMANDATION : Utilisez NIO.2 (Files.*) pour tous nouveaux projets !
+*/</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- Fichiers Binaires -->
+                        <section id="fichiers-binaires" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-file-code"></i>
+                                Fichiers Binaires et Sérialisation
                             </h2>
                             
                             <div class="code-block">

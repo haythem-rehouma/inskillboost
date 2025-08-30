@@ -174,14 +174,174 @@
                     </div>
 
                     <div style="padding: 2rem;">
+                        <!-- Introduction Programmation Fonctionnelle -->
+                        <section id="introduction-fonctionnel" style="margin-bottom: 3rem;">
+                            <h2 class="section-title">
+                                <i class="fas fa-magic"></i>
+                                Qu'est-ce que la Programmation Fonctionnelle ? RÉVOLUTION Java 8 !
+                            </h2>
+                            
+                            <p>La <strong>programmation fonctionnelle</strong> est une RÉVOLUTION arrivée avec Java 8 ! Elle traite les <strong>fonctions comme des citoyens de première classe</strong> - on peut les stocker dans des variables, les passer en paramètres, et les retourner comme résultats. C'est comme avoir des <strong>super-pouvoirs</strong> pour manipuler le code !</p>
+
+                            <div class="concept-highlight">
+                                <h5>Analogie : Programmation Fonctionnelle comme une Usine Modulaire</h5>
+                                <p>Imaginez une usine avec des machines spécialisées :</p>
+                                <ul>
+                                    <li>🏭 <strong>Machine de Filtrage :</strong> Ne laisse passer que certains éléments</li>
+                                    <li>🔄 <strong>Machine de Transformation :</strong> Modifie chaque élément</li>
+                                    <li>📊 <strong>Machine de Tri :</strong> Organise les éléments</li>
+                                    <li>📦 <strong>Machine de Collecte :</strong> Rassemble le résultat final</li>
+                                </ul>
+                                <p><strong>Programmation traditionnelle :</strong> Une grosse machine qui fait tout<br/>
+                                <strong>Programmation fonctionnelle :</strong> Chaîne de petites machines spécialisées !</p>
+                            </div>
+
+                            <h4>Révolution : Avant vs Après Java 8</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * AVANT JAVA 8 : Code verbeux et répétitif
+ */
+public class AvantJava8 {
+    public static void main(String[] args) {
+        List<String> noms = Arrays.asList("Alice", "Bob", "Charlie", "Diana", "Eve");
+        
+        // MISSION : Trouver tous les noms de plus de 3 lettres, 
+        //           les mettre en majuscules, les trier, et les afficher
+        
+        System.out.println("=== APPROCHE TRADITIONNELLE (VERBEUSE) ===");
+        
+        // Étape 1 : Filtrer les noms > 3 lettres
+        List<String> nomsFiltres = new ArrayList<>();
+        for (String nom : noms) {
+            if (nom.length() > 3) {
+                nomsFiltres.add(nom);
+            }
+        }
+        System.out.println("Après filtrage: " + nomsFiltres);
+        
+        // Étape 2 : Mettre en majuscules
+        List<String> nomsMajuscules = new ArrayList<>();
+        for (String nom : nomsFiltres) {
+            nomsMajuscules.add(nom.toUpperCase());
+        }
+        System.out.println("Après majuscules: " + nomsMajuscules);
+        
+        // Étape 3 : Trier
+        Collections.sort(nomsMajuscules);
+        System.out.println("Après tri: " + nomsMajuscules);
+        
+        // Étape 4 : Afficher
+        System.out.println("Résultat final:");
+        for (String nom : nomsMajuscules) {
+            System.out.println("- " + nom);
+        }
+        
+        System.out.println("\n💔 PROBLÈMES :");
+        System.out.println("❌ 20+ lignes de code pour une tâche simple");
+        System.out.println("❌ Variables temporaires partout");
+        System.out.println("❌ Boucles répétitives");
+        System.out.println("❌ Code difficile à lire et maintenir");
+        System.out.println("❌ Logique éparpillée");
+    }
+}
+
+/**
+ * APRÈS JAVA 8 : Code élégant et puissant !
+ */
+public class ApresJava8 {
+    public static void main(String[] args) {
+        List<String> noms = Arrays.asList("Alice", "Bob", "Charlie", "Diana", "Eve");
+        
+        System.out.println("=== APPROCHE FONCTIONNELLE (ÉLÉGANTE) ===");
+        
+        // MÊME MISSION en UNE SEULE LIGNE !
+        List<String> resultat = noms.stream()
+            .filter(nom -> nom.length() > 3)    // Filtrer
+            .map(String::toUpperCase)           // Transformer
+            .sorted()                           // Trier
+            .collect(Collectors.toList());      // Collecter
+        
+        System.out.println("Résultat en une ligne: " + resultat);
+        
+        // Ou directement afficher sans collecter
+        System.out.println("\nAffichage direct:");
+        noms.stream()
+            .filter(nom -> nom.length() > 3)
+            .map(String::toUpperCase)
+            .sorted()
+            .forEach(nom -> System.out.println("- " + nom));
+        
+        System.out.println("\n💖 AVANTAGES :");
+        System.out.println("✅ 4 lignes au lieu de 20+");
+        System.out.println("✅ Aucune variable temporaire");
+        System.out.println("✅ Pipeline clair et lisible");
+        System.out.println("✅ Code déclaratif (QUOI pas COMMENT)");
+        System.out.println("✅ Logique centralisée et fluide");
+        System.out.println("✅ Parallélisation facile (.parallelStream())");
+    }
+}
+
+/*
+RÉSULTAT COMPARATIF :
+=== APPROCHE TRADITIONNELLE (VERBEUSE) ===
+Après filtrage: [Alice, Charlie, Diana]
+Après majuscules: [ALICE, CHARLIE, DIANA]
+Après tri: [ALICE, CHARLIE, DIANA]
+Résultat final:
+- ALICE
+- CHARLIE
+- DIANA
+
+=== APPROCHE FONCTIONNELLE (ÉLÉGANTE) ===
+Résultat en une ligne: [ALICE, CHARLIE, DIANA]
+
+Affichage direct:
+- ALICE
+- CHARLIE
+- DIANA
+
+RÉVOLUTION ACCOMPLIE :
+🚀 Même résultat, code 5x plus court et 10x plus lisible !
+*/</code></pre>
+                            </div>
+                        </section>
+
                         <!-- Lambda Expressions -->
                         <section id="lambda-expressions" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-bolt"></i>
-                                Lambda Expressions (Java 8+)
+                                Lambda Expressions : Les Fonctions Anonymes Magiques !
                             </h2>
                             
-                            <p>Les expressions lambda permettent d'écrire du code plus concis en traitant les fonctions comme des valeurs de première classe.</p>
+                            <p>Les <strong>expressions lambda</strong> sont des <strong>fonctions anonymes</strong> - des mini-fonctions sans nom qu'on peut créer à la volée ! C'est comme avoir un <strong>assistant personnel</strong> qui fait exactement ce qu'on lui demande, quand on le lui demande.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Anatomie d'une Lambda : (paramètres) -> { corps }</h5>
+                                <div class="code-block">
+<pre><code class="language-java">// SYNTAXE COMPLÈTE
+(String nom, int age) -> {
+    String message = "Bonjour " + nom + ", vous avez " + age + " ans";
+    return message;
+}
+
+// SYNTAXE SIMPLIFIÉE (types inférés)
+(nom, age) -> "Bonjour " + nom + ", vous avez " + age + " ans"
+
+// SYNTAXE ULTRA-COURTE (un seul paramètre)
+nom -> "Bonjour " + nom
+
+// SYNTAXE MINIMALE (aucun paramètre)
+() -> "Hello World"
+
+RÈGLES DE SIMPLIFICATION :
+✅ Types inférés automatiquement par Java
+✅ Parenthèses optionnelles pour 1 paramètre
+✅ Accolades optionnelles pour 1 instruction
+✅ return optionnel pour 1 expression</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Évolution des Lambda : Du Verbeux au Magique</h4>
 
                             <div class="code-block">
 <pre><code class="language-java">import java.util.*;
@@ -449,7 +609,7 @@ public class StreamAPIMasterClass {
         long dureeSequentielle = System.nanoTime() - debut;
         
         debut = System.nanoTime();
-        long sommeParallele = grandesList.parallelStream()
+        long sommeParallele = grandeListe.parallelStream()
             .mapToLong(Integer::longValue)
             .sum();
         long dureeParallele = System.nanoTime() - debut;
