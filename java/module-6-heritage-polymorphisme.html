@@ -567,10 +567,44 @@ HÉRITAGE MULTI-NIVEAUX :
                         <section id="syntaxe-heritage" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-code"></i>
-                                Syntaxe et Implémentation de l'Héritage
+                                Syntaxe COMPLÈTE de l'Héritage : Tout ce qu'il faut savoir !
                             </h2>
                             
-                            <h4>Classe Mère (Superclasse)</h4>
+                            <p>L'héritage en Java utilise le mot-clé <code><strong>extends</strong></code> et suit des règles très précises. Découvrons TOUS les détails !</p>
+
+                            <div class="concept-highlight">
+                                <h5>Les Mots-Clés Magiques de l'Héritage :</h5>
+                                <ul>
+                                    <li><strong>extends :</strong> "Ma classe hérite de cette classe parent"</li>
+                                    <li><strong>super :</strong> "Je veux accéder à quelque chose du parent"</li>
+                                    <li><strong>@Override :</strong> "Je redéfinis une méthode du parent"</li>
+                                    <li><strong>protected :</strong> "Accessible au parent ET aux enfants"</li>
+                                    <li><strong>abstract :</strong> "Cette classe/méthode doit être héritée"</li>
+                                    <li><strong>final :</strong> "Cette classe/méthode ne peut PAS être héritée"</li>
+                                </ul>
+                            </div>
+
+                            <h4>Modificateurs d'Accès : Qui Voit Quoi ?</h4>
+                            <div class="inheritance-diagram">
+                                <h6>Tableau de Visibilité des Modificateurs :</h6>
+                                <pre>
+┌─────────────┬─────────┬─────────┬───────────┬─────────────┐
+│ Modificateur│ Classe  │ Package │ Sous-classe│ Tout le monde│
+├─────────────┼─────────┼─────────┼───────────┼─────────────┤
+│ private     │   ✅    │   ❌    │     ❌     │      ❌      │
+│ (default)   │   ✅    │   ✅    │     ❌     │      ❌      │
+│ protected   │   ✅    │   ✅    │     ✅     │      ❌      │
+│ public      │   ✅    │   ✅    │     ✅     │      ✅      │
+└─────────────┴─────────┴─────────┴───────────┴─────────────┘
+
+RÈGLE D'OR POUR L'HÉRITAGE :
+🔒 private   → Enfant ne voit PAS (comme un secret de famille)
+🔓 protected → Enfant voit et peut utiliser (héritage familial)
+🌍 public    → Tout le monde voit (domaine public)
+</pre>
+                            </div>
+
+                            <h4>Classe Mère (Superclasse) - Le Fondement de Tout</h4>
                             <div class="code-block">
 <pre><code class="language-java">// Classe mère - Vehicle
 public class Vehicle {
