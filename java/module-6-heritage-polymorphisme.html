@@ -196,45 +196,370 @@
                         <section id="introduction-heritage" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-sitemap"></i>
-                                Introduction à l'Héritage
+                                Qu'est-ce que l'Héritage ? Pourquoi est-ce RÉVOLUTIONNAIRE ?
                             </h2>
                             
-                            <p>L'héritage est un mécanisme fondamental de la POO qui permet à une classe (classe fille) d'hériter des propriétés et méthodes d'une autre classe (classe mère). Cela favorise la réutilisabilité du code et établit des relations "est-un".</p>
+                            <p>L'<strong>héritage</strong> est le mécanisme le plus puissant de la POO ! Il permet à une classe <strong>"enfant"</strong> de récupérer automatiquement TOUS les attributs et méthodes d'une classe <strong>"parent"</strong>. C'est comme si un enfant héritait automatiquement des traits de ses parents, mais pouvait aussi développer ses propres caractéristiques uniques.</p>
 
                             <div class="concept-highlight">
-                                <h5>Avantages de l'Héritage :</h5>
+                                <h5>Analogie : L'Héritage comme la Génétique Familiale</h5>
+                                <p><strong>Sans héritage (code répétitif et cauchemardesque) :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// CAUCHEMAR : Code dupliqué partout !
+class Voiture {
+    String marque, modele;
+    int annee;
+    boolean demarree;
+    
+    void demarrer() { demarree = true; }
+    void arreter() { demarree = false; }
+    void afficherInfos() { /* code commun */ }
+}
+
+class Moto {
+    String marque, modele;  // ← DUPLICATION !
+    int annee;              // ← DUPLICATION !
+    boolean demarree;       // ← DUPLICATION !
+    
+    void demarrer() { demarree = true; }  // ← DUPLICATION !
+    void arreter() { demarree = false; }  // ← DUPLICATION !
+    void afficherInfos() { /* même code que Voiture ! */ } // ← DUPLICATION !
+}
+
+class Camion {
+    String marque, modele;  // ← ENCORE LA MÊME CHOSE !
+    int annee;              // ← TOUJOURS PAREIL !
+    boolean demarree;       // ← COPIER-COLLER INFERNAL !
+    
+    // ... MÊME CODE RÉPÉTÉ ENCORE ET ENCORE !
+}
+
+// Problèmes :
+// 1. Si on change demarrer(), il faut modifier 50 classes !
+// 2. Bugs potentiels partout
+// 3. Code impossible à maintenir
+// 4. Développeurs qui deviennent fous 😵</code></pre>
+                                </div>
+                                
+                                <p><strong>Avec héritage (code élégant et génial) :</strong></p>
+                                <div class="code-block">
+<pre><code class="language-java">// GÉNIE : Code centralisé et réutilisable !
+class Vehicule {  // PARENT = définit une fois pour toutes
+    String marque, modele;
+    int annee;
+    boolean demarree;
+    
+    void demarrer() { demarree = true; }
+    void arreter() { demarree = false; }
+    void afficherInfos() { /* code commun */ }
+}
+
+class Voiture extends Vehicule {  // ENFANT = hérite automatiquement
+    // Hérite automatiquement : marque, modele, annee, demarree
+    // Hérite automatiquement : demarrer(), arreter(), afficherInfos()
+    
+    int nombrePortes;  // Attribut spécifique à Voiture
+    void ouvrirCoffre() { /* comportement unique */ }
+}
+
+class Moto extends Vehicule {     // ENFANT = hérite automatiquement
+    // Hérite automatiquement de TOUT ce qui est dans Vehicule !
+    
+    int cylindree;     // Attribut spécifique à Moto
+    void faireWheeling() { /* comportement unique */ }
+}
+
+// Avantages :
+// ✅ Code écrit UNE SEULE FOIS dans le parent
+// ✅ Modification dans Vehicule = impact sur tous les enfants
+// ✅ Zéro duplication
+// ✅ Développeurs heureux 😊</code></pre>
+                                </div>
+                            </div>
+
+                            <h4>Les Relations "EST-UN" : La Clé de l'Héritage</h4>
+                            <div class="concept-highlight">
+                                <h5>Test Simple : Puis-je dire "X EST-UN Y" ?</h5>
                                 <ul>
-                                    <li><strong>Réutilisabilité :</strong> Évite la duplication de code</li>
-                                    <li><strong>Extensibilité :</strong> Facilite l'ajout de nouvelles fonctionnalités</li>
-                                    <li><strong>Polymorphisme :</strong> Permet le traitement uniforme d'objets différents</li>
-                                    <li><strong>Maintenance :</strong> Modifications centralisées dans la classe mère</li>
-                                    <li><strong>Organisation :</strong> Structure hiérarchique claire du code</li>
+                                    <li>✅ <strong>Voiture EST-UN Véhicule</strong> → Héritage correct</li>
+                                    <li>✅ <strong>Moto EST-UNE Véhicule</strong> → Héritage correct</li>
+                                    <li>✅ <strong>Chien EST-UN Animal</strong> → Héritage correct</li>
+                                    <li>✅ <strong>Manager EST-UN Employé</strong> → Héritage correct</li>
+                                    <li>❌ <strong>Voiture EST-UN Moteur</strong> → Héritage INCORRECT (composition)</li>
+                                    <li>❌ <strong>Étudiant EST-UN Livre</strong> → Héritage INCORRECT (aucun lien)</li>
+                                </ul>
+                            </div>
+
+                            <h4>Exemple Concret : Famille d'Animaux</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * Démonstration CONCRÈTE de l'héritage avec des animaux
+ */
+public class DemonstrationHeritage {
+    public static void main(String[] args) {
+        System.out.println("=== DÉMONSTRATION HÉRITAGE ===");
+        
+        // Créer différents animaux
+        Chien monChien = new Chien("Rex", 5, "Berger Allemand");
+        Chat monChat = new Chat("Whiskers", 3, "Persan");
+        Oiseau monOiseau = new Oiseau("Tweety", 2, 25.5);
+        
+        System.out.println("\n=== COMPORTEMENTS HÉRITÉS ===");
+        // Tous héritent des méthodes de Animal
+        monChien.dormir();    // Méthode héritée
+        monChat.manger();     // Méthode héritée
+        monOiseau.vieillir(); // Méthode héritée
+        
+        System.out.println("\n=== COMPORTEMENTS SPÉCIFIQUES ===");
+        // Chaque animal a ses propres comportements
+        monChien.aboyer();         // Spécifique à Chien
+        monChat.ronronner();       // Spécifique à Chat
+        monOiseau.voler();         // Spécifique à Oiseau
+        
+        System.out.println("\n=== INFORMATIONS COMPLÈTES ===");
+        monChien.afficherInfos();   // Combine hérité + spécifique
+        monChat.afficherInfos();    // Combine hérité + spécifique
+        monOiseau.afficherInfos();  // Combine hérité + spécifique
+    }
+}
+
+// CLASSE PARENT (MÈRE)
+class Animal {
+    // Attributs communs à TOUS les animaux
+    protected String nom;        // protected = accessible aux enfants
+    protected int age;
+    protected boolean estVivant;
+    protected double poids;
+    
+    // Constructeur parent
+    public Animal(String nom, int age, double poids) {
+        this.nom = nom;
+        this.age = age;
+        this.poids = poids;
+        this.estVivant = true;
+        
+        System.out.println("🐾 Animal créé: " + nom + " (" + age + " ans, " + poids + " kg)");
+    }
+    
+    // Méthodes communes à TOUS les animaux
+    public void manger() {
+        System.out.println(nom + " mange et prend du poids");
+        poids += 0.1;
+    }
+    
+    public void dormir() {
+        System.out.println(nom + " dort paisiblement... 😴");
+    }
+    
+    public void vieillir() {
+        age++;
+        System.out.println(nom + " vieillit et a maintenant " + age + " ans");
+    }
+    
+    public void afficherInfos() {
+        System.out.println("=== INFOS " + nom.toUpperCase() + " ===");
+        System.out.println("Type: " + this.getClass().getSimpleName());
+        System.out.println("Nom: " + nom);
+        System.out.println("Âge: " + age + " ans");
+        System.out.println("Poids: " + poids + " kg");
+        System.out.println("Vivant: " + (estVivant ? "Oui" : "Non"));
+    }
+}
+
+// CLASSE ENFANT 1
+class Chien extends Animal {  // Chien HÉRITE de Animal
+    private String race;
+    private boolean estDresse;
+    
+    // Constructeur enfant
+    public Chien(String nom, int age, String race) {
+        super(nom, age, 20.0);  // Appel du constructeur parent
+        this.race = race;
+        this.estDresse = false;
+        System.out.println("🐕 Chien spécialisé: race " + race);
+    }
+    
+    // Méthodes SPÉCIFIQUES au chien
+    public void aboyer() {
+        System.out.println(nom + " aboie: WOOF WOOF ! 🐕");
+    }
+    
+    public void dresser() {
+        estDresse = true;
+        System.out.println(nom + " est maintenant dressé ! 🎾");
+    }
+    
+    public void rapporterObjet() {
+        if (estDresse) {
+            System.out.println(nom + " rapporte l'objet comme un bon chien !");
+        } else {
+            System.out.println(nom + " ne comprend pas... Il faut le dresser d'abord");
+        }
+    }
+    
+    // REDÉFINITION (Override) d'une méthode héritée
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();  // Appelle la version parent
+        System.out.println("Race: " + race);
+        System.out.println("Dressé: " + (estDresse ? "Oui" : "Non"));
+    }
+}
+
+// CLASSE ENFANT 2
+class Chat extends Animal {   // Chat HÉRITE de Animal
+    private String typePelage;
+    private int niveauIndependance; // 1-10
+    
+    public Chat(String nom, int age, String typePelage) {
+        super(nom, age, 4.5);   // Appel du constructeur parent
+        this.typePelage = typePelage;
+        this.niveauIndependance = 8; // Les chats sont indépendants !
+        System.out.println("🐱 Chat spécialisé: pelage " + typePelage);
+    }
+    
+    public void ronronner() {
+        System.out.println(nom + " ronronne de contentement: purrrrr... 🐱");
+    }
+    
+    public void griffer() {
+        System.out.println(nom + " sort ses griffes ! Attention ! 🐾");
+    }
+    
+    public void ignorerHumain() {
+        if (niveauIndependance > 7) {
+            System.out.println(nom + " vous ignore royalement... Typique ! 😼");
+        } else {
+            System.out.println(nom + " daigne vous regarder");
+        }
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.println("Pelage: " + typePelage);
+        System.out.println("Indépendance: " + niveauIndependance + "/10");
+    }
+}
+
+// CLASSE ENFANT 3
+class Oiseau extends Animal {  // Oiseau HÉRITE de Animal
+    private double envergureAiles;
+    private boolean peutVoler;
+    
+    public Oiseau(String nom, int age, double envergureAiles) {
+        super(nom, age, 0.5);   // Appel du constructeur parent
+        this.envergureAiles = envergureAiles;
+        this.peutVoler = envergureAiles > 10; // Seuil arbitraire
+        System.out.println("🐦 Oiseau spécialisé: envergure " + envergureAiles + " cm");
+    }
+    
+    public void voler() {
+        if (peutVoler) {
+            System.out.println(nom + " s'envole gracieusement ! 🕊️");
+        } else {
+            System.out.println(nom + " ne peut pas voler (envergure trop petite)");
+        }
+    }
+    
+    public void chanter() {
+        System.out.println(nom + " chante mélodieusement: Tweet tweet ! 🎵");
+    }
+    
+    public void construireNid() {
+        System.out.println(nom + " construit un nid douillet 🏠");
+    }
+    
+    @Override
+    public void afficherInfos() {
+        super.afficherInfos();
+        System.out.println("Envergure: " + envergureAiles + " cm");
+        System.out.println("Peut voler: " + (peutVoler ? "Oui" : "Non"));
+    }
+}
+
+/*
+RÉSULTAT D'EXÉCUTION :
+=== DÉMONSTRATION HÉRITAGE ===
+🐾 Animal créé: Rex (5 ans, 20.0 kg)
+🐕 Chien spécialisé: race Berger Allemand
+🐾 Animal créé: Whiskers (3 ans, 4.5 kg)
+🐱 Chat spécialisé: pelage Persan
+🐾 Animal créé: Tweety (2 ans, 0.5 kg)
+🐦 Oiseau spécialisé: envergure 25.5 cm
+
+=== COMPORTEMENTS HÉRITÉS ===
+Rex dort paisiblement... 😴
+Whiskers mange et prend du poids
+Tweety vieillit et a maintenant 3 ans
+
+=== COMPORTEMENTS SPÉCIFIQUES ===
+Rex aboie: WOOF WOOF ! 🐕
+Whiskers ronronne de contentement: purrrrr... 🐱
+Tweety s'envole gracieusement ! 🕊️
+
+EXPLICATION MAGIQUE :
+✨ Chaque animal a AUTOMATIQUEMENT les méthodes manger(), dormir(), vieillir()
+✨ Chaque animal peut AUSSI avoir ses propres méthodes spéciales
+✨ C'est ça la PUISSANCE de l'héritage !
+*/</code></pre>
+                            </div>
+
+                            <div class="concept-highlight">
+                                <h5>Les 7 Avantages RÉVOLUTIONNAIRES de l'Héritage :</h5>
+                                <ul>
+                                    <li><strong>🔄 Réutilisabilité :</strong> Écrivez une fois, utilisez partout</li>
+                                    <li><strong>🚀 Extensibilité :</strong> Ajoutez facilement de nouveaux types</li>
+                                    <li><strong>🔧 Maintenance :</strong> Une modification = impact global automatique</li>
+                                    <li><strong>🎭 Polymorphisme :</strong> Traitez différents objets de manière uniforme</li>
+                                    <li><strong>📁 Organisation :</strong> Hiérarchie logique et claire</li>
+                                    <li><strong>💰 Économie :</strong> Moins de code = moins de bugs = moins de temps</li>
+                                    <li><strong>🧠 Lisibilité :</strong> Code qui reflète la réalité (relations naturelles)</li>
                                 </ul>
                             </div>
 
                             <div class="inheritance-diagram">
-                                <h6>Hiérarchie d'Héritage - Exemple Véhicules :</h6>
+                                <h6>Hiérarchie Complète - Exemple Véhicules (avec niveaux d'héritage) :</h6>
                                 <pre>
-                    Vehicle (classe mère)
-                    ├── attributs: marque, modele, annee
-                    ├── méthodes: demarrer(), arreter(), afficherInfos()
-                    │
-                    ├─── Voiture (classe fille)
-                    │    ├── attributs: nombrePortes, typeCarburant
-                    │    ├── méthodes: ouvrirCoffre(), activerClimatisation()
-                    │    │
-                    │    ├─── VoitureElectrique (petite-fille)
-                    │    │    ├── attributs: autonomieBatterie, tempsCharge
-                    │    │    └── méthodes: chargerBatterie(), modEco()
-                    │    │
-                    │    └─── VoitureSport (petite-fille)
-                    │         ├── attributs: vitesseMax, acceleration
-                    │         └── méthodes: activerModeRace(), deployerAileron()
-                    │
-                    └─── Moto (classe fille)
-                         ├── attributs: cylindree, typeGuidon
-                         └── méthodes: faireWheeling(), activerABS()
-                </pre>
+                         🚗 Vehicule (GRAND-PARENT)
+                         ├── marque, modele, annee, estDemarre
+                         ├── demarrer(), arreter(), rouler(), afficherInfos()
+                         │
+                         ├─────🚙 Voiture (PARENT de niveau 2)
+                         │     ├── nombrePortes, typeCarburant, capaciteReservoir
+                         │     ├── ouvrirCoffre(), activerClimatisation(), faireLePlein()
+                         │     │
+                         │     ├─────⚡ VoitureElectrique (ENFANT de niveau 3)
+                         │     │     ├── autonomieBatterie, niveauBatterie, tempsCharge
+                         │     │     ├── chargerBatterie(), activerModeEco()
+                         │     │     └── rouler() REDÉFINIE (gestion batterie)
+                         │     │
+                         │     ├─────🏎️  VoitureSport (ENFANT de niveau 3)
+                         │     │     ├── vitesseMax, acceleration0a100, modeRaceActif
+                         │     │     ├── activerModeRace(), deployerAileron(), effectuerAcceleration()
+                         │     │     └── rouler() REDÉFINIE (consommation sport)
+                         │     │
+                         │     └─────🚐 VoitureUtilitaire (ENFANT de niveau 3)
+                         │           ├── capaciteChargement, nombrePlaces
+                         │           ├── charger(), decharger()
+                         │           └── rouler() REDÉFINIE (gestion poids)
+                         │
+                         ├─────🏍️  Moto (PARENT de niveau 2)
+                         │     ├── cylindree, typeGuidon, aABS
+                         │     ├── faireWheeling(), activerABS()
+                         │     └── rouler() REDÉFINIE (sensation liberté)
+                         │
+                         └─────🚛 Camion (PARENT de niveau 2)
+                               ├── capaciteRemorque, nombreEssieux
+                               ├── attacherRemorque(), klaxonner()
+                               └── rouler() REDÉFINIE (gestion poids lourd)
+
+HÉRITAGE MULTI-NIVEAUX :
+- VoitureElectrique hérite de Voiture qui hérite de Vehicule
+- Elle a donc TOUS les attributs/méthodes des 3 niveaux !
+- Attributs totaux: marque, modele, annee, estDemarre, nombrePortes, 
+  typeCarburant, capaciteReservoir, autonomieBatterie, niveauBatterie, tempsCharge
+</pre>
                             </div>
                         </section>
 
@@ -451,10 +776,222 @@ public class Moto extends Vehicle {
                         <section id="polymorphisme" style="margin-bottom: 3rem;">
                             <h2 class="section-title">
                                 <i class="fas fa-shapes"></i>
-                                Polymorphisme et Liaison Dynamique
+                                Polymorphisme : La MAGIE Ultime de la POO !
                             </h2>
                             
-                            <p>Le polymorphisme permet à un objet de prendre plusieurs formes. En Java, cela se manifeste par la capacité d'une référence de type parent à pointer vers des objets de types enfants.</p>
+                            <p>Le <strong>polymorphisme</strong> (du grec "poly" = plusieurs, "morphe" = forme) est le concept le plus MAGIQUE de la programmation ! Il permet à un même code de fonctionner avec des objets de types différents, comme si on avait une télécommande universelle qui fonctionne avec tous les appareils.</p>
+
+                            <div class="concept-highlight">
+                                <h5>Analogie : Le Polymorphisme comme un Chef d'Orchestre</h5>
+                                <p>Imaginez un chef d'orchestre qui dirige différents musiciens :</p>
+                                <ul>
+                                    <li>🎺 <strong>Trompettiste :</strong> Joue "Do" avec sa trompette → son de trompette</li>
+                                    <li>🎻 <strong>Violoniste :</strong> Joue "Do" avec son violon → son de violon</li>
+                                    <li>🥁 <strong>Batteur :</strong> Joue "Do" avec sa batterie → rythme de batterie</li>
+                                    <li>🎹 <strong>Pianiste :</strong> Joue "Do" avec son piano → note de piano</li>
+                                </ul>
+                                <p><strong>Le chef fait le MÊME geste</strong> ("jouer Do"), mais <strong>chaque musicien produit un son différent</strong> selon son instrument. C'est exactement ça, le polymorphisme !</p>
+                            </div>
+
+                            <h4>Exemple Concret : Une Méthode, Mille Comportements</h4>
+                            <div class="code-block">
+<pre><code class="language-java">/**
+ * DÉMONSTRATION MAGIQUE DU POLYMORPHISME
+ * Une seule ligne de code → comportements différents !
+ */
+public class MagiePolymorphisme {
+    public static void main(String[] args) {
+        System.out.println("🎭 === MAGIE DU POLYMORPHISME ===");
+        
+        // ATTENTION : Même type de variable (Animal), objets différents !
+        Animal[] zoo = {
+            new Chien("Rex", 5, "Berger"),
+            new Chat("Whiskers", 3, "Persan"), 
+            new Oiseau("Tweety", 2, 25.5)
+        };
+        
+        System.out.println("\n🎵 === LE CHEF D'ORCHESTRE EN ACTION ===");
+        // UNE SEULE BOUCLE → COMPORTEMENTS MULTIPLES !
+        for (Animal animal : zoo) {
+            System.out.print("Chef dit 'Faire du bruit' → ");
+            animal.faireDuBruit(); // MÊME APPEL, RÉSULTATS DIFFÉRENTS !
+        }
+        
+        System.out.println("\n💡 MAGIE RÉVÉLÉE :");
+        System.out.println("✨ Même code → Comportements différents selon l'objet réel");
+        System.out.println("✨ Java choisit automatiquement la bonne méthode !");
+        System.out.println("✨ C'est ça le POLYMORPHISME !");
+    }
+}
+
+// CLASSE PARENT ABSTRAITE
+abstract class Animal {
+    protected String nom;
+    protected int age;
+    
+    public Animal(String nom, int age) {
+        this.nom = nom;
+        this.age = age;
+    }
+    
+    // MÉTHODE ABSTRAITE = DOIT être redéfinie
+    public abstract void faireDuBruit();
+}
+
+// CHAQUE ENFANT REDÉFINIT À SA MANIÈRE
+class Chien extends Animal {
+    public Chien(String nom, int age, String race) {
+        super(nom, age);
+    }
+    
+    @Override
+    public void faireDuBruit() {
+        System.out.println(nom + " aboie: WOOF WOOF ! 🐕");
+    }
+}
+
+class Chat extends Animal {
+    public Chat(String nom, int age, String typePelage) {
+        super(nom, age);
+    }
+    
+    @Override
+    public void faireDuBruit() {
+        System.out.println(nom + " miaule: Miaou miaou ! 🐱");
+    }
+}
+
+class Oiseau extends Animal {
+    public Oiseau(String nom, int age, double envergure) {
+        super(nom, age);
+    }
+    
+    @Override
+    public void faireDuBruit() {
+        System.out.println(nom + " chante: Tweet tweet ! 🐦");
+    }
+}
+
+/*
+RÉSULTAT MAGIQUE :
+🎭 === MAGIE DU POLYMORPHISME ===
+
+🎵 === LE CHEF D'ORCHESTRE EN ACTION ===
+Chef dit 'Faire du bruit' → Rex aboie: WOOF WOOF ! 🐕
+Chef dit 'Faire du bruit' → Whiskers miaule: Miaou miaou ! 🐱
+Chef dit 'Faire du bruit' → Tweety chante: Tweet tweet ! 🐦
+
+EXPLICATION DE LA MAGIE :
+✨ animal.faireDuBruit() = MÊME APPEL DE MÉTHODE
+✨ Mais Java regarde le TYPE RÉEL de l'objet (Chien, Chat, etc.)
+✨ Et appelle automatiquement la BONNE version de la méthode !
+✨ C'est la LIAISON DYNAMIQUE (Dynamic Binding) !
+*/</code></pre>
+                            </div>
+
+                            <h4>Les 3 Types de Polymorphisme en Java</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>1. Polymorphisme de Surcharge</h6>
+                                        <p><strong>(Compile-time)</strong></p>
+                                        <div class="code-block">
+<pre><code class="language-java">class Calculateur {
+    // MÊME NOM, paramètres différents
+    int additionner(int a, int b) {
+        return a + b;
+    }
+    
+    double additionner(double a, double b) {
+        return a + b;
+    }
+    
+    int additionner(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+// Java choisit la bonne méthode 
+// selon les paramètres fournis</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>2. Polymorphisme de Redéfinition</h6>
+                                        <p><strong>(Runtime)</strong></p>
+                                        <div class="code-block">
+<pre><code class="language-java">class Animal {
+    void crier() {
+        System.out.println("Bruit d'animal");
+    }
+}
+
+class Chien extends Animal {
+    @Override
+    void crier() {
+        System.out.println("Woof !");
+    }
+}
+
+// Java choisit la version selon 
+// le type RÉEL de l'objet</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="concept-highlight">
+                                        <h6>3. Polymorphisme d'Interface</h6>
+                                        <p><strong>(Runtime)</strong></p>
+                                        <div class="code-block">
+<pre><code class="language-java">interface Volant {
+    void voler();
+}
+
+class Oiseau implements Volant {
+    public void voler() {
+        System.out.println("Vol avec ailes");
+    }
+}
+
+class Avion implements Volant {
+    public void voler() {
+        System.out.println("Vol avec moteur");
+    }
+}
+
+// Même interface, implémentations 
+// totalement différentes</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>Liaison Dynamique : Comment Java Choisit la Bonne Méthode ?</h4>
+                            <div class="concept-highlight">
+                                <h5>Le Processus Magique en 4 Étapes :</h5>
+                                <div class="code-block">
+<pre><code class="language-java">Animal monAnimal = new Chien("Rex", 5, "Berger");
+monAnimal.faireDuBruit(); // Comment Java sait-il quoi faire ?
+
+// ÉTAPE 1 : Compilation
+// Java vérifie que la méthode faireDuBruit() existe dans Animal
+// ✅ Vérification OK → Code compile
+
+// ÉTAPE 2 : Exécution - Identification du type réel
+// Java regarde : "monAnimal pointe vers quoi VRAIMENT ?"
+// Réponse : vers un objet de type Chien
+
+// ÉTAPE 3 : Recherche de méthode (Method Lookup)
+// Java cherche faireDuBruit() dans cette hiérarchie :
+// 1. Chien a-t-il faireDuBruit() ? → OUI ! (redéfinie)
+// 2. Utiliser la version de Chien
+
+// ÉTAPE 4 : Appel de la méthode
+// Exécute : Chien.faireDuBruit()
+// Résultat : "Rex aboie: WOOF WOOF ! 🐕"</code></pre>
+                                </div>
+                            </div>
 
                             <div class="polymorphism-demo">
                                 <h5>Démonstration du Polymorphisme :</h5>
